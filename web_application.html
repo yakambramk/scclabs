@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+  <title>Careers: Saharsh Code Craft Labs</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .navbar-brand img {
+      max-height: 80px;
+    }
+
+    .navbar-nav .nav-item.active .nav-link,
+    .navbar-nav .nav-item:hover .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    /* Add this style rule to highlight the dropdown menu item on hover */
+    .navbar-nav .nav-item.dropdown:hover .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    /* Add this style rule to highlight the active dropdown menu item */
+    .navbar-nav .nav-item.dropdown.active .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    /* Add this style rule to highlight the dropdown menu item on hover */
+    .navbar-nav .nav-item.dropdown:hover .nav-link {
+      color:#1a59a7 !important;
+      font-weight: bold;
+    }
+
+    .overlap-container {
+      position: relative;
+      background: url('assets/media/components/b-title-page/webApp4.jpg') center/cover no-repeat;
+      color: #fff;
+      padding: 100px;
+      height: 500px;
+      overflow: visible;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+   
+    .text-container {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      padding: 20px;
+      
+    }
+
+   
+    .text-container h3 {
+      font-size: 24px;
+    }
+
+    .text-container h1 {
+      font-size: 48px;
+      font-weight: bold;
+    }
+
+   
+    .rose-color {
+      color: #1a59a7;
+      font-weight: bold;
+      
+    }
+
+    
+    .aboutSection.text-center {
+      text-align: center;
+    }
+
+    .section-default_first-block {
+      padding: 20px;
+      
+    }
+
+    .aboutInnerSection {
+      margin-bottom: 20px;
+     
+    }
+
+    .custom-img-group {
+      margin-top: 20px;
+      
+    }
+
+    .aboutSection .row {
+      margin-top: 20px;
+     
+    }
+
+    .vissionarea,
+    .missionarea {
+      margin-top: 20px;
+      
+    }
+
+    .custom-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .custom-list li {
+      position: relative;
+      padding-left: 25px;
+      margin-bottom: 10px;
+      
+    }
+
+    .custom-list li::before {
+      content: '\f00c';
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      font-size: 18px;
+      color: #28a745;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-white bg-white ms-auto">
+      <div class="container-fluid ">
+        <a class="navbar-brand" href="index.html">
+          <img src="assets/media/general/logo.png" alt="logo" />
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse mx-auto" id="navbarNavDropdown">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="index.html">HOME</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="about.html">ABOUT</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link  dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">CAREERS</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                  <a class="dropdown-item" href="internship.html" class="menu-link">Internship</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">SERVICES</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                  <a href="web_application.html" class="dropdown-item">Web Applications</a>
+                </li>
+                <li>
+                  <a href="mobile_application.html" class="dropdown-item">Mobile Applications</a>
+                </li>
+                <li>
+                  <a href="data_analytics.html" class="dropdown-item">Data Analytics</a>
+                </li>
+                <li>
+                  <a href="ai_ml.html" class="dropdown-item">AI & ML Services</a>
+                </li>
+                <li>
+                  <a href="tooldesign.html" class="dropdown-item">Tool Design</a>
+                </li>
+              
+                <li>
+                  <a href="product_engineering.html" class="dropdown-item">Product Engineering</a>
+                </li>
+                <li>
+                  <a href="digital_marketinig.html" class="dropdown-item">Digital Marketing</a>
+                </li>
+                
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="contact.html">CONTACT</a>
+            </li>
+          </ul>
+        </div>
+    </nav>
+    <!-- Overlapping Container with Background Image -->
+    <div class="overlap-container">
+      <div class="overlay"></div>
+      <div class="text-container">
+        <h3>WE GENERATE</h3>
+        <h1>MOST CREATIVE IDEAS</h1>
+      </div>
+    </div>
+   
+    <section class="section section-default section-default_first-block py-3 mt-3 mb-3">
+      <div class="container">
+          <div class="row">
+            <div class="col-md-12 text-center justify-content-center">
+              <h1 class="custom-h1"> <span class="rose-color"> Web</span> Applications </h1>
+              </div>
+              <div class="col-md-6 wow fadeInLeft  mt-3 mb-3" data-wow-duration="1s" data-wow-delay="1s">
+                  <div class="img-group-2 img-decor-btm custom-img-group">
+                      <img class="img-fluid img-mechdsgn" src="assets/img/webApp1.jpg" alt="web app">
+                  </div>
+              </div>
+              <div class="col-md-6 wow fadeInRight custom-col1  mt-5 mb-5" data-wow-duration="1s" data-wow-delay="1s">
+                  <p>Web development is used for the creating, building, and maintaining of websites. It covers things like web publishing, web programming, database management, and web design. It is the development of an online application, such as a website. We have an excellent team of web development experts who are constantly experimenting and implementing innovative ideas that will transform website designs into a gold mine for your business.
+                      <br>Our stepwise sustainable approach to create-test-recreate exclusive web apps, aligns with your individual business image. Consequently, our web development firm becomes an invaluable asset to your digital tasks.
+                      <br>We create an innovative design to offer a standard markup code that helps your business to grow exponentially and also increase your conversion rate. </p>
+                  <br>
+              </div>
+  
+              <div class="col-md-6 wow fadeInRight custom-col1 mt-5 mb-5" data-wow-duration="1s" data-wow-delay="1s">
+                  <p>Businesses can no longer get by with a simple but poorly optimized website. As the web has evolved, customers have become progressively savvier and choose who to do business with based on a business’s digital presence Web apps also automate daily tasks, streamline functions, & develop direct communications.
+                      <br>This is why you need tailored web app development services for the detailed execution of web apps as a potent marketing strategy. Our distinct projects unlock new digital channels with AI-based features & engaging UI/UX.
+                      <br>Web Development in web apps for Business & Identity with top development company services for platforms such as Angular, React, PHP, WordPress, etc. </p>
+                  <br>
+              </div>
+              <div class="col-md-6 wow fadeInLeft  mt-4 mb-4" data-wow-duration="1s" data-wow-delay="1s">
+                  <div class="img-group-2 img-decor-btm custom-img-group">
+                      <img class="img-fluid img-mechdsgn" src="assets/img/webApp2.jpg" alt="web app">
+                  </div>
+              </div>
+              <div class="col-md-12 custom-col  mt-5 mb-5">
+                  <h4 class="sub-heading">Some of the <span class="rose-color">verifications</span> performed as per the services are:</h4>
+                  <ul class="custom-list">
+                      <li>Full stack Development</li>
+                      <li>Full Stack Website Development Service We offer full-stack website development services for users. Our website developers use both frontend and backend technologies such as PHP, MEAN, MERN, NET+, JS, Angular, and many more.</li>
+                      <li>Custom web development</li>
+                      <li>We are offering secure, feature-rich, scalable, and robust website development services for your enterprises Whatever your requirements are, our company will provide you with caliber solutions that can satisfy all of your unique, customized demands.</li>
+                      <li>Progressive web development</li>
+                      <li>We have a highly experienced team of website developers and designers with substantial experience in developing innovative, robust, and stunning Progressive Website solutions for your business.</li>
+                      <li>Saas web application</li>
+                      <li>Our experienced team can draw you the roadmap which includes SaaS technologies, methodologies, and the timeline most appropriate to turn your idea into a viable product.This amplifies business functionalities enabled by the aid of a leading web development company.</li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </section>
+  
+
+  <div id="footer"></div>
+  </div>
+  <script>
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('footer').innerHTML = html;
+        });
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

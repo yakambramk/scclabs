@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+  <title>Careers: Saharsh Code Craft Labs</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .navbar-brand img {
+      max-height: 80px;
+    }
+
+    .navbar-nav .nav-item.active .nav-link,
+    .navbar-nav .nav-item:hover .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    /* Add this style rule to highlight the dropdown menu item on hover */
+    .navbar-nav .nav-item.dropdown:hover .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    /* Add this style rule to highlight the active dropdown menu item */
+    .navbar-nav .nav-item.dropdown.active .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    /* Add this style rule to highlight the dropdown menu item on hover */
+    .navbar-nav .nav-item.dropdown:hover .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    .overlap-container {
+      position: relative;
+      background: url('assets/media/components/b-title-page/bg-1.jpg') center/cover no-repeat;
+      color: #fff;
+      padding: 100px;
+      height: 500px;
+      overflow: visible;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+
+    .text-container {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      padding: 20px;
+
+    }
+
+
+    .text-container h3 {
+      font-size: 24px;
+    }
+
+    .text-container h1 {
+      font-size: 48px;
+      font-weight: bold;
+    }
+
+
+    .rose-color {
+      color: #1a59a7;
+      font-weight: bold;
+
+    }
+
+
+    .aboutSection.text-center {
+      text-align: center;
+    }
+
+    .section-default_first-block {
+      padding: 20px;
+
+    }
+
+    .card {
+      text-align: center;
+      border-radius: 15px;
+      width: 100%;
+      /* Set width to 100% */
+      height: 300px;
+      /* Adjust border-radius as needed */
+    }
+
+    .card i {
+      font-size: 2rem;
+      /* Adjust the icon size as needed */
+    }
+
+    .custom-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .custom-list li {
+      position: relative;
+      padding-left: 25px;
+      margin-bottom: 10px;
+
+    }
+
+    .custom-list li::before {
+      content: '\f00c';
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      font-size: 18px;
+      color: #28a745;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-white bg-white ms-auto">
+      <div class="container-fluid ">
+        <a class="navbar-brand" href="index.html">
+          <img src="assets/media/general/logo.png" alt="logo" />
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse mx-auto" id="navbarNavDropdown">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="index.html">HOME</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="about.html">ABOUT</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link  dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">CAREERS</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                  <a class="dropdown-item" href="internship.html" class="menu-link">Internship</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">SERVICES</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                  <a href="web_application.html" class="dropdown-item">Web Applications</a>
+                </li>
+                <li>
+                  <a href="mobile_application.html" class="dropdown-item">Mobile Applications</a>
+                </li>
+                <li>
+                  <a href="data_analytics.html" class="dropdown-item">Data Analytics</a>
+                </li>
+                <li>
+                  <a href="ai_ml.html" class="dropdown-item">AI & ML Services</a>
+                </li>
+                <li>
+                  <a href="tooldesign.html" class="dropdown-item">Tool Design</a>
+                </li>
+
+                <li>
+                  <a href="product_engineering.html" class="dropdown-item">Product Engineering</a>
+                </li>
+                <li>
+                  <a href="digital_marketinig.html" class="dropdown-item">Digital Marketing</a>
+                </li>
+
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="contact.html">CONTACT</a>
+            </li>
+          </ul>
+        </div>
+    </nav>
+    <!-- Overlapping Container with Background Image -->
+    <div class="overlap-container">
+      <div class="overlay"></div>
+      <div class="text-container">
+        <h3>WE GENERATE</h3>
+        <h1>MOST CREATIVE IDEAS</h1>
+      </div>
+    </div>
+    <section class="section section-default section-default_first-block mt-5 mb-5">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12 text-center">
+                  <h1 class="custom-h1 mt-3 mb-3"><span class="rose-color">Digital</span> Marketing</h1>
+                  <p>Digital Marketing refers to the employment of techniques of marketing through numerous platforms of electronic media. It differs from traditional marketing in the sense that it uses different media of electronic basis like the internet, wireless messaging, instant messaging, radio, digital television, podcasts and various other forms of digital media, to spread the word about a product or market.It is one of the most happening methods of Marketing in the current market scenario, and is used extensively by various companies in recent times, especially after the advent of smart phones and social media. Digital media is so pervasive today, that consumers are able to have access to information at any time and any place of their convenience.</p>
+              </div>
+  
+              <div class="col-md-6">
+                  <div class="img-group-2 img-decor-btm wow fadeInLeft">
+                      <img class="img-fluid img-digital-market" src="assets/img/27.jpg" alt="Digital Marketing">
+                  </div>
+              </div>
+              <div class="col-md-6 mt-3 mb-3">
+                  <p class="wow fadeInRight">Gone are the days when the messages people got about your products or services came from you and consisted of only what you wanted them to know. Digital media is an ever-growing source of entertainment, news, shopping, and social interaction, and consumers are now exposed to not just what your company says about your brand, but also what the media, friends, relatives, and peers have to say about it. The consumers of today want brands they can trust, companies that know them, communications that are personalized and relevant, and offers tailored to their needs and preferences. And as it provides a well-made recipe with all of these required ingredients, Digital Marketing is a source that your company can absolutely rely on.</p>
+              </div>
+  
+              <div class="col-md-12 custom-col">
+                  <div class="row">
+                      <div class="col-md-12 mt-3 mb-3">
+                          <h4 class="sub-heading"><span  class="rose-color">Search Engine</span> Optimization(SEO)</h4>
+                          <div class="digital-para">
+                              <p>Search engine optimization (SEO) is the practice of increasing the quantity and quality of traffic to your website through organic search engine results. You might think of a search engine as a website you visit to type (or speak) into, following which a search engine would promptly answer your questions by way of a series of prospective web pages.
+                                  <br>Now, that is true. But have you ever stopped to consider what works behind those magical lists of links?
+                                  <br>Here's how it works: Google (or any other search engine that you are using) has a crawler that goes out and gathers information about all the content they can find on the Internet. The crawlers bring all those 1s and 0s back to the search engine to build an index. That index is then fed through an algorithm that tries to match all that data with your query. This much of technical matter has to go into every ‘search’ that you may perform!</p>
+                          </div>
+                      </div>
+                      <div class="col-md-12 mt-3 mb-3">
+                          <h4 class="sub-heading"><span  class="rose-color">Social Media </span>Marketing(SMM)</h4>
+                          <div class="digital-para">
+                              <p>The extensive reach and impact of social media is something that is all out there. In the current business scenario, to get a word about a product, brand or launch across, one does not have to make calls, send emails or spend on celebrity endorsements, really. Just one post on a social media platform like Facebook or Instagram and the job is done. The word will automatically spread. Ever wondered why every restaurant, store and even clinic, has an exclusive social media page nowadays? There’s your answer.</p>
+                          </div>
+                      </div>
+                      <div class="col-md-12 mt-3 mb-3">
+                          <h4 class="sub-heading"><span  class="rose-color">PPC</span> Advertising </h4>
+                          <div class="digital-para">
+                              <p>PPC is an online advertising model in which advertisers can display ads for their goods or services when users enter relevant queries into search engines. Advertisers are only charged when a user actually clicks on their ad, hence the name “pay-per-click.” Due to the nature of keywords and the role they play in a paid search, pay-per-click advertising can also be referred to as keyword advertising.
+                                  <br>In order for the ads to appear alongside the results on a search engine (commonly referred to as a Search Engine Results Page, or SERP), advertisers cannot simply pay more to ensure that their ads appear more prominently than that of their competitors’. Thus, ads are subjected to what is known as the Ad Auction, an entirely automated process that Google and other major search engines use, so as to determine the relevance and validity of advertisements that appear on their SERPs. It is another novel advertising that will surely benefit your product or company immensely, in the long run.</p>
+                          </div>
+                      </div>
+                      <div class="col-md-12 mt-3 mb-3">
+                          <h4 class="sub-heading"><span  class="rose-color">Content</span> Marketing </h4>
+                          <div class="digital-para">
+                              <p>In order to engage customers and prospects, businesses must create and deliver impactful content. Content marketing is the process of planning, creating, distributing, and measuring content with the goal of attracting and retaining customers.
+                                  <br>Content marketing must align with your overall marketing strategy, business goals, and target audience. Once you have a clear understanding of these factors, you can begin developing a content marketing plan. This plan will help you determine what type of content to create, how to distribute it, and how to measure its effectiveness.
+                                  <br>When creating content, it is important to consider what will resonate with your target audience. The most successful content is interesting, useful, and relevant to your readers. It should also be shareable so that your readers can easily pass it along to their own networks.</p>
+                          </div>
+                      </div>
+                      <div class="col-md-12 mt-3 mb-3">
+                          <h4 class="sub-heading"><span  class="rose-color">Email</span> Marketing </h4>
+                          <div class="digital-para">
+                              <p>An effective email marketing campaign can be a great way to connect with your customers and promote your business. Here are a few tips to help you get started:
+                                  <br>1. Keep your messages focused and relevant to your audience.
+                                  <br>2. Make sure your email list is up-to-date and accurate.
+                                  <br>3. Use an engaging subject line to encourage recipients to open your message.
+                                  <br>4. Use compelling content to encourage recipients to take action.
+                                  <br>5. Include a call-to-action (CTA) in every message.
+                                  <br>6. Test, measure, and optimize your campaigns for success.</p>
+                          </div>
+                      </div>
+                      <div class="col-md-12 mt-3 mb-3">
+                          <h4 class="sub-heading"><span  class="rose-color">Mobile</span> Marketing </h4>
+                          <div class="digital-para">
+                              <p>Mobile marketing is a multi-channel, digital marketing strategy aimed at reaching a target audience on smartphones, tablets, and other mobile devices. It involves the use of email, SMS, MMS, push notifications, and responsive websites and apps to reach consumers.</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+  
+
+
+
+    <div id="footer"></div>
+  </div>
+  <script>
+    fetch('footer.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('footer').innerHTML = html;
+      });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

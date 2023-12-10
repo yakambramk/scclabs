@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+  <title>Careers: Saharsh Code Craft Labs</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .navbar-brand img {
+      max-height: 80px;
+    }
+
+    .navbar-nav .nav-item.active .nav-link,
+    .navbar-nav .nav-item:hover .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    /* Add this style rule to highlight the dropdown menu item on hover */
+    .navbar-nav .nav-item.dropdown:hover .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    /* Add this style rule to highlight the active dropdown menu item */
+    .navbar-nav .nav-item.dropdown.active .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    /* Add this style rule to highlight the dropdown menu item on hover */
+    .navbar-nav .nav-item.dropdown:hover .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    .overlap-container {
+      position: relative;
+      background: url('assets/media/components/b-title-page/bg-1.jpg') center/cover no-repeat;
+      color: #fff;
+      padding: 100px;
+      height: 500px;
+      overflow: visible;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+
+    .text-container {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      padding: 20px;
+
+    }
+
+
+    .text-container h3 {
+      font-size: 24px;
+    }
+
+    .text-container h1 {
+      font-size: 48px;
+      font-weight: bold;
+    }
+
+
+    .rose-color {
+      color: #1a59a7;
+      font-weight: bold;
+
+    }
+
+
+    .aboutSection.text-center {
+      text-align: center;
+    }
+
+    .section-default_first-block {
+      padding: 20px;
+
+    }
+
+    .card {
+      text-align: center;
+      border-radius: 15px;
+      width: 100%;
+      /* Set width to 100% */
+      height: 300px;
+      /* Adjust border-radius as needed */
+    }
+
+    .card i {
+      font-size: 2rem;
+      /* Adjust the icon size as needed */
+    }
+
+    .custom-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .custom-list li {
+      position: relative;
+      padding-left: 25px;
+      margin-bottom: 10px;
+
+    }
+
+    .custom-list li::before {
+      content: '\f00c';
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      font-size: 18px;
+      color: #28a745;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-white bg-white ms-auto">
+      <div class="container-fluid ">
+        <a class="navbar-brand" href="index.html">
+          <img src="assets/media/general/logo.png" alt="logo" />
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse mx-auto" id="navbarNavDropdown">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="index.html">HOME</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="about.html">ABOUT</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link  dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">CAREERS</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                  <a class="dropdown-item" href="internship.html" class="menu-link">Internship</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">SERVICES</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                  <a href="web_application.html" class="dropdown-item">Web Applications</a>
+                </li>
+                <li>
+                  <a href="mobile_application.html" class="dropdown-item">Mobile Applications</a>
+                </li>
+                <li>
+                  <a href="data_analytics.html" class="dropdown-item">Data Analytics</a>
+                </li>
+                <li>
+                  <a href="ai_ml.html" class="dropdown-item">AI & ML Services</a>
+                </li>
+                <li>
+                  <a href="tooldesign.html" class="dropdown-item">Tool Design</a>
+                </li>
+
+                <li>
+                  <a href="product_engineering.html" class="dropdown-item">Product Engineering</a>
+                </li>
+                <li>
+                  <a href="digital_marketinig.html" class="dropdown-item">Digital Marketing</a>
+                </li>
+
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="contact.html">CONTACT</a>
+            </li>
+          </ul>
+        </div>
+    </nav>
+    <!-- Overlapping Container with Background Image -->
+    <div class="overlap-container">
+      <div class="overlay"></div>
+      <div class="text-container">
+        <h3>WE GENERATE</h3>
+        <h1>MOST CREATIVE IDEAS</h1>
+      </div>
+    </div>
+    <section class="section section-default section-default_first-block mt-5 mb-5">
+      <div class="container">
+        <div class="col-md-12 text-center justify-content-center">
+          <h1 class="custom-h1"> <span class="rose-color">Mobile Applications</span> Development</h1>
+        </div>
+
+        <div class="row mb-3 mt-3">
+          <div class="col-md-4">
+            <div class="card d-flex align-items-center p-5">
+              <i class="fas fa-users" id="team-icon"></i>
+              <h2 class="card-title">Team of Experts</h2>
+              <p class="card-text">An experienced and enthusiastic team vetted software development experts</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card d-flex align-items-center p-5">
+              <i class="fas fa-lightbulb" id="creative-icon"></i>
+              <h2 class="card-title">Creative Solutions</h2>
+              <p class="card-text">Enterprise-grade software solutions to enhance business value through innovation</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card d-flex align-items-center p-5">
+              <i class="fab fa-microsoft" id="digital-icon"></i>
+              <h2 class="card-title">Digital Transformation</h2>
+              <p class="card-text">Facilitate Software adoption for smooth Digital Transformation within an Organization
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-6 wow fadeInLeft animated" data-wow-duration="1s" data-wow-delay="1s">
+            <div class="img-group-2 img-decor-btm custom-img-group">
+              <img class="pull-left img-responsive img-mechdsgn" src="assets/img/mobile1.jpg" alt="web app">
+            </div>
+          </div>
+          <div class="col-md-6 wow fadeInRight animated custom-col1" data-wow-duration="1s" data-wow-delay="1s">
+            <h4 class="content-heading">We <span class="rose-color">Design</span> And <span class="rose-color"> Develop
+              </span>Awesome Mobile Apps</h4>
+            <p>For reliable and timely mobile app development services, choose Matrical Technologies. As one of the top
+              mobile app development firms, We provide iOS, Android, and cross-platform development services to power
+              businesses and start-ups. As a team of professionals, we've handled a lot of projects and gained a lot of
+              experience that can be helpful to your business.
+              <br /><br />We comprise a team of experienced analysts, UX UI designers, developers, QA, and testing
+              specialists. We work with diverse brands and companies of all sizes, across various industry verticals.
+              With our expertise, we assist you in meeting your business objectives and requirements.
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 wow fadeInRight animated custom-col1" data-wow-duration="1s" data-wow-delay="1s">
+            <h1 class="content-heading">How <span class="rose-color">Mobile App </span> Development Can Help your
+              Business</h1>
+            <p>Mobile apps have opened up a world of opportunities. Developing iOS and Android apps gives businesses
+              direct access to consumers. The improved direct communication that mobile apps provide has led to greater
+              sense of loyalty and familiarity towards a brand.
+              An innovative and responsive UI can help you further by capturing and retaining customer attention, as
+              well as remain ahead of competition with a mobile app. You can,<br><br>
+              1: Increase the value you provide to customers<br>
+              2: Establish a stronger brand<br>
+              3: Build stronger relationships with customers<br>
+              4: Grow profitably
+            </p>
+          </div>
+          <div class="col-md-6 wow fadeInLeft animated" data-wow-duration="1s" data-wow-delay="1s">
+            <div class="img-group-2 img-decor-btm custom-img-group">
+              <img class="pull-left img-responsive img-mechdsgn" src="assets/img/mobile2.jpg" alt="web app">
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-3 mt-5">
+          <div class="col-lg-6">
+            <div class="service-card-1">
+              <div class="ios-icon-card">
+                <h2 class="service-card-heading"><span class="rose-color"><i class="fab fa-apple" id="ios-icon"></i> iOS
+                  </span>Application Development</h2>
+                <p class="service-card-paragraph">Our aim is to bring closer
+                  to <br>realizing your dream. We build,<br>
+                  scalable, secure, and high-performance<br>
+                  iOS apps. User satisfaction and product<br>
+                  are our priorities<br><br>
+                </p>
+                <ul class="custom-list">
+                  <li><span>Custom iOS App Development</span><br></li>
+                  <li><span>Native iOS App Development</span><br></li>
+                  <li><span>Hybrid iOS App Development</span><br></li>
+                  <li><span>iOS App bug fixing and security</span><br></li>
+                  <li><span>iOS App Maintenance</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="service-card-2">
+              <div class="android-icon-card">
+                <h2 class="service-card-heading"> <span class="rose-color"><i class="fab fa-android"
+                      id="android-icon"></i>Android</span> Application Development</h2>
+                <p class="service-card-paragraph">Let us help you to create and <br>design android application
+                  for
+                  a variety of<br> platforms. We help fix
+                  bugs in existing<br> & new applications.
+                  What we ensure <br>is a seamless user experience<br><br>
+                </p>
+                <ul class="custom-list">
+                  <li><span>Custom Android App Development</span><br></li>
+                  <li><span>Hydrid Android App Development</span><br></li>
+                  <li><span>Android App Upgrade</span><br></li>
+                  <li><span>Android UI/UX Design</span><br></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4 p-5">
+            <div class="ipad an-1 border border-2 rounded d-flex flex-column align-items-center">
+              <i class="fas fa-tablet-alt fa-3x my-3" id="ipad-img"></i>
+              <span class="ipad-sp text-center">
+                <h2 class="fw-bold">Android Tablets</h2>
+                We create innovative Android<br>
+                Tablets apps compatible with<br>
+                all screen sizes.
+              </span>
+            </div>
+          </div>
+          <div class="col-lg-4 p-5">
+            <div class="iphone an-1 border border-2 rounded d-flex flex-column align-items-center">
+              <i class="fas fa-mobile-alt fa-3x my-3" id="iphone-img"></i>
+              <span class="iphone-sp text-center">
+                <h2 class="fw-bold">Android Phones</h2>
+                We deliver all-inclusive<br>
+                Android mobile apps that are<br>
+                sleek and functional.
+              </span>
+            </div>
+          </div>
+          <div class="col-lg-4 p-5">
+            <div class="ios-watch an-1 border border-2 rounded d-flex flex-column align-items-center">
+              <i class="fas fa-stopwatch-20 fa-3x my-3" id="iphone-watch-img"></i>
+              <span class="iphone-sp text-center">
+                <h2 class="fw-bold">Wearables</h2>
+                We are experts in modern-age<br>
+                wearable app development<br>
+                across verticals.
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <div id="footer"></div>
+  </div>
+  <script>
+    fetch('footer.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('footer').innerHTML = html;
+      });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

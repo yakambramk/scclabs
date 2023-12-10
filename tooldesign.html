@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+  <title>Careers: Saharsh Code Craft Labs</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .navbar-brand img {
+      max-height: 80px;
+    }
+
+    .navbar-nav .nav-item.active .nav-link,
+    .navbar-nav .nav-item:hover .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    /* Add this style rule to highlight the dropdown menu item on hover */
+    .navbar-nav .nav-item.dropdown:hover .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    /* Add this style rule to highlight the active dropdown menu item */
+    .navbar-nav .nav-item.dropdown.active .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    /* Add this style rule to highlight the dropdown menu item on hover */
+    .navbar-nav .nav-item.dropdown:hover .nav-link {
+      color:#1a59a7 !important;
+      font-weight: bold;
+    }
+
+    .overlap-container {
+      position: relative;
+      background: url('assets/media/components/b-title-page/bg-1.jpg') center/cover no-repeat;
+      color: #fff;
+      padding: 100px;
+      height: 500px;
+      overflow: visible;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+   
+    .text-container {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      padding: 20px;
+      
+    }
+
+   
+    .text-container h3 {
+      font-size: 24px;
+    }
+
+    .text-container h1 {
+      font-size: 48px;
+      font-weight: bold;
+    }
+
+   
+    .rose-color {
+      color: #1a59a7;
+      font-weight: bold;
+      
+    }
+
+    
+    .aboutSection.text-center {
+      text-align: center;
+    }
+
+    .section-default_first-block {
+      padding: 20px;
+      
+    }
+
+    .aboutInnerSection {
+      margin-bottom: 20px;
+     
+    }
+
+    .custom-img-group {
+      margin-top: 20px;
+      
+    }
+
+    .aboutSection .row {
+      margin-top: 20px;
+     
+    }
+
+    .vissionarea,
+    .missionarea {
+      margin-top: 20px;
+      
+    }
+
+    .custom-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .custom-list li {
+      position: relative;
+      padding-left: 25px;
+      margin-bottom: 10px;
+      
+    }
+
+    .custom-list li::before {
+      content: '\f00c';
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      font-size: 18px;
+      color: #28a745;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-white bg-white ms-auto">
+      <div class="container-fluid ">
+        <a class="navbar-brand" href="index.html">
+          <img src="assets/media/general/logo.png" alt="logo" />
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse mx-auto" id="navbarNavDropdown">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="index.html">HOME</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="about.html">ABOUT</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link  dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">CAREERS</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                  <a class="dropdown-item" href="internship.html" class="menu-link">Internship</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">SERVICES</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                  <a href="web_application.html" class="dropdown-item">Web Applications</a>
+                </li>
+                <li>
+                  <a href="mobile_application.html" class="dropdown-item">Mobile Applications</a>
+                </li>
+                <li>
+                  <a href="data_analytics.html" class="dropdown-item">Data Analytics</a>
+                </li>
+                <li>
+                  <a href="ai_ml.html" class="dropdown-item">AI & ML Services</a>
+                </li>
+                <li>
+                  <a href="tooldesign.html" class="dropdown-item">Tool Design</a>
+                </li>
+              
+                <li>
+                  <a href="product_engineering.html" class="dropdown-item">Product Engineering</a>
+                </li>
+                <li>
+                  <a href="digital_marketinig.html" class="dropdown-item">Digital Marketing</a>
+                </li>
+                
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="contact.html">CONTACT</a>
+            </li>
+          </ul>
+        </div>
+    </nav>
+    <!-- Overlapping Container with Background Image -->
+    <div class="overlap-container">
+      <div class="overlay"></div>
+      <div class="text-container">
+        <h3>WE GENERATE</h3>
+        <h1>MOST CREATIVE IDEAS</h1>
+      </div>
+    </div>
+   
+    <section class="section section-default section-default_first-block py-3 mt-3 mb-3">
+      <div class="container">
+          <div class="row">
+            <div class="col-md-12 text-center justify-content-center">
+              <h1 class="custom-h1"> <span class="rose-color"> Tool</span> Design </h1>
+              </div>
+              <div class="col-md-6 wow fadeInLeft  mt-3 mb-3" data-wow-duration="1s" data-wow-delay="1s">
+                  <div class="img-group-2 img-decor-btm custom-img-group">
+                      <img class="img-fluid img-mechdsgn" src="assets/img/35.png" alt="web app">
+                  </div>
+              </div>
+              <div class="col-md-6 wow fadeInRight custom-col1  mt-5 mb-5" data-wow-duration="1s" data-wow-delay="1s">
+                  <p>Our Tool design activity involves in understanding the client’s products, infrastructure and production 
+                    requirements and service offers our infrastructure and expertise to exactly fit the client’s delivery schedules.
+                    Tool Design help with your design to build project.Tool Design maintains a Quality Management System, 
+                    a Climate Controlled Inspection Room, and the best inspection tools available. 
+                    Coordinate Measuring Machine (CMM) can automatically measure production samples to within 1.5μm.Design, 
+                    manufacturing, production, and rebuild. Tool Design has done it all.
+                  </p>
+                  <br>
+              </div>
+  
+              <div class="col-md-12 custom-col  mt-5 mb-5">
+                  <h4 class="sub-heading"><span class="rose-color">Capabilities</span></h4>
+                  <ul class="custom-list">
+                      <li>Tool Design's capabilities include 3-axis vertical mills, 4-axis horizontal machining centers, and multi-axis lathes to meet all your milling and turning needs.</li>
+                      <li>Firm modeling of the product and tool, and creation of manufacturing drawings ensue this methodology.</li>
+                      <li>Saharsh Code Craft Labs’s tool design offers you with the following services:</li>
+                      <ul>
+                        <li>Jigs & fixtures.</li>
+                        <li>Press tools.</li>
+                        <li>Cutting tool design and selection.</li>
+                        <li>Testing fixtures.</li>
+                        <li>Inspection of gauges.</li>
+                        <li>Plastic molds.</li>
+                        <li>Die casting dies.</li>
+                      </ul>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </section>
+  
+
+  <div id="footer"></div>
+  </div>
+  <script>
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('footer').innerHTML = html;
+        });
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
