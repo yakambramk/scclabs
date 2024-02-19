@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container mt-3">
+        <h2>Java Interview Questions And Answers</h2>
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header">
+                    <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
+                        <b> 1) What are the main features of Java?</b>
+                    </a>
+                </div>
+                <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        <b>a) Object Oriented : </b>Java is an object oriented language where everything is done keeping
+                        objects (data) in mind.
+                        <br>
+                        <b>b) Simple :</b> Java is very easy to learn and follow. It’s syntax are very easy. Any
+                        programmer who has some basic knowledge about any object oriented languages like C++ can easily
+                        follow Java.
+                        <br>
+                        <b> c) Platform Independent :</b> Java is a write once, run everywhere language. That means Java
+                        program written on one platform can be run on any other platforms without much difficulties.
+                        <br>
+                        <b>d) Secured : </b>Java is a highly secured language through which you can develop virus-free
+                        and highly secured applications.
+                        <br>
+                        <b>e) Robust : </b>Java is a robust because of automatic garbage collection, better exception
+                        and error handling mechanism, no explicit use of pointers and better memory management system.
+                        <br>
+                        <b>f) Portable :</b> Java is portable because you can run Java bytecode on any hardware which
+                        has compliant JVM which converts bytecode according to that particular hardware.
+                        <br>
+                        <b>g) Multithreaded : </b>Java supports multithreaded programming where multiple threads execute
+                        their task simultaneously.
+                        <br>
+                        <b>h) Distributed : </b>Java is distributed because you can develop distributed large
+                        applications using Java concepts like RMI and EJB.
+                        <br>
+                        <b>i) Dynamic : </b>Java is a dynamic language because it supports loading of classes on demand.
+                        <br>
+                        <b>j) Extensible : </b>You can develop new classes using existing interfaces, you can declare
+                        new methods to existing classes or you can develop new sub classes to existing classes. That is
+                        all because of extensible nature of Java.
+                        <br>
+                        <b>k) Functional Style Programming : </b>With the introduction of lambda expressions, functional
+                        interfaces and Stream API in Java 8, you can also write functional style of programming in Java.
+
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwo">
+                        <b> 2) What is the latest version of Java?</b>
+                    </a>
+                </div>
+                <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Java 17 or JDK 17 is the latest version of Java which is released on September 14, 2021. (Keep
+                        checking Oracle website for latest Java releases).
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThree">
+                        <b> 3) What are the fundamental principles of object oriented programming?</b>
+                    </a>
+                </div>
+                <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        <b> a)</b> Inheritance
+                        <br>
+                        <b> b)</b> Abstraction
+                        <br>
+                        <b> c) </b>Polymorphism
+                        <br>
+                        <b>d)</b> Encapsulation
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFour">
+                        <b> 4) What do you mean by inheritance in Java? </b>
+                    </a>
+                </div>
+                <div id="collapseFour" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Inheritance is one of the key principle of object oriented programming. Through inheritance, one
+                        class can inherit the properties of another class. The class from which properties are inherited
+                        is called super class and the class to which properties are inherited is called sub class.
+                        <br>
+                        (Click here to see more info on Inheritance in Java)
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFive">
+                        <b> 5) What are the different types of inheritance? </b>
+                    </a>
+                </div>
+                <div id="collapseFive" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        There are 5 types of inheritance.
+                        <br>
+                        <b> a) Single Inheritance :</b> One class is extended by only one class.
+                        <br>
+                        <b> b) Multilevel Inheritance :</b> One class is extended by a class and that class in turn is
+                        extended by another class thus forming a chain of inheritance.
+                        <br>
+                        <b> c) Hierarchical Inheritance :</b> One class is extended by many classes.
+                        <br>
+                        <b> d) Hybrid Inheritance : </b> It is a combination of above types of inheritance.
+                        <br>
+                        <b> e) Multiple Inheritance :</b> One class extends more than one classes. (Java does not
+                        support multiple inheritance)
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSix">
+                        <b>6) does Java supports multiple inheritance? If not, why?</b>
+                    </a>
+                </div>
+                <div id="collapseSix" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        To avoid ambiguity, complexity and confusion, Java does not supports multiple inheritance. i.e.
+                        a class in Java can not extend more than one classes. For example, if Class C extends Class A
+                        and Class B which have a method with same name, then Class C will have two methods with same
+                        name. This causes ambiguity and confusion for which method to use. To avoid this, Java does not
+                        supports multiple inheritance.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSeven">
+                        <b> 7) If Java doesn’t supports multiple inheritance, then how do you implement multiple
+                            inheritance in Java?
+                        </b>
+                    </a>
+                </div>
+                <div id="collapseSeven" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Through interfaces, we can implement multiple inheritance in Java. A class in Java can not
+                        extend more than one classes, but a class can implement more than one interfaces.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseEight">
+                        <b>8) What is the parent class of all classes in Java?</b>
+                    </a>
+                </div>
+                <div id="collapseEight" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        java.lang.Object class
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseNine">
+                        <b> 9) You know that all classes in Java are inherited from java.lang.Object class. Do
+                            interfaces also inherited from java.lang.Object class?</b>
+                    </a>
+                </div>
+                <div id="collapseNine" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        No, only classes in Java are inherited from java.lang.Object class. Interfaces in Java are not
+                        inherited from java.lang.Object class. But, classes which implement interfaces are inherited
+                        from java.lang.Object class.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTen">
+                        <b>10) How do you restrict a member of a class from inheriting to it’s sub classes?</b>
+                    </a>
+                </div>
+                <div id="collapseTen" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        By declaring that member as a private. Because, private members are not inherited to sub
+                        classes.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseEleven">
+                        <b> 11) Can a class extend itself?</b>
+                    </a>
+                </div>
+                <div id="collapseEleven" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        No, a class can not extend itself.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwelve">
+                        <b> 12) Do constructors and initializers also inherited to sub classes?</b>
+                    </a>
+                </div>
+                <div id="collapseTwelve" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        No, constructors and initializers (Static initializers and instance initializers) are not
+                        inherited to sub classes. But, they are executed while instantiating a sub class.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThirteen">
+                        <b> 13) What happens if both, super class and sub class, have a field with same name?</b>
+                    </a>
+                </div>
+                <div id="collapseThirteen" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Super class field will be hidden in the sub class. You can access hidden super class field in
+                        sub class using super keyword.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFourteen">
+                        <b> 14) Do static members also inherited to sub classes?</b>
+                    </a>
+                </div>
+                <div id="collapseFourteen" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Yes, static members of a class are also inherited to sub classes.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFifteen">
+                        <b>15) What is the difference between super() and this()?</b>
+                    </a>
+                </div>
+                <div id="collapseFifteen" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        super() : It is a calling statement to super class constructor.
+                        <br>
+                        this() : It is a calling statement to same class constructor.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSixteen">
+                        <b>16) What are the differences between static initializers and instance initializers? </b>
+                    </a>
+                </div>
+                <div id="collapseSixteen" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        <img src="../saharsh-code-craft-labs/assets/java-interview-img/java-iterview-pic.PNG">
+                        <br>
+                        Also Read : Java Inheritance Quiz
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSeventeen">
+                        <b> 17) How do you instantiate a class using Java 8 method references?</b>
+                    </a>
+                </div>
+                <div id="collapseSeventeen" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        ClassName::new
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseEight">
+                        <b>18) Can you create an object without using new operator in Java?</b>
+                    </a>
+                </div>
+                <div id="collapseEight" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Yes, We can create an object without using new operator. There are some other ways to create
+                        objects other than using new operator. But, 95% of object creation in Java is done through new
+                        operator only.
+                        <br>
+                        <b>a) Using </b>newInstance() <b>Method</b>
+
+                        <pre>
+1Class c = Class.forName("packageName.MyClass");
+2 <br>
+3 MyClass object = (MyClass) c.newInstance();
+<br>
+  
+<b>b) Using </b>clone() <b>method.</b>
+
+1 MyClass object1 = new MyClass();
+2 
+3 MyClass object2 = object1.clone();
+
+<b>c) Using object deserialization </b>
+
+1 ObjectInputStream inStream = new ObjectInputStream(anInputStream );
+2
+3 MyClass object = (MyClass) inStream.readObject();
+
+  
+MyClass object = (MyClass) inStream.readObject();
+<b>d) Creating string and array objects</b>
+
+1 String s = "string object";
+2
+3 int[] a = {1, 2, 3, 4};
+</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseNineteen">
+                        <b> 19) What is constructor chaining?
+                        </b>
+                    </a>
+                </div>
+                <div id="collapseNineteen" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+
+                        Constructor Chaining is a technique of calling another constructor from one constructor. this()
+                        is used to call same class constructor where as super() is used to call super class constructor.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwenty">
+                        <b> 20) Can we call sub class constructor from a super class constructor?</b>
+                    </a>
+                </div>
+                <div id="collapseTwenty" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        No. There is no way in Java to call sub class constructor from a super class constructor.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwentyOne">
+                        <b> 21) Do constructors have return type? If no, what happens if you keep return type for a
+                            constructor?</b>
+                    </a>
+                </div>
+                <div id="collapseTwentyOne" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        No, constructors in Java don’t have return type. If you keep return type for a constructor, it
+                        will be treated as a normal method and also compiler gives a warning saying that method has a
+                        constructor name.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwentyTwo">
+                        <b> 22) What is no-arg constructor?</b>
+                    </a>
+                </div>
+                <div id="collapseTwentyTwo" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Constructor without arguments is called no-arg constructor. Default constructor in Java is
+                        always a no-arg constructor.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwentyThree">
+                        <b>23) What is the use of private constructors?</b>
+                    </a>
+                </div>
+                <div id="collapseTwentyThree" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Private constructors are used to restrict the instantiation of a class. When a class needs to
+                        prevent other classes from creating it’s objects then private constructors are suitable for
+                        that. Objects to the class which has only private constructors can be created within the class.
+                        A very good use of private constructor is in singleton pattern. This ensures only one instance
+                        of a class exist at any point of time.
+                        <br>
+                        (Click here to see more about Java Singleton Design Pattern)
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwentyFour">
+                        <b> 24) Can we use this() and super() in a method?</b>
+                    </a>
+                </div>
+                <div id="collapseTwentyFour" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+
+                        No, we can’t use this() and super() in a method.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwentyFive">
+                        <b>25) What is the difference between class variables and instance variables?</b>
+                    </a>
+                </div>
+                <div id="collapseTwentyFive" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        <img src="../saharsh-code-craft-labs/assets/java-interview-img/question24.PNG">
+                        <br>
+                        (Click here to see more about Class Variables Vs Instance Variables)
+
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwentySix">
+                        <b>
+                            26) What is the constructor overloading? What is the use of constructor overloading?</b>
+                    </a>
+                </div>
+                <div id="collapseTwentySix" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        A class can have any number of constructors. These constructors will have different list of
+                        arguments. It is called constructor overloading. Constructor overloading provides different ways
+                        to instantiate a class.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwentySeven">
+                        <b> 27) What is the difference between constructor and method?</b>
+                    </a>
+                </div>
+                <div id="collapseTwentySeven" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Constructor is a special member of a class which is used to create the objects to the class. It
+                        is special because it will have same name as class. It will have no return type.
+
+                        Method is ordinary member of a class which is used to implement some behavior of a class. It
+                        will have it’s own name and return type.
+
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwentyEight">
+                        <b> 28) What are the differences between static and non-static methods?</b>
+                    </a>
+                </div>
+                <div id="collapseTwentyEight" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+
+                        Static method is common to all instances of a class. Static methods are stored in the class
+                        memory. Where as non-static methods are stored in the object memory. Each instance of a class
+                        will have their own copy of non-static methods.
+                        <br>
+                        Also Read : Classes And Objects Quiz
+
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwentyNine">
+                        <b> 29) Can we overload main() method?</b>
+                    </a>
+                </div>
+                <div id="collapseTwentyNine" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+
+                        Yes, we can overload main() method. A Java class can have any number of main() methods. But to
+                        run the Java class, class should have main() method with signature as public static void
+                        main(String[] args). If you do any modification to this signature, compilation will be
+                        successful. But, you can’t run the Java program. You will get run time error as main method not
+                        found.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThirty">
+                        <b>30) Can we declare main() method as private?</b>
+                    </a>
+                </div>
+                <div id="collapseThirty" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        No, main() method must be public. You can’t define main() method as private or protected or with
+                        no access modifier. This is because to make the main() method accessible to JVM.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThirtyOne">
+                        <b> 31) Can we declare main() method as non-static?</b>
+                    </a>
+                </div>
+                <div id="collapseThirtyOne" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        No, main() method must be declared as static so that JVM can call main() method without
+                        instantiating it’s class.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThirtyTwo">
+                        <b> 32) Why main() method must be static?</b>
+                    </a>
+                </div>
+                <div id="collapseThirtyTwo" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Suppose, if main() is allowed to be non-static, then while calling the main method JVM has to
+                        instantiate it’s class. While instantiating it has to call constructor of that class. There will
+                        be an ambiguity if constructor of that class takes an argument that what argument JVM has to
+                        pass while instantiating class containing main() method.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThirtyThree">
+                        <b> 33) Can we change the return type of a main() method?
+                        </b>
+                    </a>
+                </div>
+                <div id="collapseThirtyThree" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        No, the return type of main() method must be void only.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThirtyFour">
+                        <b> 34) How many types of modifiers are there in Java?</b>
+                    </a>
+                </div>
+                <div id="collapseThirtyFour" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+
+                        Two types of modifiers are there in Java. They are,<br>
+                        <input type="radio" id="html" name="fav_language" value=" Access Modifiers">
+                        <label for="html"> Access Modifiers</label><br>
+                        <input type="radio" id="html" name="fav_language" value=" Non-access Modifiers">
+                        <label for="html">Non-access Modifiers</label>
+
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThirtyFive">
+                        <b>35) What are access modifiers in Java?</b>
+                    </a>
+                </div>
+                <div id="collapseThirtyFive" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        <pre>
+        These are the modifiers which are used to restrict the visibility of a class or a field or a method or a constructor. Java supports 4 access modifiers.
+
+       <b>  a) private :</b> private fields or methods or constructors are visible within the class in which they are defined.
+        
+       <b>  b) protected :</b> Protected members of a class are visible within the package but they can be inherited to sub classes outside the package.
+        
+       <b>  c) public :</b> public members are visible everywhere.
+        
+       <b>   d) default or No-access modifiers :</b> Members of a class which are defined with no access modifiers are visible within the package in which they are defined.
+        
+        (For more info on access modifiers, click here.)
+    </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThirtySix">
+                        <b> 36) What are non-access modifiers in Java?</b>
+                    </a>
+                </div>
+                <div id="collapseThirtySix" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        <pre>
+        These are the modifiers which are used to achieve the functionalities other than the accessibility. For example,
+        
+        a) static : This modifier is used to specify whether a member is a class member or an instance member.
+        
+        b) final : It is used to restrict the further modification of a class or a method or a field. (for more on final, click here).
+        
+        c) abstract : abstract class or abstract method must be enhanced or modified further. (For more on abstract,  click here).
+        
+        d) synchronized : It is used to achieve thread safeness. Only one thread can execute a method or a block which is declared as synchronized at any given time. (for more on synchronized, click here.)
+        
+        (For more info on access Vs non-access modifiers, click here)
+    </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThirtySeven">
+                        <b> 37) Can a method or a class be final and abstract at the same time?</b>
+                    </a>
+                </div>
+                <div id="collapseThirtySeven" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+
+                        No, it is not possible. A class or a method can not be final and abstract at the same time.
+                        final and abstract are totally opposite in nature. final class or final method must not be
+                        modified further where as abstract class or abstract method must be modified further.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThirtyEight">
+                        <b> 38) Can we declare a class as private?</b>
+                    </a>
+                </div>
+                <div id="collapseThirtyEight" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+
+                        We can’t declare an outer class as private. But, we can declare an inner class (class as a
+                        member of another class) as private.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThirtyNine">
+                        <b> 39) Can we declare an abstract method as private?</b>
+                    </a>
+                </div>
+                <div id="collapseThirtyNine" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+
+                        No, abstract methods can not be private. They must be public or protected or default so that
+                        they can be modified further.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFourty">
+                        <b> 40) Can we use synchronized keyword with class? </b>
+                    </a>
+                </div>
+                <div id="collapseFourty" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        No. synchronized keyword can be used either with a method or block.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFourtyOne">
+                        <b> 41) A class can not be declared with synchronized keyword. Then, why we call classes like
+                            Vector, StringBuffer are synchronized classes?</b>
+                    </a>
+                </div>
+                <div id="collapseFourtyOne" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+
+                        Any classes which have only synchronized methods and blocks are treated as synchronized classes.
+                        Classes like Vector, StringBuffer have only synchronized methods. That’s why they are called as
+                        synchronized classes.
+                        <br>
+                        Also Read : Java Modifiers Quiz
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFourtyTwo">
+                        <b> 42) What is type casting?</b>
+                    </a>
+                </div>
+                <div id="collapseFourtyTwo" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        When the data is converted from one data type to another data type, then it is called type
+                        casting. Type casting is nothing but changing the type of the data. Using type casting, only
+                        type of the data is changed but not the data itself.
+                        <br>
+                        (Click here for more info on type casting in Java)
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFourtyThree">
+                        <b> 43) How many types of casting are there in Java?</b>
+                    </a>
+                </div>
+                <div id="collapseFourtytyThree" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+
+                        There are two types of casting.
+                        <br>
+                        <b> a) Primitive Casting :</b> When the data is casted from one primitive type ( like int,
+                        float, double etc… ) to another primitive type, then it is called Primitive Casting.
+                        <br>
+                        <b> b) Derived Casting :</b> When the data is casted from one derived type to another derived
+                        type, then it is called derived casting.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFourtyFour">
+                        <b>  44) What is auto widening and explicit narrowing?</b>
+                    </a>
+                </div>
+                <div id="collapseFourtyFour" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        The data is implicitly casted from small sized primitive type to big sized primitive type. This is called auto-widening. i.e The data is automatically casted from byte to short, short to int, int to long, long to float and float to double..
+                        <br>
+You have to explicitly cast the data from big sized primitive type to small sized primitive type.  i.e you have to explicitly convert the data from double to float, float to long, long to int, int to short and short to byte. This is called explicit narrowing.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFourtyFive">
+                        <b>  45) What is auto-up casting and explicit down casting?</b>
+                    </a>
+                </div>
+                <div id="collapseFourtyFive" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                
+                        An object of sub class type can be automatically casted to super class type. This is called auto-up casting. An object of super class type should be explicitly casted to sub class type, It is called explicit down casting.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFourtySix">
+                        <b>46) Can an int primitive type of data implicitly casted to Double derived type?</b>
+                    </a>
+                </div>
+                <div id="collapseFourtySix" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        <pre>
+                        Yes, first int is auto-widened to double and then double is auto-boxed to Double.
+
+                        1  double d = 10;     //auto-widening from int to double
+                        2
+                        3  Double D =  d;     //auto-boxing from double to Double
+                    </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFourtySeven">
+                        <b> 47) What is ClassCastException?</b>
+                    </a>
+                </div>
+                <div id="collapseFourtySeven" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        ClassCastException is an exception which occurs at run time when an object of one type can not be casted to another type.<br> (Click here to see more on ClassCastException)
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFourtyEight">
+                        <b> 48) What is boxing and unboxing?</b>
+                    </a>
+                </div>
+                <div id="collapseFourtyEight" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Wrapping of primitive content into corresponding wrapper class object is called boxing.
+                        <br> 
+                        Unwrapping the wrapper class object into corresponding primitive content is called unboxing.
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFourtyNine">
+                        <b> 49) What is the difference between auto-widening, auto-upcasting and auto-boxing?
+
+                        </b>
+                    </a>
+                </div>
+                <div id="collapseFourtyNine" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Auto-widening occurs when small sized primitive type is casted to big sized primitive type. Auto-upcasting occurs when sub class type is casted to super class type. Auto-boxing occurs when primitive type is casted to corresponding wrapper class.
+<br>
+(Click here to see more detailed article on auto-widening Vs auto-upcasting Vs auto-boxing)
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFifty">
+                        <b> 50) What is polymorphism in Java?</b>
+                    </a>
+                </div>
+                <div id="collapseThirty" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Polymorphism refers to any entity whether it is a method or a constructor or an operator which takes many forms or can be used for multiple tasks.
+                         <br>
+                        (Click here to see more info on polymorphism in Java)
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFiftyOne">
+                        <b>51) What is method overloading in Java?</b>
+                    </a>
+                </div>
+                <div id="collapseFiftyOne" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        When a class has more than one method with same name but different parameters, then we call those methods are overloaded. Overloaded methods will have same name but different number of arguments or different types of arguments.
+                    <br>
+(Click here to see more on method overloading in Java)
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFiftyTwo">
+                        <b>  52) What is the method signature? What are the things it consists of?</b>
+                    </a>
+                </div>
+                <div id="collapseFiftyTwo" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Method signature is used by the compiler to differentiate the methods. Method signature consist of three things.
+                        <ul type="*">
+                       <li>Method name</li>
+                       <li>  Number of arguments</li>
+                       <li>  Types of arguments</li>
+                    </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFiftyThree">
+                        <b> 53) How do compiler differentiate overloaded methods from duplicate methods?</b>
+                    </a>
+                </div>
+                <div id="collapseFiftyThree" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Compiler uses method signature to check whether the method is overloaded or duplicated. Duplicate methods will have same method signatures i.e same name, same number of arguments and same types of arguments. Overloaded methods will also have same name but differ in number of arguments or else in types of arguments.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFiftyFour">
+                        <b> 54) Can we declare one overloaded method as static and another one as non-static?</b>
+                    </a>
+                </div>
+                <div id="collapseFiftyFour" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        Yes. Overloaded methods can be either static or non static.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFiftyFive">
+                        <b> 55) Is it possible to have two methods in a class with same method signature but different return types?</b>
+                    </a>
+                </div>
+                <div id="collapseFiftyFive" class="collapse" data-bs-parent="#accordion">
+                    <div class="card-body">
+                        No, compiler will give duplicate method error. Compiler checks only method signature for duplication not the return types. If two methods have same method signature, straight away it gives compile time error.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFiftySix">
+                     <b>  56) In MyClass , there is a method called myMethod with four different overloaded forms. All four different forms have different visibility – private, protected, public and default. Is myMethod properly overloaded?</b>
+                </a>
+                </div>
+                <div id="collapseFiftySix" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Yes. Compiler checks only method signature for overloading of methods not the visibility of methods.
+                  </div>
+                </div>
+              </div><div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFiftySeven">
+                     <b>57) Can overloaded methods be synchronized?  </b>
+                </a>
+                </div>
+                <div id="collapseFiftySeven" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Yes. Overloaded methods can be synchronized.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFitfyEight">
+                     <b>  58) Can we declare overloaded methods as final?</b>
+                </a>
+                </div>
+                <div id="collapseFitfyEight" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Yes, overloaded methods can be final.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFitfyNine">
+                     <b> 59) In the below class, is constructor overloaded or is method overloaded?</b>
+                </a>
+                </div>
+                <div id="collapseFitfyNine" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    <pre>
+                    1   public class A
+                    2  {
+                    3   public A()
+                    4   {
+                    5       //-----> (1)
+                    6   }
+                    7 
+                    8   void A()
+                    9  {
+                    10       //-----> (2)
+                    11  }
+                    12 } 
+                </pre>
+                None of them. It is neither constructor overloaded nor method overloaded. First one is a constructor and second one is a method.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSixty">
+                     <b> 60) Overloading is the best example of dynamic binding. True or false? </b>
+                </a>
+                </div>
+                <div id="collapseSixty" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    False. Overloading is the best example for static binding. (Click here to see what is static binding and what is dynamic binding)
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSixtyOne">
+                     <b> 61) Can overloaded method be overrided? </b>
+                </a>
+                </div>
+                <div id="collapseSixtyOne" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Yes, we can override a method which is overloaded in super class.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSixtyTwo">
+                     <b>62) What is method overriding in Java?  </b>
+                </a>
+                </div>
+                <div id="collapseSixtyTwo" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Modifying a super class method in the sub class is called method overriding. Using method overriding, we can change super class method according to the requirements of sub class.
+                     <br>
+                    (Click here to see more info on method overriding in Java)
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSixtyThree">
+                     <b>63) What are the rules to be followed while overriding a method?  </b>
+                </a>
+                </div>
+                <div id="collapseSixtyThree" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    <pre>
+
+                    There are 5 main rules you should kept in mind while overriding a method. They are,
+
+                    a) Name of the method must be same as that of super class method.
+                    
+                    b) Return type of overridden method must be compatible with the method being overridden. i.e if a method has primitive type as it’s return type then it must be overridden with primitive type only and if a method has derived type as it’s return type then it must be overridden with same type or it’s sub class types.
+                    
+                    c) You must not reduce the visibility of a method while overriding.
+                    
+                    d) You must not change parameter list of a method while overriding.
+                    
+                    e) You can not increase the scope of exceptions while overriding a method with throws clause.
+                   
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSixtyFour">
+                     <b>64) Can we override static methods?  </b>
+                </a>
+                </div>
+                <div id="collapseSixtyFour" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    No, static methods can not be overridden. If we try to override them they will be hidden in the sub class.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSixtyFive">
+                     <b> 65) What happens if we change the arguments of overriding method?</b>
+                </a>
+                </div>
+                <div id="collapseSixtyFive" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    If we change the arguments of overriding method, then that method will be treated as overloaded not overridden.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSixtySix">
+                     <b>66) Can we override protected method of super class as public method in the sub class? </b>
+                </a>
+                </div>
+                <div id="collapseSixtySix" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Yes. You can increase the visibility of overriding methods but can’t reduce it.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSixtySeven">
+                     <b>67) Can we change the return type of overriding method from Number type to Integer type?  </b>
+                </a>
+                </div>
+                <div id="collapseSixtySeven" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Yes. You can change as Integer is a sub class of Number type.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSixtyEight">
+                     <b>68) Can we override a super class method without throws clause as a method with throws clause in the sub class? </b>
+                </a>
+                </div>
+                <div id="collapseSixtyEight" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Yes, but only with unchecked type of exceptions.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSixtyNine">
+                     <b>69) Can we change an exception of a method with throws clause from SQLException to NumberFormatException while overriding it?  </b>
+                </a>
+                </div>
+                <div id="collapseSixtyNine" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Yes. Overridden method may throw SQLException or it’s sub class exception or any unchecked type of exceptions.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSeventy">
+                     <b> 70) Can we change an exception of a method with throws clause from unchecked to checked while overriding it? </b>
+                </a>
+                </div>
+                <div id="collapseSeventy" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    No. We can’t change an exception of a method with throws clause from unchecked to checked.
+                   <br>
+                    (Click here to see more about method overriding with throws clause)
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSeventyOne">
+                     <b> 71) How do you refer super class version of overridden method in the sub class? </b>
+                </a>
+                </div>
+                <div id="collapseSeventyOne" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Using super keyword, we can refer super class version of overridden method in the sub class.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSeventyTwo">
+                     <b>72) Can we override private methods?  </b>
+                </a>
+                </div>
+                <div id="collapseSeventyTwo" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    No question of overriding private methods. They are not at all inherited to sub class.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSeventyThree">
+                     <b> 73) Can we remove throws clause of a method while overriding it? </b>
+                </a>
+                </div>
+                <div id="collapseSeventyThree" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Yes. You can remove throws clause of a method while overriding it.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSeventyFour">
+                     <b> 74) Is it possible to override non-static methods as static? </b>
+                </a>
+                </div>
+                <div id="collapseSeventyFour" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    No. You can’t override non-static methods as static.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSeventyFive">
+                     <b> 75) Can we change an exception of a method with throws clause from checked to unchecked while overriding it?</b>
+                </a>
+                </div>
+                <div id="collapseSeventyFive" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Yes. We can change an exception from checked to unchecked but reverse is not possible.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSeventySix">
+                     <b> 76) Can we change the number of exceptions thrown by a method with throws clause while overriding it?</b>
+                </a>
+                </div>
+                <div id="collapseSeventySix class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Yes, we can change. But, exceptions must be compatible with throws clause in the super class method.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSeventySeven">
+                     <b> 77) What is the difference between method overloading and method overriding? </b>
+                </a>
+                </div>
+                <div id="collapseSeventySeven" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Click here to see the differences between method overloading and overriding.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSeventyEight">
+                     <b> 78) What is static binding and dynamic binding in Java? </b>
+                </a>
+                </div>
+                <div id="collapseSeventyEight" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Click here to see what is static binding and dynamic binding in Java.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseSeventyNine">
+                     <b>79) Abstract class must have only abstract methods. True or false?  </b>
+                </a>
+                </div>
+                <div id="collapseSeventyNine" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    False. Abstract methods can also have concrete methods.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseEighty">
+                     <b> 80) Is it compulsory for a class which is declared as abstract to have at least one abstract method? </b>
+                </a>
+                </div>
+                <div id="collapseEighty" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Not necessarily. Abstract class may or may not have abstract methods.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseEightyOne">
+                     <b> 81) Can we use abstract keyword with constructors? </b>
+                </a>
+                </div>
+                <div id="collapseEightyOne" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    No. Constructor, Static Initialization Block, Instance Initialization Block and variables can not be abstract.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseEightyTwo">
+                     <b>82) Why final and abstract can not be used at a time?  </b>
+                </a>
+                </div>
+                <div id="collapseEightyTwo" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Because, final and abstract are totally opposite in nature. A final class or method can not be modified further where as abstract class or method must be modified further. final keyword is used to denote that a class or method does not need further improvements. abstract keyword is used to denote that a class or method needs further improvements.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseEightyThree">
+                     <b> 83) Can we instantiate a class which does not have even a single abstract method but declared as abstract? </b>
+                </a>
+                </div>
+                <div id="collapseEightyThree" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    No, we can’t instantiate a class once it is declared as abstract even though it does not have abstract methods.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseEightyFour">
+                     <b> 84) Can we declare abstract methods as private? Justify your answer? </b>
+                </a>
+                </div>
+                <div id="collapseEightyFour" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    No. Abstract methods can not be private. If abstract methods are allowed to be private, then they will not be inherited to sub class and will not get enhanced.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseEightyFive">
+                     <b>  85) We can’t instantiate an abstract class. Then why constructors are allowed in abstract class?</b>
+                </a>
+                </div>
+                <div id="collapseEightyFive" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    It is because, we can’t create objects to abstract classes but we can create objects to their sub classes. From sub class constructor, there will be an implicit call to super class constructor. That’s why abstract classes should have constructors. Even if you don’t write constructor for your abstract class, compiler will keep default constructor.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseEightySix">
+                     <b> 86) Can we declare abstract methods as static? </b>
+                </a>
+                </div>
+                <div id="collapseEightySix" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    No, abstract methods can not be static.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseEightySeven">
+                     <b> 87) Can a class contain an abstract class as a member? </b>
+                </a>
+                </div>
+                <div id="collapseEightySeven" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Yes, a class can have abstract class as it’s member.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseEightyEight">
+                     <b> 88) Abstract classes can be nested. True or false? </b>
+                </a>
+                </div>
+                <div id="collapseEightyEight" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    True. Abstract classes can be nested i.e an abstract class can have another abstract class as it’s member.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseEightyNine">
+                     <b> 89) Can we declare abstract methods as synchronized? </b>
+                </a>
+                </div>
+                <div id="collapseEightyNine" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    No, abstract methods can not be declared as synchronized. But methods which override abstract methods can be declared as synchronized.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseNinety">
+                     <b >90) Can we declare local inner class as abstract?</b>
+                </a>
+                </div>
+                <div id="collapseNinety" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Yes. Local inner class can be abstract.
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseNinetyOne">
+                     <b> 91) Can abstract method declaration include throws clause? </b>
+                </a>
+                </div>
+                <div id="collapseNinetyOne" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Yes. Abstract methods can be declared with throws clause.
+                  </div>
+                </div>
+              </div><div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseNinetyTwo">
+                     <b>  92) Can abstract classes have interfaces in it?</b>
+                </a>
+                </div>
+                <div id="collapseNinetyTwo" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Yes, abstract classes can have interfaces as their member.
+                  </div>
+                </div>
+              </div><div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseNinetyThree">
+                     <b>  93) Can interfaces have constructors, static initializers and instance initializers?</b>
+                </a>
+                </div>
+                <div id="collapseNinetyThree" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    No. Interfaces can’t have constructors, static initializers and instance initializers.
+                  </div>
+                </div>
+              </div><div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseNinetyFour">
+                     <b>94) Can we re-assign a value to a field of interfaces?  </b>
+                </a>
+                </div>
+                <div id="collapseNinetyFour" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    No. The fields of interfaces are static and final by default. They are just like constants. You can’t change their value once they got.
+                  </div>
+                </div>
+              </div><div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseNinetyFive">
+                     <b>95) Can we declare an Interface with abstract keyword?  </b>
+                </a>
+                </div>
+                <div id="collapseNinetyFive" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    Yes, we can declare an interface with abstract keyword. But, there is no need to write like that. All interfaces in Java are abstract by default.
+                  </div>
+                </div>
+              </div><div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseNinetySix">
+                     <b> 96) For every Interface in java, .class file will be generated after compilation. True or false? </b>
+                </a>
+                </div>
+                <div id="collapseNinetySix" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    True. .class file will be generated for every interface after compilation.
+                  </div>
+                </div>
+              </div><div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseNinetySeven">
+                     <b> 97) Can we override an interface method with visibility other than public? </b>
+                </a>
+                </div>
+                <div id="collapseNinetySeven" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    No. While overriding any interface methods, we should use public only. Because, all interface methods are public by default and you should not reduce the visibility while overriding them.
+                  </div>
+                </div>
+              </div><div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseNinetyEight">
+                     <b> 98) Can interfaces become local members of the methods? </b>
+                </a>
+                </div>
+                <div id="collapseNinetyEight" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    No. You can’t define interfaces as local members of methods like local inner classes. They can be a part of top level class or interface.
+                  </div>
+                </div>
+              </div><div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseNinetyNine">
+                     <b> 99) Can an interface extend a class? </b>
+                </a>
+                </div>
+                <div id="collapseNinetyNine class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    No, an interface can’t extend a class. But it can extend another interface.
+                  </div>
+                </div>
+              </div><div class="card">
+                <div class="card-header">
+                  <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseHundred">
+                     <b> 100) Like classes, do interfaces also extend java.lang.Object class by default? </b>
+                </a>
+                </div>
+                <div id="collapseHundred" class="collapse" data-bs-parent="#accordion">
+                  <div class="card-body">
+                    No. Interfaces don’t extend Object class. ( Click here for more )
+                  </div>
+                </div>
+              </div>
+        </div>
+
+
+</body>
+
+</html>
