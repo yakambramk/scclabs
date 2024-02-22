@@ -12,1097 +12,1306 @@
     .card-header .btn:hover {
       color: green;
     }
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .navbar-brand img {
+      max-height: 80px;
+      /* Adjust the height of the logo image */
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .navbar-brand img {
+      max-height: 80px;
+    }
+
+    .navbar-nav .nav-item.active .nav-link,
+    .navbar-nav .nav-item:hover .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    /* Add this style rule to highlight the dropdown menu item on hover */
+    .navbar-nav .nav-item.dropdown:hover .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    /* Add this style rule to highlight the active dropdown menu item */
+    .navbar-nav .nav-item.dropdown.active .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    /* Add this style rule to highlight the dropdown menu item on hover */
+    .navbar-nav .nav-item.dropdown:hover .nav-link {
+      color: #1a59a7 !important;
+      font-weight: bold;
+    }
+
+    .custom-margin {
+      padding-left: 10% !;
+      padding-right: 10% !;
+      margin-left: 10% !;
+      margin-right: 10% !;
+    }
+
+    .navbar-brand img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .carousel-item img {
+      width: 100%;
+      max-height: 50vh;
+      object-fit: cover;
+    }
+
+    .about img {
+      width: 100%;
+      max-height: 50vh;
+      object-fit: cover;
+    }
+
+
+    .rose-color {
+      color: #1a59a7;
+      font-weight: bold;
+
+    }
+    .collapse {
+      margin-left: 35px !important;
+    }
   </style>
 </head>
 
 <body>
-  <div class="container mt-3">
-    <div class="card-header">
-      <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
-        <h2> HTML</h2>
-      </a>
-    </div>
-    <p><strong>Note:</strong> This article covers the most frequently asked HTML and HTML5 questions asked in
-      interviews.</p>
-    <div id="accordion">
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
-            <b>What is HTML?</b>
-          </a>
-        </div>
-        <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <ul>
-              <li>HTML stands for HyperText Markup Language.</li><br>
-              <li>It is a standard text formatting language used for developing web pages released in 1993.</li><br>
-              <li>HTML is a language that is interpreted by the browser and it tells the browser what to display and how
-                to display.</li><br>
-              <li>HTML is an important language to learn if anyone wants to work in the web development domain [Web
-                designers, Web Developers].</li><br>
-              <li>HTML alone is not sufficient for a web developer because HTML only defines the structure of the data
-                that will be rendered on the browser in a webpage,
-                to make it visually appealing and to make it functional, we will need to use CSS and Javascript
-                respectively.</li><br>
-              <li>The latest version of HTML is HTML5. There are two main components in HTML language, Tags and
-                Attributes.</li><br>
-              <li>The below image shows some basic HTML tags and attributes.</li>
-            </ul>
-            <img src="./assets/html images/html image.JPG">
-
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwo">
-            <b>Are the HTML tags and elements the same thing?</b>
-          </a>
-        </div>
-        <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
-          <div class="card-body">
-            <article class="ibpage-article">
-              <p>No. HTML elements are defined by a starting tag, may contain some content and a closing tag.For
-                example, &lt;h1&gt;Heading 1&lt;/h1&gt; is a HTML element but just &lt;h1&gt; is a starting tag and
-                &lt;/h1&gt; is a closing tag.</p>
-            </article>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThree">
-            <b>What are tags and attributes in HTML?</b>
-          </a>
-        </div>
-        <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
-          <div class="card-body">
-            <article class="ibpage-article">
-              <p>Tags are the primary component of the HTML that defines how the content will be structured/ formatted,
-                whereas Attributes are used along with the HTML tags to define the characteristics of the element. For
-                example, &lt;p align=” center”&gt;Interview questions&lt;/p&gt;, in this the ‘align’ is the attribute
-                using which we will align the paragraph to show in the center of the view.</p>
-            </article>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="collapsed btn" data-bs-toggle="collapse" href="#collapsefour">
-            <b>What are void elements in HTML?</b>
-          </a>
-        </div>
-        <div id="collapsefour" class="collapse" data-bs-parent="#accordion">
-          <div class="card-body">
-            <article class="ibpage-article">
-              <p>HTML elements which do not have closing tags or do not need to be closed are Void elements. For Example
-                &lt;br /&gt;, &lt;img /&gt;, &lt;hr /&gt;, etc.</p>
-            </article>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="collapsed btn" data-bs-toggle="collapse" href="#collapsefive">
-            <b>What is the advantage of collapsing white space?</b>
-          </a>
-        </div>
-        <div id="collapsefive" class="collapse" data-bs-parent="#accordion">
-          <div class="card-body">
-            <article class="ibpage-article">
-              <p>In HTML, a blank sequence of whitespace characters is treated as a single space character, Because the
-                browser collapses multiple spaces into a single space character and this helps a developer to indent
-                lines of text without worrying about multiple spaces and maintain readability and understandability of
-                HTML codes</p>
-            </article>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="collapsed btn" data-bs-toggle="collapse" href="#collapsesix">
-            <b>What are HTML Entities?</b>
-          </a>
-        </div>
-        <div id="collapsesix" class="collapse" data-bs-parent="#accordion">
-          <div class="card-body">
-            <article class="ibpage-article">
-              <p>In HTML some characters are reserved like ‘<’, ‘>’, ‘/’, etc. To use these characters in our webpage we
-                  need to use the character entities called HTML Entities. Below are a few mapping between the reserved
-                  character and its respective entity character to be used.</p>
-            </article>
-            <img src="assets/html images/fifth image.JPG">
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseeight">
-            <b>What are different types of lists in HTML?</b>
-          </a>
-        </div>
-        <div id="collapseeight" class="collapse" data-bs-parent="#accordion">
-          <div class="card-body">
-            <img src="assets/html images/seventhfile.JPG">
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsenine">
-            <b>What is the ‘class’ attribute in HTML?</b>
-          </a>
-        </div>
-        <div id="collapsenine" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            The class attribute is used to specify the class name for an HTML element. Multiple elements in HTML can
-            have the same class value. Also, it is mainly used to associate the styles written in the stylesheet with
-            the HTML elements.
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapseten">
-            <b>Define multipart form data?</b>
-          </a>
-        </div>
-        <div id="collapseten" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            Multipart form data is one of the values of the enctype attribute. It is used to send the file data to the
-            server-side for processing. The other valid values of the enctype attribute are text/plain and
-            application/x-www-form-urlencoded.
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapseeleven">
-            <b>Describe HTML layout structure?</b>
-          </a>
-        </div>
-        <div id="collapseeleven" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <ul>
-              <li>Every web page has different components to display the intended content and a specific UI. But still,
-                there are few things which are templated and are globally accepted way to structure the web page, such
-                as:</li>
-
-              <li>Stores the starting information about the web page.</li>
-              <li>Represents the last section of the page.</li>
-              <li>The navigation menu of the HTML page.</li>
-              <li>It is a set of information.</li>
-              <li>It is used inside the article block to define the basic structure of a page.</li>
-              <li>Sidebar content of the page</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsetwelve">
-            <b>How to optimize website assets loading?</b>
-          </a>
-        </div>
-        <div id="collapsetwelve" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <ul>
-              To optimize website load time we need to optimize its asset loading and for that:<br><br>
-              <li>CDN hosting - A CDN or content delivery network is geographically distributed servers to help reduce
-                latency.</li><br>
-              <li>File compression - This is a method that helps to reduce the size of an asset to reduce the data
-                transfer</li><br>
-              <li>File concatenation - This reduces the number of HTTP calls</li><br>
-              <li>Minify scripts - This reduces the overall file size of js and CSS files.</li><br>
-              <li>Parallel downloads - Hosting assets in multiple subdomains can help to bypass the download limit of 6
-                assets per domain of all modern browsers. This can be configured but most general users never modify
-                these settings.</li><br>
-              <li>Lazy Loading - Instead of loading all the assets at once, the non-critical assets can be loaded on a
-                need basis.</li>
-            </ul>
-
-
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="collapsed btn" data-bs-toggle="collapse" href="#collapsethirty">
-            <b>What are the various formatting tags in HTML?</b>
-          </a>
-        </div>
-        <div id="collapsethirty" class="collapse" data-bs-parent="#accordion">
-          <div class="card-body">
-            <li>
-              <strong>&lt;b&gt;</strong> - makes text bold
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-white bg-white ms-auto">
+      <div class="container-fluid ">
+        <a class="navbar-brand" href="index.html">
+          <img src="assets/media/general/logo.png" alt="logo" />
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse mx-auto" id="navbarNavDropdown">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="index.html">HOME</a>
             </li>
-            <li>
-              <strong>&lt;i&gt;</strong> - makes text italic
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="about.html">ABOUT</a>
             </li>
-            <li>
-              <strong>&lt;em&gt;</strong> - makes text italic but with added semantics importance
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">CAREERS</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                  <a class="dropdown-item" href="internship.html" class="menu-link">Internship</a>
+                </li>
+              </ul>
             </li>
-            <li>
-              <strong>&lt;big&gt;</strong> - increases the font size of the text by one unit
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">SERVICES</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                  <a href="web_application.html" class="dropdown-item">Web Applications</a>
+                </li>
+                <li>
+                  <a href="mobile_application.html" class="dropdown-item">Mobile Applications</a>
+                </li>
+                <li>
+                  <a href="data_analytics.html" class="dropdown-item">Data Analytics</a>
+                </li>
+                <li>
+                  <a href="ai_ml.html" class="dropdown-item">AI & ML Services</a>
+                </li>
+                <li>
+                  <a href="tooldesign.html" class="dropdown-item">Tool Design</a>
+                </li>
+
+                <li>
+                  <a href="product_engineering.html" class="dropdown-item">Product Engineering</a>
+                </li>
+
+                <li>
+                  <a href="digital_marketinig.html" class="dropdown-item">Digital Marketing</a>
+                </li>
+
+              </ul>
             </li>
-            <li>
-              <strong>&lt;small&gt;</strong> - decreases the font size of the text by one unit
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">TRAINING COURSES</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                  <a href="java_fullstack.html" class="dropdown-item">Java Fullstack</a>
+                </li>
+                <li>
+                  <a href="mern_stack.html" class="dropdown-item">MERN Stack</a>
+                </li>
+
+              </ul>
             </li>
-            <li>
-              <strong>&lt;sub&gt;</strong> - makes the text a subscript
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">INTERVIEW QUESTIONS</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                  <a href="java_quetions.html" class="dropdown-item">Java</a>
+                </li>
+                <li>
+                  <a href="Angular_quetions.html" class="dropdown-item">Angular</a>
+                </li>
+                <li>
+                  <a href="html_quetions.html" class="dropdown-item">Html</a>
+                </li>
+                <li>
+                  <a href="Css_quetions.html" class="dropdown-item">Css</a>
+                </li>
+
+
+              </ul>
             </li>
-            <li>
-              <strong>&lt;sup&gt;</strong> - makes the text a superscript
+
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="contact.html"></a>
             </li>
-            <li>
-              <strong>&lt;del&gt;</strong> - displays as strike out text
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="contact.html">CONTACT</a>
             </li>
-            <li>
-              <strong>&lt;strong&gt;</strong> - marks the text as important
-            </li>
-            <li>
-              <strong>&lt;mark&gt;</strong> - highlights the text
-            </li>
-            <li>
-              <strong>&lt;ins&gt;</strong> - displays as added text
-            </li>
-            </ul>
-            </article>
+          </ul>
+        </div>
+    </nav>
+    <div class="container mt-3">
+      <div class="card-header">
+        <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
+          <h2> HTML</h2>
+        </a>
+      </div>
+      <p><strong>Note:</strong> This article covers the most frequently asked HTML and HTML5 questions asked in
+        interviews.</p>
+      <div id="accordion">
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
+              <b>What is HTML?</b>
+            </a>
+          </div>
+          <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <ul>
+                <li>HTML stands for HyperText Markup Language.</li><br>
+                <li>It is a standard text formatting language used for developing web pages released in 1993.</li><br>
+                <li>HTML is a language that is interpreted by the browser and it tells the browser what to display and
+                  how
+                  to display.</li><br>
+                <li>HTML is an important language to learn if anyone wants to work in the web development domain [Web
+                  designers, Web Developers].</li><br>
+                <li>HTML alone is not sufficient for a web developer because HTML only defines the structure of the data
+                  that will be rendered on the browser in a webpage,
+                  to make it visually appealing and to make it functional, we will need to use CSS and Javascript
+                  respectively.</li><br>
+                <li>The latest version of HTML is HTML5. There are two main components in HTML language, Tags and
+                  Attributes.</li><br>
+                <li>The below image shows some basic HTML tags and attributes.</li>
+              </ul>
+              <img src="./assets/html images/html image.JPG">
+
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsefourteen">
-            <b>What are the different kinds of Doctypes available?</b>
-          </a>
-        </div>
-        <div id="collapsefourteen" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <p>The three kinds of Doctypes which are available:</p>
-            <ul>
-              <li>Strict Doctype&nbsp</li>
-              <li>Transitional Doctype</li>
-              <li>Frameset Doctype</li>
-            </ul>
+        <div class="card">
+          <div class="card-header">
+            <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwo">
+              <b>Are the HTML tags and elements the same thing?</b>
+            </a>
+          </div>
+          <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+            <div class="card-body">
+              <article class="ibpage-article">
+                <p>No. HTML elements are defined by a starting tag, may contain some content and a closing tag.For
+                  example, &lt;h1&gt;Heading 1&lt;/h1&gt; is a HTML element but just &lt;h1&gt; is a starting tag and
+                  &lt;/h1&gt; is a closing tag.</p>
+              </article>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsefifteen">
-            <b>Please explain how to indicate the character set being used by a document in HTML?</b>
-          </a>
-        </div>
-        <div id="collapsefifteen" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <p>The character set is defined in &lt;meta&gt; tag inside &lt;head&gt; element.</p>
-            <img src="assets/html images/fifteenimage.JPG">
+        <div class="card">
+          <div class="card-header">
+            <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThree">
+              <b>What are tags and attributes in HTML?</b>
+            </a>
+          </div>
+          <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+            <div class="card-body">
+              <article class="ibpage-article">
+                <p>Tags are the primary component of the HTML that defines how the content will be structured/
+                  formatted,
+                  whereas Attributes are used along with the HTML tags to define the characteristics of the element. For
+                  example, &lt;p align=” center”&gt;Interview questions&lt;/p&gt;, in this the ‘align’ is the attribute
+                  using which we will align the paragraph to show in the center of the view.</p>
+              </article>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsefifteen">
-            <b>What is the difference between &lt;strong&gt;, &lt;b&gt; tags and &lt;em&gt;, &lt;i&gt; tags?</b>
-          </a>
-        </div>
-        <div id="collapsefifteen" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <p>The effect on a normal webpage of the tags &lt;strong&gt;, &lt;b&gt; &nbsp;and &lt;em&gt;, &lt;i&gt; is
-              the same. &lt;b&gt; and &lt;i&gt; tags stands for bold and italic. These two tags only apply font styling
-              and bold tag &lt;b&gt;, just adds more ink to the text, these tags don't say anything about the text.</p>
-            <p>Whereas, &lt;strong&gt; and &lt;em&gt; tags represent that the span of text is of strong importance or
-              more importance and emphatic stress respectively than the rest of the text. These tags have semantic
-              meaning.</p>
-
+        <div class="card">
+          <div class="card-header">
+            <a class="collapsed btn" data-bs-toggle="collapse" href="#collapsefour">
+              <b>What are void elements in HTML?</b>
+            </a>
+          </div>
+          <div id="collapsefour" class="collapse" data-bs-parent="#accordion">
+            <div class="card-body">
+              <article class="ibpage-article">
+                <p>HTML elements which do not have closing tags or do not need to be closed are Void elements. For
+                  Example
+                  &lt;br /&gt;, &lt;img /&gt;, &lt;hr /&gt;, etc.</p>
+              </article>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsesixteen">
-            <b>What is the significance of &lt;head&gt; and &lt;body&gt; tag in HTML?</b>
-          </a>
-        </div>
-        <div id="collapsesixteen" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-
-            <article class="ibpage-article">
-              <p>&lt;head&gt; tag provides the information about the document. It should always be enclosed in the
-                &lt;html&gt; tag. This tag contains the metadata about the webpage and the tags which are enclosed by
-                head tag like &lt;link&gt;, &lt;meta&gt;, &lt;style&gt;, &lt;script&gt;, etc. are not displayed on the
-                web page. Also, there can be only 1 &lt;head&gt; tag in the entire Html document and will always be
-                before the &lt;body&gt; tag.</p>
-              <p>&lt;body&gt; tag defines the body of the HTML document. It should always be enclosed in the
-                &lt;html&gt; tag. All the contents which needs to be displayed on the web page like images, text, audio,
-                video, contents, using elements like &lt;p&gt;, &lt;img&gt;, &lt;audio&gt;, &lt;heading&gt;,
-                &lt;video&gt;, &lt;div&gt;, etc. will always be enclosed by the &lt;body&gt; tag. Also, there can be
-                only 1 body element in an HTML document and will always be after the &lt;head&gt; tag.</p>
-            </article>
-
+        <div class="card">
+          <div class="card-header">
+            <a class="collapsed btn" data-bs-toggle="collapse" href="#collapsefive">
+              <b>What is the advantage of collapsing white space?</b>
+            </a>
+          </div>
+          <div id="collapsefive" class="collapse" data-bs-parent="#accordion">
+            <div class="card-body">
+              <article class="ibpage-article">
+                <p>In HTML, a blank sequence of whitespace characters is treated as a single space character, Because
+                  the
+                  browser collapses multiple spaces into a single space character and this helps a developer to indent
+                  lines of text without worrying about multiple spaces and maintain readability and understandability of
+                  HTML codes</p>
+              </article>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapseseventeen">
-            <b>Can we display a web page inside a web page or Is nesting of webpages possible?</b>
-          </a>
-        </div>
-        <div id="collapseseventeen" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-
-            <p>Yes, we can display a web page inside another HTML web page. HTML provides a tag &lt;iframe&gt; using
-              which we can achieve this functionality.</p>
-            <img src="assets/html images/seventhimage.JPG">
-
-
+        <div class="card">
+          <div class="card-header">
+            <a class="collapsed btn" data-bs-toggle="collapse" href="#collapsesix">
+              <b>What are HTML Entities?</b>
+            </a>
+          </div>
+          <div id="collapsesix" class="collapse" data-bs-parent="#accordion">
+            <div class="card-body">
+              <article class="ibpage-article">
+                <p>In HTML some characters are reserved like ‘<’, ‘>’, ‘/’, etc. To use these characters in our webpage
+                    we
+                    need to use the character entities called HTML Entities. Below are a few mapping between the
+                    reserved
+                    character and its respective entity character to be used.</p>
+              </article>
+              <img src="assets/html images/fifth image.JPG">
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapseeighteen">
-            <b>How is Cell Padding different from Cell Spacing?</b>
-          </a>
-        </div>
-        <div id="collapseeighteen" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-
-            <p>Cell Spacing is the space or gap between two consecutive cells. Whereas, Cell Padding is the space or gap
-              between the text/ content of the cell and the edge/ border of the cell. Please refer to the above figure
-              example to find the difference.</p>
+        <div class="card">
+          <div class="card-header">
+            <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseeight">
+              <b>What are different types of lists in HTML?</b>
+            </a>
+          </div>
+          <div id="collapseeight" class="collapse" data-bs-parent="#accordion">
+            <div class="card-body">
+              <img src="assets/html images/seventhfile.JPG">
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsenineteen">
-            <b>How can we club two or more rows or columns into a single row or column in an HTML table?</b>
-          </a>
-        </div>
-        <div id="collapsenineteen" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-
-            <p>HTML provides two table attributes “rowspan” and “colspan” to make a cell span to multiple rows and
-              columns respectively.</p>
-
-
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsenine">
+              <b>What is the ‘class’ attribute in HTML?</b>
+            </a>
+          </div>
+          <div id="collapsenine" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              The class attribute is used to specify the class name for an HTML element. Multiple elements in HTML can
+              have the same class value. Also, it is mainly used to associate the styles written in the stylesheet with
+              the HTML elements.
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsetwenty">
-            <b>Is it possible to change an inline element into a block level element?</b>
-          </a>
-        </div>
-        <div id="collapsetwenty" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-
-            <p>Yes, it is possible using the “display” property with its value as “block”, to change the inline element
-              into a block-level element.</p>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapseten">
+              <b>Define multipart form data?</b>
+            </a>
+          </div>
+          <div id="collapseten" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              Multipart form data is one of the values of the enctype attribute. It is used to send the file data to the
+              server-side for processing. The other valid values of the enctype attribute are text/plain and
+              application/x-www-form-urlencoded.
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsetwenty">
-            <b>In how many ways can we position an HTML element? Or what are the permissible values of the position
-              attribute?</b>
-          </a>
-        </div>
-        <div id="collapsetwenty" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapseeleven">
+              <b>Describe HTML layout structure?</b>
+            </a>
+          </div>
+          <div id="collapseeleven" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <ul>
+                <li>Every web page has different components to display the intended content and a specific UI. But
+                  still,
+                  there are few things which are templated and are globally accepted way to structure the web page, such
+                  as:</li>
 
-            <article class="ibpage-article">
+                <li>Stores the starting information about the web page.</li>
+                <li>Represents the last section of the page.</li>
+                <li>The navigation menu of the HTML page.</li>
+                <li>It is a set of information.</li>
+                <li>It is used inside the article block to define the basic structure of a page.</li>
+                <li>Sidebar content of the page</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsetwelve">
+              <b>How to optimize website assets loading?</b>
+            </a>
+          </div>
+          <div id="collapsetwelve" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <ul>
+                To optimize website load time we need to optimize its asset loading and for that:<br><br>
+                <li>CDN hosting - A CDN or content delivery network is geographically distributed servers to help reduce
+                  latency.</li><br>
+                <li>File compression - This is a method that helps to reduce the size of an asset to reduce the data
+                  transfer</li><br>
+                <li>File concatenation - This reduces the number of HTTP calls</li><br>
+                <li>Minify scripts - This reduces the overall file size of js and CSS files.</li><br>
+                <li>Parallel downloads - Hosting assets in multiple subdomains can help to bypass the download limit of
+                  6
+                  assets per domain of all modern browsers. This can be configured but most general users never modify
+                  these settings.</li><br>
+                <li>Lazy Loading - Instead of loading all the assets at once, the non-critical assets can be loaded on a
+                  need basis.</li>
+              </ul>
+
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="collapsed btn" data-bs-toggle="collapse" href="#collapsethirty">
+              <b>What are the various formatting tags in HTML?</b>
+            </a>
+          </div>
+          <div id="collapsethirty" class="collapse" data-bs-parent="#accordion">
+            <div class="card-body">
+              <li>
+                <strong>&lt;b&gt;</strong> - makes text bold
+              </li>
+              <li>
+                <strong>&lt;i&gt;</strong> - makes text italic
+              </li>
+              <li>
+                <strong>&lt;em&gt;</strong> - makes text italic but with added semantics importance
+              </li>
+              <li>
+                <strong>&lt;big&gt;</strong> - increases the font size of the text by one unit
+              </li>
+              <li>
+                <strong>&lt;small&gt;</strong> - decreases the font size of the text by one unit
+              </li>
+              <li>
+                <strong>&lt;sub&gt;</strong> - makes the text a subscript
+              </li>
+              <li>
+                <strong>&lt;sup&gt;</strong> - makes the text a superscript
+              </li>
+              <li>
+                <strong>&lt;del&gt;</strong> - displays as strike out text
+              </li>
+              <li>
+                <strong>&lt;strong&gt;</strong> - marks the text as important
+              </li>
+              <li>
+                <strong>&lt;mark&gt;</strong> - highlights the text
+              </li>
+              <li>
+                <strong>&lt;ins&gt;</strong> - displays as added text
+              </li>
+              </ul>
+              </article>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsefourteen">
+              <b>What are the different kinds of Doctypes available?</b>
+            </a>
+          </div>
+          <div id="collapsefourteen" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <p>The three kinds of Doctypes which are available:</p>
+              <ul>
+                <li>Strict Doctype&nbsp</li>
+                <li>Transitional Doctype</li>
+                <li>Frameset Doctype</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsefifteen">
+              <b>Please explain how to indicate the character set being used by a document in HTML?</b>
+            </a>
+          </div>
+          <div id="collapsefifteen" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <p>The character set is defined in &lt;meta&gt; tag inside &lt;head&gt; element.</p>
+              <img src="assets/html images/fifteenimage.JPG">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsefifteen">
+              <b>What is the difference between &lt;strong&gt;, &lt;b&gt; tags and &lt;em&gt;, &lt;i&gt; tags?</b>
+            </a>
+          </div>
+          <div id="collapsefifteen" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <p>The effect on a normal webpage of the tags &lt;strong&gt;, &lt;b&gt; &nbsp;and &lt;em&gt;, &lt;i&gt; is
+                the same. &lt;b&gt; and &lt;i&gt; tags stands for bold and italic. These two tags only apply font
+                styling
+                and bold tag &lt;b&gt;, just adds more ink to the text, these tags don't say anything about the text.
+              </p>
+              <p>Whereas, &lt;strong&gt; and &lt;em&gt; tags represent that the span of text is of strong importance or
+                more importance and emphatic stress respectively than the rest of the text. These tags have semantic
+                meaning.</p>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsesixteen">
+              <b>What is the significance of &lt;head&gt; and &lt;body&gt; tag in HTML?</b>
+            </a>
+          </div>
+          <div id="collapsesixteen" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+
+              <article class="ibpage-article">
+                <p>&lt;head&gt; tag provides the information about the document. It should always be enclosed in the
+                  &lt;html&gt; tag. This tag contains the metadata about the webpage and the tags which are enclosed by
+                  head tag like &lt;link&gt;, &lt;meta&gt;, &lt;style&gt;, &lt;script&gt;, etc. are not displayed on the
+                  web page. Also, there can be only 1 &lt;head&gt; tag in the entire Html document and will always be
+                  before the &lt;body&gt; tag.</p>
+                <p>&lt;body&gt; tag defines the body of the HTML document. It should always be enclosed in the
+                  &lt;html&gt; tag. All the contents which needs to be displayed on the web page like images, text,
+                  audio,
+                  video, contents, using elements like &lt;p&gt;, &lt;img&gt;, &lt;audio&gt;, &lt;heading&gt;,
+                  &lt;video&gt;, &lt;div&gt;, etc. will always be enclosed by the &lt;body&gt; tag. Also, there can be
+                  only 1 body element in an HTML document and will always be after the &lt;head&gt; tag.</p>
+              </article>
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapseseventeen">
+              <b>Can we display a web page inside a web page or Is nesting of webpages possible?</b>
+            </a>
+          </div>
+          <div id="collapseseventeen" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+
+              <p>Yes, we can display a web page inside another HTML web page. HTML provides a tag &lt;iframe&gt; using
+                which we can achieve this functionality.</p>
+              <img src="assets/html images/seventhimage.JPG">
+
+
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapseeighteen">
+              <b>How is Cell Padding different from Cell Spacing?</b>
+            </a>
+          </div>
+          <div id="collapseeighteen" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+
+              <p>Cell Spacing is the space or gap between two consecutive cells. Whereas, Cell Padding is the space or
+                gap
+                between the text/ content of the cell and the edge/ border of the cell. Please refer to the above figure
+                example to find the difference.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsenineteen">
+              <b>How can we club two or more rows or columns into a single row or column in an HTML table?</b>
+            </a>
+          </div>
+          <div id="collapsenineteen" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+
+              <p>HTML provides two table attributes “rowspan” and “colspan” to make a cell span to multiple rows and
+                columns respectively.</p>
+
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsetwenty">
+              <b>Is it possible to change an inline element into a block level element?</b>
+            </a>
+          </div>
+          <div id="collapsetwenty" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+
+              <p>Yes, it is possible using the “display” property with its value as “block”, to change the inline
+                element
+                into a block-level element.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsetwenty">
+              <b>In how many ways can we position an HTML element? Or what are the permissible values of the position
+                attribute?</b>
+            </a>
+          </div>
+          <div id="collapsetwenty" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+
+              <article class="ibpage-article">
+                <p>There are mainly 7 values of position attribute that can be used to position an HTML element:</p>
+                <ol>
+                  <li>
+                    <strong>static</strong>: Default value. Here the element is positioned according to the normal flow
+                    of
+                    the document.
+                  </li>
+                  <li>
+                    <strong>absolute</strong>: Here the element is positioned relative to its parent element. The final
+                    position is determined by the values of left, right, top, bottom.
+                  </li>
+                  <li>
+                    <strong>fixed</strong>: This is similar to absolute except here the elements are positioned relative
+                    to the &lt;html&gt; element.
+                  </li>
+                  <li>
+                    <strong>relative</strong>: Here the element is positioned according to the normal flow of the
+                    document
+                    and positioned relative to its original/ normal position.
+                  </li>
+                  <li>
+                    <strong>initial</strong>: This resets the property to its default value.
+                  </li>
+                  <li>
+                    <strong>inherit</strong>: Here the element inherits or takes the property of its parent.
+                  </li>
+                </ol>
+              </article>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsetwentyone">
+              <b>In how many ways you can display HTML elements?</b>
+            </a>
+          </div>
+          <div id="collapsetwentyone" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+
+
               <p>There are mainly 7 values of position attribute that can be used to position an HTML element:</p>
               <ol>
                 <li>
-                  <strong>static</strong>: Default value. Here the element is positioned according to the normal flow of
-                  the document.
+                  <strong>inline</strong>: Using this we can display any block-level element as an inline element. The
+                  height and width attribute values of the element will not affect.
                 </li>
                 <li>
-                  <strong>absolute</strong>: Here the element is positioned relative to its parent element. The final
-                  position is determined by the values of left, right, top, bottom.
+                  <strong>block</strong>: using this, we can display any inline element as a block-level element.
                 </li>
                 <li>
-                  <strong>fixed</strong>: This is similar to absolute except here the elements are positioned relative
-                  to the &lt;html&gt; element.
+                  <strong>inline-block</strong>: This property is similar to inline, except by using the display as
+                  inline-block, we can actually format the element using height and width values.
                 </li>
                 <li>
-                  <strong>relative</strong>: Here the element is positioned according to the normal flow of the document
-                  and positioned relative to its original/ normal position.
+                  <strong>flex</strong>: It displays the container and element as a flexible structure. It follows
+                  flexbox
+                  property.
                 </li>
                 <li>
-                  <strong>initial</strong>: This resets the property to its default value.
+                  <strong>inline-flex</strong>: It displays the flex container as an inline element while its content
+                  follows the flexbox properties.
                 </li>
                 <li>
-                  <strong>inherit</strong>: Here the element inherits or takes the property of its parent.
+                  <strong>grid</strong>: It displays the HTML elements as a grid container.
+                </li>
+                <li>
+                  <strong>none</strong>: Using this property we can hide the HTML element.
                 </li>
               </ol>
-            </article>
-          </div>
-        </div>
-      </div>
 
-
-
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsetwentyone">
-            <b>In how many ways you can display HTML elements?</b>
-          </a>
-        </div>
-        <div id="collapsetwentyone" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-
-
-            <p>There are mainly 7 values of position attribute that can be used to position an HTML element:</p>
-            <ol>
-              <li>
-                <strong>inline</strong>: Using this we can display any block-level element as an inline element. The
-                height and width attribute values of the element will not affect.
-              </li>
-              <li>
-                <strong>block</strong>: using this, we can display any inline element as a block-level element.
-              </li>
-              <li>
-                <strong>inline-block</strong>: This property is similar to inline, except by using the display as
-                inline-block, we can actually format the element using height and width values.
-              </li>
-              <li>
-                <strong>flex</strong>: It displays the container and element as a flexible structure. It follows flexbox
-                property.
-              </li>
-              <li>
-                <strong>inline-flex</strong>: It displays the flex container as an inline element while its content
-                follows the flexbox properties.
-              </li>
-              <li>
-                <strong>grid</strong>: It displays the HTML elements as a grid container.
-              </li>
-              <li>
-                <strong>none</strong>: Using this property we can hide the HTML element.
-              </li>
-            </ol>
-
-            <p>Below are some of the display types which are rarely used:</p>
-            <ol>
-              <li>table</li>
-              <li>inline-table</li>
-              <li>table-cell</li>
-              <li>table-column</li>
-              <li>table-row</li>
-              <li>inline-grid</li>
-              <li>list-item</li>
-              <li>inherit</li>
-              <li>initial</li>
-              <li>table-caption</li>
-            </ol>
-
-
-
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsetwentytwo">
-            <b>What is the difference between “display: none” and “visibility: hidden”, when used as attributes to the
-              HTML element.</b>
-          </a>
-        </div>
-        <div id="collapsetwentytwo" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <p>When we use the attribute “visibility: hidden” for an HTML element then that element will be hidden from
-              the webpage but still takes up space. Whereas, if we use the “display: none” attribute for an HTML element
-              then the element will be hidden, and also it won’t take up any space on the webpage.</p>
-            <ol>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsetwentythree">
-            <b>How to specify the link in HTML and explain the target attribute?</b>
-          </a>
-        </div>
-        <div id="collapsetwentythree" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <article class="ibpage-article">
-              <p>HTML provides a hyperlink - &lt;a&gt; tag to specify the links in a webpage. The ‘href’ attribute is
-                used to specify the link and the ‘target’ attribute is used to specify, where do we want to open the
-                linked document. The ‘target’ attribute can have the following values:</p>
+              <p>Below are some of the display types which are rarely used:</p>
               <ol>
-                <li>
-                  <strong>_self</strong>: This is a default value. It opens the document in the same window or tab as it
-                  was clicked.
-                </li>
-                <li>
-                  <strong>_blank</strong>: It opens the document in a new window or tab.
-                </li>
-                <li>
-                  <strong>_parent</strong>: It opens the document in a parent frame.
-                </li>
-                <li>
-                  <strong>_top</strong>: It opens the document in a full-body window.
-                </li>
+                <li>table</li>
+                <li>inline-table</li>
+                <li>table-cell</li>
+                <li>table-column</li>
+                <li>table-row</li>
+                <li>inline-grid</li>
+                <li>list-item</li>
+                <li>inherit</li>
+                <li>initial</li>
+                <li>table-caption</li>
               </ol>
-            </article>
 
 
 
-
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsetwentyfour">
-            <b>In how many ways can we specify the CSS styles for the HTML element?</b>
-          </a>
-        </div>
-        <div id="collapsetwentyfour" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <article class="ibpage-article">
-              <ul>
-                <li>
-                  <strong>Inline</strong>: Here we use the ‘style’ attribute inside the HTML element.
-                </li>
-                <li>
-                  <strong>Internal:</strong> Here we use the &lt;style&gt; tag inside the &lt;head&gt; tag. To apply the
-                  style we bind the elements using ‘id’ or ‘class’ attributes.
-                </li>
-                <li>
-                  <strong>External</strong>: Here we use the &lt;link&gt; tag inside &lt;head&gt; tag to reference the
-                  CSS file into our HTML code. Again the binding between elements and styles is done using ‘id’ or
-                  ‘class’ attributes.
-                </li>
-              </ul>
-            </article>
-            <img src="assets/html images/22ndimage.JPG">
 
-
-
-
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsetwentytwo">
+              <b>What is the difference between “display: none” and “visibility: hidden”, when used as attributes to the
+                HTML element.</b>
+            </a>
           </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsetwentyfive">
-            <b>How to include javascript code in HTML?</b>
-          </a>
-        </div>
-        <div id="collapsetwentyfive" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <article class="ibpage-article">
-              <p>HTML provides a &lt;script&gt; tag using which we can run the javascript code and make our HTML page
-                more dynamic.</p>
-            </article>
-            <img src="assets/html images/27thimage.JPG">
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsetwentysix">
-            <b>When to use scripts in the head and when to use scripts in the body?</b>
-          </a>
-        </div>
-        <div id="collapsetwentysix" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-
-            <p>If the scripts contain some event-triggered functions or jquery library then we should use them in the
-              head section. If the script writes the content on the page or is not inside a function then it should be
-              placed inside the body section at the bottom. In short, follow below three points:
-
-            <ol>
-              <li>Place library scripts or event scripts in the head section.</li>
-              <li>Place normal scripts that do not write anything on the page, in the head section until there is any
-                performance issue.</li>
-              <li>Place scripts that render something on the web page at the bottom of the body section.</li>
-              </ol< /p>
-
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsetwentyseven">
-            <b>What are forms and how to create forms in HTML?</b>
-          </a>
-        </div>
-        <div id="collapsetwentyseven" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-
-            <p>The HTML form is used to collect the user inputs. HTML provides a &lt;form&gt; tag to create forms.
-              To take input from the user we use the &lt;input&gt; tag inside the form so that all collected user data
-              can be sent to the server for processing. There are different input types like ‘button’, ‘checkbox’,
-              ‘number’, ‘text’, ‘password’, ‘submit’ etc.</p>
-            <img src="assets/html images/28thimage.JPG">
-
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsetwentyeight">
-            <b>How to handle events in HTML?</b>
-          </a>
-        </div>
-        <div id="collapsetwentyeight" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-
-            <p>HTML allows event trigger actions in browsers using javascript or JQuery.
-              There are a lot of events like ‘onclick’, ‘ondrag’, ‘onchange’, etc.</p>
-
-            <img src="assets/html images/30thimage.JPG">
-          </div>
-        </div>
-      </div>
-      <div class="card-header">
-        <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
-          <h2>HTML5 Interview Questions</h2>
-        </a>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsetwentynine">
-            <b>What are some of the advantages of HTML5 over its previous versions?</b>
-          </a>
-        </div>
-        <div id="collapsetwentynine" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-
-            <article class="ibpage-article">
-              <p>Some advantages of HTML5 are:-</p>
-              <ul>
-                <li>It has Multimedia Support.</li>
-                <li>It has the capabilities to store offline data using SQL databases and application cache.</li>
-                <li>Javascript can be run in the background.</li>
-                <li>HTML5 also allows users to draw various shapes like rectangles, circles, triangles, etc.</li>
-                <li>Included new Semantic tags and form control tags.</li>
-              </ul>
-            </article>
-
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsethirty">
-            <b>How can we include audio or video in a webpage?</b>
-          </a>
-        </div>
-        <div id="collapsethirty" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <p>HTML5 provides two tags: &lt;audio&gt; and &lt;video&gt; tags using which we can add the audio or video
-              directly in the webpage.</p>
-
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsethirtyone">
-            <b>Inline and block elements in HTML5?</b>
-          </a>
-        </div>
-        <div id="collapsethirtyone" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-
-
-            <table>
-              <thead>
-                <tr>
-                  <th>Inline</th>
-                  <th>Block</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Inline elements just take up the space that is absolutely necessary for the content and does not
-                    start from a new line.<br>Example:- &lt;span&gt;, &lt;a&gt;, &lt;strong&gt;, &lt;img&gt;,
-                    &lt;button&gt;, &lt;em&gt;, &lt;select&gt;, &lt;abbr&gt;, &lt;label&gt;, &lt;sub&gt;, &lt;cite&gt;,
-                    &lt;abbr&gt;, &lt;script&gt;, &lt;label&gt;, &lt;i&gt;, &lt;input&gt;, &lt;output&gt;, &lt;q&gt;,
-                    etc.</td>
-                  <td>Block elements start on a new line and consume the full width of the page available.<br>Example:-
-                    &lt;div&gt;, &lt;p&gt;, &lt;header&gt;, &lt;footer&gt;, &lt;h1&gt;...&lt;h6&gt;, &lt;form&gt;,
-                    &lt;table&gt;, &lt;canvas&gt;, &lt;video&gt;, &lt;blockquote&gt;, &lt;pre&gt;, &lt;ul&gt;,
-                    &lt;ol&gt;, &lt;figcaption&gt;, &lt;figure&gt;, &lt;hr&gt;, &lt;article&gt;, &lt;section&gt;, etc.
-                  </td>
-                </tr>
-              </tbody>
-            </table><br><br>
-            <img src="assets/html images/31st image.JPG">
-
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapsethirty2">
-            <b>What is the difference between &lt;figure&gt;, tag and &lt;image&gt; tag?</b>
-          </a>
-        </div>
-        <div id="collapsethirty2" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-
-
-            <article class="ibpage-article">
-              <p>The &lt;figure&gt; tag specifies the self-contained content, like diagrams,
-                images, code snippets, etc. &lt;figure&gt; tag is used to semantically organize the
-                contents of an image like image, image caption, etc., whereas the &lt;img&gt;
-                tag is used to embed the picture in the HTML5 document.</p>
-            </article>
-
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapse33">
-            <b>How to specify the metadata in HTML5?</b>
-          </a>
-        </div>
-        <div id="collapse33" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <p>To specify we can use &lt;meta&gt; tag which is a void tag,i.e., it does not have a closing tag.
-              Some of the attributes used with meta tags are name, content, http-equiv, etc.
-              The below image tells how to specify the metadata.</p>
-            <img src="assets/html images/33image.JPG">
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapse34">
-            <b>Is the &lt;datalist&gt; tag and &lt;select&gt; tag same?</b>
-          </a>
-        </div>
-        <div id="collapse34" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <p>No. The &lt;datalist&gt; tag and &lt;select&gt; tag are different.
-              In the case of &lt;select&gt; tag a user will have to choose
-              from a list of options, whereas &lt;datalist&gt; when used along with the &lt;input&gt;
-              tag provides a suggestion that the user selects one of the options given
-              or can enter some entirely different value.</p>
-            <img src="assets/html images/33image.JPG">
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapse35">
-            <b>Define Image Map?</b>
-          </a>
-        </div>
-        <div id="collapse35" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <p>Image Map lets a developer map/link different parts of images with the
-              different web pages.
-              It can be achieved by the &lt;map&gt;
-              tag in HTML5, using which we can link images with clickable areas.</p>
-            <img src="assets/html images/36thimage.JPG">
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapse35">
-            <b>What are Semantic Elements?</b>
-          </a>
-        </div>
-        <div id="collapse35" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <p>Semantic elements are those which describe the particular
-              meaning to the browser and the developer.
-              Elements like &lt;form&gt;, &lt;table&gt;,
-              &lt;article&gt;, &lt;figure&gt;, etc., are semantic elements</p>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapse36">
-            <b>Convert the below data into Tabular format in HTML5?</b>
-          </a>
-        </div>
-        <div id="collapse36" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <article class="ibpage-article">
-              <p>S.no., Language, Mostly used for</p>
-              <p>1, HTML, FrontEnd</p>
-              <p>2, CSS, FrontEnd</p>
-              <p>3, Python, BackEnd</p>
-            </article>
-            <img src="assets/html images/37thimage.JPG">
-
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapse37">
-            <b>What is the difference between &lt;meter&gt; tag and &lt;progress&gt; tag?</b>
-          </a>
-        </div>
-        <div id="collapse37" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <p>&lt;progress&gt; tag should be used when we want to show the completion progress of a task,
-              whereas if we just want a scalar measurement within
-              a known range or fraction value. Also, we can specify
-              multiple extra attributes for &lt;meter&gt; tags like ‘form’,
-              ‘low’, ‘high’, ‘min’, etc</p>
-
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapse38">
-            <b> Is drag and drop possible using HTML5 and how?</b>
-          </a>
-        </div>
-        <div id="collapse38" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <p>Yes, in HTML5 we can drag and drop an element.
-              This can be achieved using the drag and drop-related events to be used with the element which we want to
-              drag and drop</p>
-
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapse39">
-            <b> Difference between SVG and Canvas HTML5 element?</b>
-          </a>
-        </div>
-        <div id="collapse39" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <table>
-              <thead>
-                <tr>
-                  <th>SVG</th>
-                  <th>Canvas</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>SVG is a vector based i.e., composed of shapes.&nbsp;</td>
-                  <td>It is Raster based i.e., composed of pixels.</td>
-                </tr>
-                <tr>
-                  <td>SVG works better with a larger surface.</td>
-                  <td>Canvas works better with a smaller surface.</td>
-                </tr>
-                <tr>
-                  <td>SVG can be modified using CSS and scripts.</td>
-                  <td>Canvas can only be modified using scripts.</td>
-                </tr>
-                <tr>
-                  <td>SVG is highly scalable. So we can print at <br>
-                    high quality with high resolution.</td>
-                  <td>It is less scalable.</td>
-                </tr>
-              </tbody>
-            </table>
-
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapse40">
-            <b> What type of audio files can be played using HTML5?</b>
-          </a>
-        </div>
-        <div id="collapse40" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <article class="ibpage-article">
-              <p>HTML5 supports the following three types of audio file formats:</p>
+          <div id="collapsetwentytwo" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <p>When we use the attribute “visibility: hidden” for an HTML element then that element will be hidden
+                from
+                the webpage but still takes up space. Whereas, if we use the “display: none” attribute for an HTML
+                element
+                then the element will be hidden, and also it won’t take up any space on the webpage.</p>
               <ol>
-                <li>Mp3</li>
-                <li>WAV</li>
-                <li>Ogg</li>
-              </ol>
-            </article>
+            </div>
           </div>
         </div>
-      </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsetwentythree">
+              <b>How to specify the link in HTML and explain the target attribute?</b>
+            </a>
+          </div>
+          <div id="collapsetwentythree" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <article class="ibpage-article">
+                <p>HTML provides a hyperlink - &lt;a&gt; tag to specify the links in a webpage. The ‘href’ attribute is
+                  used to specify the link and the ‘target’ attribute is used to specify, where do we want to open the
+                  linked document. The ‘target’ attribute can have the following values:</p>
+                <ol>
+                  <li>
+                    <strong>_self</strong>: This is a default value. It opens the document in the same window or tab as
+                    it
+                    was clicked.
+                  </li>
+                  <li>
+                    <strong>_blank</strong>: It opens the document in a new window or tab.
+                  </li>
+                  <li>
+                    <strong>_parent</strong>: It opens the document in a parent frame.
+                  </li>
+                  <li>
+                    <strong>_top</strong>: It opens the document in a full-body window.
+                  </li>
+                </ol>
+              </article>
 
-      <div class="card">
+
+
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsetwentyfour">
+              <b>In how many ways can we specify the CSS styles for the HTML element?</b>
+            </a>
+          </div>
+          <div id="collapsetwentyfour" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <article class="ibpage-article">
+                <ul>
+                  <li>
+                    <strong>Inline</strong>: Here we use the ‘style’ attribute inside the HTML element.
+                  </li>
+                  <li>
+                    <strong>Internal:</strong> Here we use the &lt;style&gt; tag inside the &lt;head&gt; tag. To apply
+                    the
+                    style we bind the elements using ‘id’ or ‘class’ attributes.
+                  </li>
+                  <li>
+                    <strong>External</strong>: Here we use the &lt;link&gt; tag inside &lt;head&gt; tag to reference the
+                    CSS file into our HTML code. Again the binding between elements and styles is done using ‘id’ or
+                    ‘class’ attributes.
+                  </li>
+                </ul>
+              </article>
+              <img src="assets/html images/22ndimage.JPG">
+
+
+
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsetwentyfive">
+              <b>How to include javascript code in HTML?</b>
+            </a>
+          </div>
+          <div id="collapsetwentyfive" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <article class="ibpage-article">
+                <p>HTML provides a &lt;script&gt; tag using which we can run the javascript code and make our HTML page
+                  more dynamic.</p>
+              </article>
+              <img src="assets/html images/27thimage.JPG">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsetwentysix">
+              <b>When to use scripts in the head and when to use scripts in the body?</b>
+            </a>
+          </div>
+          <div id="collapsetwentysix" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+
+              <p>If the scripts contain some event-triggered functions or jquery library then we should use them in the
+                head section. If the script writes the content on the page or is not inside a function then it should be
+                placed inside the body section at the bottom. In short, follow below three points:
+
+              <ol>
+                <li>Place library scripts or event scripts in the head section.</li>
+                <li>Place normal scripts that do not write anything on the page, in the head section until there is any
+                  performance issue.</li>
+                <li>Place scripts that render something on the web page at the bottom of the body section.</li>
+                </ol< /p>
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsetwentyseven">
+              <b>What are forms and how to create forms in HTML?</b>
+            </a>
+          </div>
+          <div id="collapsetwentyseven" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+
+              <p>The HTML form is used to collect the user inputs. HTML provides a &lt;form&gt; tag to create forms.
+                To take input from the user we use the &lt;input&gt; tag inside the form so that all collected user data
+                can be sent to the server for processing. There are different input types like ‘button’, ‘checkbox’,
+                ‘number’, ‘text’, ‘password’, ‘submit’ etc.</p>
+              <img src="assets/html images/28thimage.JPG">
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsetwentyeight">
+              <b>How to handle events in HTML?</b>
+            </a>
+          </div>
+          <div id="collapsetwentyeight" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+
+              <p>HTML allows event trigger actions in browsers using javascript or JQuery.
+                There are a lot of events like ‘onclick’, ‘ondrag’, ‘onchange’, etc.</p>
+
+              <img src="assets/html images/30thimage.JPG">
+            </div>
+          </div>
+        </div>
         <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapse41">
-            <b> What are the significant goals of the HTML5 specification?</b>
+          <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
+            <h2>HTML5 Interview Questions</h2>
           </a>
         </div>
-        <div id="collapse41" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <article class="ibpage-article">
-              <p>These were the target area of the HTML5 specs:</p>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsetwentynine">
+              <b>What are some of the advantages of HTML5 over its previous versions?</b>
+            </a>
+          </div>
+          <div id="collapsetwentynine" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+
+              <article class="ibpage-article">
+                <p>Some advantages of HTML5 are:-</p>
+                <ul>
+                  <li>It has Multimedia Support.</li>
+                  <li>It has the capabilities to store offline data using SQL databases and application cache.</li>
+                  <li>Javascript can be run in the background.</li>
+                  <li>HTML5 also allows users to draw various shapes like rectangles, circles, triangles, etc.</li>
+                  <li>Included new Semantic tags and form control tags.</li>
+                </ul>
+              </article>
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsethirty">
+              <b>How can we include audio or video in a webpage?</b>
+            </a>
+          </div>
+          <div id="collapsethirty" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <p>HTML5 provides two tags: &lt;audio&gt; and &lt;video&gt; tags using which we can add the audio or video
+                directly in the webpage.</p>
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsethirtyone">
+              <b>Inline and block elements in HTML5?</b>
+            </a>
+          </div>
+          <div id="collapsethirtyone" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Inline</th>
+                    <th>Block</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Inline elements just take up the space that is absolutely necessary for the content and does not
+                      start from a new line.<br>Example:- &lt;span&gt;, &lt;a&gt;, &lt;strong&gt;, &lt;img&gt;,
+                      &lt;button&gt;, &lt;em&gt;, &lt;select&gt;, &lt;abbr&gt;, &lt;label&gt;, &lt;sub&gt;,
+                      &lt;cite&gt;,
+                      &lt;abbr&gt;, &lt;script&gt;, &lt;label&gt;, &lt;i&gt;, &lt;input&gt;, &lt;output&gt;, &lt;q&gt;,
+                      etc.</td>
+                    <td>Block elements start on a new line and consume the full width of the page
+                      available.<br>Example:-
+                      &lt;div&gt;, &lt;p&gt;, &lt;header&gt;, &lt;footer&gt;, &lt;h1&gt;...&lt;h6&gt;, &lt;form&gt;,
+                      &lt;table&gt;, &lt;canvas&gt;, &lt;video&gt;, &lt;blockquote&gt;, &lt;pre&gt;, &lt;ul&gt;,
+                      &lt;ol&gt;, &lt;figcaption&gt;, &lt;figure&gt;, &lt;hr&gt;, &lt;article&gt;, &lt;section&gt;, etc.
+                    </td>
+                  </tr>
+                </tbody>
+              </table><br><br>
+              <img src="assets/html images/31st image.JPG">
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapsethirty2">
+              <b>What is the difference between &lt;figure&gt;, tag and &lt;image&gt; tag?</b>
+            </a>
+          </div>
+          <div id="collapsethirty2" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+
+
+              <article class="ibpage-article">
+                <p>The &lt;figure&gt; tag specifies the self-contained content, like diagrams,
+                  images, code snippets, etc. &lt;figure&gt; tag is used to semantically organize the
+                  contents of an image like image, image caption, etc., whereas the &lt;img&gt;
+                  tag is used to embed the picture in the HTML5 document.</p>
+              </article>
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapse33">
+              <b>How to specify the metadata in HTML5?</b>
+            </a>
+          </div>
+          <div id="collapse33" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <p>To specify we can use &lt;meta&gt; tag which is a void tag,i.e., it does not have a closing tag.
+                Some of the attributes used with meta tags are name, content, http-equiv, etc.
+                The below image tells how to specify the metadata.</p>
+              <img src="assets/html images/33image.JPG">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapse34">
+              <b>Is the &lt;datalist&gt; tag and &lt;select&gt; tag same?</b>
+            </a>
+          </div>
+          <div id="collapse34" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <p>No. The &lt;datalist&gt; tag and &lt;select&gt; tag are different.
+                In the case of &lt;select&gt; tag a user will have to choose
+                from a list of options, whereas &lt;datalist&gt; when used along with the &lt;input&gt;
+                tag provides a suggestion that the user selects one of the options given
+                or can enter some entirely different value.</p>
+              <img src="assets/html images/33image.JPG">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapse35">
+              <b>Define Image Map?</b>
+            </a>
+          </div>
+          <div id="collapse35" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <p>Image Map lets a developer map/link different parts of images with the
+                different web pages.
+                It can be achieved by the &lt;map&gt;
+                tag in HTML5, using which we can link images with clickable areas.</p>
+              <img src="assets/html images/36thimage.JPG">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapse35">
+              <b>What are Semantic Elements?</b>
+            </a>
+          </div>
+          <div id="collapse35" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <p>Semantic elements are those which describe the particular
+                meaning to the browser and the developer.
+                Elements like &lt;form&gt;, &lt;table&gt;,
+                &lt;article&gt;, &lt;figure&gt;, etc., are semantic elements</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapse36">
+              <b>Convert the below data into Tabular format in HTML5?</b>
+            </a>
+          </div>
+          <div id="collapse36" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <article class="ibpage-article">
+                <p>S.no., Language, Mostly used for</p>
+                <p>1, HTML, FrontEnd</p>
+                <p>2, CSS, FrontEnd</p>
+                <p>3, Python, BackEnd</p>
+              </article>
+              <img src="assets/html images/37thimage.JPG">
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapse37">
+              <b>What is the difference between &lt;meter&gt; tag and &lt;progress&gt; tag?</b>
+            </a>
+          </div>
+          <div id="collapse37" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <p>&lt;progress&gt; tag should be used when we want to show the completion progress of a task,
+                whereas if we just want a scalar measurement within
+                a known range or fraction value. Also, we can specify
+                multiple extra attributes for &lt;meter&gt; tags like ‘form’,
+                ‘low’, ‘high’, ‘min’, etc</p>
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapse38">
+              <b> Is drag and drop possible using HTML5 and how?</b>
+            </a>
+          </div>
+          <div id="collapse38" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <p>Yes, in HTML5 we can drag and drop an element.
+                This can be achieved using the drag and drop-related events to be used with the element which we want to
+                drag and drop</p>
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapse39">
+              <b> Difference between SVG and Canvas HTML5 element?</b>
+            </a>
+          </div>
+          <div id="collapse39" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <table>
+                <thead>
+                  <tr>
+                    <th>SVG</th>
+                    <th>Canvas</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>SVG is a vector based i.e., composed of shapes.&nbsp;</td>
+                    <td>It is Raster based i.e., composed of pixels.</td>
+                  </tr>
+                  <tr>
+                    <td>SVG works better with a larger surface.</td>
+                    <td>Canvas works better with a smaller surface.</td>
+                  </tr>
+                  <tr>
+                    <td>SVG can be modified using CSS and scripts.</td>
+                    <td>Canvas can only be modified using scripts.</td>
+                  </tr>
+                  <tr>
+                    <td>SVG is highly scalable. So we can print at <br>
+                      high quality with high resolution.</td>
+                    <td>It is less scalable.</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapse40">
+              <b> What type of audio files can be played using HTML5?</b>
+            </a>
+          </div>
+          <div id="collapse40" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <article class="ibpage-article">
+                <p>HTML5 supports the following three types of audio file formats:</p>
+                <ol>
+                  <li>Mp3</li>
+                  <li>WAV</li>
+                  <li>Ogg</li>
+                </ol>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapse41">
+              <b> What are the significant goals of the HTML5 specification?</b>
+            </a>
+          </div>
+          <div id="collapse41" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <article class="ibpage-article">
+                <p>These were the target area of the HTML5 specs:</p>
+                <ul>
+                  <li>Introduction of new element tags to better structure the web page such as &lt;header&gt; tag.</li>
+                  <li>Forming a standard in cross-browser behavior and support for different devices and platforms</li>
+                  <li>Backward compatible with the older version HTML web pages</li>
+                  <li>Introduction of basic interactive elements without the dependency of plugins such as &lt;video&gt;
+                    tag instead of the flash plugin.</li>
+                </ul>
+              </article>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapse42">
+              <b> Explain the concept of web storage in HTML5.</b>
+            </a>
+          </div>
+          <div id="collapse42" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <p>This web storage helps in storing some of the static data in the local storage
+                of the browser so that we do not need to fetch it from the server every time
+                we need it. There is a size limit based on different browsers.
+                This helps in decreasing the load time and a smooth user experience.
+                There are two types of web storage that are used to store data locally in HTML5:</p>
               <ul>
-                <li>Introduction of new element tags to better structure the web page such as &lt;header&gt; tag.</li>
-                <li>Forming a standard in cross-browser behavior and support for different devices and platforms</li>
-                <li>Backward compatible with the older version HTML web pages</li>
-                <li>Introduction of basic interactive elements without the dependency of plugins such as &lt;video&gt;
-                  tag instead of the flash plugin.</li>
+                <li>
+                  <strong>Local Storage</strong> - This helps in storing data that will be
+                  retained even though the user reopens the browser. It is stored for
+                  each webapp on different browsers.
+                </li>
+                <li>
+                  <strong>Session Storage</strong> - This is used for one session only.
+                  After the user closes the browser this gets deleted.
+                </li>
               </ul>
-            </article>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapse42">
-            <b> Explain the concept of web storage in HTML5.</b>
-          </a>
-        </div>
-        <div id="collapse42" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <p>This web storage helps in storing some of the static data in the local storage
-              of the browser so that we do not need to fetch it from the server every time
-              we need it. There is a size limit based on different browsers.
-              This helps in decreasing the load time and a smooth user experience.
-              There are two types of web storage that are used to store data locally in HTML5:</p>
-            <ul>
-              <li>
-                <strong>Local Storage</strong> - This helps in storing data that will be
-                retained even though the user reopens the browser. It is stored for
-                each webapp on different browsers.
-              </li>
-              <li>
-                <strong>Session Storage</strong> - This is used for one session only.
-                After the user closes the browser this gets deleted.
-              </li>
-            </ul>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapse43">
+              <b> What is Microdata in HTML5?</b>
+            </a>
+          </div>
+          <div id="collapse43" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <p>It is used to help extract data for site crawlers and search engines.
+                It is basically a group of name-value pairs. The groups are called items,
+                and each name-value pair is a property. Most of the search engines like Google,
+                Microsoft, Yandex, etc follow schema.org vocabulary to extract this microdata.</p>
+              <img src="assets/html images/43image.png">
+              <ul>
+                <li>
+                  <strong>itemid</strong> – The unique, global identifier of an item.
+                </li>
+                <li>
+                  <strong>itemprop</strong> – Used to add properties to an item.
+                </li>
+                <li>
+                  <strong>itemref</strong> – Provides a list of element ids with additional properties.
+                </li>
+                <li>
+                  <strong>itemscope</strong> – It defines the scope of the itemtype associated with it.
+                </li>
+                <li>
+                  <strong>itemtype</strong> – Specifies the URL of the vocabulary that will be used to define itemprop.
+                </li>
+              </ul>
+              <p>The above example will be parsed by Google as</p>
+              <img src="assets/html images/43rd 2nd image.png">
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapse43">
-            <b> What is Microdata in HTML5?</b>
-          </a>
-        </div>
-        <div id="collapse43" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <p>It is used to help extract data for site crawlers and search engines.
-              It is basically a group of name-value pairs. The groups are called items,
-              and each name-value pair is a property. Most of the search engines like Google,
-              Microsoft, Yandex, etc follow schema.org vocabulary to extract this microdata.</p>
-            <img src="assets/html images/43image.png">
-            <ul>
-              <li>
-                <strong>itemid</strong> – The unique, global identifier of an item.
-              </li>
-              <li>
-                <strong>itemprop</strong> – Used to add properties to an item.
-              </li>
-              <li>
-                <strong>itemref</strong> – Provides a list of element ids with additional properties.
-              </li>
-              <li>
-                <strong>itemscope</strong> – It defines the scope of the itemtype associated with it.
-              </li>
-              <li>
-                <strong>itemtype</strong> – Specifies the URL of the vocabulary that will be used to define itemprop.
-              </li>
-            </ul>
-            <p>The above example will be parsed by Google as</p>
-            <img src="assets/html images/43rd 2nd image.png">
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapse44">
+              <b> Which tag is used for representing the result of a calculation? Explain its attributes.</b>
+            </a>
+          </div>
+          <div id="collapse44" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <p>The &lt;output&gt; tag is used for representing the result of a calculation. It has the following
+                attributes:</p>
+              <ul>
+                <li>
+                  <strong>for</strong> - It defines the relationship between the elements used in calculation and
+                  result.
+                </li>
+                <li>
+                  <strong>form </strong>- This is used to define the form the output element belongs to.
+                </li>
+                <li>
+                  <strong>name</strong> - The name of the output element.
+                </li>
+              </ul>
+              <p>The above example looks like</p>
+              <img src="assets/html images/44th image.png">
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapse44">
-            <b> Which tag is used for representing the result of a calculation? Explain its attributes.</b>
-          </a>
-        </div>
-        <div id="collapse44" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <p>The &lt;output&gt; tag is used for representing the result of a calculation. It has the following
-              attributes:</p>
-            <ul>
-              <li>
-                <strong>for</strong> - It defines the relationship between the elements used in calculation and result.
-              </li>
-              <li>
-                <strong>form </strong>- This is used to define the form the output element belongs to.
-              </li>
-              <li>
-                <strong>name</strong> - The name of the output element.
-              </li>
-            </ul>
-            <p>The above example looks like</p>
-            <img src="assets/html images/44th image.png">
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapse45">
+              <b> What is new about the relationship between the &lt;header&gt; and &lt;h1&gt; tags in HTML5?</b>
+            </a>
+          </div>
+          <div id="collapse45" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <p>As HTML5 was all about better semantics and arrangements of the tags and elements,
+                the &lt;header&gt; tag specifies the header section of the webpage. Unlike in previous version
+                there was one &lt;h1&gt; element for the entire webpage, now this is the header for one section
+                such as &lt;article&gt; or &lt;section&gt;. According to the HTML5 specification, each &lt;header&gt;
+                element must at least have one &lt;h1&gt; tag.</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapse45">
-            <b> What is new about the relationship between the &lt;header&gt; and &lt;h1&gt; tags in HTML5?</b>
-          </a>
-        </div>
-        <div id="collapse45" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <p>As HTML5 was all about better semantics and arrangements of the tags and elements,
-              the &lt;header&gt; tag specifies the header section of the webpage. Unlike in previous version
-              there was one &lt;h1&gt; element for the entire webpage, now this is the header for one section
-              such as &lt;article&gt; or &lt;section&gt;. According to the HTML5 specification, each &lt;header&gt;
-              element must at least have one &lt;h1&gt; tag.</p>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn" data-bs-toggle="collapse" href="#collapse46">
+              <b>Explain HTML5 Graphics.</b>
+            </a>
           </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapse46">
-            <b>Explain HTML5 Graphics.</b>
-          </a>
-        </div>
-        <div id="collapse46" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-            <p>HTML5 supports two kinds of graphics:</p>
-            <ul>
-              <li><strong>Canvas</strong> - It is like drawing on a whitepaper or a
-                blank webpage. We can add different graphic designs on web pages
-                with available methods for drawing various geometrical shapes.</li>
-            </ul>
-            <img src="assets/html images/46th image.png">
-            <ul>
-              <li><strong>SVG</strong> - Scalable Vector Graphics are used mostly for 
-                diagrams or icons. It follows the
-                XML format.</li>
-            </ul>
-            <img src="assets/html images/46th 2nd image.png">
-            <p>Both of the above examples produce this output and represent 
-              two different approaches provided by HTML5 to implement 
-              graphical aspects in the webpage.</p>
+          <div id="collapse46" class="collapse show" data-bs-parent="#accordion">
+            <div class="card-body">
+              <p>HTML5 supports two kinds of graphics:</p>
+              <ul>
+                <li><strong>Canvas</strong> - It is like drawing on a whitepaper or a
+                  blank webpage. We can add different graphic designs on web pages
+                  with available methods for drawing various geometrical shapes.</li>
+              </ul>
+              <img src="assets/html images/46th image.png">
+              <ul>
+                <li><strong>SVG</strong> - Scalable Vector Graphics are used mostly for
+                  diagrams or icons. It follows the
+                  XML format.</li>
+              </ul>
+              <img src="assets/html images/46th 2nd image.png">
+              <p>Both of the above examples produce this output and represent
+                two different approaches provided by HTML5 to implement
+                graphical aspects in the webpage.</p>
               <img src="assets/html images/42nd 3rd image.png">
+            </div>
           </div>
         </div>
+
+
+
+
+
+
+
+
       </div>
-      
 
 
-
-
-
-
-
+      <div id="footer"></div>
     </div>
-  </div>
+    <script>
+      fetch('footer.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('footer').innerHTML = html;
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
