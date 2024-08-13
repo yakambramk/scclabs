@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+</head>
+
+<body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: red;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        li {
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.0;
+        }
+
+        a:hover {
+            color: red;
+        }
+    </style>
+    <div class="container">
+        <h1>Spring Core Tutorial</h1>
+
+        <h2>Introduction</h2>
+
+        <p> In this Spring Core tutorial, you will learn important concepts of the Spring Framework through detailed
+            explanations and practical examples. This guide covers the basics and fundamentals of the Spring Core,
+            including
+            its Inversion of Control (IoC) container, dependency injection mechanisms, bean scopes, and various
+            annotations.
+            Note that Java 17 is the minimum requirement to work with Spring Framework 6.</p>
+
+        <h2>Spring IOC container</h2>
+        <ol>
+
+            <li><a href=""><b>Spring ioc container overview</b></a> - In this article, we discuss what the Spring IOC
+                container
+                is,
+                how it works, how to create a Spring IOC container, and how to retrieve beans from the Spring IOC
+                container
+                with examples.</p>
+            </li>
+
+            <li><a href=""><b>What is ApplicationContext Interface and Its Implementation Classes</b></a> - This quick
+                article
+                explains the ApplicationContext interface and its implementation classes with an example. </p>
+            </li>
+
+            <li><a href=""><b>Spring IOC Container Java Config Example</b></a> - A simple example demonstrating the
+                working of
+                the
+                Spring IOC Container with Java-based configuration metadata.</p>
+            </li>
+
+            <li><a href=""><b>Spring IOC Container XML Config Example</b></a> - A simple example demonstrating the
+                working of
+                the
+                Spring IOC Container with XML-based configuration metadata.</p>
+            </li>
+
+            <li><a href=""><b>Spring BeanFactory Interface Example</b></a> - A quick article discussing the Spring
+                BeanFactory
+                interface with an example.</p>
+            </li>
+
+            <li> <a href=""><b>BeanFactory vs ApplicationContext in Spring</b></a> - This short article quickly
+                discusses the
+                difference between the BeanFactory and ApplicationContext container levels and the implications of
+                bootstrapping.</p>
+            </li>
+        </ol>
+
+        <h2>Spring Dependency Injection</h2>
+
+        <ol>
+
+            <li><a href=""><b>Guide to Dependency Injection in Spring</b></a> - This guide explains what dependency
+                injection
+                is
+                in the Spring framework and the different types of dependency injection supported in Spring with
+                examples
+                (constructor and setter methods).</p>
+            </li>
+
+
+            <li><a href=""><b>Spring Dependency Injection via Setter Example</b></a> - This article teaches how to use
+                setter-based dependency injection in Spring applications.</p>
+            </li>
+
+
+            <li><a href=""><b>Spring Dependency Injection via Constructor Example</b></a> - This article explains how to
+                use
+                constructor-based dependency injection in Spring applications.</p>
+            </li>
+
+
+            <li><a href=""><b>Spring - @DependsOn Annotation Example</b></a> - This article discusses how to use the
+                @DependsOn
+                annotation in Spring applications with an example. </p>
+            </li>
+
+
+            <li><a href=""><b>Spring @Autowired Annotation with Example</b></a> - This article covers the Spring
+                dependency
+                injection annotation @Autowired with examples.</p>
+            </li>
+
+
+            <li><a href=""><b>Spring @Qualifier Annotation Example</b></a> - This example demonstrates how to use the
+                @Qualifier
+                annotation to resolve ambiguous dependencies.</p>
+            </li>
+        </ol>
+
+        <h2>Spring Bean Scopes</h2>
+        <ol>
+            <li><a href=""><b>Guide to Spring Bean Scopes</b></a> - This guide provides an overview of different Spring
+                bean
+                scopes
+                with examples.</p>
+            </li>
+
+            <li><a href=""><b>Singleton and Prototype Bean Scopes Examples</b></a> - This article discusses the
+                difference
+                between
+                Singleton and Prototype scope with source code examples.</p>
+            </li>
+
+            <li><a href=""><b>Spring InitializingBean and DisposableBean Example</b></a> - This post guides you on how
+                to
+                interact
+                with the container’s management of the bean lifecycle by implementing Spring InitializingBean and
+                DisposableBean
+                interfaces.</p>
+            </li>
+
+            <li><a href=""><b>Spring @Bean’s init method and destroyMethod Attributes Example</b></a> - This article
+                discusses
+                how to
+                use the initMethod and destroyMethod attributes of the @Bean annotation to perform actions after bean
+                initialization or before bean destruction by a container.</p>
+            </li>
+
+            <li><a href=""><b>Spring @Scope annotation with Prototype Scope Example</b></a> - This article discusses how
+                to
+                create a
+                bean scoped as a prototype using the @Scope annotation.</p>
+            </li>
+
+            <li><a href=""><b>Spring @Scope annotation with Singleton Scope Example</b></a> - This article discusses how
+                to
+                create a
+                bean scoped as a singleton using the @Scope annotation.</p>
+            </li>
+        </ol>
+        <h2>Annotation-based Configuration</h2>
+        <ol>
+            <li><a href=""><b>Spring Annotation-Based Container Configuration</b></a> - This article briefly discusses
+                different
+                annotations that Spring provides to support annotation-based container configuration.</p>
+            </li>
+
+            <li><a href=""><b>Spring - @Primary Annotation Example</b></a> - This quick article discusses Spring’s
+                @Primary
+                annotation
+                introduced in version 3.0 of the framework.</p>
+            </li>
+
+            <li><a href=""><b>Spring @PostConstruct and @PreDestroy Example</b></a> - This article discusses how to use
+                method-level
+                annotations @PostConstruct and @PreDestroy to customize the nature of a Bean.</p>
+            </li>
+
+            <li><a href=""><b>Spring @Repository Annotation</b></a> - This quick article explains how to use the
+                @Repository
+                annotation in
+                Spring-based applications.</p>
+            </li>
+
+            <li><a href=""><b>Spring @Service Annotation</b></a> - This quick article discusses how to use the @Service
+                annotation in
+                Spring-based applications.</p>
+            </li>
+
+            <li><a href=""><b>The Spring @Controller and @RestController Annotations</b></a> - This article discusses
+                the
+                difference
+                between the @Controller and @RestController annotations in Spring MVC.</p>
+            </li>
+        </ol>
+        <h2>Java-based Container Configuration</h2>
+        <ol>
+            <li><a href=""><b>Spring Java-Based Configuration Basics</b></a> - This article briefly looks into the
+                basics of Spring Java-based container configuration.</p>
+            </li>
+            <li><a href=""><b>Spring Java-Based Configuration Example</b></a> - This post demonstrates the usage of
+                Spring Java-based container configuration.</p>
+            </li>
+            <li><a href=""><b>Spring @Bean Annotation with Example</b></a> - This article discusses Spring Java-based
+                configuration with the @Bean annotation.</p>
+            </li>
+            <li><a href=""><b>Spring @Configuration Annotation with Example</b></a> - This article discusses the
+                @Configuration annotation with examples.</p>
+            </li>
+            <li><a href=""><b>Spring @PropertySource Annotation with Example</b></a> - This article explains how to use
+                @PropertySource to read a properties file and display the values with @Value and Environment.</li>
+            <li><a href=""><b>Spring @Import Annotation with Example</b></a> - This article discusses how to use the
+                Spring @Import annotation with examples.</p>
+            </li>
+            <li><a href=""><b>Spring @ImportResource Annotation Example</b></a> - This article quickly discusses how to
+                use the @ImportResource annotation with a simple Spring Boot application.</p>
+            </li>
+            <li><a href=""><b>Spring - @Lazy Annotation Example</b></a> - This quick article discusses the @Lazy
+                annotation with an example.</p>
+            </li>
+        </ol>
+        <h2>Miscellaneous</h2>
+        <ol>
+            <li><a href=""><b>15 Spring Core Annotations</b></a> - This quick article discusses Spring Core annotations
+                used in Spring DI and Spring IOC.</p>
+            </li>
+        </ol>
+        <h2>GitHub Repository</h2>
+        <p>For the complete source code and additional resources, visit the <a href=""><b>GitHub repository.</b></a></p>
+        <h2>Further Reading</h2>
+        <p>Explore more about the Spring Framework and related technologies with these tutorials:</p>
+        <ul>
+            <li><a href=""><b>Spring Boot Tutorial</b></li>
+            <li><a href=""><b>Spring Framework</b></li>
+            <li><a href=""><b>Spring Data JPA Tutorial</b></li>
+            <li><a href=""><b>Spring MVC Tutorial</b></li>
+            <li><a href=""><b>Eclipse Quick Tutorials</b></li>
+            <li><a href=""><b>Apache HttpClient Tutorial</b></li>
+            <li><a href=""><b>Apache Maven Tutorial</b></li>
+            <li><a href=""><b>JAX-RS Tutorial</b></li>
+            <li><a href=""><b>Jersey Rest Tutorial</b></li>
+            <li><a href=""><b>Java Persistence API</b></li>
+            <li><a href=""><b>RabbitMQ Tutorial</b></li>
+            <li><a href=""><b>Hibernate ORM</b></a></li>
+        </ul>
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
