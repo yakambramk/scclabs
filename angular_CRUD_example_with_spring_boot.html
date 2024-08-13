@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .heading {
+            /* text-align: center; */
+            color: rgb(239, 98, 11);
+        }
+
+        .image {
+            text-align: center;
+        }
+
+        .span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        .card {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .overlap-container {
+            position: relative;
+            background: url('assets/media/components/b-title-page/bg-1.jpg') center/cover no-repeat;
+            color: #fff;
+            padding: 100px;
+            height: 500px;
+            overflow: visible;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .text-container {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-40%);
+            text-align: center;
+            padding: 15px;
+
+        }
+
+        .text-container h3 {
+            font-size: 24px;
+        }
+
+        .text-container h1 {
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        .underline {
+            text-decoration: underline;
+            font-family: 'Roboto', sans-serif;
+            /* Change the font to Roboto */
+            text-decoration: underline;
+            text-decoration-color: rgb(67, 139, 240);
+            text-decoration-style: dashed;
+            text-decoration-thickness: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <!-- Overlapping Container with Background Image -->
+        <div class="overlap-container">
+            <div class="overlay"></div>
+            <div class="text-container">
+                <h3>WE PROVIDE FULL STACK DEVELOPMENT PROGRAM</h3>
+                <blockquote>Dive into the world of full-stack development with our comprehensive 22-week program
+                </blockquote>
+            </div>
+        </div>
+        <div class="container mt-5">
+            <div class="heading mt-4">
+                <h3 class="underline">Angular CRUD Example with Spring Boot</h3>
+                <h5 class="underline">Author: Yakambram K</h5>
+            </div>
+            <hr>
+            <p>In this full-stack tutorial, we will learn how to develop a CRUD (Create, Read, Update, Delete) web
+                application using Angular 12 as a front-end and <B>Spring boot</B> as a backend.<br><br>
+
+                <b> Angular</b> is a platform and framework for building single-page client applications using HTML and
+                TypeScript. Angular is written in TypeScript.<br><br>
+
+                <b> Spring Boot</b> is a very popular Java framework for building Restful Webservices and Microservices.
+            </p>
+            <div class="architecture mt-4">
+                <h3>Angular Spring boot Full-Stack Architecture</h3>
+                <p>The application will be constructed using the following architecture:</p>
+                <div class="image mt-2 mb-4  mx-auto ">
+                    <img src="assets/full_stack/angular-springboot-database.png" alt="logo" class="img-fluid" />
+                </div>
+            </div>
+            <div class="build">
+                <h3>What we will build?</h3>
+                <p>Basically, we will create two projects:</p>
+                <ol>
+                    <li><b>springboot-backend:</b> This project is used to develop CRUD RESTFul APIs for a simple
+                        <b>Employee Management System</b> using Spring Boot, JPA, and MySQL as a database.
+                    </li><br>
+                    <li><b>angular-frontend:</b> This project is used to develop single page application using Angular
+                        12 as front-end technology. This Angular application consumes CRUD Restful APIs developed and
+                        exposed by a <b>springboot-backend</b> project.</li>
+                </ol>
+                <p>Below are the screenshots shows the UI of our <b>Employee Management System App:</b></p>
+                <div class="image mt-2 mb-4  mx-auto ">
+                    <img src="assets/full_stack/spring boot angular full stack application - list employees.png"
+                        alt="logo" class="img-fluid" />
+                </div>
+            </div>
+            <div class="prerequisites mt-3">
+                <h3>Prerequisites</h3>
+                <ul>
+                    <li>Basic familiarity with HTML & CSS</li>
+                    <li>Basic knowledge of JavaScript and programming</li>
+                    <li>Spring Boot Basics</li>
+                    <li>Angular basics</li>
+                    <li>Node.js and npm installed globally</li>
+                </ul>
+            </div>
+            <div class="tools mt-5">
+                <h3 class="underline">Tools and technologies used</h3><br>
+                <h4>Server-side technologies</h4>
+                <ul>
+                    <li>Spring Boot</li>
+                    <li>JDK - 1.8 or later</li>
+                    <li>Spring Framework</li>
+                    <li>Spring Data JPA (Hibernate)</li>
+                </ul>
+            </div>
+            <div class="front mt-4">
+                <h4>Front end technologies</h4>
+                <ul>
+                    <li>Angular (Latest version as of now)</li>
+                    <li>Bootstrap 4</li>
+                    <li>Node and NPM</li>
+                    <li>JQuery</li>
+                </ul>
+            </div>
+            <div class="tools mt-4 mb-5">
+                <h4>Tools </h4>
+                <ul>
+                    <li>Maven - 3.2+</li>
+                    <li>IDE - Eclipse or Spring Tool Suite (STS) // Spring boot API development</li>
+                    <li>Visual Studio 2017 // Angular App development</li>
+                    <li>Angular CLI</li>
+                </ul>
+                <p>Let's first develop the Spring boot backend and build CRUD REST APIs.</p>
+            </div>
+
+            <!--  ******Create a Spring Boot Application******* -->
+
+            <div class="container mt-4">
+                <h3>1. Develop Spring Boot Backend Application
+                    <hr>
+                </h3>
+                <p>Following are five REST APIs (Controller handler methods), we will develop for Employee resource.</p>
+                <div class="image mt-2 mb-4  mx-auto ">
+                    <img src="assets/full_stack/rest-api-list.PNG" alt="logo" class="img-fluid" />
+                </div>
+                
+                <h4>Step1: Create a Spring Boot Application</h4>
+                <p>There are many ways to create a Spring Boot application. You can refer to the below articles to
+                    create a Spring Boot application.</p><br>
+                <a href="https://start.spring.io/;"> >> Create Spring Boot Project With Spring Initializer</a><br>
+                <a href="https://spring.io/tools?ref=faun"> >> Create Spring Boot Project in Spring Tool Suite [STS]</a>
+                <h3>Step 2: Maven dependencies</h3>
+                <div class=" mb-5">
+                    <pre><code>
+< dependency>
+    < groupId >org.springframework.boot< /groupId >
+    < artifactId>spring-boot-starter-data-jpa< /artifactId>
+< /dependency>
+< dependency>
+    < groupId>org.springframework.boot< /groupId>
+    < artifactId>spring-boot-starter-web< /artifactId>
+< /dependency>
+
+< dependency>
+    < groupId>org.springframework.boot< /groupId>
+    < artifactId>spring-boot-devtools< /artifactId>
+    < scope>runtime< /scope>
+    < optional>true< /optional>
+< /dependency>
+< dependency>
+    < groupId>com.h2database< /groupId>
+    < artifactId>h2< /artifactId>
+    < scope>runtime< /scope>
+< /dependency></code></pre>
+                </div>
+                <h3>3. Configuring Database (H2 or MySQL)</h3>
+                <h5>H2 Database Configuration</h5><br>
+                <p>In this project, we will use the H2 database to quickly set up and run a spring boot project without
+                    installing databases.</p>
+                <p>Note that we have added the below dependency in the pom.xml file:</p>
+                <div class=" mt-5">
+                    <pre><code>
+< dependency>
+    < groupId>com.h2database< /groupId>
+    < artifactId>h2< /artifactId>
+    < scope>runtime< /scope>
+< /dependency></code></pre>
+                </div><br>
+                <p>If you use the H2 database then we no need to configure the database-related properties in the
+                    <b>application.properties</b> file.
+                </p>
+                <div class=" mt-5">
+                    <pre><code>
+spring.datasource.url = jdbc:mysql://localhost:3306/EMS?useSSL=false
+spring.datasource.username = root
+spring.datasource.password = root
+
+
+## Hibernate Properties
+# The SQL dialect makes Hibernate generate better SQL for the chosen database
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+
+# Hibernate ddl auto (create, create-drop, validate, update)
+spring.jpa.hibernate.ddl-auto = update
+
+server.servlet.context-path=/springboot-crud-rest</code></pre>
+                </div><br>
+                <p>Make sure that you will change the above database configuration such as JDBC URL, username, and
+                    password as per your environment.</p>
+                <p><b> Step 3:</b> You need to create a database in MySQL server with the following command:</p>
+                <div class=" mt-5">
+                    <pre><code>create database EMS</code></pre>
+                </div><br>
+                <p>Hibernate will automatically create database tables so you only need to manually create the database
+                    and configure an <span class="span"> application.properties</span> file.</p>
+                <h3>4. Create JPA Entity - Employee.java</h3>
+                <p>Let's create a new package called <b>model</b> inside <b>net.javaguides.springboot</b> package and
+                    then create the Employee class inside the model package with the following contents -</p>
+                <div class=" mb-5">
+                    <pre><code>
+package net.javaguides.springboot.model;
+                
+import jakarta.persistence.*;
+                
+@Entity
+@Table(name = "employees")
+public class Employee {
+                
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+                
+    @Column(name = "first_name")
+    private String firstName;
+                
+    @Column(name = "last_name")
+    private String lastName;
+                
+    @Column(name = "email_id")
+    private String emailId;
+                
+    public Employee() {
+                
+    }
+                
+    public Employee(String firstName, String lastName, String emailId) {
+        super();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailId = emailId;
+    }
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
+    public String getFirstName() {
+        return firstName;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    public String getEmailId() {
+        return emailId;
+    }
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+}</code></pre>
+                </div>
+
+                <h3>5. Create a Spring Data Repository - EmployeeRepository.java</h3>
+                <p>Create a new package called <span class="span"> repository</span> inside <span class="span">
+                        net.javaguides.springboot</span> package and then create the following interface inside the
+                    repository package -</p>
+                <div class="">
+                    <pre><code>
+package net.javaguides.springboot.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+public class ResourceNotFoundException extends RuntimeException{
+
+private static final long serialVersionUID = 1L;
+
+public ResourceNotFoundException(String message) {
+    super(message);
+    }
+}</code></pre>
+                </div>
+                <h3>7. Create Spring Rest Controller - EmployeeController.java</h3>
+                <p>Let's create a <span class="span"> controller</span> package and within this, create an <span
+                        class="span">class and add the following code to it:</p>
+                <div class=" mt-4 mb-5">
+                    <code><pre>
+package net.javaguides.springboot.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+            
+import net.javaguides.springboot.exception.ResourceNotFoundException;
+import net.javaguides.springboot.model.Employee;
+import net.javaguides.springboot.repository.EmployeeRepository;
+            
+@CrossOrigin(origins = "http://localhost:4200")
+@RestController
+@RequestMapping("/api/v1/")
+public class EmployeeController {
+            
+        @Autowired
+        private EmployeeRepository employeeRepository;
+                
+        // get all employees
+        @GetMapping("/employees")
+        public List< Employee> getAllEmployees(){
+             return employeeRepository.findAll();
+         }		
+                
+        // create employee rest api
+        @PostMapping("/employees")
+        public Employee createEmployee(@RequestBody Employee employee) {
+            return employeeRepository.save(employee);
+         }
+                
+        // get employee by id rest api
+        @GetMapping("/employees/{id}")
+        public ResponseEntity< Employee> getEmployeeById(@PathVariable Long id) {
+        Employee employee = employeeRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id :" + id));
+            return ResponseEntity.ok(employee);
+        }
+                
+        // update employee rest api
+                
+        @PutMapping("/employees/{id}")
+        public ResponseEntity< Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employeeDetails){
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id :" + id));
+                    
+            employee.setFirstName(employeeDetails.getFirstName());
+            employee.setLastName(employeeDetails.getLastName());
+            employee.setEmailId(employeeDetails.getEmailId());
+                    
+            Employee updatedEmployee = employeeRepository.save(employee);
+            return ResponseEntity.ok(updatedEmployee);
+        }
+                
+        // delete employee rest api
+        @DeleteMapping("/employees/{id}")
+        public ResponseEntity< Map< String, Boolean>> deleteEmployee(@PathVariable Long id){
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id :" + id));
+                    
+                employeeRepository.delete(employee);
+                Map< String, Boolean> response = new HashMap<>();
+                response.put("deleted", Boolean.TRUE);
+                return ResponseEntity.ok(response);
+            }
+       }  </pre></code>
+                </div>
+
+
+                <h3>Enable CORS on the Server</h3>
+                <p>To enable CORS on the server, add a<span class="span"> @CrossOrigin</span> annotation to the <span
+                        class="span"> EmployeeController:</span></p>
+                <div class="">
+                    <code><pre>
+@CrossOrigin(origins = "http://localhost:4200")
+@RestController
+@RequestMapping("/api/v1/")
+public class EmployeeController {
+// ..
+} </pre></code>
+                </div>
+
+                <h3>8. Running Application</h3>
+                <p>This spring boot application has an entry point Java class called <span class="span">
+                        SpringbootBackendApplication.java</span> with the<span class="span"> public static void
+                        main(String[] args) method</span>, which you can run to start the application.</p>
+                <div class="">
+                    <code><pre>
+package net.javaguides.springboot;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+                    
+@SpringBootApplication
+public class SpringbootBackendApplication {
+                    
+public static void main(String[] args) {
+SpringApplication.run(SpringbootBackendApplication.class, args);
+      }
+                    
+  }</pre></code>
+                    <p>Or you can start the spring boot application via the command line using<b> mvn
+                            spring-boot:run</b> command.</p>
+
+                    <h3>9. Testing REST APIs</h3>
+                    <p>Use below Rest endpoints to test CRUD Rest APIs and in Angular application.</p>
+                    <h4>Get All Employees:</h4><br>
+                    <h5>HTTP Method: GET</h5>
+                    <div class="http mb-5">
+                        <code><pre>
+http://localhost:8080/api/v1/employees </pre></code>
+                    </div>
+
+                    <h4>Get Employee By Id:</h4><br>
+                    <h5>HTTP Method GET</h5>
+                    <div class="http mb-5">
+                        <code><pre>
+http://localhost:8080/api/v1/employees/{employeeId} </pre></code>
+                    </div>
+
+                    <h4>Create Employee:</h4><br>
+                    <h5>HTTP Method - POST</h5>
+                    <div class="http mb-5">
+                        <code><pre>
+http://localhost:8080/api/v1/employees </pre></code>
+                    </div>
+
+                    <h4>Update Employee</h4><br>
+                    <h5>HTTP Method - POST</h5>
+                    <div class="http mb-5">
+                        <code><pre>
+http://localhost:8080/api/v1/employees/{employeeId}</pre></code>
+                    </div>
+
+                    <h4>Delete Employee By Id:</h4><br>
+                    <h5>HTTP Method - DELETE</h5>
+                    <div class="http mb-2">
+                        <code><pre>
+http://localhost:8080/api/v1/employees/{employeeId} </pre></code>
+                    </div>
+                </div>
+                <p>This completes the development of Spring boot CRUD Rest APIs.
+                </p>
+            </div>
+
+            <!-- ***** Develop Angular Frontend Application***** -->
+
+            <div class="container mt-5">
+                <h3>2. Develop Angular Frontend Application
+                    <hr>
+                </h3>
+                <p>Let's develop a step-by-step CRUD (Create, Read, Update, Delete) web application using Angular 12
+                    which consumes CRUD rest APIs.<br><br>
+                    I assume that you have installed <b>Node.js</b>. Now, we need to check the<b> Node.js </b>and NPM
+                    versions. Open the terminal or Node command line then type these commands.</p>
+                <div class="node  mb-4">
+                    <code><pre>
+    G:\angular\Angular 12>node -v
+    v12.18.2
+
+    G:\angular\Angular 12>npm -v
+    6.14.5 </pre></code>
+                </div>
+                <h3>1. Install the latest version of Angular CLI</h3><br>
+                <p>To install or update Angular CLI, type this command in the Terminal or Node Command-Line.</p>
+                <div class="node  mb-4">
+                    <code><pre>
+  npm install -g @angular/cli</pre></code>
+                </div>
+                <p>Now, let's check the latest version of Angular CLI:</p>
+                <div class="node  mb-4">
+                    <code><pre>
+  G:\angular\Angular 12>ng --version
+
+     _                      _                 ____ _     ___
+    / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
+   / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
+  / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
+ /_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
+                |___/
+
+
+Angular CLI: 12.1.3
+Node: 12.18.2
+Package Manager: npm 6.14.5
+OS: win32 x64
+
+Angular:
+...
+
+Package                      Version
+------------------------------------------------------
+@angular-devkit/architect    0.1201.3 (cli-only)
+@angular-devkit/core         12.1.3 (cli-only)
+@angular-devkit/schematics   12.1.3 (cli-only)
+@schematics/angular          12.1.3 (cli-only) </pre></code>
+                </div>
+
+                <h3>2. Create Angular App using Angular CLI</h3>
+                <p>The <b>Angular CLI </b>is a command-line interface tool that you use to initialize, develop,
+                    scaffold, and maintain Angular applications.<br><br>
+                    If you are new to Angular CLI then check out official documentation at
+                    <a href="https://angular.dev/cli">https://cli.angular.io.</a><br><br>
+                    Let's use the below command to generate an Angular Client application. We name this project as<b>
+                        "angular-frontend"</b>.
+                </p>
+                <div class="new_application  mb-4">
+                    <code><pre>
+ ng new angular-frontend </pre></code>
+                </div>
+
+                <h3>3. Identify Components, Services, and Modules</h3>
+                <p>Let's list out what are <b>components, services,</b> and <b>modules</b> we are going to create in
+                    this application. We will use Angular CLI to generate components, services because Angular CLI
+                    follows best practices and saves much time.</p><br>
+                <h5>Components</h5>
+                <ul>
+                    <li>create-employee</li>
+                    <li>update-employee</li>
+                    <li>employee-list</li>
+                    <li>employee-details</li>
+                </ul>
+                <h5>Services</h5>
+                <ul>
+                    <li>employee.service.ts - Service for HTTP Client methods</li>
+                </ul>
+                <h5>Modules</h5>
+                <p>We use below in-built modules provided by Angular:</p>
+                <ul>
+                    <li>FormsModule</li>
+                    <li>HttpClientModule</li>
+                    <li>AppRoutingModule</li>
+                </ul>
+                <h4>Employee Class (Typescript class)</h4>
+                <ul>
+                    <li>employee.ts: class Employee (id, firstName, lastName, emailId)</li>
+                </ul>
+                <p>In the next step, we will generate these components, classes, and services using <b>Angular CLI.</b>
+                </p>
+                <h3>4. Create Angular Components and Service Classes using Angular CLI</h3>
+                <p>Let's auto-generate the service and components using <b>Angular CLI</b>. Change your project
+                    directory to <b>angular-frontend\src\app</b> and run the following commands:</p>
+                <div class="create-component">
+                    <code><pre>
+– ng g c create-employee
+– ng g c update-employee
+– ng g c employee-details
+– ng g c employee-list
+- ng g s employee  </pre></code>
+                </div>
+                <h3>5. Integrate JQuery and Bootstrap with Angular</h3>
+                <p>Use NPM to download Bootstrap & JQuery. Bootstrap and jQuery will be installed into the node_modules
+                    folder.</p>
+                <div class="npm_install">
+                    <code><pre>
+npm install bootstrap jquery --save </pre></code>
+                </div>
+
+
+                <p>Configure installed<b> Bootstrap</b> &<b> JQuery</b> in an <span class=" span">angular.json</span>
+                    file:</p>
+                <div class="">
+                    <code><pre>
+ ...
+
+"styles": [
+  "src/styles.css",
+  "node_modules/bootstrap/dist/css/bootstrap.min.css"
+],
+"scripts": [
+  "node_modules/jquery/dist/jquery.min.js",
+  "node_modules/bootstrap/dist/js/bootstrap.min.js"
+]
+ 
+... </pre></code>
+                </div>
+                <P>If bootstrap won't work then try to import bootstrap CSS in style.css like:</P>
+                <div class="footer">
+                    <code><pre>
+/* You can add global styles to this file, and also import other style files */
+
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width:100%;
+    height: 70px;
+    background-color: blue;
+    text-align: center;
+    color: white;
+} </pre></code>
+                </div>
+                <h3>6. Create an Employee Model (TypeScript)</h3><br>
+                <h6>Path - src/app/employee.ts</h6><br>
+                <p>Before defining the<b> EmployeeListComponent</b>, let’s define an<b> Employee</b> class for working
+                    with employees. create a new file<span class="span"> employee.ts</span> inside <span
+                        class="span">src/app</span> folder and add the following code to it -
+                </p>
+                <div class="class">
+                    <code><pre>
+export class Employee {
+    id: number;
+    firstName: string;
+    lastName: string;
+    emailId: string;
+}</pre></code>
+                </div>
+                <h3>7. Create Employee Service - REST Client</h3><br>
+                <h6>Path - src/app/employee.service.ts</h6><br>
+                <p>The EmployeeService will be used to get the data from the backend by calling spring boot APIs. Update
+                    the <span class="span">employee.service.ts</span> file inside <span class="span">src/app</span>
+                    directory with the following code to it -</p>
+                <div class="service">
+                    <code><pre>
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http'
+import { Observable } from 'rxjs';
+import { Employee } from './employee';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class EmployeeService {
+
+  private baseURL = "http://localhost:8080/api/v1/employees";
+
+  constructor(private httpClient: HttpClient) { }
+  
+  getEmployeesList(): Observable< Employee[]>{
+    return this.httpClient.get< Employee[]>(`${this.baseURL}`);
+  }
+
+  createEmployee(employee: Employee): Observable< Object>{
+    return this.httpClient.post(`${this.baseURL}`, employee);
+  }
+
+  getEmployeeById(id: number): Observable< Employee>{
+    return this.httpClient.get< Employee>(`${this.baseURL}/${id}`);
+  }
+
+  updateEmployee(id: number, employee: Employee): Observable< Object>{
+    return this.httpClient.put(`${this.baseURL}/${id}`, employee);
+  }
+
+  deleteEmployee(id: number): Observable< Object>{
+    return this.httpClient.delete(`${this.baseURL}/${id}`);
+  }
+}</pre></code>
+                </div>
+                <p>In the next step, we will start creating Angular components.</p><br>
+
+
+
+                <h3>8. Creating Employee List Component and Template </h3>
+                <h6>Path - src/app/employee-list/employee-list.component.ts</h6>
+                <p>Let's create the <b>EmployeeListComponent</b> component which will be used to display a list of
+                    employees, create a new employee, and delete an employee.<br>
+                    Update/remove the content of <span class="span">employee-list.component.ts</span> inside<span
+                        class="span"> src/app</span> directory and add the following code to it -</p>
+                <div class="ts_component">
+                    <code><pre>
+import { Component, OnInit } from '@angular/core';
+import { Employee } from '../employee'
+import { EmployeeService } from '../employee.service'
+import { Router } from '@angular/router';
+@Component({
+  selector: 'app-employee-list',
+  templateUrl: './employee-list.component.html',
+  styleUrls: ['./employee-list.component.css']
+})
+export class EmployeeListComponent implements OnInit {
+
+  employees: Employee[];
+
+  constructor(private employeeService: EmployeeService,
+    private router: Router) { }
+
+  ngOnInit(): void {
+    this.getEmployees();
+  }
+
+  private getEmployees(){
+    this.employeeService.getEmployeesList().subscribe(data => {
+      this.employees = data;
+    });
+  }
+
+  employeeDetails(id: number){
+    this.router.navigate(['employee-details', id]);
+  }
+
+  updateEmployee(id: number){
+    this.router.navigate(['update-employee', id]);
+  }
+
+  deleteEmployee(id: number){
+    this.employeeService.deleteEmployee(id).subscribe( data => {
+      console.log(data);
+      this.getEmployees();
+    })
+  }
+}</pre></code>
+                </div>
+                <h3>9. Create Add Employee Component and Template</h3><br>
+                <h6>Path - src/app/create-employee/create-employee.component.ts</h6>
+                <p><b>CreateEmployeeComponent </b>is used to create and handle a new employee form data. Add the
+                    following code to it -</p>
+                <div class="ts_component">
+                    <code><pre>
+import { Component, OnInit } from '@angular/core';
+import { Employee } from '../employee';
+import { EmployeeService } from '../employee.service';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+
+  employee: Employee = new Employee();
+  constructor(private employeeService: EmployeeService,
+    private router: Router) { }
+
+  ngOnInit(): void {
+  }
+
+  saveEmployee(){
+    this.employeeService.createEmployee(this.employee).subscribe( data =>{
+      console.log(data);
+      this.goToEmployeeList();
+    },
+    error => console.log(error));
+  }
+
+  goToEmployeeList(){
+    this.router.navigate(['/employees']);
+  }
+  
+  onSubmit(){
+    console.log(this.employee);
+    this.saveEmployee();
+  }
+}</pre></code>
+                </div>
+                <h5>Path - src/app/create-employee/create-employee.component.html</h5><br>
+                <p>The<span class="span"> create-employee.component.html</span> shows the add employee HTML form. Add
+                    the following code to it -</p>
+                <div class="html_component mb-5">
+                    <code><pre>
+< div class="row">
+    < div class="card col-md-6 offset-md-3 offset-md-3">
+        < div class="row">
+            < h3 class="text-center"> Create Employee </h3>
+            < hr />
+            < div class="card-body">
+                < form (ngSubmit)="onSubmit()">
+
+                    < div class="form-group">
+                        < label> First Name</label>
+                        < input type="text" class="form-control" id="firstName" [(ngModel)]="employee.firstName"
+                            name="firstName">
+                    < /div>
+
+                    < div class="form-group">
+                        < label> Last Name</label>
+                        < input type="text" class="form-control" id="lastName" [(ngModel)]="employee.lastName"
+                            name="lastName">
+                    < /div>
+
+                    < div class="form-group">
+                        < label> Email Id</label>
+                        < input type="text" class="form-control" id="emailId" [(ngModel)]="employee.emailId"
+                            name="emailId">
+                    < /div>
+
+                    < br />
+                    < button class="btn btn-success" type="submit">Submit</button>
+
+                < /form>
+            < /div>
+        < /div>
+    < /div>
+< /div></pre></code>
+                </div>
+
+                <H3>10. Create Update Employee Component and Template</H3><br>
+                <h6>Path - src/app/update-employee/update-employee.component.ts</h6>
+                <p>In this <span class="span"> UpdateEmployeeComponent </span>, we first get the employee object using
+                    REST API and populate it in HTML form via data binding. Users can edit the employee form data and
+                    submit the form.</p><br>
+                <P>Let's add the following code to <span class="span"> UpdateEmployeeComponent </span>-</P>
+                <div class="component_ts">
+                    <code><pre>
+import { Component, OnInit } from '@angular/core';
+import { EmployeeService } from '../employee.service';
+import { Employee } from '../employee';
+import { ActivatedRoute, Router } from '@angular/router';
+
+@Component({
+  selector: 'app-update-employee',
+  templateUrl: './update-employee.component.html',
+  styleUrls: ['./update-employee.component.css']
+})
+export class UpdateEmployeeComponent implements OnInit {
+
+  id: number;
+  employee: Employee = new Employee();
+  constructor(private employeeService: EmployeeService,
+    private route: ActivatedRoute,
+    private router: Router) { }
+
+  ngOnInit(): void {
+    this.id = this.route.snapshot.params['id'];
+
+    this.employeeService.getEmployeeById(this.id).subscribe(data => {
+      this.employee = data;
+    }, error => console.log(error));
+  }
+
+  onSubmit(){
+    this.employeeService.updateEmployee(this.id, this.employee).subscribe( data =>{
+      this.goToEmployeeList();
+    }
+    , error => console.log(error));
+  }
+
+  goToEmployeeList(){
+    this.router.navigate(['/employees']);
+  }
+}</pre></code>
+                </div><br>
+
+
+                <h5>Path - src/app/update-employee/update-employee.component.html</h5>
+                <p>The<span class="span"> update-employee.component.html</span> shows the updated employee HTML form.
+                    Add the following code to this file -</p>
+                <div class="create-component">
+                    <code><pre>
+< div class="row">
+    < div class="card col-md-6 offset-md-3 offset-md-3">
+        < div class="row">
+            < h3 class="text-center"> Update Employee </h3>
+            < hr />
+            < div class="card-body">
+                < form (ngSubmit)="onSubmit()">
+
+                    < div class="form-group">
+                        < label> First Name</label>
+                        < input type="text" class="form-control" id="firstName" [(ngModel)]="employee.firstName"
+                            name="firstName">
+                    < /div>
+
+                    < div class="form-group">
+                        < label> Last Name</label>
+                        < input type="text" class="form-control" id="lastName" [(ngModel)]="employee.lastName"
+                            name="lastName">
+                    < /div>
+
+                    < div class="form-group">
+                        < label> Email Id</label>
+                        < input type="text" class="form-control" id="emailId" [(ngModel)]="employee.emailId"
+                            name="emailId">
+                    < /div>
+                    < br />
+                    < button class="btn btn-success" type="submit">Submit</button>
+
+                < /form>
+            < /div>
+        < /div>
+    < /div>
+< /div> </pre></code>
+                </div><br>
+                <h3>11. Create View Employee Details Component and Template</h3>
+                <h6>Path - src/app/employee-details/employee-details.component.ts</h6>
+                <p>The<span class="span"> EmployeeDetailsComponent</span> component is used to display a particular
+                    employee detail. Add the following code to it -</p>
+                <div class="detele_component">
+                    <code><pre>
+import { Component, OnInit } from '@angular/core';
+import { Employee } from '../employee';
+import { ActivatedRoute } from '@angular/router';
+import { EmployeeService } from '../employee.service';
+
+@Component({
+  selector: 'app-employee-details',
+  templateUrl: './employee-details.component.html',
+  styleUrls: ['./employee-details.component.css']
+})
+export class EmployeeDetailsComponent implements OnInit {
+
+  id: number
+  employee: Employee
+  constructor(private route: ActivatedRoute, private employeService: EmployeeService) { }
+
+  ngOnInit(): void {
+    this.id = this.route.snapshot.params['id'];
+
+    this.employee = new Employee();
+    this.employeService.getEmployeeById(this.id).subscribe( data => {
+      this.employee = data;
+    });
+  }
+}</pre></code>
+                </div><br>
+                <h6>Path - src/app/employee-details/employee-details.component.html</h6>
+                <P>The <span class="span"> employee-details.component.html</span> displays a particular employee detail.
+                    Add the following code to it -</P>
+                <div class="employee_details">
+                    <code><pre>
+< h3> View Employee Details</h3>
+< div>
+    < div>
+        < label> <b> First Name: </b></label> {{employee.firstName}}
+    < /div>
+     < div>
+        < label> <b> Last Name: </b></label> {{employee.lastName}}
+    < /div>
+    < div>
+        < label> <b> Email Id: </b></label> {{employee.emailId}}
+    < /div>
+< /div>    </pre></code>
+                </div><br>
+
+                <h3>12. package.json - Configure Dependencies</h3>
+                <h6>Path: /package.json</h6><br>
+                <p>The <span class="span"> package.json</span> file contains project configuration information including
+                    package dependencies that get installed when you run<span class="span"> npm install</span>. Full
+                    documentation is available on the <a
+                        href="https://docs.npmjs.com/cli/v10/configuring-npm/package-json">npm docs website</a>.</p>
+                <p><b>Note that angular version 12.1.0 is in the dependencies section in the below file.</b></p>
+                <div class="angular_version">
+                    <code><pre>
+{
+  "name": "angular-frontend",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "~12.1.0-",
+    "@angular/common": "~12.1.0-",
+    "@angular/compiler": "~12.1.0-",
+    "@angular/core": "~12.1.0-",
+    "@angular/forms": "~12.1.0-",
+    "@angular/platform-browser": "~12.1.0-",
+    "@angular/platform-browser-dynamic": "~12.1.0-",
+    "@angular/router": "~12.1.0-",
+    "bootstrap": "^5.0.2",
+    "jquery": "^3.6.0",
+    "rxjs": "~6.6.0",
+    "tslib": "^2.2.0",
+    "zone.js": "~0.11.4"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~12.1.3",
+    "@angular/cli": "~12.1.3",
+    "@angular/compiler-cli": "~12.1.0-",
+    "@types/jasmine": "~3.8.0",
+    "@types/node": "^12.11.1",
+    "jasmine-core": "~3.8.0",
+    "karma": "~6.3.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.0.3",
+    "karma-jasmine": "~4.0.0",
+    "karma-jasmine-html-reporter": "~1.7.0",
+    "typescript": "~4.3.2"
+  }
+} </pre></code>
+                </div><br><br>
+
+                <h3>13. App Routing Module</h3>
+                <h5>Path: /src/app/app.routing.module.ts</h5>
+                <p>Routing for the Angular app is configured as an array of <B>Routes</B>, each component is mapped to a
+                    path so the Angular Router knows which component to display based on the URL in the browser address
+                    bar.</p>
+                <div class="routing_module">
+                    <code><pre>
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { EmployeeListComponent } from './employee-list/employee-list.component';
+import { CreateEmployeeComponent } from './create-employee/create-employee.component';
+import { UpdateEmployeeComponent } from './update-employee/update-employee.component';
+import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
+
+const routes: Routes = [
+  {path: 'employees', component: EmployeeListComponent},
+  {path: 'create-employee', component: CreateEmployeeComponent},
+  {path: '', redirectTo: 'employees', pathMatch: 'full'},
+  {path: 'update-employee/:id', component: UpdateEmployeeComponent},
+  {path: 'employee-details/:id', component: EmployeeDetailsComponent}
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],                                                                                                                                                                                                                                                                                                          
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }  </pre></code>
+                </div><br><br>
+
+
+                <h3>14. App Component</h3>
+                <h5>Path: /src/app/app.component.ts</h5>
+                <p>The app component is the root component of the application, it defines the root tag of the app as
+                    with the selector property of the<b> @Component</b> decorator.</p>
+                <div class="app_component">
+                    <code><pre>
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'Angular + Spring Boot CRUD Full Stack App';
+}   </pre></code>
+                </div><br><br>
+
+                <h3>15. App Component Template</h3>
+                <h5>Path: /src/app/app.component.html</h5>
+                <p>Defines the HTML template associated with the root<span class="span"> AppComponent</span>.</p>
+                <div class="app_component_html">
+                    <code><pre>
+< nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+    < ul class = "navbar-nav">
+        < li class = "nav-item">
+            < a routerLink="employees" routerLinkActive="active" class="nav-link" >Employee List</a>
+        < /li>
+        < li class = "nav-item">
+            <a routerLink="create-employee" routerLinkActive="active" class="nav-link" >Add Employee</a>
+        < /li>
+    < /ul>
+< /nav>
+
+< h1 class="text-center"> {{title}} </h1>
+< div class = "container">
+    < router-outlet></router-outlet>
+< /div>
+< footer class = "footer">
+    < div class = "container">
+        < span>All Rights Reserved 2020 @JavaGuides</span>
+    < /div>
+< /footer></pre></code>
+                </div><br><br>
+
+                <h3>16. App Module</h3>
+                <h5>Path: /src/app/app.module.ts</h5>
+                <p>Defines the root module, named <span class="span"> AppModule</span>, that tells Angular how to
+                    assemble the application. Initially declares only the<span class="span"> AppComponent</span>. As you
+                    add more components to the app, they must be declared here.</p>
+                <div class="app_module">
+                    <code><pre>
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http'
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { EmployeeListComponent } from './employee-list/employee-list.component';
+import { CreateEmployeeComponent } from './create-employee/create-employee.component';
+import { FormsModule} from '@angular/forms';
+import { UpdateEmployeeComponent } from './update-employee/update-employee.component';
+import { EmployeeDetailsComponent } from './employee-details/employee-details.component'
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    EmployeeListComponent,
+    CreateEmployeeComponent,
+    UpdateEmployeeComponent,
+    EmployeeDetailsComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { } </pre></code>
+                </div><br><br>
+
+                <h3>17. Running Angular Client Application</h3>
+                <p>Let's run the above developed Angular App with a command:</p>
+                <div class="ng_serve">
+                    <code><pre>
+ng serve </pre></code>
+                </div>
+                <p>By default, the Angular app runs on 4200 port but you can change the default port with the following
+                    command:</p>
+
+                <div class="port">
+                    <code><pre>
+ng serve --port 4201 </pre></code>
+                </div><br>
+
+                <h2>3. Demo of Complete Full-stack Application</h2>
+                <p>Make sure that both (Spring boot and Angular) applications are up and running.<br><br>
+
+                    Hit <a href="http://localhost:4200"> http://localhost:4200</a> link in a browser that will host this
+                    Angular CRUD app.<br><br>
+
+                    Below are the screenshots shows the UI of our <b>Employee Management System</b> App.</p><br>
+                <h4>Employee List Page</h4>
+                <div class="image mt-2 mb-4 mx-auto">
+                    <img src="assets/full_stack/spring boot angular full stack application - list employees (1).png"
+                        alt="logo"  class="img-fluid"/>
+                </div><br>
+                <h4>Add Employee Page</h4>
+                <div class="image mt-2 mb-4 mx-auto">
+                    <img src="assets/full_stack/spring boot-angular-add-employee.png" alt="logo" class="img-fluid" />
+                </div><br>
+                <h4>Update Employee Page</h4>
+                <div class="image mt-2 mb-4 mx-auto">
+                    <img src="assets/full_stack/springboot-angular-update-employee.png" alt="logo"  class="img-fluid"/>
+                </div><br><br>
+                <h3>4. Conclusion</h3>
+
+                <p>In this full-stack tutorial, we have seen how to develop a CRUD (Create, Read, Update, Delete) web
+                    application using Angular 12 as a front-end and <span class="span"> Spring boot</span> as a
+                    backend.<br><br>
+                    <p class="text-break">
+                        The source code of this tutorial is hosted on our GitHub repository at 
+                        <a href="https://github.com/sourcecodeexamples/angular-springboot-crud-example" target="_blank">
+                            https://github.com/sourcecodeexamples/angular-springboot-crud-example
+                        </a>.
+                    </p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
