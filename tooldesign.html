@@ -41,6 +41,30 @@
       font-weight: bold;
     }
 
+    .nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Adjust the styling of the dropdown */
+.nav-item.dropdown .dropdown-menu {
+    display: none;
+    margin-top: 0; /* Ensure no margin is added when hovering */
+    transition: visibility 0.3s, opacity 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Optional: Add a background color to the dropdown items on hover */
+.dropdown-item:hover {
+    background-color: #9387e1;
+}
+
+
     .overlap-container {
       position: relative;
       background: url('assets/media/components/b-title-page/bg-1.jpg') center/cover no-repeat;
@@ -205,11 +229,20 @@
                 data-bs-toggle="dropdown" aria-expanded="false">TRAINING COURSES</a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <li>
+                  <a href="spring_framework_tutorial.html" class="dropdown-item">Spring Framework Tutorial</a>
+                </li>
+                <li>
+                  <a href="spring_boot_tutorial.html" class="dropdown-item">Spring Boot Tutorial</a>
+                </li>
+                <li>
                   <a href="java_fullstack.html" class="dropdown-item">Java Fullstack</a>
                 </li>
                 <li>
                   <a href="mern_stack.html" class="dropdown-item">MERN Stack</a>
                 </li>
+                <li>
+                  <a href="angular_CRUD_example_with_spring_boot.html" class="dropdown-item">Full Stack</a>
+                </li>  
                
               </ul>
             </li>

@@ -18,6 +18,8 @@
       /* Adjust the height of the logo image */
     }
 
+ 
+
     body {
       font-family: 'Poppins', sans-serif;
     }
@@ -58,8 +60,9 @@
     }
 
     .navbar-brand img {
-      max-width: 100%;
-      height: auto;
+      max-width: 80%;
+      /* height: auto; */
+      /* margin-bottom: 1px; */
     }
 
     .carousel-item img {
@@ -83,16 +86,118 @@
       font-weight: bold;
 
     }
+
+
+    /* Make the dropdown visible on hover */
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Adjust the styling of the dropdown */
+.nav-item.dropdown .dropdown-menu {
+    display: none;
+    margin-top: 0; /* Ensure no margin is added when hovering */
+    transition: visibility 0.3s, opacity 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Optional: Add a background color to the dropdown items on hover */
+.dropdown-item:hover {
+    background-color: #9387e1;
+}
+
+
+/* *********************************** */
+.rounded-social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.rounded-social-buttons .social-button {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 60%;
+    background-color: #333;
+    text-align: center;
+    color: white;
+    font-size: 25px;
+    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+  
+  .rounded-social-buttons .social-button:hover {
+    transform: rotate(360deg);
+    background-color: #555555;
+  }
+
+.rounded-social-buttons .social-button.whatsup {
+    background-color: #58ed3a;
+}
+
+.rounded-social-buttons .social-button.twitter {
+    background-color: #1DA1F2;
+}
+
+.rounded-social-buttons .social-button.youtube {
+    background-color: #FF0000;
+}
+
+.rounded-social-buttons .social-button.facebook {
+    background-color: #3b5998;
+}
+
+.rounded-social-buttons .social-button.instagram {
+    background-color: #f42175;
+}
+
+.rounded-social-buttons .social-button i {
+    line-height: 50px;
+}
+
+
+
+
   </style>
 </head>
 
 <body>
   <div class="container-fluid">
+
+    <nav class="navbar navbar-expand-lg navbar-white bg-white ms-auto">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="index.html">
+              <img src="assets/media/general/logo.png" alt="logo" />
+          </a>
+          <div class="enquiry">
+              <p style="text-align: center;">For Course Enquiry - +91 9676222172</p>
+          </div>
+      </div>
+      <div class="d-lg-block d-md-none d-none">                    
+          <div class="rounded-social-buttons">
+              <a class="social-button whatsup" href="https://wa.me/919676037084" target="_blank"><i class="fab fa-whatsapp"></i></a>
+              <a class="social-button twitter" href="https://twitter.com/SaharshLabs" target="_blank"><i class="fab fa-twitter"></i></a>
+              <a class="social-button youtube" href="https://www.youtube.com/channel/UCYiEiIFCc6pKmT_Lhdf26wA" target="_blank"><i class="fab fa-youtube"></i></a>
+              <a class="social-button facebook" href="https://www.facebook.com/profile.php?id=61554818810785" target="_blank"><i class="fab fa-facebook"></i></a>
+              <a class="social-button instagram" href="https://www.instagram.com/saharsh_code_craft_labs/" target="_blank"><i class="fab fa-instagram"></i></a>
+          </div>
+      </div>
+  </nav>
+  
+
     <nav class="navbar navbar-expand-lg navbar-white bg-dark ms-auto">
       <div class="container-fluid ">
-        <a class="navbar-brand" href="index.html">
+        <!-- <a class="navbar-brand" href="index.html">
           <img src="assets/media/general/logo.png" alt="logo" />
-        </a>
+        </a> -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
           aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -100,7 +205,7 @@
         <div class="collapse navbar-collapse mx-auto" id="navbarNavDropdown">
           <ul class="navbar-nav mx-auto">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="index.html">HOME</a>
+              <a class="nav-link" aria-current="page" href="index.html">HOME</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" aria-current="page" href="about.html">ABOUT</a>
