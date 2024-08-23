@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 18px;
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+
+<body>
+
+    <body>
+        <div class="content">
+            <div class="overlap-container">
+                <div class="container mt-3">
+                    <h1>Spring AI Prompts with Example</h1>
+                    <h4>Author: Yakambram K</h4>
+                    <p>In this tutorial, we will set up a Spring Boot application, configure Spring AI, and create
+                        prompts manually to interact with AI models via ChatClient.</p>
+                    <h2>Introduction</h2>
+                    <p>Prompts are essential for directing AI models to generate specific outputs. In this tutorial, we
+                        will create and use<br><br> prompts directly without relying on the <a
+                            href="spring_ai_prompt_template_tutorial">PromptTemplate</a> class, giving you more control
+                        over the prompt creation <br><br>process. We will use Spring AI to interact with OpenAI's GPT
+                        models through the ChatClient abstraction.</p>
+                    <p>You can use the <a href="spring_ai_prompt_template_tutorial">PromptTemplate</a> class to
+                        dynamically generate prompts for AI model interactions via ChatClient.</p>
+                
+                types of large language models (LLMs) without coupling with the actual LLM model.</p>
+                <h2>1. Setting Up the Project</h2>
+                <h3>Step 1: Create a New Spring Boot Project</h3>
+
+                <p>Use Spring Initializr to create a new Spring Boot project. Include dependencies for Spring Web and
+                    Spring AI.</p>
+                <h3>Using Spring Initializr:</h3>
+                <ul class="steps">
+                    <li class="">Go to <a href="https://start.spring.io/"> start.spring.io</a></li><br>
+                    <li>Select</li><br>
+                    <ul class="circle-list">
+                        <li>Project: Maven Project</li><br>
+                        <li>Language: Java</li><br>
+                        <li>Spring Boot: 3.0.0 (or latest)</li><br>
+                        <li> Dependencies: Spring Web</li><br>
+                    </ul>
+                    <li>Generate the project and unzip it.</li>
+                </ul>
+                <h3>Step 2: Add Dependencies</h3>
+                <p>In your project's pom.xml, add the necessary dependencies for Spring AI.</p>
+                <img src="./assets/springboot images/dependecies.png.PNG" alt="add_dependencies_image"
+                    class="imge-fluid">
+
+                <h2>2. Configuring Spring AI</h2>
+                <h3>Step 1: Add API Key to Configuration</h3>
+                <p>Add your OpenAI API key to application.properties or application.yml.</p>
+                <p>For application.properties:</p>
+
+                <img src="./assets/springboot images/dependecies.png1.PNG" alt="add_dependencies_image"
+                    class="imge-fluid">
+                <h3>Step 2: Configure Spring Beans</h3>
+                <p>Create a configuration class to set up all necessary Spring beans, including the OpenAiClient,
+                    ChatClient, and PromptTemplate.</p>
+
+                <div class="mb-5">
+                    <pre><code>    
+package com.example.demo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.ai.openai.OpenAiClient;
+import org.springframework.ai.openai.OpenAiChatClient;
+import org.springframework.ai.openai.ChatClient;
+import org.springframework.ai.prompts.PromptTemplate;
+            
+@Configuration
+public class AppConfig {
+            
+@Bean
+public OpenAiClient openAiClient() {
+return new OpenAiClient();
+}
+            
+@Bean
+public ChatClient chatClient(OpenAiClient openAiClient) {
+return new OpenAiChatClient(openAiClient);
+}
+            
+@Bean 
+
+public PromptTemplate jokePromptTemplate() {
+return new PromptTemplate("Tell me a {
+adjective} joke about {topic}");
+}
+}
+</code></pre>
+                </div>
+
+                <h2>3. Creating and Using Prompts</h2>
+                <h3>Step 1: Create a Service to Use the Prompt</h3>
+                <p>Create a service to use the PromptTemplate for generating prompts and interacting with the AI model
+                    through ChatClient</p>
+                <div class="mb-5">
+                    <code><pre>
+package com.example.demo.service;
+
+import org.springframework.ai.openai.ChatClient;
+import org.springframework.ai.prompts.PromptTemplate;
+import org.springframework.ai.openai.model.ChatRequest;
+import org.springframework.ai.openai.model.ChatResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
+
+@Service
+public class PromptService {
+
+private final ChatClient chatClient;
+private final PromptTemplate jokePromptTemplate;
+
+@Autowired
+public PromptService(ChatClient chatClient, PromptTemplate jokePromptTemplate) {
+this.chatClient = chatClient;
+this.jokePromptTemplate = jokePromptTemplate;
+}
+
+public String generateJoke(String adjective, String topic) {
+// Create the prompt with the provided variables
+String prompt = jokePromptTemplate.create(Map.of("adjective", adjective, "topic", topic));
+
+// Create a ChatRequest with the generated prompt
+ChatRequest request = new ChatRequest();
+request.setMessage(prompt);
+
+// Get the response from the ChatClient
+ChatResponse response = chatClient.sendMessage(request);
+
+} return response.getReply();
+}
+</code></pre>
+                </div>
+                <h2>Step 2: Create a Controller to Expose the Service</h2>
+                <p>Create a controller to expose an endpoint for generating jokes.</p>
+                <div class="mb-5">
+                    <code>
+<pre>
+package com.example.demo.controller;
+
+import com.example.demo.service.PromptService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class PromptController {
+
+private final PromptService promptService;
+
+@Autowired
+public PromptController(PromptService promptService) {
+this.promptService = promptService;
+}
+
+@GetMapping("/joke")
+public String getJoke(@RequestParam String adjective, @RequestParam String topic) {
+return promptService.generateJoke(adjective, topic);
+}
+}
+</code>
+                    </pre>
+                </div>
+                <h2>4. Testing the Integration</h2>
+                <h3>Step 1: Run the Application</h3>
+                <p>Run your Spring Boot application. Ensure the application starts without errors.</p>
+
+                <h2>Step 2: Access the Joke Endpoint</h2>
+                <p>Use Postman, curl, or your browser to test the endpoint. For example:</p>
+                <div class="mb-5">
+                    <code><pre>
+http://localhost:8080/joke?adjective=funny&topic=technology
+</code></pre>
+                </div>
+                <p>
+                    You should receive a joke response generated by the AI model based on the prompt template.</p>
+                <h2>Conclusion</h2>
+                <p>This tutorial demonstrated how to set up and use PromptTemplate with ChatClient in a Spring Boot
+                    application<br> <br>
+                    using Spring AI. You learned how to create a PromptTemplate, use it in a service, and expose an
+                    endpoint to <br><br>
+                    interact with the AI model. This setup allows you to create dynamic and structured prompts,
+                    enhancing the <br><br>
+                    capabilities of your AI applications. Explore further customization and enhancements to leverage the
+                    full potential <br><br>of prompts in your Spring Boot projects.
+                    For more detailed information, refer to the <a
+                            href="https://docs.spring.io/spring-ai/reference/">Spring AI documentation.</a></p>
+
+
+            </div>
+        </div>
+    </div>
+    </body>
+
+</html>
