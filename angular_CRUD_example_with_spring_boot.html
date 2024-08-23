@@ -155,6 +155,13 @@
             text-decoration-style: dashed;
             text-decoration-thickness: 2px;
         }
+
+        .scrollup {
+         position: fixed;
+         bottom: 20px; /* Adjust this value to position it higher or lower */
+         right: 20px;  /* Adjust this value to position it further left or right */
+         z-index: 1000; /* Ensures it stays on top of other elements */
+        } 
     </style>
 </head>
 
@@ -1351,6 +1358,11 @@ ng serve --port 4201 </pre></code>
                     </p>
             </div>
         </div>
+        <div class="scrollup justify-content-end">
+          <a href="#">
+                  <img class="scrollup" src="assets/img/arrow.png" alt="">
+           </a>
+          </div>
     </div>
 
 
