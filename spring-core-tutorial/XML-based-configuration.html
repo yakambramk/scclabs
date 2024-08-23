@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 13.6px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring IOC Container XML Config Example</h1>
+        <p>In this tutorial, we will explore a simple example to demonstrate the Spring IoC (Inversion of Control)
+            Container with XML-based configuration metadata.</p>
+        <h2>Introduction</h2>
+        <p>In a previous article, we discussed <a href="/spring-core-tutorial/spring.ioc.container.overview.html">What
+                is Spring IOC Container and how it works.</a> Now, let's
+            dive into a practical example to understand how to configure Spring beans using XML-based configuration
+            metadata.</p>
+        <h3>Ways to Supply Configuration Metadata to the Spring IoC Container</h3>
+        <ol>
+            <li><a href="/spring-core-tutorial/XML-based-configuration.html"></a>XML-based configuration</li>
+            <li><a href=""></a>Annotation-based configuration</li>
+            <li><a href=""></a>Java-based configuration</li>
+        </ol>
+        <h2>Spring IOC Container XML Config Example</h2>
+        <p>In this example, we will supply XML-based configuration metadata to the Spring IoC container.</p>
+        <h4>Development Steps</h4>
+        <p>Follow these steps to develop a Spring application:</p>
+        <ol>
+            <li>Create a simple Maven Project</li>
+            <li>Add Maven Dependencies</li>
+            <li>Configure HelloWorld Spring Beans</li>
+            <li>Create a Spring Container</li>
+            <li>Retrieve Beans from the Spring Container</li>
+        </ol>
+        <h3>Tools and Technologies Used</h3>
+        <ul>
+            <li>Spring Framework - 6.0.6</li>
+            <li>JDK - 17 or later</li>
+            <li>Maven - 3.2+</li>
+            <li>IDE - Eclipse Mars/STS</li>
+        </ul>
+        <h4>Step 1: Create a Simple Maven Project</h4>
+        <p>Create a simple Maven project using your favourite IDE and refer to the <a href="">Guide to Create a Simple
+                Maven Project.</a></p>
+        <h4>Step 2: Project Structure</h4>
+        <p>The below diagram shows a project structure for your reference:</p>
+        <img src="../assets/spring-core-tutorial-images/project-structure.png">
+        <h4>Step 3: Add Maven Dependencies</h4>
+        <p>Add the following content to the <code>pom.xml file:</code></p>
+        <pre><code>
+        < project xmlns="http://maven.apache.org/POM/4.0.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+            < modelVersion>4.0.0</modelVersion>
+            < groupId>net.javaguides.spring</groupId>
+            < artifactId>spring-ioc-example</artifactId>
+            < version>0.0.1-SNAPSHOT</version>
+            < properties>
+                < maven.compiler.target>17</maven.compiler.target>
+                < maven.compiler.source>17</maven.compiler.source>
+            < /properties>
+            < dependencies>
+                < dependency>
+                    < groupId>org.springframework</groupId>
+                    < artifactId>spring-context</artifactId>
+                    < version>6.0.6</version>
+                </ dependency>
+            < /dependencies>
+        < /project></code></pre>
+        <h4>Step 4: Configure HelloWorld Spring Beans</h4>
+        <p><b>What is a Spring Bean?</b></p>
+        <p>A Spring bean is a Java object that is managed by the Spring container.</p>
+        <p>Create a <code>HelloWorld</code> Java class with the following content:</p>
+        <pre><code>
+            package net.javaguides.spring.ioc;
+
+            public class HelloWorld {
+                private String message;
+            
+                public void setMessage(String message) {
+                    this.message = message;
+                }
+            
+                public void getMessage() {
+                    System.out.println("My Message : " + message);
+                }
+            }</code></pre>
+            <p>Next, configure the <code>HelloWorld</code> class as a Spring bean using XML-based configuration:</p>
+    </div>
+</body>
+
+</html>

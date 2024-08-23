@@ -2,182 +2,108 @@
 <html lang="en">
 
 <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        <meta name="author" content="Fullstack Institute" />
-        <meta name="author" content="Yakambram Kommu" />
-        <title>Spring Boot Tutorial</title>
-</head>
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Tutorial</title>
+    <style>
         body {
-                font-family: 'Poppins', sans-serif;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
         }
-
-        .navbar-brand img {
-                max-height: 80px;
+        .side-panel{
+            width: 250px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
         }
-
-        .navbar-nav .nav-item.active .nav-link,
-        .navbar-nav .nav-item:hover .nav-link {
-                color: #1a59a7 !important;
-                font-weight: bold;
-        }
-
-        /* Add this style rule to highlight the dropdown menu item on hover */
-        .navbar-nav .nav-item.dropdown:hover .nav-link {
-                color: #1a59a7 !important;
-                font-weight: bold;
-        }
-
-        /* Add this style rule to highlight the active dropdown menu item */
-        .navbar-nav .nav-item.dropdown.active .nav-link {
-                color: #1a59a7 !important;
-                font-weight: bold;
-        }
-
-        /* Add this style rule to highlight the dropdown menu item on hover */
-        .navbar-nav .nav-item.dropdown:hover .nav-link {
-                color: #1a59a7 !important;
-                font-weight: bold;
-        }
-
-        .nav-item.dropdown:hover .dropdown-menu {
-                display: block;
-        }
-
-        /* Adjust the styling of the dropdown */
-        .nav-item.dropdown .dropdown-menu {
-                display: none;
-                margin-top: 0;
-                /* Ensure no margin is added when hovering */
-                transition: visibility 0.3s, opacity 0.3s ease;
-                opacity: 0;
-                visibility: hidden;
-        }
-
-        .nav-item.dropdown:hover .dropdown-menu {
-                opacity: 1;
-                visibility: visible;
-        }
-
-        /* Optional: Add a background color to the dropdown items on hover */
-        .dropdown-item:hover {
-                background-color: #9387e1;
-        }
-
-
-
-
-        /* ************************************ */
-        body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                display: flex;
-        }
-
-        .side-panel {
-                width: 250px;
-                background-color: #f4f4f4;
-                padding: 20px;
-                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        }
-
+    
         h4 {
-                color: red;
+            color: red;
         }
-
+    
         .content {
-                flex-grow: 0.5;
-                padding: 20px;
-
+            flex-grow: 0.5;
+            padding: 20px;
+            
         }
-
+    
         .container {
-                max-width: 800px;
-                margin: auto;
+            max-width: 800px;
+            margin: auto;
         }
-
+    
         h1 {
-                margin-bottom: 20px;
-                text-align: left;
-                color: red;
+            margin-bottom: 20px;
+            text-align: left;
+            color: red;
         }
-
+    
         p {
-                line-height: 1.6;
-                text-align: left;
+            line-height: 1.6;
+            text-align: left;
         }
-
+    
         .important {
-                color: black;
-                /* Color for "Important:" */
-                font-weight: bold;
+            color: black;
+            /* Color for "Important:" */
+            font-weight: bold;
         }
-
+    
         .message {
-                color: red;
-                /* Color for the rest of the text */
+            color: red;
+            /* Color for the rest of the text */
         }
-
+    
         .learn {
-                color: blue;
+            color: blue;
         }
-
+    
         a {
-                text-decoration: none;
+            text-decoration: none;
         }
-
         .overlap-container {
-                position: relative;
-                background: url('assets/media/components/b-title-page/bg-1.jpg') center/cover no-repeat;
-                color: #fff;
-                padding: 100px;
-                height: 100px;
-                width: 1000px;
-                overflow: visible;
+          position: relative;
+          background: url('assets/media/components/b-title-page/bg-1.jpg') center/cover no-repeat;
+          color: #fff;
+          padding: 100px;
+          height: 100px;
+          width: 1000px;
+          overflow: visible;
         }
-
+    
         .overlay {
-                position: absolute;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                left: 0;
-                background-color: rgba(0, 0, 0, 0.5);
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background-color: rgba(0, 0, 0, 0.5);
         }
-
         .text-container {
-                position: absolute;
-                bottom: 0;
-                left: 60%;
-                transform: translateX(-40%);
-                text-align: center;
-                padding: 15px;
-
+          position: absolute;
+          bottom: 0;
+          left: 60%;
+          transform: translateX(-40%);
+          text-align: center;
+          padding: 15px;
+    
         }
-
         .text-container h3 {
-                font-size: 24px;
+          font-size: 24px;
         }
-
+    
         .text-container h1 {
-                font-size: 48px;
-                font-weight: bold;
+          font-size: 48px;
+          font-weight: bold;
         }
-</style>
+    </style>
+    
+</head>
 
 <body>
 
-<<<<<<< Updated upstream
-        <div class="content">
-=======
             <h2><b>New Posts on Spring Boot</b></h2>
             <ul>
                 <li><a href="spring_ai_prompt_template_tutorial.html">Spring AI PromptTemplate Tutorial</a></li><br>
@@ -395,7 +321,6 @@
                 <a href="Learn Spring Core Framework">Learn Spring Core Framework</a>
             </p>
             <p>Once you are familiar with Spring core fundamentals, you can learn Spring Boot.</p>
->>>>>>> Stashed changes
 
                 <nav class="navbar navbar-expand-lg navbar-white bg-white ms-auto">
                         <div class="container-fluid ">
