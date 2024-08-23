@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring AI Example tutorial</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 18px;
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+
+            <div class="container mt-3">
+                <h1>Spring AI Example tutorial</h1>
+                <h4>author: Sai K</h4>
+                <p>Prompts and prompt engineering are crucial in generative AI, significantly influencing the
+                    effectiveness of the AI's<br><br> output. A well-designed prompt can lead to more accurate and
+                    relevant
+                    responses. This tutorial will walk you <br><br>through creating an AI poet using Spring AI and
+                    demonstrate
+                    the use of simple prompts, prompt templates,<br><br> and roles to enhance AI interactions.</p>
+                <br>
+                <ul>
+                    <li>1.<b>Prompts: </b> Instructions given to the AI model to generate responses.</li><br>
+                    <li>2.<b>Prompt Templates:</b> Structured prompts with placeholders that can be dynamically replaced
+                        with actual<br><br> data at runtime.</li><br>
+                    <li>3. <b>Roles:</b> Different roles (system, user, assistant, function) help manage the context and
+                        behavior of AI <br><br>interactions.</li><br>
+                </ul>
+                <p>Let's create a Spring Boot project, integrate Spring AI, and generate content using OpenAPI for the
+                    poet <br><br>prompts.</p>
+
+                <h2>1. Setting Up the Project</h2>
+                <h3>Step 1: Create a New Spring Boot Project</h3>
+
+                <p>Use Spring Initializr to create a new Spring Boot project. Include dependencies for Spring Web and
+                    Spring AI.</p>
+                <h3>Using Spring Initializr:</h3>
+                <ul class="steps">
+                    <li class="">Go to <a href="https://start.spring.io/"> start.spring.io</a></li><br>
+                    <li>Select</li><br>
+                    <ul class="circle-list">
+                        <li>Project: Maven Project</li><br>
+                        <li>Language: Java</li><br>
+                        <li>Spring Boot: 3.0.0 (or latest)</li><br>
+                        <li> Dependencies: Spring Web</li><br>
+                    </ul>
+                    <li>Generate the project and unzip it.</li>
+                </ul>
+                <h3>Step 2: Add Dependencies</h3>
+                <p>In your project's pom.xml, add the necessary dependencies for Spring AI.</p>
+                <img src="../assets/springboot images/dependecies.png.PNG" alt="add_dependencies_image"
+                    class="imge-fluid">
+
+                <h2>Step 1: Add API Key to Configuration</h2>
+                <p>Add your OpenAI API key to application.properties or application.yml.</p>
+                <p>For application.properties:</p>
+
+                <img src="../assets/springboot images/dependecies.png1.PNG" alt="add_dependencies_image"
+                    class="imge-fluid">
+                <h3>Step 2: Configure Spring Beans</h3>
+                <p>Create a configuration class to set up the necessary Spring beans, including the OpenAiClient and
+                    ChatClient.</p>
+                <pre><code>
+ package com.example.demo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.ai.openai.OpenAiClient;
+import org.springframework.ai.openai.OpenAiChatClient;
+import org.springframework.ai.openai.ChatClient;
+import org.springframework.ai.prompts.PromptTemplate;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public OpenAiClient openAiClient() {
+        return new OpenAiClient();
+    }
+
+    @Bean
+    public ChatClient chatClient(OpenAiClient openAiClient) {
+        return new OpenAiChatClient(openAiClient);
+    }
+
+    @Bean
+    public PromptTemplate poetPromptTemplate() {
+        return new PromptTemplate("Write a {adjective} poem about {topic}");
+    }
+}
+        </code></pre>
+                <h2>Creating and Using Prompts</h2>
+                <h3>Step 1: Simple Prompt</h3>
+                <p>Create a service to interact with the AI using a simple prompt.</p>
+                <pre><code>
+ package com.example.demo.service;
+
+import org.springframework.ai.openai.ChatClient;
+import org.springframework.ai.openai.model.ChatMessage;
+import org.springframework.ai.openai.model.ChatRequest;
+import org.springframework.ai.openai.model.ChatResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+            
+import java.util.List;
+            
+ @Service
+ public class PoetService {
+            
+ private final ChatClient chatClient;
+            
+  @Autowired
+ public PoetService(ChatClient chatClient) {
+   this.chatClient = chatClient;
+  }
+            
+public String generateSimplePoem(String adjective, String topic) {
+ String prompt = "Write a " + adjective + " poem about " + topic;
+ChatMessage userMessage = new ChatMessage("user", prompt);
+            
+ChatRequest request = new ChatRequest();
+request.setMessages(List.of(userMessage));
+
+ChatResponse response = chatClient.sendMessage(request);
+ return response.getReply();
+  }
+     }
+        </code></pre>
+                <h2>Step 2: Prompt Template</h2>
+                <p>Create a service to use the PromptTemplate for generating prompts.</p>
+                <pre><code>
+package com.example.demo.service;
+
+import org.springframework.ai.openai.ChatClient;
+import org.springframework.ai.prompts.PromptTemplate;
+import org.springframework.ai.openai.model.ChatMessage;
+import org.springframework.ai.openai.model.ChatRequest;
+import org.springframework.ai.openai.model.ChatResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
+
+@Service
+public class PoetService {
+
+    private final ChatClient chatClient;
+    private final PromptTemplate poetPromptTemplate;
+
+    @Autowired
+    public PoetService(ChatClient chatClient, PromptTemplate poetPromptTemplate) {
+        this.chatClient = chatClient;
+        this.poetPromptTemplate = poetPromptTemplate;
+    }
+
+    public String generateTemplatePoem(String adjective, String topic) {
+        String prompt = poetPromptTemplate.create(Map.of("adjective", adjective, "topic", topic));
+        ChatMessage userMessage = new ChatMessage("user", prompt);
+
+        ChatRequest request = new ChatRequest();
+        request.setMessages(List.of(userMessage));
+
+        ChatResponse response = chatClient.sendMessage(request);
+        return response.getReply();
+    }
+}
+            </code></pre>
+                <h2>Step 3: Using Roles</h2>
+                <p>Enhance the service to use roles to manage the context and behavior of the AI interaction.</p>
+                <pre><code>
+ package com.example.demo.service;
+
+import org.springframework.ai.openai.ChatClient;
+import org.springframework.ai.prompts.PromptTemplate;
+import org.springframework.ai.openai.model.ChatMessage;
+import org.springframework.ai.openai.model.ChatRequest;
+import org.springframework.ai.openai.model.ChatResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+
+@Service
+public class PoetService {
+
+private final ChatClient chatClient;
+private final PromptTemplate poetPromptTemplate;
+
+@Autowired
+public PoetService(ChatClient chatClient, PromptTemplate poetPromptTemplate) {
+this.chatClient = chatClient;
+this.poetPromptTemplate = poetPromptTemplate;
+}
+
+public String generateRoleBasedPoem(String adjective, String topic) {
+String prompt = poetPromptTemplate.create(Map.of("adjective", adjective, "topic", topic));
+
+ChatMessage systemMessage = new ChatMessage("system", "You are a poetic assistant.");
+ChatMessage assistantMessage = new ChatMessage("assistant", "I will help you write a beautiful poem.");
+ChatMessage userMessage = new ChatMessage("user", prompt);
+
+ChatRequest request = new ChatRequest();
+request.setMessages(List.of(systemMessage, assistantMessage, userMessage));
+
+ChatResponse response = chatClient.sendMessage(request);
+ return response.getReply();
+    }
+}
+            </code></pre>
+                <h2>Exposing the Services via REST</h2>
+                <h3>Create a Controller to Expose the Services</h3>
+                <p>Create a controller to expose endpoints for generating poems using simple prompts, prompt templates,
+                    and role-based interactions.</p>
+                <pre><code>
+package com.example.demo.controller;
+
+import com.example.demo.service.PoetService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class PoetController {
+
+private final PoetService poetService;
+
+@Autowired
+public PoetController(PoetService poetService) {
+this.poetService = poetService;
+ }
+
+ @GetMapping("/generateSimplePoem")
+    
+public String generateSimplePoem(@RequestParam String adjective, @RequestParam String topic) {
+        return poetService.generateSimplePoem(adjective, topic);
+    }
+
+```java
+    @GetMapping("/generateTemplatePoem")
+public String generateTemplatePoem(@RequestParam String adjective, @RequestParam String topic) {
+    return poetService.generateTemplatePoem(adjective, topic);
+     }
+
+    @GetMapping("/generateRoleBasedPoem")
+
+public String generateRoleBasedPoem(@RequestParam String adjective, @RequestParam String topic) {
+        return poetService.generateRoleBasedPoem(adjective, topic);
+    }
+}
+            </code></pre>
+                <h2>Testing the Integration</h2>
+                <h3>Step 1: Run the Application</h3>
+                <p>Run your Spring Boot application. Ensure the application starts without errors.</p>
+                <h2>Step 2: Access the Endpoints</h2>
+                <p>Use Postman, curl, or your browser to test the endpoints.</p>
+                <p>1.<b>Generate Simple Poem:</b></p>
+                <pre><code>
+                http://localhost:8080/generateSimplePoem?adjective=beautiful&topic=nature
+            </code></pre>
+                <p>2.<b>Generate Template Poem:</b></p>
+                <pre><code>
+                http://localhost:8080/generateTemplatePoem?adjective=melancholic&topic=autumn
+            </code></pre>
+                <p>3.<b>Generate Role-Based Poem:</b></p>
+                <pre><code>
+                 http://localhost:8080/generateRoleBasedPoem?adjective=inspiring&topic=the universe
+</code></pre>
+                <p>You should receive responses generated by the AI model based on the provided prompts, templates, and
+                    roles.</p>
+                <h2>Conclusion</h2>
+                <p>This tutorial demonstrated how to set up and use Spring AI to create an AI poet. You learned how to
+                    configure<br><br> Spring AI and create and use simple prompts, prompt templates, and role-based
+                    prompts to interact with the AI<br><br> model. This setup allows you to create structured and
+                    contextually relevant prompts, enhancing the capabilities<br><br> of your AI applications. </p>
+                <p>Explore further customization and enhancements to leverage the full potential of prompts and roles in
+                    your<br><br> Spring Boot projects.</p>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

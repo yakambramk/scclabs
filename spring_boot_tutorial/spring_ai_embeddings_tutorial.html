@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring AI Embeddings Tutorials</title>
+</head>
+<style>
+     .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 18px;
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+    a{
+        text-decoration: none;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+
+            <div class="container mt-3">
+                <h1>Spring AI Embeddings Tutorial</h1>
+                <h4>author:Sai K</h4>
+                <br><br>
+                <h2>Introduction</h2>
+                <p>Embeddings transform text into numerical arrays or vectors, enabling AI models to process and interpret<br><br> language data. This transformation from text to numbers and back is crucial for how AI interact with<br><br> and understands human languages. As a Java develpoer exploring AI, it's not necessary to comprehend the<br><br> intricate mathematical theories or the specific implementations behind these vector representation. A basic<br><br> understanding of their role and function within AI system suffices, particularly when you're intergrating<br><br> AI functionalities into your applications. </p><br>
+                <p>Emdeddings are particularly relevant in practical applications like the Retrieval Augmented Generation (RAG)<br><br> pattern. They represent data as points in a semantic space, where the proximity of points reflects similarity in<br><br> meaning.This aids in tasks like text classification,semantic search,and product recommendations, as it allows the<br><br> AI to discern and group related concepts based on their 'location ' in this expanded semantic landscape. </p>
+             <h2>What are Spring AI Embeddings?</h2>
+             <p>Embedding APIs can convert words, sentences, documents, or images into embeddings. An embedding is a<br><br> vector representation of these elements. For example:</p>
+              <ul>
+                <li> word "Apple" might be represented as a vector [0.1, 0.2, 0.3, 0.4, 0.5].</li><br>
+                <li>A sentence "I love Apple" might be represented as a vector [0.1, 10.3, -10.2, 90.3, 2.4, -0.5].</li>
+             </ul>
+             <p>Spring AI provides an EmbeddingClient interface to convert text or documents into embeddings.You can use <br><br>any of the supported EmbeddingClient implementations like OpenAiEmbeddingClient, OllamaEmbeddingClient, <br><br>AzureOpenAiEmbeddingClient,VertexAiEmbeddingClient,etc.</p>
+            <h2>How to use Spring Ai Embeddings</h2>
+            <h2>1. Setting Up the Project</h2>
+            <h3>Step 1: Create a New Spring Boot Project</h3>
+
+            <p>Use Spring Initializr to create a new Spring Boot project. Include dependencies for Spring Web and
+                Spring AI.</p>
+            <h3>Using Spring Initializr:</h3>
+            <ul class="steps">
+                <li class="">Go to <a href="https://start.spring.io/"> start.spring.io</a></li><br>
+                <li>Select</li><br>
+                <ul class="circle-list">
+                    <li>Project: Maven Project</li><br>
+                    <li>Language: Java</li><br>
+                    <li>Spring Boot: 3.0.0 (or latest)</li><br>
+                    <li> Dependencies: Spring Web</li><br>
+                </ul>
+                <li>Generate the project and unzip it.</li>
+            </ul>
+            <h3>Step 2: Add Dependencies</h3>
+            <p>In your project's pom.xml, add the necessary dependencies for Spring AI.</p>
+            <img src="../assets/springboot images/dependecies.png.PNG" alt="add_dependencies_image"
+                class="imge-fluid">
+
+            <h2>Step 3: Configure API Key</h2>
+            <p>Add your OpenAI API key to application.properties or application.yml.</p>
+            <p>For application.properties:</p>
+
+            <img src="../assets/springboot images/dependecies.png1.PNG" alt="add_dependencies_image"
+                class="imge-fluid">
+            <h3>Step 4: Configure Spring Beans</h3>
+            <p>Create a configuration class to set up the necessary Spring beans, including the OpenAiClient.</p>
+<pre><code>
+    package com.example.demo.config;
+
+    import org.springframework.context.annotation.Bean;
+    import org.springframework.context.annotation.Configuration;
+    import org.springframework.ai.openai.OpenAiClient;
+    import org.springframework.ai.openai.OpenAiEmbeddingClient;
+    import org.springframework.ai.embeddings.EmbeddingClient;
+    
+    @Configuration
+    public class AppConfig {
+    
+        @Bean
+        public OpenAiClient openAiClient() {
+            return new OpenAiClient();
+        }
+    
+        @Bean
+        public EmbeddingClient embeddingClient(OpenAiClient openAiClient) {
+            return new OpenAiEmbeddingClient(openAiClient);
+        }
+    }
+</code></pre>
+
+<h2>Step 5:Create a Service For Embeddings</h2>
+<p>Create a service to generate embeddings for given text inputs.</p>
+<pre><code>package com.example.demo.service;
+
+    import org.springframework.ai.embeddings.EmbeddingClient;
+    import org.springframework.ai.embeddings.EmbeddingRequest;
+    import org.springframework.ai.embeddings.EmbeddingResponse;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.stereotype.Service;
+    
+    import java.util.List;
+    
+    @Service
+    public class EmbeddingService {
+    
+        private final EmbeddingClient embeddingClient;
+    
+        @Autowired
+        public EmbeddingService(EmbeddingClient embeddingClient) {
+            this.embeddingClient = embeddingClient;
+        }
+    
+        public List<Double> generateEmbedding(String text) {
+            EmbeddingRequest request = new EmbeddingRequest();
+            request.setInput(text);
+    
+            EmbeddingResponse response = embeddingClient.createEmbedding(request);
+            return response.getData().get(0).getEmbedding();
+        }
+    }</code></pre>
+    <h2> Step 6:Create a Controller to Expose the service</h2>
+    <p>Create a controller to expose an endpoint for generating embeddings.</p>
+    <pre><code>package com.example.demo.controller;
+
+        import com.example.demo.service.EmbeddingService;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.web.bind.annotation.GetMapping;
+        import org.springframework.web.bind.annotation.RequestParam;
+        import org.springframework.web.bind.annotation.RestController;
+        
+        import java.util.List;
+        
+        @RestController
+        public class EmbeddingController {
+        
+            private final EmbeddingService embeddingService;
+        
+            @Autowired
+            public EmbeddingController(EmbeddingService embeddingService) {
+                this.embeddingService = embeddingService;
+            }
+        
+            @GetMapping("/generateEmbedding")
+            public List<Double> generateEmbedding(@RequestParam String text) {
+                return embeddingService.generateEmbedding(text);
+            }
+        }</code></pre>
+        <h2>Step 7: Using ChatClient with Embeddings</h2>
+        <p>To use embeddings within a chat interaction, you can integrate the ChatClient as follows:</p>
+          <pre><code>
+            package com.example.demo.service;
+
+import org.springframework.ai.embeddings.EmbeddingClient;
+import org.springframework.ai.embeddings.EmbeddingRequest;
+import org.springframework.ai.embeddings.EmbeddingResponse;
+import org.springframework.ai.openai.ChatClient;
+import org.springframework.ai.openai.model.ChatMessage;
+import org.springframework.ai.openai.model.ChatRequest;
+import org.springframework.ai.openai.model.ChatResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ChatEmbeddingService {
+
+    private final EmbeddingClient embeddingClient;
+    private final ChatClient chatClient;
+
+    @Autowired
+    public ChatEmbeddingService(EmbeddingClient embeddingClient, ChatClient chatClient) {
+        this.embeddingClient = embeddingClient;
+        this.chatClient = chatClient;
+    }
+
+    public String chatWithEmbedding(String text) {
+        EmbeddingRequest request = new EmbeddingRequest();
+        request.setInput(text);
+
+        EmbeddingResponse embeddingResponse = embeddingClient.createEmbedding(request);
+        List<Double> embedding = embeddingResponse.getData().get(0).getEmbedding();
+
+        ChatMessage userMessage = new ChatMessage("user", text);
+        ChatMessage embeddingMessage = new ChatMessage("system", "Embedding: " + embedding.toString());
+
+        ChatRequest chatRequest = new ChatRequest();
+        chatRequest.setMessages(List.of(userMessage, embeddingMessage));
+
+        ChatResponse chatResponse = chatClient.sendMessage(chatRequest);
+        return chatResponse.getReply();
+    }
+}
+          </code></pre>
+
+          <h2>Testing the Integration</h2>
+          <h3>Step 1: Run the Application</h3>
+          <h2>Acess the Embedding EndPoint</h2>
+          <p>Use Postman, curl, or your browser to test the endpoint. For example:</p>
+          <pre><code>
+            http://localhost:8080/generateEmbedding?text=Artificial Intelligence is transforming the world.
+          </code></pre>
+<h2> Step 3:Access the Chat With Embedding EndPoint</h2>
+<pre><code>
+    
+http://localhost:8080/chatWithEmbedding?text=Explain the concept of embeddings.
+</code></pre>
+<p>You should receive responses with the numerical array (vector) representing the embedding of the provided text<br><br> and the AI's response to the chat request.</p>
+<h2>Conclusion</h2>
+<p>This tutorial demonstrated how to set up and use embeddings in a Spring Boot application with Spring AI. You<br><br> learned how to configure Spring AI, generate embeddings for text inputs, and expose endpoints to interact with<br><br> the AI model. Integrating embeddings with chat interactions further enhances the capabilities of your AI<br><br> applications. Explore further customization and enhancements to leverage the full potential of embeddings <br><br>in your Spring Boot projects.</p>
+
+
+    
+    </div>
+        </div>
+    </div>
+</body>
+
+</html>
