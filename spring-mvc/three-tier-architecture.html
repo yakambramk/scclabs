@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width-device-width, initial-scale=1.0">
+    <title>Three Tier (Three Layer) Architecture in Spring MVC Web Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px, 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Three Tier (Three Layer) Architecture in Spring MVC Web Application</h1>
+        <p>In this article, we will discuss how to create three-layer architecture in Spring MVC web applications.</p>
+        <p>In this article, we will discuss:</p>
+        <ol>
+            <li>Three Tier (Three Layer) Architecture</li>
+            <li>Three Tier (Three Layer) Architecture VS MVC Pattern</li>
+            <li>How to use Three-layer architecture in Spring MVC web applications.</li>
+        </ol>
+        <h2>1.Three Tier (Three Layer) Architecture</h2>
+        <p>Three-tier (or three-layer) architecture is a widely accepted solution to organize the codebase. According to
+            this architecture, the codebase is divided into three separate layers with distinctive responsibilities:</p>
+        <img src="/assets/spring-mvc-image/three tier architecture.png" alt="" class="image-fluid">
+        <p><b>Presentation layer:</b> This is the user interface of the application that presents the application’s
+            features and data to the user.
+        </p>
+        <p><b>Business logic (or Application) layer:</b>This layer contains the business logic that drives the
+            application’s core functionalities. Like making decisions, calculations, evaluations, and processing the
+            data passing between the other two layers.</p>
+        <p><b>Data access layer (or Data) layer:</b>This layer is responsible for interacting with databases to save and
+            restore application data.</p>
+        <h2>2.Three Tier (Three Layer) Architecture VS MVC Pattern</h2>
+        <p>Let's see how these two architectural patterns (both containing three connected components) relate to each
+            other.</p>
+        <p>The MVC pattern is only concerned with organizing the logic in the user interface (presentation layer).
+            As the name implies, the MVC pattern has three layers: The Model defines the business layer of the
+            application, the Controller manages the flow of the application, and the View defines the presentation layer
+            of the application.
+        </p>
+        <ol>
+            <li><b>The Model Layer - </b>This is the data layer which contains the business logic of the system, and
+                also represents the state of the application. It’s independent of the presentation layer, the controller
+                fetches the data from the Model layer and sends it to the View layer.</li>
+            <li><b>The Controller Layer -</b>The controller layer acts as an interface between View and Model. It
+                receives requests from the View layer and processes them, including the necessary validations.</li>
+            <li><b>The View Layer -</b>This layer represents the output of the application, usually some form of UI. The
+                presentation layer is used to display the Model data fetched by the Controller.</li>
+        </ol>
+        <p>Three-tier architecture has a broader concern. It’s about organizing the code in the whole application.
+        </p>
+        <p>The controller component of MVC is the connection point between the two layers:</p>
+        <img src="/assets/spring-mvc-image/Screenshot 06-27-2020 22.28.15.png" alt="" class="image-fluid">
+        <h2>3. How to use Three-layer architecture in Spring MVC web applications.</h2>
+        <p>In a Spring MVC web application, the three layers of the architecture will manifest as follows:</p>
+        <img src="/assets/spring-mvc-image/Screenshot 06-27-2020 22.27.59 (1).png" alt="" class="image-fluid">
+        <ul>
+            <li><b>Controller classes</b> as the presentation layer. Keep this layer as thin as possible and limited to
+                the mechanics of the MVC operations, e.g., receiving and validating the inputs, manipulating the model
+                object, returning the appropriate ModelAndView object, and so on. All the business-related operations
+                should be done in the service classes. Controller classes are usually put in a controller package.</li>
+            <li><b>Service classes</b> as the business logic layer. Calculations, data transformations, data processes,
+                and cross-record validations (business rules) are usually done at this layer. They get called by the
+                controller classes and might call repositories or other services. Service classes are usually put in a
+                service package.
+            </li>
+            <li><b>Repository classes</b> as data access layer. This layer’s responsibility is limited to Create,
+                Retrieve, Update, and Delete (CRUD) operations on a data source, which is usually a relational or
+                non-relational database. Repository classes are usually put in a repository package.</li>
+        </ul>
+        <p>Consider below Spring MVC web application using Spring boot and thymeleaf. We have created a three-layer
+            architecture and each layer is mapped to the corresponding package.
+            For example:</p>
+            <ul>
+                <li>Presentation Layer - controller package</li>
+                <li>Business Logic Layer - service package</li>
+                <li>Data Access Layer - repository package </li>
+            </ul>
+            <img src="/assets/spring-mvc-image/Project-Structure (1).png" alt="" class="image-fluid">
+            <h2>Conclusion</h2>
+            <p>In this article, we have discussed:</p>
+            <ol>
+                <li>Three Tier (Three Layer) Architecture</li>
+                <li>Three Tier (Three Layer) Architecture VS MVC Pattern</li>
+                <li>How to use Three-layer architecture in Spring MVC web applications.</li>
+            </ol>
+
+    </div>
+</body>
+
+</html>

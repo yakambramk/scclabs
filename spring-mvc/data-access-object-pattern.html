@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Access Object Pattern in Java</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 0 15px;
+        }
+
+        h1 {
+            color: red;
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        .table {
+            width: 50%;
+            text-align: center;
+        }
+
+        .highlight {
+            color: rgb(197, 50, 50);
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            margin-top: 0px;
+            overflow: auto;
+            padding: 16px;
+            word-break: normal;
+            word-wrap: normal;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Data Access Object Pattern in Java</h1>
+        <p>The object provides an abstract interface to some type of database or another persistence mechanism. Let's
+            discuss how DAO encapsulates data access and manipulation in a separate layer.</p>
+        <p>It is hard to understand this pattern so my suggestion is to go to the source code section and have a look
+            at the code step by step to gain more clarity.</p>
+        <p>This pattern is divided into a number of sections for simplicity like a problem, forces, solution,
+            implementation, etc.</p>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Table of contents</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Problem</td>
+                </tr>
+                <tr>
+                    <td>Forces</td>
+                </tr>
+                <tr>
+                    <td>Solution</td>
+                </tr>
+                <tr>
+                    <td>Structure - Class Diagram, Sequence Diagram</td>
+                </tr>
+                <tr>
+                    <td>Participants and Responsibilities</td>
+                </tr>
+                <tr>
+                    <td>Implementation</td>
+                </tr>
+                <tr>
+                    <td>Consequences</td>
+                </tr>
+                <tr>
+                    <td>Applicability</td>
+                </tr>
+                <tr>
+                    <td>References</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Problem</h2>
+        <p class="highlight">(Problem section describes the design issues faced by the developer)</p>
+        <p>You want to encapsulate data access and manipulation in a separate layer.</p>
+        <h2>Forces
+        </h2>
+        <p class="highlight">(This section describes Lists the reasons and motivations that affect the problem and the
+            solution. The list of forces highlights the reasons why one might choose to use the pattern and provides a
+            justification for using the pattern)</p>
+        <ul>
+            <li> You want to implement data access mechanisms to access and manipulate data in a persistent storage.
+            </li>
+            <li> You want to decouple the persistent storage implementation from the rest of your application.</li>
+            <li> You want to provide a uniform data access API for a persistent mechanism to various types of data
+                sources, such as RDBMS, LDAP, OODB, XML repositories, flat files, and so on.</li>
+            <li> You want to organize data access logic and encapsulate proprietary features to facilitate
+                maintainability and portability.</li>
+        </ul>
+        <h2>Solution</h2>
+        <p class="highlight">(Here solution section describes the solution approach briefly and the solution elements in
+            detail)</p>
+        <p>Use a Data Access Object to abstract and encapsulate all access to the persistent store. The Data Access
+            Object manages the connection with the data source to obtain and store data.</p>
+        <h2>Benefits of using DAO Design Pattern</h2>
+        <ul>
+            <li> Data Access Object or DAO design pattern is a way to reduce coupling between Business logic and
+                Persistence logic.</li>
+            <li> DAO design pattern allows JUnit test to run faster as it allows to create Mock and avoid connecting to
+                a database to run tests. It improves testing because it's easy to write test with Mock objects, rather
+                than an Integration test with the database. In the case of any issue, while running Unit test, you only
+                need to check code and not database. Also shields with database connectivity and environment issues.
+            </li>
+            <li> Since DAO pattern is based on interface, it also promotes Object oriented design principle "programming
+                for interface than implementation" which results in flexible and quality code. </li>
+        </ul>
+        <h2>Structure</h2>
+        <p>Let's use the UML class diagram to show the basic structure of the solution and the UML Sequence diagram in
+            this section present the dynamic mechanisms of the solution. </p>
+        <p> Below is the class diagram representing the relationships for the DAO Pattern.</p>
+        <h4>Class Diagram
+        </h4>
+        <img src="/assets/spring-mvc-image/dao_structure.jpg" alt="" class="image-fluid">
+        <h4>Sequence Diagram</h4>
+        <img src="/assets/spring-mvc-image/dao_sequence_diagram.jpg" alt="">
+        <h4>Participants and Responsibilities</h4>
+        <p><b>Client</b> - A Client is an object that requires access to the data source to obtain and store data. The
+            Client can be a Business Object, a Session Façade, an Application Services, a Value List Handler, a Transfer
+            Object Assembler, or any other helper object that needs access to persistent data.</p>
+        <p><b>DataAccessObject</b> - The DataAccessObject is the primary role object of this pattern. The
+            DataAccessObject abstracts the underlying data access implementation for the Client to enable transparent
+            access to the data source.The DataAccessObject implements create (insert), find (load), update (store), and
+            delete operations.</p>
+        <p><b>DataSource</b> - The DataSource represents a data source implementation. A DataSource could be a database,
+            such as an RDBMS, LDAP, OODB, XML repository, flat file system, and so on. A DataSource can also be another
+            system (legacy/mainframe), service (B2B service or credit card bureau), or some kind of repository (LDAP).
+        </p>
+        <p><b>ResultSet </b>- The ResultSet represents the results of a query execution. For an RDBMS DataSource, when
+            an application is using JDBC API, this role is fulfilled by an instance of the java.sql.ResultSet.</p>
+        <p><b>Data</b> - The Data represents a transfer object used as a data carrier. The DataAccessObject can use a
+            Transfer Object to return data to the client. The DataAccessObject could also receive the data from the
+            client as a Transfer Object to update the data in the data source.</p>
+        <h2>Implementation</h2>
+        <p><b>Step 1 : </b>Create Customer domain model java class.</p>
+        <p>A Customer POJO that represents the data that will be read from the data source.</p>
+        <pre>
+            **
+            *
+            A customer POJO that represents the data that will be read from the data source.*
+                *
+                /
+            public class Customer {
+            
+                private int id;
+                private String firstName;
+                private String lastName;
+            
+                /**
+                 * Creates an instance of customer.
+                 */
+                public Customer(final int id, final String firstName, final String lastName) {
+                    this.id = id;
+                    this.firstName = firstName;
+                    this.lastName = lastName;
+                }
+            
+                public int getId() {
+                    return id;
+                }
+            
+                public void setId(final int id) {
+                    this.id = id;
+                }
+            
+                public String getFirstName() {
+                    return firstName;
+                }
+            
+                public void setFirstName(final String firstName) {
+                    this.firstName = firstName;
+                }
+            
+                public String getLastName() {
+                    return lastName;
+                }
+            
+                public void setLastName(final String lastName) {
+                    this.lastName = lastName;
+                }
+            
+                @Override
+                public String toString() {
+                    return "Customer{" + "id=" + getId() + ", firstName='" + getFirstName() + '\'' + ", lastName='" +
+                        getLastName() + '\'' + '}';
+                }
+            
+                @Override
+                public boolean equals(final Object that) {
+                    boolean isEqual = false;
+                    if (this == that) {
+                        isEqual = true;
+                    } else if (that != null && getClass() == that.getClass()) {
+                        final Customer customer = (Customer) that;
+                        if (getId() == customer.getId()) {
+                            isEqual = true;
+                        }
+                    }
+                    return isEqual;
+                }
+            
+                @Override
+                public int hashCode() {
+                    return getId();
+                }
+            }
+                    </pre>
+        <p><b>Step 2:</b> In an application, the Data Access Object (DAO) is a part of Data access layer. It is an
+            object that provides an interface to some type of persistence mechanism.</p>
+        <pre>
+                import java.util.Optional;
+import java.util.stream.Stream;
+
+/**
+ * In an application the Data Access Object (DAO) is a part of Data access layer. It is an object
+ * that provides an interface to some type of persistence mechanism. By mapping application calls
+ * to the persistence layer, DAO provides some specific data operations without exposing details 
+ * of the database. This isolation supports the Single responsibility principle. It separates what
+ * data accesses the application needs, in terms of domain-specific objects and data types 
+ * (the public interface of the DAO), from how these needs can be satisfied with a specific DBMS,
+ * database schema, etc.
+ * 
+ * <p>Any change in the way data is stored and retrieved will not change the client code as the 
+ * client will be using interface and need not worry about exact source.
+ * 
+ * @see InMemoryCustomerDao
+ * @see DbCustomerDao
+ */
+public interface CustomerDao {
+
+    /**
+     * @return all the customers as a stream. The stream may be lazily or eagerly evaluated based 
+     *     on the implementation. The stream must be closed after use.
+     * @throws Exception if any error occurs.
+     */
+    Stream < Customer > getAll() throws Exception;
+
+    /**
+     * @param id unique identifier of the customer.
+     * @return an optional with customer if a customer with unique identifier <code>id</code>
+     *     exists, empty optional otherwise.
+     * @throws Exception if any error occurs.
+     */
+    Optional < Customer > getById(int id) throws Exception;
+
+    /**
+     * @param customer the customer to be added.
+     * @return true if customer is successfully added, false if customer already exists.
+     * @throws Exception if any error occurs.
+     */
+    boolean add(Customer customer) throws Exception;
+
+    /**
+     * @param customer the customer to be updated.
+     * @return true if customer exists and is successfully updated, false otherwise.
+     * @throws Exception if any error occurs.
+     */
+    boolean update(Customer customer) throws Exception;
+
+    /**
+     * @param customer the customer to be deleted.
+     * @return true if customer exists and is successfully deleted, false otherwise.
+     * @throws Exception if any error occurs.
+     */
+    boolean delete(Customer customer) throws Exception;
+}
+            </pre>
+        <p><b>Step 3 :</b> An implementation of CustomerDao interface that persists customers in RDBMS.</p>
+
+        <pre>
+ import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Optional;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import javax.sql.DataSource;
+
+import org.apache.log4j.Logger;
+
+/**
+ * An implementation of {@link CustomerDao} that persists customers in RDBMS.
+ *
+ */
+public class DbCustomerDao implements CustomerDao {
+
+    private static final Logger LOGGER = Logger.getLogger(DbCustomerDao.class);
+
+    private final DataSource dataSource;
+
+    /**
+     * Creates an instance of {@link DbCustomerDao} which uses provided <code>dataSource</code>
+     * to store and retrieve customer information.
+     * 
+     * @param dataSource a non-null dataSource.
+     */
+    public DbCustomerDao(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    /**
+     * @return a lazily populated stream of customers. Note the stream returned must be closed to 
+     *     free all the acquired resources. The stream keeps an open connection to the database till
+     *     it is complete or is closed manually.
+     */
+    @Override
+    public Stream < Customer > getAll() throws Exception {
+
+        Connection connection;
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM CUSTOMERS"); // NOSONAR
+            ResultSet resultSet = statement.executeQuery(); // NOSONAR
+            return StreamSupport.stream(new Spliterators.AbstractSpliterator < Customer > (Long.MAX_VALUE,
+                Spliterator.ORDERED) {
+
+                @Override
+                public boolean tryAdvance(Consumer << ? super Customer > action) {
+                    try {
+                        if (!resultSet.next()) {
+                            return false;
+                        }
+                        action.accept(createCustomer(resultSet));
+                        return true;
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e); // NOSONAR
+                    }
+                }
+            }, false).onClose(() - > mutedClose(connection, statement, resultSet));
+        } catch (SQLException e) {
+            throw new CustomException(e.getMessage(), e);
+        }
+    }
+
+    private Connection getConnection() throws SQLException {
+        return dataSource.getConnection();
+    }
+
+    private void mutedClose(Connection connection, PreparedStatement statement, ResultSet resultSet) {
+        try {
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            LOGGER.info("Exception thrown " + e.getMessage());
+        }
+    }
+
+    private Customer createCustomer(ResultSet resultSet) throws SQLException {
+        return new Customer(resultSet.getInt("ID"),
+            resultSet.getString("FNAME"),
+            resultSet.getString("LNAME"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional < Customer > getById(int id) throws Exception {
+
+        ResultSet resultSet = null;
+
+        try (Connection connection = getConnection(); PreparedStatement statement =
+            connection.prepareStatement("SELECT * FROM CUSTOMERS WHERE ID = ?")) {
+
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(createCustomer(resultSet));
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException ex) {
+            throw new CustomException(ex.getMessage(), ex);
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean add(Customer customer) throws Exception {
+        if (getById(customer.getId()).isPresent()) {
+            return false;
+        }
+
+        try (Connection connection = getConnection(); PreparedStatement statement =
+            connection.prepareStatement("INSERT INTO CUSTOMERS VALUES (?,?,?)")) {
+            statement.setInt(1, customer.getId());
+            statement.setString(2, customer.getFirstName());
+            statement.setString(3, customer.getLastName());
+            statement.execute();
+            return true;
+        } catch (SQLException ex) {
+            throw new CustomException(ex.getMessage(), ex);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean update(Customer customer) throws Exception {
+        try (Connection connection = getConnection(); PreparedStatement statement =
+            connection.prepareStatement("UPDATE CUSTOMERS SET FNAME = ?, LNAME = ? WHERE ID = ?")) {
+            statement.setString(1, customer.getFirstName());
+            statement.setString(2, customer.getLastName());
+            statement.setInt(3, customer.getId());
+            return statement.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            throw new CustomException(ex.getMessage(), ex);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean delete(Customer customer) throws Exception {
+        try (Connection connection = getConnection(); PreparedStatement statement =
+            connection.prepareStatement("DELETE FROM CUSTOMERS WHERE ID = ?")) {
+            statement.setInt(1, customer.getId());
+            return statement.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            throw new CustomException(ex.getMessage(), ex);
+        }
+    }
+}
+            </pre>
+        <p><b>Step 4 :</b> Customer Schema SQL Class.</p>
+        <pre>
+                package com.iluwatar.dao;
+
+/**
+ * Customer Schema SQL Class
+ */
+public final class CustomerSchemaSql {
+
+    private CustomerSchemaSql() {}
+
+    public static final String CREATE_SCHEMA_SQL = "CREATE TABLE CUSTOMERS (ID NUMBER, FNAME VARCHAR(100), " +
+        "LNAME VARCHAR(100))";
+
+    public static final String DELETE_SCHEMA_SQL = "DROP TABLE CUSTOMERS";
+
+}
+            </pre>
+        <p><b>Step 5 :</b> Let's create some user specific CustomException java class .</p>
+        <pre>
+                /**
+ * 
+ * Custom exception
+ *
+ */
+public class CustomException extends Exception {
+
+    private static final long serialVersionUID = 1 L;
+
+    public CustomException() {}
+
+    public CustomException(String message) {
+        super(message);
+    }
+
+    public CustomException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+            </pre>
+        <p><b>Step 6:</b> An in-memory implementation of CustomerDao interface, which stores the customers in JVM memory
+            and data is lost when the application exits.</p>
+        <pre>
+                import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
+
+/**
+ * An in memory implementation of {@link CustomerDao}, which stores the customers in JVM memory
+ * and data is lost when the application exits.
+ * <br/>
+ * This implementation is useful as temporary database or for testing.
+ */
+public class InMemoryCustomerDao implements CustomerDao {
+
+    private Map < Integer, Customer > idToCustomer = new HashMap < > ();
+
+    /**
+     * An eagerly evaluated stream of customers stored in memory.
+     */
+    @Override
+    public Stream < Customer > getAll() {
+        return idToCustomer.values().stream();
+    }
+
+    @Override
+    public Optional < Customer > getById(final int id) {
+        return Optional.ofNullable(idToCustomer.get(id));
+    }
+
+    @Override
+    public boolean add(final Customer customer) {
+        if (getById(customer.getId()).isPresent()) {
+            return false;
+        }
+
+        idToCustomer.put(customer.getId(), customer);
+        return true;
+    }
+
+    @Override
+    public boolean update(final Customer customer) {
+        return idToCustomer.replace(customer.getId(), customer) != null;
+    }
+
+    @Override
+    public boolean delete(final Customer customer) {
+        return idToCustomer.remove(customer.getId()) != null;
+    }
+}
+            </pre>
+        <p><b>Step 7 : </b> Let's test the above application via program entry point.</p>
+        <pre>
+                import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
+import javax.sql.DataSource;
+
+import org.apache.log4j.Logger;
+import org.h2.jdbcx.JdbcDataSource;
+
+/**
+ * Data Access Object (DAO) is an object that provides an abstract interface to some type of
+ * database or other persistence mechanism. By mapping application calls to the persistence layer,
+ * DAO provide some specific data operations without exposing details of the database. This
+ * isolation supports the Single responsibility principle. It separates what data accesses the
+ * application needs, in terms of domain-specific objects and data types (the public interface of
+ * the DAO), from how these needs can be satisfied with a specific DBMS.
+ *
+ * <p>With the DAO pattern, we can use various method calls to retrieve/add/delete/update data 
+ * without directly interacting with the data source. The below example demonstrates basic CRUD 
+ * operations: select, add, update, and delete.
+ * 
+ * 
+ */
+public class App {
+    private static final String DB_URL = "jdbc:h2:~/dao";
+    private static Logger log = Logger.getLogger(App.class);
+
+    /**
+     * Program entry point.
+     * 
+     * @param args command line args.
+     * @throws Exception if any error occurs. 
+     */
+    public static void main(final String[] args) throws Exception {
+        final CustomerDao inMemoryDao = new InMemoryCustomerDao();
+        performOperationsUsing(inMemoryDao);
+
+        final DataSource dataSource = createDataSource();
+        createSchema(dataSource);
+        final CustomerDao dbDao = new DbCustomerDao(dataSource);
+        performOperationsUsing(dbDao);
+        deleteSchema(dataSource);
+    }
+
+    private static void deleteSchema(DataSource dataSource) throws SQLException {
+        try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
+            statement.execute(CustomerSchemaSql.DELETE_SCHEMA_SQL);
+        }
+    }
+
+    private static void createSchema(DataSource dataSource) throws SQLException {
+        try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
+            statement.execute(CustomerSchemaSql.CREATE_SCHEMA_SQL);
+        }
+    }
+
+    private static DataSource createDataSource() {
+        JdbcDataSource dataSource = new JdbcDataSource();
+        dataSource.setURL(DB_URL);
+        return dataSource;
+    }
+
+    private static void performOperationsUsing(final CustomerDao customerDao) throws Exception {
+        addCustomers(customerDao);
+        log.info("customerDao.getAllCustomers(): ");
+        try (Stream < Customer > customerStream = customerDao.getAll()) {
+            customerStream.forEach((customer) - > log.info(customer));
+        }
+        log.info("customerDao.getCustomerById(2): " + customerDao.getById(2));
+        final Customer customer = new Customer(4, "Dan", "Danson");
+        customerDao.add(customer);
+        log.info("customerDao.getAllCustomers(): " + customerDao.getAll());
+        customer.setFirstName("Daniel");
+        customer.setLastName("Danielson");
+        customerDao.update(customer);
+        log.info("customerDao.getAllCustomers(): ");
+        try (Stream < Customer > customerStream = customerDao.getAll()) {
+            customerStream.forEach((cust) - > log.info(cust));
+        }
+        customerDao.delete(customer);
+        log.info("customerDao.getAllCustomers(): " + customerDao.getAll());
+    }
+
+    private static void addCustomers(CustomerDao customerDao) throws Exception {
+        for (Customer customer: generateSampleCustomers()) {
+            customerDao.add(customer);
+        }
+    }
+
+    /**
+     * Generate customers.
+     * 
+     * @return list of customers.
+     */
+    public static List < Customer > generateSampleCustomers() {
+        final Customer customer1 = new Customer(1, "Adam", "Adamson");
+        final Customer customer2 = new Customer(2, "Bob", "Bobson");
+        final Customer customer3 = new Customer(3, "Carl", "Carlson");
+        final List < Customer > customers = new ArrayList < > ();
+        customers.add(customer1);
+        customers.add(customer2);
+        customers.add(customer3);
+        return customers;
+    }
+}
+            </pre>
+        <h2>Applicability</h2>
+        <p>Use the Data Access Object in any of the following situations</p>
+        <ul>
+            <li>when you want to consolidate how the data layer is accessed.</li>
+            <li>when you want to avoid writing multiple data retrieval/persistence layers.</li>
+        </ul>
+
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

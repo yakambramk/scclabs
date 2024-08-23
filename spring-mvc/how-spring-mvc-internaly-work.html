@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width-device-width, initial-scale=1.0">
+    <title>How Spring MVC Works Internally</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px, 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>How Spring MVC Works Internally
+        </h1>
+        <p>In this quick article, we will understand step by step how spring MVC works internally. This is one of the
+            frequently asked interview questions on the Spring MVC framework.</p>
+        <h2>Components in Spring MVC</h2>
+        <p>- DispatcherServlet</p>
+        <p> - Handler Mapper</p>
+        <p>- Controller</p>
+        <p>- ViewResolver</p>
+        <p>- View </p>
+        <h2>How Spring MVC Works Internally | Spring MVC Request Flow</h2>
+        <img src="/assets/spring-mvc-image/Screenshot 06-27-2020 13.31.14.png" alt="" class="image-fluid">
+        <p>Step 1 - When the client (browser) sends an HTTP request to a specific URL. The <b> DispatcherServlet</b> of
+            Spring MVC receives the request.</p>
+        <p>Step 2 - <b> DispatcherServlet </b> consult to <b>HandlerMapper</b> to identify which controller is
+            responsible to handle the HTTP request.</p>
+        <p>Step 3 - <b>HandlerMapper</b> selects the controller which is mapped to the incoming request URL and returns
+            the (selected Handler) and <b>Controller</b> details to <b>DispatcherServlet</b>.</p>
+        <p>Step 4 - Now <b>DispatcherServlet</b> knows which controller is responsible to process the request so
+            <b>DispatcherServlet</b> will forward that request to the corresponding controller to process the request.
+        </p>
+        <p>Step 5 - Now the <b>Controller</b> process the request, validates the request, and creates a model with data.
+            Finally, the <b>Controller</b> returns the logical name of view and model to the <b>DispatcherServlet</b>.
+        </p>
+        <p>Step 6 - <b>DispatcherServlet</b> consult <b>ViewResolver</b> to resolve a logical view with the physical view that exists
+            in the application.</p>
+        <p>Step 7 - <b>ViewResolver</b> responsible to map logical view with actual view and return the actual view details
+            back to the <b>DispatcherServlet</b>.</p>
+        <p>Step 8 - Now <b>DispatcherServlet</b> sends the view and model to the <b>View</b> component.</p>
+        <p>Step 9 - The View component merge view and model and forms a plain HTML output. Finally, the <b>View</b> component
+            sends HTML output back to the <b>DispatcherServlet</b>.</p>
+        <p>Step 10 - The <b>DispatcherServlet</b> finally sends HTML output as a response back to the browser for rendering.
+        </p>
+
+    </div>
+</body>
+
+</html>
