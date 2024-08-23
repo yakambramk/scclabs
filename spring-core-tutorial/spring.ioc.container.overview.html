@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        img {
+            margin: 0 15%;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 13.6px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>What is Spring IOC Container with Example</h1>
+        <p>In this blog post, we will explore the Spring IoC container, its configuration, usage, and examples. We'll
+            cover the following topics:</p>
+        <ol>
+            <li>What Is the Spring Container?</li>
+            <li>What is Configuration Metadata?</li>
+            <li>How to Create a Spring Container?</li>
+            <li>How to Retrieve Beans from Spring Container?</li>
+            <li>Create Spring IoC Container XML Config Example</li>
+            <li>Create Spring IoC Container Java Config Example</li>
+        </ol>
+
+        <h2>What Is the Spring Container?</h2>
+        <p>The Spring container is a core component of the Spring Framework. It is responsible for creating and managing
+            the lifecycle and configuration of application objects (beans). The container reads configuration metadata
+            to know how to instantiate, configure, and assemble these beans. This metadata can be supplied in various
+            forms, such as XML, annotations, or Java code.</p>
+        <h3>Responsibilities of the IoC Container</h3>
+        <ul>
+            <li><b>Instantiating beans: </b>Creating instances of the beans defined in the configuration.</li>
+            <li><b>Wiring beans: </b>Managing dependencies between beans.</li>
+            <li><b>Configuring beans: </b>Setting properties and managing initialization and destruction callbacks.</li>
+            <li><b>Managing the bean lifecycle: </b>Handling the complete lifecycle of a bean from creation to
+                destruction.</li>
+        </ul>
+        <p>Spring provides two main types of containers:</p>
+        <ol>
+            <li><b>BeanFactory: </b>The simplest container providing basic dependency injection features.</li>
+            <li><b>ApplicationContext: </b>An enhanced container providing more enterprise-specific functionality such
+                as event propagation, declarative mechanisms to create a bean, and various ways to look up.</li>
+        </ol>
+        <p>The org.springframework.beans and org.springframework.context packages are fundamental to the Spring
+            Framework’s IoC container.</p>
+        <h3>How the Spring IOC Container Works</h3>
+        <img src="../assets/spring-core-tutorial-images/spring-ioc-container.png">
+        <ol>
+            <li><b>Read Dependency and Configuration Metadata: </b>The Spring IoC container reads configuration
+                metadata, which can be supplied in XML, annotations, or Java-based configurations.</li>
+            <li><b>Create Dependency Objects and Inject Them: </b>Based on the configuration metadata, the container
+                creates and injects dependencies into business objects (POJOs).</li>
+        </ol>
+        <h2>What is Configuration Metadata?</h2>
+        <p>Configuration metadata is how you instruct the Spring container about the objects it should manage. It
+            defines how beans are created, configured, and assembled within the Spring IoC container. There are three
+            primary ways to provide configuration metadata to the Spring container:</p>
+        <ol>
+            <li><a href="/spring-core-tutorial/XML-based-configuration.html">XML-based configuration: </a>The traditional way to define beans and dependencies in XML
+                files.</li>
+            <li><a href="">Annotation-based configuration: </a>Uses annotations in Java classes to define beans and
+                their dependencies.</li>
+            <li><a href="">Java-based configuration: </a>Uses Java classes annotated with @Configuration and methods
+                annotated with @Bean to define beans and dependencies.</li>
+        </ol>
+        <h2>How to Create a Spring Container?</h2>
+        <p>Spring provides various implementations of the ApplicationContext interface, each suited for different
+            scenarios. Here are the common ones:</p>
+        <ol>
+            <li><b>AnnotationConfigApplicationContext: </b>Used for standalone Java applications with annotation-based
+                configuration.</li>
+            <li><b>ClassPathXmlApplicationContext: </b>Used for standalone applications with XML configuration loaded
+                from the classpath.</li>
+            <li><b>FileSystemXmlApplicationContext: </b> Similar to <code>ClassPathXmlApplicationContext</code>, but the
+                XML configuration file can be loaded from anywhere in the file system.</li>
+            <li><b>AnnotationConfigWebApplicationContext: </b>Used for web applications with annotation-based
+                configuration.</li>
+            <li><b>XmlWebApplicationContext: </b>Used for web applications with XML configuration.</li>
+        </ol>
+        <h4>Example: Creating a Spring Container</h4>
+        <p><strong>Using XML Configuration:</strong></p>
+        <pre><code>ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");</code></pre>
+        </code></pre>
+        <p><strong>Using Java Configuration:</strong></p>
+        <pre><code>AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);</code></pre>
+        <h3>How to Retrieve Beans from Spring Container?</h3>
+        <p>Both <code>BeanFactory</code> and <code>ApplicationContext</code> provide the <code>getBean()</code> method
+            to retrieve beans from the Spring container.</p>
+        <h4>ApplicationContext getBean() Example</h4>
+        <pre><code>ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+            HelloWorld obj = (HelloWorld) context.getBean("helloWorld");</code></pre>
+        <h4>BeanFactory getBean() Example</h4>
+        <pre><code>XmlBeanFactory factory = new XmlBeanFactory(new ClassPathResource("beans.xml"));
+         HelloWorld obj = (HelloWorld) factory.getBean("helloWorld");</code></pre>
+        <h3>Creating a Spring Container with XML Configuration</h3>
+        <h4>Step 1: Create a Maven Project</h4>
+        <p>Add the necessary Spring dependencies to your <code>pom.xml file:</code></p>
+        <pre><code>
+    < project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        < modelVersion>4.0.0</modelVersion>
+        < groupId>net.javaguides.spring</groupId>
+        < artifactId>spring-ioc-example</artifactId>
+        < version>0.0.1-SNAPSHOT</version>
+        < properties>
+        < maven.compiler.target>17</maven.compiler.target>
+        < maven.compiler.source>17</maven.compiler.source>
+        < /properties>
+        < dependencies>
+        < dependency>
+            < groupId>org.springframework</groupId>
+            < artifactId>spring-context</artifactId>
+            < version>6.0.6</version>
+        < /dependency>
+        < /dependencies>
+    < /project>
+</code></pre>
+
+        <h4>Step 2: Define Spring Beans in XML</h4>
+        <p>Create an <code>applicationContext.xml</code> file in the src/main/resources directory:</p>
+        <pre><code>
+            < ?xml version="1.0" encoding="UTF-8"?>
+            < beans xmlns="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+            < bean id="greetingService" class="net.javaguides.spring.ioc.GreetingService">
+            < property name="message" value="Hello, Spring XML Configuration!"/>
+            < /bean>
+            < /beans>
+        </code></pre>
+
+        <h4>Step 3: Create a Java Class to Retrieve Beans</h4>
+        <pre><code>
+            package net.javaguides.spring.ioc;
+
+            import org.springframework.context.ApplicationContext;
+            import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+            public class Application {
+                public static void main(String[] args) {
+                    ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+                    GreetingService greetingService = (GreetingService) context.getBean("greetingService");
+                 greetingService.getMessage();
+                }
+            }
+        </code></pre>
+
+        <h4>GreetingService.java:</h4>
+        <pre><code>
+            package net.javaguides.spring.ioc;
+
+            public class GreetingService {
+                private String message;
+
+                public void setMessage(String message) {
+                    this.message = message;
+                }
+
+                public void getMessage() {
+                     System.out.println("Message: " + message);
+                }
+            }
+        </code></pre>
+
+        <h3>Creating a Spring Container with Java Configuration</h3>
+        <h4>Step 1: Create a Maven Project</h4>
+        <p>Use the same Maven project setup as the XML example.</p>
+        <h4>Step 2: Define Spring Beans in Java</h4>
+        <p>Create an <code>AppConfig.java file:</code></p>
+
+        <pre><code>
+        package net.javaguides.spring.ioc;
+
+        import org.springframework.context.annotation.Bean;
+        import org.springframework.context.annotation.Configuration;
+
+        @Configuration
+        public class AppConfig {
+            @Bean
+            public GreetingService greetingService() {
+                GreetingService greetingService = new GreetingService();
+                greetingService.setMessage("Hello, Spring Java Configuration!");
+                return greetingService;
+            }
+        }
+        </code></pre>
+
+        <h4>Step 3: Create a Java Class to Retrieve Beans</h4>
+        <pre><code>package net.javaguides.spring.ioc;
+
+            import org.springframework.context.ApplicationContext;
+            import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+            
+            public class Application {
+                public static void main(String[] args) {
+                    ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+                    GreetingService greetingService = (GreetingService) context.getBean("greetingService");
+                    greetingService.getMessage();
+                    ((AnnotationConfigApplicationContext) context).close();
+                }
+            }</code></pre>
+        <h4>GreetingService.java:</h4>
+        <pre><code>package net.javaguides.spring.ioc;
+
+            public class GreetingService {
+                private String message;
+            
+                public void setMessage(String message) {
+                    this.message = message;
+                }
+            
+                public void getMessage() {
+                    System.out.println("Message: " + message);
+                }
+            }</code></pre>
+        <h3>Summary</h3>
+        <p>In this blog post, we covered the basics of the Spring IoC container, including how it works, what
+            configuration metadata is, and how to create and retrieve beans from the container using both XML and
+            Java-based configurations. This flexibility allows you to choose the most suitable configuration method for
+            your project's needs. By understanding these concepts, you can effectively leverage the power of Spring to
+            manage your application's dependencies and configurations.</p>
+    </div>
+</body>
+
+</html>
