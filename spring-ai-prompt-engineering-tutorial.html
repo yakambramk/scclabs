@@ -39,6 +39,24 @@
         list-style-type: circle;
         /* Use circles for list items */
     }
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 18px;
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+    a{
+        text-decoration: none;
+    }
 
 </style>
 <body>
@@ -66,10 +84,216 @@
     <p>Let's create a Spring Boot project and discuss how to achieve prompt engineering by using Spring AI.
     
     </p>
+<h2>1. Setting Up the Project</h2>
+<h3>Step 1: Create a New Spring Boot Project</h3>
 
-            </div>
-        </div>
-    </div>
+<p>Use Spring Initializr to create a new Spring Boot project. Include dependencies for Spring Web and
+    Spring AI.</p>
+<h3>Using Spring Initializr:</h3>
+<ul class="steps">
+    <li class="">Go to <a href="https://start.spring.io/"> start.spring.io</a></li><br>
+    <li>Select</li><br>
+    <ul class="circle-list">
+        <li>Project: Maven Project</li><br>
+        <li>Language: Java</li><br>
+        <li>Spring Boot: 3.0.0 (or latest)</li><br>
+        <li> Dependencies: Spring Web</li><br>
+    </ul>
+    <li>Generate the project and unzip it.</li>
+</ul>
+<h3>Step 2: Add Dependencies</h3>
+<p>In your project's pom.xml, add the necessary dependencies for Spring AI.</p>
+<img src="./assets/springboot images/dependecies.png.PNG" alt="add_dependencies_image"
+    class="imge-fluid">
+
+<h2>2. Configuring Spring AI</h2>
+<h3>Step 1: Add API Key to Configuration</h3>
+<p>Add your OpenAI API key to application.properties or application.yml.</p>
+<p>For application.properties:</p>
+
+<img src="./assets/springboot images/dependecies.png1.PNG" alt="add_dependencies_image"
+    class="imge-fluid">
+           
+<h2>Step 2: Configure Spring Beans</h2>
+<p>Create a configuration class to set up all necessary Spring beans, including the OpenAiClient and ChatClient.</p>
+<pre><code>
+    package com.example.demo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.ai.openai.OpenAiClient;
+import org.springframework.ai.openai.OpenAiChatClient;
+import org.springframework.ai.openai.ChatClient;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public OpenAiClient openAiClient() {
+        return new OpenAiClient();
+    }
+
+    @Bean
+    public ChatClient chatClient(OpenAiClient openAiClient) {
+        return new OpenAiChatClient(openAiClient);
+    }
+}
+</code></pre>
+<h2>3. Creating Effective Prompts</h2>
+<h3>Example 1: Providing Clear Instructions</h3>
+<pre><code>package com.example.demo.service;
+
+    import org.springframework.ai.openai.ChatClient;
+    import org.springframework.ai.openai.model.ChatMessage;
+    import org.springframework.ai.openai.model.ChatRequest;
+    import org.springframework.ai.openai.model.ChatResponse;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.stereotype.Service;
+    
+    import java.util.List;
+    
+    @Service
+    public class PromptService {
+    
+        private final ChatClient chatClient;
+    
+        @Autowired
+        public PromptService(ChatClient chatClient) {
+            this.chatClient = chatClient;
+        }
+    
+        public String provideInstructions(String userMessage) {
+            ChatMessage systemMessage = new ChatMessage("system", "Please provide a detailed and concise response to the user's query.");
+            ChatMessage userMsg = new ChatMessage("user", userMessage);
+    
+            ChatRequest request = new ChatRequest();
+            request.setMessages(List.of(systemMessage, userMsg));
+    
+            ChatResponse response = chatClient.sendMessage(request);
+            return response.getReply();
+        }
+    }</code></pre>
+    <h2>Example 2: Including External Context</h2>
+    <pre><code>public String provideContextualResponse(String userMessage, String context) {
+        ChatMessage systemMessage = new ChatMessage("system", "Consider the following context: " + context);
+        ChatMessage userMsg = new ChatMessage("user", userMessage);
+    
+        ChatRequest request = new ChatRequest();
+        request.setMessages(List.of(systemMessage, userMsg));
+    
+        ChatResponse response = chatClient.sendMessage(request);
+        return response.getReply();
+    }</code></pre>
+    <h2>Example 3: Specifying Output Format</h2>
+    <pre><code>public String specifyOutputFormat(String userMessage, String format) {
+        ChatMessage systemMessage = new ChatMessage("system", "Please provide the response in the following format: " + format);
+        ChatMessage userMsg = new ChatMessage("user", userMessage);
+    
+        ChatRequest request = new ChatRequest();
+        request.setMessages(List.of(systemMessage, userMsg));
+    
+        ChatResponse response = chatClient.sendMessage(request);
+        return response.getReply();
+    }</code></pre>
+    <h2>4. Demonstrating Use Cases</h2>
+    <h3>Step 1: Define Use Cases in the Service</h3>
+    <pre><code>@Service
+        public class UseCaseService {
+        
+            private final ChatClient chatClient;
+        
+            @Autowired
+            public UseCaseService(ChatClient chatClient) {
+                this.chatClient = chatClient;
+            }
+        
+            public String provideInformation(String userMessage) {
+                ChatMessage systemMessage = new ChatMessage("system", "You are a knowledgeable assistant.");
+                ChatMessage userMsg = new ChatMessage("user", userMessage);
+        
+                ChatRequest request = new ChatRequest();
+                request.setMessages(List.of(systemMessage, userMsg));
+        
+                ChatResponse response = chatClient.sendMessage(request);
+                return response.getReply();
+            }
+        
+            public String performCalculation(String userMessage) {
+                ChatMessage systemMessage = new ChatMessage("system", "You are an assistant that can perform calculations.");
+                ChatMessage userMsg = new ChatMessage("user", userMessage);
+        
+                ChatRequest request = new ChatRequest();
+                request.setMessages(List.of(systemMessage, userMsg));
+        
+                ChatResponse response = chatClient.sendMessage(request);
+                return response.getReply();
+            }
+        
+            public String generateContent(String adjective, String topic) {
+                String userMessage = "Tell me a " + adjective + " joke about " + topic;
+                ChatMessage systemMessage = new ChatMessage("system", "You are an assistant that can generate creative content.");
+                ChatMessage userMsg = new ChatMessage("user", userMessage);
+        
+                ChatRequest request = new ChatRequest();
+                request.setMessages(List.of(systemMessage, userMsg));
+        
+                ChatResponse response = chatClient.sendMessage(request);
+                return response.getReply();
+            }
+        }</code></pre>
+        <h2>Step 2: Create a Controller to Expose the Service</h2>
+        <pre><code>package com.example.demo.controller;
+
+            import com.example.demo.service.UseCaseService;
+            import org.springframework.beans.factory.annotation.Autowired;
+            import org.springframework.web.bind.annotation.GetMapping;
+            import org.springframework.web.bind.annotation.RequestParam;
+            import org.springframework.web.bind.annotation.RestController;
+            
+            @RestController
+            public class UseCaseController {
+            
+                private final UseCaseService useCaseService;
+            
+                @Autowired
+                public UseCaseController(UseCaseService useCaseService) {
+                    this.useCaseService = useCaseService;
+                }
+            
+                @GetMapping("/provideInformation")
+                public String provideInformation(@RequestParam String userMessage) {
+                    return useCaseService.provideInformation(userMessage);
+                }
+            
+                @GetMapping("/performCalculation")
+                public String performCalculation(@RequestParam String userMessage) {
+                    return useCaseService.performCalculation(userMessage);
+                }
+            
+                @GetMapping("/generateContent")
+                public String generateContent(@RequestParam String adjective, @RequestParam String topic) {
+                    return useCaseService.generateContent(adjective, topic);
+                }
+            }</code></pre>
+            <h2>5. Testing the Integration</h2>
+            <h3>Step 1: Run the Application</h3>
+            <p>Run your Spring Boot application. Ensure the application starts without errors.</p>
+            <h2>Step 2: Access the Interaction Endpoints</h2>
+            <p>Use Postman,curl, or your browser to test the endpoints with diffrent roles and inputs. For examples:</p>
+<h2>1. Providing Information</h2>
+<pre><code>http://localhost:8080/provideInformation?userMessage=What is the capital of France?</code></pre>
+<h2>2.Performing Calculations</h2>
+<pre><code>http://localhost:8080/performCalculation?userMessage=What is 10 + 15?</code></pre>
+        
+<h2>3.Generating Content</h2>
+<p>You should receive response generated by the AI model based on the role-based messages.</p>
+<h2>Conclusion</h2>
+<p>This tutorial demonstrated how to set up and use roles in Spring AI to manage AI Interactions in a Spring Boot <br><br>application. You learned how to define system, user, assistant, and function roles, use them in a service, and <br><br>expose endpoints to interact with the AI model. Different use cases were provided to show how roles can be<br><br> used effectively in various scenarios. </p>
+
+
+</div>
+</div>
+</div>
 
 </body>
 
