@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width-device-width, initial-scale=1.0">
+    <title>Best Practice to Develop Persistence or DAO Layer
+    </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px, 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Best Practice to Develop Persistence or DAO Layer
+        </h1>
+        <p>In this article, we will discuss a few best practices that we need to follow while developing the
+            Persistence/DAO layer.</p>
+        <p>The<a href="data-access-object-pattern.html">Data Access Object (DAO) pattern</a> is a structural pattern that allows us to isolate the
+            application/business layer from the persistence layer (usually a relational database, but it could be any
+            other persistence mechanism) using an abstract API.</p>
+        <p>Check out DAO pattern at <a href="data-access-object-pattern.html">Data Access Object (DAO) pattern</a></p>
+        <h2>Persistence Operations (CRUD Operations)</h2>
+        <p>These are the commonly used database table operations for every table so we can make these operations generic
+            in the DAO layer.</p>
+        <ul>
+            <li> Inserting data</li>
+            <li> Updating data</li>
+            <li> Deleting data</li>
+            <li> Retrieving data</li>
+
+        </ul>
+        <h2>Different Options to Develop Persistence or DAO Layer </h2>
+        <p>In the Java community, we have different options to develop Persistence/DAO layer</p>
+        <ol>
+            <li> Java JDBC</li>
+            <li>Spring JDBC</li>
+            <li> ORM Frameworks ( Hibernate, MyBatis etc)</li>
+            <li> Spring Data ( Spring Data JPA, Spring Data MongoDB, Spring Data REST, Spring Data Elasticsearch etc)
+            </li>
+        </ol>
+        <h2>Spring MVC Three Layer Architecture</h2>
+        <img src="/assets/spring-mvc-image/Best Practice to Develop Persistence or DAO Layer.png" alt=""
+            class="image-fluid">
+        <p>The above diagram shows a 3 layer architecture in any typical Spring MVC web applications.</p>
+        <p><b>Presentation layer:</b>This is the user interface of the application that presents the application’s
+            features and data to the user.</p>
+        <p><b>Business logic (or Application) layer:</b>This layer contains the business logic that drives the
+            application’s core functionalities. Like making decisions, calculations, evaluations, and processing the
+            data passing between the other two layers.</p>
+        <p><b>Data access layer (or Data) layer:</b>This layer is responsible for interacting with databases to save and
+            restore application data.</p>
+        <h2>Best Practice to Develop Persistence or DAO Layer</h2>
+        <p><b>1. Separate Layer for Persistence logic or database-related code</b> We should maintain persistent logic
+            as a separate layer ( DAO Layer or Persistence Layer)</p>
+        <p><b>2. In persistence logic, we should follow the table per DAO class.</b> For every table, we will create a
+            dedicated DAO class and this DAO class is responsible to perform operations with That table ( which improves
+            readability)</p>
+
+        <p> For example:</p>
+        <p><b>USER </b>-> UserDao.java</p>
+        <p><b> CUSTOMER </b>-> CustomerDao.java</p>
+        <p><b> ROLES </b>-> RolesDao.java</p>
+        <p><b>ACCOUNT_DETAILS</b> -> AccountDetailsDao.java</p><br>
+        <br>
+        <p><b>USER</b> -> UserDao.java <br>UserDaoImpl.java</p>
+
+        <p><b>CUSTOMER </b>-> CustomerDao.java <br>CustomerDaoImpl.java</p>
+
+        <p><b>ROLES</b> -> RolesDao.java <br>RolesDaoImpl.java</p>
+
+        <p><b> ACCOUNT_DETAILS</b> -> AccountDetailsDao.java <br>AccountDetailsDaoImpl.java</p>
+        <p>3.AccountDetailsDaoImpl.java</p>
+        <p>4. Auditing columns:
+        </p>
+        <p><b>-> CREATED_DATE</b></p>
+        <p><b> -> CREATED_BY</b></p>
+        <p><b> -> UPDATED_DATE</b></p>
+        <p><b> -> UPDATE_BY</b></p>
+
+
+    </div>
+
+</body>
+
+</html>
