@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+
+        .overlap-container {
+            position: relative;
+            background: url("../../assets/springboot images/Spring-Boot-3-Java.jpg") center/cover no-repeat;
+            color: #f5f7f8;
+            padding: 100px;
+            height: 400px;
+            overflow: visible;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .card {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .image {
+            text-align: center;
+        }
+        
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        .span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .scrollup img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid" >
+        <div class="overlap-container">
+            <div class="overlay"></div>
+            <div class="text-container">
+                <h3>WE PROVIDE FULL STACK DEVELOPMENT PROGRAM</h3>
+                <blockquote>Dive into the world of full-stack development with our comprehensive 22-week program
+                </blockquote>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="heading mt-4">
+            <h3>Spring Boot 3 Tutorial</h3>
+            <h5>Author: Sai K</h5><br><br>
+            <p>In this tutorial, you will learn how to create Spring boot 3 projects and build step-by-step REST APIs
+                using Spring Boot 3.<br>
+
+                Spring boot 3 required <b>Java 17 or later</b> so make that you have installed Java 17+ on your machine.
+            </p>
+            <h4>Table of Content</h4>
+            <p><b>What's New in Spring Boot 3?<br>
+                    What is Spring Framework?<br>
+                    What is Spring Boot?<br>
+                    Learn to Build Spring Boot REST APIs</b> </p>
+            <ol>
+                <li>Spring Boot Hello World REST API </li>
+                <li>Build Spring Boot REST API returns Java Bean </li>
+                <li>Build Spring Boot REST API returns List </li>
+                <li>Spring Boot REST API with Path Variable </li>
+                <li>Build Spring Boot REST API with Request Param </li>
+            </ol>
+            <h4>Develop Spring Boot CRUD REST APIs with Spring Boot 3, Spring Data JPA (Hibernate), and MySQL Database
+            </h4>
+            <ol>
+                <li>Build Create User REST API</li>
+                <li>Build Get User REST API</li>
+                <li>Build Get All Users REST API</li>
+                <li>Build Update REST API</li>
+                <li>Build Delete REST API</li>
+            </ol>
+        </div><br>
+
+        <div class="">
+            <h3>What's New in Spring Boot 3?</h3>
+            <p>Highlights of the new Spring Boot 3.0 release include:<br>
+                <b>Java 17 Baseline and Java 19 Support:</b> Spring Boot 3.0 requires Java 17 as a minimum version. If
+                you are currently using Java 8 or Java 11, you’ll need to upgrade your JDK before you can develop Spring
+                Boot 3.0 applications. Spring Boot 3.0 also works well and has been tested with JDK 19.
+            </p><br>
+
+            <p><b>Third-party Library Upgrades:</b> Spring Boot 3.0 builds on and requires Spring Framework 6. You might
+                like to read about the new features available in Spring Framework 6.0.<br>
+                Spring Boot 3.0 has migrated from Java EE to Jakarta EE APIs for all dependencies. Spring boot 3.0
+                supports Jakarta EE 10 with a Jakarta EE 9 baseline.</p><br>
+            <p><b>Native Java compilation for GraalVM:</b>
+                Spring Boot 3 will also have out-of-the-box support for Native Java compilation for GraalVM. </p> <br>
+            <p><b>A big change is that Spring Boot 3 will remove all deprecated features.<br><br>
+
+                    Improved observability with Micrometer and Micrometer Tracing</b></p>
+        </div><br>
+
+        <div class="">
+            <h3>What is Spring Framework?</h3>
+            <p>Spring is a very popular JavaEE framework for building web and enterprise applications.<br><br>
+
+                If you are a Java developer then there is a high chance that you might have heard about the Spring
+                framework and probably have used it in your projects. </p><br>
+            <p><b>Spring is very popular for several reasons:</b></p>
+            <ul>
+                <li>Spring’s dependency injection approach encourages writing testable code</li>
+                <li>Easy to use but powerful database transaction management capabilities</li>
+                <li>Spring simplifies integration with other Java frameworks like JPA/Hibernate ORM, Struts/JSF/etc. web
+                    frameworks</li>
+                <li>State-of-the-art Web MVC framework for building web applications</li>
+            </ul><br>
+            <p><b>Basically, Spring-based applications have a lot of configurations. For example:</b></p>
+            <p>When we develop the Spring MVC web application using Spring MVC then we need to configure </p>
+            <ul>
+                <li>Component scan</li>
+                <li>Dispatcher Servlet</li>
+                <li>View resolver</li>
+                <li>Web jars (for delivering static content)</li>
+            </ul>
+            <p>When we use Hibernate/JPA in the same Spring MVC application then we would need to configure a </p>
+            <ul>
+                <li>Data source</li>
+                <li>Entity manager factory/session factory </li>
+                <li>Transaction manager among a host of other things.</li>
+            </ul>
+            <p>When you use cache in the same Spring MVC application then we need to configure</p>
+            <ul>
+                <li>Cache configuration</li>
+            </ul>
+            <p>When you use Message Queue in the same Spring MVC application then we need to configure</p>
+            <ul>
+                <li> Message queue configuration</li>
+            </ul>
+            <p>When you use a NoSQL database in the same Spring MVC application then we need to configure</p>
+            <ul>
+                <li> NoSQL database configuration</li>
+            </ul>
+            <p>A lot of configuration right.</p>
+            <p>If Spring can automatically do it for me that would be awesome!!!.<br><br>
+                Well, Spring Boot does what exactly you are looking for. It will do things automatically for you but
+                allows you to override the defaults if you want to.<br><br>
+
+                The Spring team created Spring Boot to address the complexity of the configuration.</p>
+        </div><br>
+
+        <div class="spring_boot">
+            <h3>What is Spring Boot?</h3>
+            <p>Spring Boot is basically an extension of the Spring framework which eliminated the boilerplate
+                configurations required for setting up a Spring application.<br><br>
+
+                Spring Boot is an opinionated framework that helps developers build Spring-based applications quickly
+                and easily. <b>The main goal of Spring Boot is to quickly create Spring-based applications without
+                    requiring developers to write the same boilerplate configuration again and again.</b><br><br>
+
+                Next, let's create a Spring boot application step by step and build a few REST APIs.</p><br>
+            <h3>1. Creating Spring Boot Application using Spring Initializr</h3><br>
+            <p>Spring Boot provides a web tool called <a href="https://start.spring.io/">https://start.spring.io/</a> to
+                bootstrap an application quickly. Just go to <a
+                    href="https://start.spring.io/">https://start.spring.io/</a> and generate a new spring boot project.
+            </p>
+            <p><b>Use the below details in the Spring boot creation:</b><br><br>
+
+                <b> Project Name:</b> springboot-rest-api<br>
+
+                <b>Project Type:</b> Maven<br>
+
+                <b>Choose dependencies:</b> Spring Web<br>
+
+                <b> Package name:</b> net.ssclabs.springboot<br>
+
+                <b> Java:</b> 17<br>
+
+                <B> Packaging:</B> Jar<br>
+                <b>Note:</b> Spring boot 3 required Java 17 or later so make that you choose Java 17+.
+            </p><br>
+
+            <h5>Refer to below complete pom.xml for your reference:</h5>
+            <div class="code mx-auto">
+                <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+     &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+                &lt;parent&gt;
+                    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                      &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+                      &lt;version&gt;3.0.0-M4&lt;/version&gt;
+                    &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+                &lt;/parent&gt;
+
+                &lt;groupId&gt;net.javaguides&lt;/groupId&gt;
+                &lt;artifactId&gt;springboot-rest-api&lt;/artifactId&gt;
+                &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+                &lt;name&gt;springboot-rest-api&lt;/name&gt;
+                &lt;description&gt;Demo project for Spring Boot REST API&lt;/description&gt;
+
+                &lt;properties&gt;
+                    &lt;java.version&gt;17&lt;/java.version&gt;
+                &lt;/properties&gt;
+
+                &lt;dependencies&gt;
+                    &lt;dependency&gt;
+                          &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                          &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+                    &lt;/dependency&gt;
+
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                        &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+                        &lt;scope&gt;test&lt;/scope&gt;
+                    &lt;/dependency&gt;
+                &lt;/dependencies&gt;
+
+                &lt;build&gt;
+                    &lt;plugins&gt;
+                        &lt;plugin&gt;
+                            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                            &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                        &lt;/plugin&gt;
+                    &lt;/plugins&gt;
+                &lt;/build&gt;
+
+                &lt;repositories&gt;
+                    &lt;repository&gt;
+                        &lt;id&gt;spring-milestones&lt;/id&gt;
+                           &lt;name&gt;Spring Milestones&lt;/name&gt;
+                            &lt;url&gt;https://repo.spring.io/milestone&lt;/url&gt;
+                        &lt;snapshots&gt;
+                            &lt;enabled&gt;false&lt;/enabled&gt;
+                        &lt;/snapshots&gt;
+                    &lt;/repository&gt;
+                &lt;/repositories&gt;
+
+                &lt;pluginRepositories&gt;
+                      &lt;pluginRepository&gt;
+                        &lt;id&gt;spring-milestones&lt;/id&gt;
+                        &lt;name&gt;Spring Milestones&lt;/name&gt;
+                        &lt;url&gt;https://repo.spring.io/milestone&lt;/url&gt;
+                        &lt;snapshots&gt;
+                            &lt;enabled&gt;false&lt;/enabled&gt;
+                        &lt;/snapshots&gt;
+                      &lt;/pluginRepository&gt;
+                &lt;/pluginRepositories&gt;
+ &lt;/project&gt; </code></pre>
+
+            </div>
+
+
+            <div class="project_stacture">
+                <h3>Project Structure</h3><br>
+                <p>Create the packaging or project structure as per the below screenshot:</p>
+                <div class="image mt-2 mb-4  mx-auto ">
+                    <img src="../../assets/springboot images/Spring_boot_priject_stacture.png" alt="logo"
+                        class="img-fluid" />
+                </div>
+            </div>
+
+            <div class="build_REST_Apis mt-5">
+                <h3>Learn to Build Spring Boot REST APIs</h3><br>
+                <h4>1. Spring Boot Hello World REST API</h4>
+                <p>Within the controller package, let's create a HelloWorldController class and the below code to it:
+                </p>
+                <div class="controller">
+                    <code><pre>
+package net.javaguides.springboot.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloWorldController {
+
+    // HTTP GET Request
+    // http://localhost:8080/hello-world
+
+    @GetMapping("/hello-world")
+    public String helloWorld(){
+        return "Hello World!";
+    }
+} </pre></code>
+                </div>
+
+                <ul>
+                    <li>The above code uses Spring 4’s new<span class="span"> @RestController</span> annotation, which
+                        marks the class as a
+                        controller where every method returns a domain object instead of a view. It’s shorthand for
+                        <span class="span"> @Controller</span> and<span class="span"> @ResponseBody</span> rolled
+                        together.
+                    </li><br>
+                    <li><b>@GetMapping</b> annotation for mapping HTTP GET requests onto specific handler methods.
+                        Specifically, <b>@GetMapping</b> is a composed annotation that acts as a shortcut for
+                        <span class="span"> @RequestMapping(method = RequestMethod.GET)</span>.
+                    </li>
+                </ul>
+            </div>
+            <h4>Run and Test Spring Boot Application:</h4><br>
+            <p>The below class <span class="span"> SpringbootRestApiApplication</span> is the entry point that sets up
+                the Spring Boot application. The<span class="span"> @SpringBootApplication</span> annotation enables
+                auto-configuration and component scanning.</p>
+            <div class="main_class mb-5">
+                <code><pre>
+package net.javaguides.springboot;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringbootRestApiApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SpringbootRestApiApplication.class, args);
+	}
+
+} </pre></code>
+            </div>
+            <h6>Run the spring boot application from IDE:</h6>
+            <p>From your IDE, run the<span class="span">SpringbootRestApiApplication.main()</span> method as a
+                standalone Java class that will start the embedded Tomcat server on port 8080 and point the browser to<a
+                    href="http://localhost:8080/">http://localhost:8080/</a>.</p>
+            <p><b>Run the spring boot application using the command line:</b><br><br>
+
+                Just go to the root directory of the application and type the following command to run it -</p>
+            <div class="">
+                <code><pre>
+$ mvn spring-boot:run </pre></code>
+            </div>
+            <p>The application will start at Spring Boot’s default tomcat port<b> 8080</b>.</p><br><br>
+            <h6><b>Test Spring boot REST API using Postman client:</b></h6>
+            <div class="image mt-2 mb-4  mx-auto ">
+                <img src="../../assets/springboot images/test_spring_boot_postman_client.png" alt="logo"
+                    class="img-fluid" />
+            </div>
+        </div><br>
+
+
+
+        <h3>2. Build Spring Boot REST API returns Java Bean</h3>
+        <p>In this section, we will build a simple Spring boot REST API that returns Java bean as JSON to the
+            client.<br><br>
+            Let's first create a<span class="span"> Student</span> java bean class that the REST API wants to return to
+            the client:</p>
+        <div class="student_class">
+            <code><pre>
+package com.springboot.first.app;
+
+public class Student {
+	private String firstName;
+	private String lastName;
+	
+	public Student(String firstName, String lastName) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+}   </pre></code>
+        </div>
+        <p>Let's create the<span class="span"> StudentController</span> class and the below code to it:</p>
+        <div class="studentController">
+            <code><pre>
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class StudentController {	
+	
+	// http://localhost:8080/student
+	@GetMapping("/student")
+	public Student getStudent() {
+		return new Student("Ramesh", "Fadatare");
+	}
+}</pre></code>
+        </div>
+
+        <ul>
+            <li>The above code uses Spring 4’s new<span>@RestController</span> annotation, which marks the class as a
+                controller where every method returns a domain object instead of a view. It’s shorthand
+                for<span>@Controller</span> and <span>@ResponseBody</span> rolled together.</li><br>
+            <li><b>@GetMapping</b> annotation for mapping HTTP GET requests onto specific handler methods. Specifically,
+                <b>@GetMapping</b> is a composed annotation that acts as a shortcut for<span> @RequestMapping(method =
+                    RequestMethod.GET)</span>.
+            </li><br>
+            <li>The<span>Student</span> object must be converted to JSON. Thanks to Spring’s HTTP message converter
+                support, you don’t need to do this conversion manually. Because Jackson 2 is on the classpath, Spring’s
+                <span>MappingJackson2HttpMessageConverter</span> is automatically chosen to convert
+                the<span>Student</span>instance to JSON.
+            </li><br>
+        </ul>
+        <h5><b>Run spring boot application from the IDE:</b></h5>
+        <div class="ide">
+            <code><pre>
+package com.springboot.first.app;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringbootFirstAppApplication {
+	public static void main(String[] args) {
+		SpringApplication.run(SpringbootFirstAppApplication.class, args);
+	}
+} </pre></code>
+        </div>
+        <p>From your IDE, run the<span> SpringbootFirstAppApplication.main()</span> method as a standalone Java class
+            that will start the embedded Tomcat server on port 8080 and point the browser to<a
+                href="http://localhost:8080/">http://localhost:8080/</a>".<br><br>
+
+            Just hit this link in a browser:<a href="http://localhost:8080/student">http://localhost:8080/student</a>.
+            You will able to see the response of this REST API in the browser.</p><br><br>
+
+        <h3>3. Build Spring Boot REST API returns List</h3>
+        <p>In this section, we will build a simple Spring boot REST API that returns the List object as JSON to the
+            client.<br><br>
+
+            Let's open the<span>StudentController,</span> class and the below code to it:</p>
+        <div class="studentcontroller">
+            <code><pre>
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class StudentController {
+
+	@GetMapping("/students")
+	public List< Student> getStudents(){		
+		List< Student> students = new ArrayList<>();
+		students.add(new Student("Ramesh", "Fadatare"));
+		students.add(new Student("Tony", "Cena"));
+		students.add(new Student("Sanjay", "Jadhav"));
+		students.add(new Student("Ram", "Jadhav"));
+		students.add(new Student("Umesh", "Fadatare"));
+		return students;
+	}
+}</pre></code>
+        </div><br>
+        <ul>
+            <li>The above code uses Spring 4’s new<span> @RestController</span> annotation, which marks the class as a
+                controller where every method returns a domain object instead of a view. It’s shorthand
+                for<span>@Controller</span> and <span>@ResponseBody</span> rolled together.
+            </li><br>
+            <li>@GetMapping annotation for mapping HTTP GET requests onto specific handler methods. Specifically,
+                @GetMapping is a composed annotation that acts as a shortcut for<span>@RequestMapping(method =
+                    RequestMethod.GET)</span>.</li><br>
+            <li>The List of student objects must be converted to JSON. Thanks to Spring’s HTTP message converter
+                support, you don’t need to do this conversion manually. Because Jackson 2 is on the classpath,
+                Spring’s<span>MappingJackson2HttpMessageConverter</span> is automatically chosen to convert the List of
+                student objects to JSON.</li>
+        </ul>
+        <p><b>Run spring boot application from the IDE:</b><br><br>
+            From your IDE, run the<span>SpringbootFirstAppApplication.main()</span> method as a standalone Java class
+            that will start the embedded Tomcat server on port 8080 and point the browser to<a
+                href="http://localhost:8080/">http://localhost:8080/</a>.<br><br>
+
+            Just hit this link in a browser:<a href="http://localhost:8080/students">http://localhost:8080/students</a>.
+            You will able to see the response of this REST API in the browser.
+        </p><br><br>
+
+
+
+        <h3>4. Spring Boot REST API with Path Variable</h3>
+        <p>In this section, we will build a simple Spring boot REST API to demonstrate the usage of<span>
+                @PathVariable</span> annotation.<br><br>
+
+            Let's open the<span>StudentController</span> class and the below code to it:</p>
+        <div class="pathvariable">
+            <code><pre>
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class StudentController {
+	
+	// http://localhost:8080/student/1
+	// @PathVariable annotation
+	@GetMapping("/student/{firstName}/{lastName}/")
+	public Student studentPathVariable(@PathVariable("firstName") String firstName, 
+			@PathVariable("lastName") String lastName) {
+		return new Student(firstName, lastName);
+	}
+}</pre></code>
+        </div>
+        <ul>
+            <li>The above code uses Spring 4’s new<span>@RestController</span> annotation, which marks the class as a
+                controller where every method returns a domain object instead of a view. It’s shorthand for<span>
+                    @Controller</span> and<span>@ResponseBody</span> rolled together.</li><br>
+            <li>@GetMapping annotation for mapping HTTP GET requests onto specific handler methods. Specifically,
+                @GetMapping is a composed annotation that acts as a shortcut for<span>@RequestMapping(method =
+                    RequestMethod.GET)</span>.</li><br>
+            <li>The Student object must be converted to JSON. Thanks to Spring’s HTTP message converter support, you
+                don’t need to do this conversion manually. Because Jackson 2 is on the classpath, Spring’s
+                MappingJackson2HttpMessageConverter is automatically chosen to convert the Student object to JSON.</li>
+            <br>
+            <li>With the <span>@PathVariable</span> annotation, we bind the request URL template path variable to the
+                method variable. For instance, with the <b>/Ramesh/Fadatare/</b> URL, the <b>"Ramesh"</b> value is bound
+                to the <b>firstName</b> variable and the <b>"Fadatare"</b> value to the <b>lastName</b> variable.</li>
+        </ul>
+        <h5>Run spring boot application from the IDE:</h5>
+        <p>From your IDE, run the<span>SpringbootFirstAppApplication.main()</span> method as a standalone Java class
+            that will start the embedded Tomcat server on port 8080 and point the browser to<a
+                href="http://localhost:8080/">http://localhost:8080/</a>.<br><br>
+
+            Just hit this link in a browser:<a
+                href="http://localhost:8080/student/Ramesh/Fadatare">http://localhost:8080/student/Ramesh/Fadatare</a>.
+            You will be able to see the response of this REST API in the browser.</p><br><br>
+
+
+        <h3>5. Build Spring Boot REST API with Request Param</h3>
+        <p>In this section, we will build a simple Spring boot REST API that handles request or query parameters in the
+            GET HTTP request.<br><br>
+
+            In this example, we use the<span>@RequestParam</span> annotation to extract query parameters from the HTTP
+            GET request.<br><br>
+
+            Let's open the<span>StudentController</span> class and the below code to it:</p>
+        <div class="requsetParam ">
+            <code><pre>
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class StudentController {
+	// build rest API to handle query parameters
+	// http://localhost:8080/student/query?firstName=Ramesh&lastName=Fadatare
+	@GetMapping("/student/query")
+	public Student studentQueryParam(
+			@RequestParam(name = "firstName") String firstName,
+			@RequestParam(name = "lastName") String lastName) {
+		return new Student(firstName, lastName);
+	}
+}</pre></code>
+
+        </div>
+        <ul>
+            <li>The above code uses Spring 4’s new<span>@RestController</span> annotation, which marks the class as a
+                controller where every method returns a domain object instead of a view. It’s shorthand
+                for<span>@Controller</span> and<span>@ResponseBody</span> rolled together. </li><br>
+            <li><b>@GetMapping</b> annotation for mapping HTTP GET requests onto specific handler methods. Specifically,
+                <b>@GetMapping</b> is a composed annotation that acts as a shortcut for <span>@RequestMapping(method =
+                    RequestMethod.GET)</span> .
+            </li><br>
+            <li>The<span>Student</span> object must be converted to JSON. Thanks to Spring’s HTTP message converter
+                support, you don’t need to do this conversion manually. Because Jackson 2 is on the classpath,
+                Spring’s<span>MappingJackson2HttpMessageConverter</span> is automatically chosen to convert
+                the<span>Student</span> object to JSON.</li><br>
+            <li>With the<span>@RequestParam</span> annotation, we extract query parameters from the HTTP GET request.
+            </li>
+        </ul><br><br>
+
+
+        <h3>Develop Spring Boot CRUD REST APIs with Spring Boot 3, Spring Data JPA (Hibernate), and MySQL Database</h3>
+        <p>In this section, we will learn how to build CRUD RESTful Webservices using Spring Boot 3, Spring Data JPA
+            (Hibernate), and MySQL database.</p><br>
+        <h4>Spring Boot Project Architecture</h4>
+        <p>We are going to use three-layer architecture in our Spring boot project:</p>
+        <div class="image mt-2 mb-5  mx-auto ">
+            <img src="../../assets/springboot images/Spring Boot Project Structure.PNG" alt="logo" class="img-fluid" />
+        </div>
+
+        <!-- ******************************************************************************************** -->
+        <h3>Tools and Technologies Used:</h3>
+        <ul>
+            <li>Spring Boot 3.0</li>
+            <li>Java 17</li>
+            <li>Spring Data JPA</li>
+            <li>Hibernate</li>
+            <li>MySQL Database</li>
+            <li>Maven</li>
+            <li>Postman</li>
+        </ul><br>
+
+        <h3>1. Create and Setup Spring Boot Project in IntelliJ</h3>
+        <p>Spring Boot provides a web tool called <a href="https://start.spring.io/">Spring Initializer</a> to create
+            and bootstrap Spring boot applications quickly. Just go to <a
+                href="https://start.spring.io/">https://start.spring.io/</a>" and generate a new spring boot
+            project.<br><br>
+
+            Refer to this screenshot to enter the details to create the Spring Boot project:</p>
+        <div class="image mt-2 mb-5  mx-auto ">
+            <img src="../../assets/springboot images/spring_initializrr.png" alt="logo" class="img-fluid" />
+        </div>
+        <p>Here is the pom.xml file for your reference:</p>
+        <pre class="code-block"><code>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;3.0.0&lt;/version&gt;
+        &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+    &lt;groupId&gt;net.javaguides&lt;/groupId&gt;
+    &lt;artifactId&gt;springboot-restful-webservices&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;springboot-restful-webservices&lt;/name&gt;
+    &lt;description&gt;Demo project for Spring Boot Restful Webservices&lt;/description&gt;
+    &lt;properties&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;excludes&gt;
+                        &lt;exclude&gt;
+                            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+                            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+                        &lt;/exclude&gt;
+                    &lt;/excludes&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+
+
+        <h3>Project Structure</h3>
+        <p>Refer to this screenshot to create a project structure:</p>
+        <div class="image mt-2 mb-5  mx-auto ">
+            <img src="../../assets/springboot images/spring_boot_stacture.png" alt="logo" class="img-fluid" />
+        </div><br>
+
+        <h3>Configure MySQL Database</h3>
+        <p>Let's first create a database, go to MySQL workbench, and use the below SQL query to create a new database:
+        </p>
+        <code><pre>
+create database user_management</pre></code>
+
+        <p>Next, open the <span>application.properties</span> file and add the following properties to it.</p>
+        <code><pre>
+spring.datasource.url=jdbc:mysql://localhost:3306/user_management
+spring.datasource.username=root
+spring.datasource.password=Mysql@123
+    
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+spring.jpa.hibernate.ddl-auto=update</pre></code>
+        <p>Make sure that you change the <span>spring.datasource.username</span>
+            &<span>spring.datasource.password</span> properties as per your MySQL installation.<br><br>
+
+            In the above properties file, the last two properties are for Hibernate. <b>Spring Boot uses Hibernate as
+                the default JPA implementation</b>.<br><br>
+
+            The property<span> spring.jpa.hibernate.ddl-auto</span> is used for database initialization. I’ve used the
+            value “update” for this property to create the database tables automatically.</p><br><br>
+
+        <h3>Create User JPA Entity</h3>
+        <p>Let's create a User class and add the following content to it:</p>
+        <code><pre>
+package net.javaguides.springboot.entity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "users")
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = false)
+    private String firstName;
+    @Column(nullable = false)
+    private String lastName;
+    @Column(nullable = false, unique = true)
+    private String email;
+} </pre></code>
+        <p>Note that we are using Lombok annotations to reduce the boilerplate code (getters/setters).</p><br><br>
+
+        <h3>Create Spring Data JPA Repository - UserRepository</h3>
+        <p>Let's create a<span> UserRepository</span> interface that extends<span> JpaRepository</span>:</p>
+        <code><pre>
+package net.javaguides.springboot.repository;
+
+import net.javaguides.springboot.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
+}
+</pre></code>
+        <p>Note that we no need to add<span> @Repository</span> annotation because Spring Data JPA internally takes care
+            of it.</p><br><br>
+
+        <h3>Create Service Layer</h3>
+        <p>Let's implement the service layer, we will first create an interface and then its implementation class.</p>
+        <br>
+        <h3>Service Interface</h3>
+        <p>Let's create an<span> UserService</span> interface and declare the following CRUD methods:</p>
+        <code><pre>
+package net.javaguides.springboot.service;
+
+import net.javaguides.springboot.entity.User;
+
+import java.util.List;
+
+public interface UserService {
+    User createUser(User user);
+
+    User getUserById(Long userId);
+
+    List< User> getAllUsers();
+
+    User updateUser(User user);
+
+    void deleteUser(Long userId);
+}
+</pre></code><br>
+        <h3>UserServiceImpl</h3>
+        <p>Let's create<span> UserServiceImpl</span> class that implements<span> UserService</span> interface methods:
+        </p>
+        <code><pre>
+package net.javaguides.springboot.service.impl;
+
+import lombok.AllArgsConstructor;
+import net.javaguides.springboot.entity.User;
+import net.javaguides.springboot.repository.UserRepository;
+import net.javaguides.springboot.service.UserService;
+import org.apache.logging.log4j.util.Strings;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+@Service
+@AllArgsConstructor
+public class UserServiceImpl implements UserService {
+
+    private UserRepository userRepository;
+
+    @Override
+    public User createUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User getUserById(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        return optionalUser.get();
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User updateUser(User user) {
+        User existingUser = userRepository.findById(user.getId()).get();
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setEmail(user.getEmail());
+        User updatedUser = userRepository.save(existingUser);
+        return updatedUser;
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
+}
+</pre></code><br>
+        <h3>Create Controller Layer - UserController</h3>
+        <p>We’ll now create the REST APIs for creating, retrieving, updating, and deleting a User resource.<br><br>
+
+            Let's create UserController class and let's build CRUD REST API's for User resource:</p>
+        <code><pre>
+package net.javaguides.springboot.controller;
+
+import lombok.AllArgsConstructor;
+import net.javaguides.springboot.entity.User;
+import net.javaguides.springboot.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@AllArgsConstructor
+@RequestMapping("api/users")
+public class UserController {
+
+    private UserService userService;
+
+    // build create User REST API
+    @PostMapping
+    public ResponseEntity< User> createUser(@RequestBody User user){
+        User savedUser = userService.createUser(user);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+
+    // build get user by id REST API
+    // http://localhost:8080/api/users/1
+    @GetMapping("{id}")
+    public ResponseEntity< User> getUserById(@PathVariable("id") Long userId){
+        User user = userService.getUserById(userId);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    // Build Get All Users REST API
+    // http://localhost:8080/api/users
+    @GetMapping
+    public ResponseEntity< List< User>> getAllUsers(){
+        List< User> users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    // Build Update User REST API
+    @PutMapping("{id}")
+    // http://localhost:8080/api/users/1
+    public ResponseEntity< User> updateUser(@PathVariable("id") Long userId,
+                                           @RequestBody User user){
+        user.setId(userId);
+        User updatedUser = userService.updateUser(user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
+    // Build Delete User REST API
+    @DeleteMapping("{id}")
+    public ResponseEntity< String> deleteUser(@PathVariable("id") Long userId){
+        userService.deleteUser(userId);
+        return new ResponseEntity<>("User successfully deleted!", HttpStatus.OK);
+    }
+} </pre></code><br><br>
+
+        <h3>Running Spring Boot Application</h3>
+        <h6>Run the spring boot application from IDE:</h6><br>
+        <p>From your IDE, run the<span> SpringbootRestfulWebservicesApplication.main()</span> method as a standalone
+            Java class that will start the embedded Tomcat server on port 8080 and point the browser to<a
+                href="http://localhost:8080/">http://localhost:8080/</a>.<br><br>
+
+            <b>Run the spring boot application using the command line:</b><br><br>
+
+            Just go to the root directory of the application and type the following command to run it -
+        </p>
+        <code><pre>
+$ mvn spring-boot:run
+</pre></code>
+        <p>The application will start at Spring Boot’s default tomcat port 8080.</p><br><br>
+
+        <h3>Test CRUD RESTful WebServices using Postman Client</h3><br>
+        <h5>Create User REST API:</h5><br>
+        <p><b>Request URL:</b> <a href="http://localhost:8080/api/users">http://localhost:8080/api/users</a><br>
+            <b>HTTP Method:</b> POST<br>
+            <b>Request Body:</b>
+        </p>
+        <code><pre>
+{
+    "firstName": "ramesh",
+    "lastName":"fadatare",
+    "email": "ramesh@gmail.com"
+}</pre></code>
+        <h6>Refer to this screenshot to test Create User REST API:</h6>
+        <div class="image mt-2 mb-5  mx-auto ">
+            <img src="../../assets/springboot images/create_usre_rest_api.png" alt="logo" class="img-fluid" />
+        </div><br>
+
+
+        <h3>
+            <hr>Get User REST API:
+        </h3>
+        <p><b>Request URL:</b><a href="http://localhost:8080/api/users/1">http://localhost:8080/api/users/1</a><br>
+            <b>HTTP Method:</b> GET
+        </p><br>
+        <h6>Refer to this screenshot to test GET User REST API:</h6>
+        <div class="image mt-2 mb-5  mx-auto ">
+            <img src="../../assets/springboot images/test_user_rest_api.png" alt="logo" class="img-fluid" />
+        </div>
+        <hr><br><br>
+
+        <h3>Update User REST API:</h3><br>
+        <p><b>Request URL:</b> <a href="http://localhost:8080/api/users/1">http://localhost:8080/api/users/1</a><br>
+            <B> HTTP Method:</B> PUT<br>
+            <b> Request Body:</b>
+        </p>
+        <code><pre>
+{
+    "firstName": "ram",
+    "lastName":"fadatare",
+    "email": "ram@gmail.com"
+}</pre></code><br>
+
+        <h5>Refer to this screenshot to test the Update User REST API:</h5>
+        <div class="image mt-2 mb-5  mx-auto ">
+            <img src="../../assets/springboot images/update_rest_api.png" alt="logo" class="img-fluid" />
+        </div>
+        <hr><br>
+
+        <h3>Get All Users REST API:</h3>
+        <p><B>Request URL:</B><a href="http://localhost:8080/api/users">http://localhost:8080/api/users</a><br>
+            <b>HTTP Method:</b> GET
+        </p><br>
+        <h5>Refer to this screenshot to test GET All User REST API:</h5>
+        <div class="image mt-2 mb-5  mx-auto ">
+            <img src="../../assets/springboot images/get_all_uder_rest_api.png" alt="logo" class="img-fluid" />
+        </div>
+        <hr><br>
+
+
+        <h3>DELETE User REST API:</h3><br>
+        <p><b>Request URL:</b><a href="http://localhost:8080/api/users/1">http://localhost:8080/api/users/1</a><br>
+            <b>HTTP Method:</b> DELETE
+        </p><br>
+        <h5>Refer to this screenshot to test Delete User REST API:</h5>
+        <div class="image mt-2 mb-5  mx-auto ">
+            <img src="../../assets/springboot images/delete_user_rest_api.png" alt="logo" class="img-fluid" />
+        </div>
+        <hr><br><br>
+
+
+        <h3>Source Code on GitHub</h3>
+        <p>The source code of this tutorial is available on my GitHub repository at <a
+                href="https://github.com/RameshMF/springboot-microservices/tree/main/springboot-restful-webservices">Spring
+                Boot CRUD RESTful WebServices</a>
+        </p>  
+    </div>
+</body>
+
+</html>
