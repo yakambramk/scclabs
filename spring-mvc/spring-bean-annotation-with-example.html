@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Spring Bean Annotation with Example</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring @Bean Annotation with Example</h1>
+        <p>In this article, we will discuss Spring Java configuration-based @Bean annotation with examples. We will also
+            discuss different scenarios of how and when to use @Bean annotation.</p>
+        <h2>@Bean Annotation Overview</h2>
+        <p>@Bean annotation indicates that a method produces a bean to be managed by the Spring container. The @Bean
+            annotation is usually declared in the Configuration class to create Spring Bean definitions.</p>
+        <p>The below diagram shows an internal implementation of @Bean Annotation:</p>
+        <img src="/assets/spring-mvc-image/Bean.PNG" alt="" class="image-fluid">
+        <h2>Declaring a Bean and Example</h2>
+        <p>To declare a bean, simply annotate a method with the @Bean annotation. You use this method to register a bean
+            definition within an ApplicationContext of the type specified as the method’s return value.</p>
+        <p><b>By default, the bean name will be the same as the method name.</b></p>
+        <p>The following is a simple example of a @Bean method declaration:</p>
+        <pre>import org.springframework.context.annotation.Bean;
+                import org.springframework.context.annotation.Configuration;
+                
+                import com.companyname.projectname.customer.CustomerService;
+                import com.companyname.projectname.order.OrderService;
+                
+                @Configuration
+                public class Application {
+                
+                    @Bean
+                    public CustomerService customerService() {
+                        return new CustomerService();
+                    }
+                 
+                    @Bean
+                    public OrderService orderService() {
+                       return new OrderService();
+                    }
+                }</pre>
+        <p>The preceding configuration is exactly equivalent to the following Spring XML:</p>
+        <pre>&lt;beans&gt;
+                &lt;bean id="customerService" class="com.companyname.projectname.CustomerService"/&gt;
+                &lt;bean id="orderService" class="com.companyname.projectname.OrderService"/&gt;
+        &lt;/beans&gt;
+</pre>
+        <h2>Injecting Bean Dependencies</h2>
+        <p>A @Bean annotated method can have an arbitrary number of parameters describing the dependencies required to
+            build that bean. For instance, if our CustomerController requires a CustomerService we can materialize that
+            dependency via a method parameter:</p>
+        <pre>import org.springframework.context.annotation.Bean;
+                import org.springframework.context.annotation.Configuration;
+                
+                import com.companyname.projectname.customer.CustomerController;
+                import com.companyname.projectname.customer.CustomerService;
+                
+                @Configuration
+                public class Application {
+                
+                    private CustomerService customerService;  
+                    @Bean
+                    public CustomerService customerService() {
+                        customerService = new CustomerService();
+                        return customerService;
+                    }
+                 
+                    @Bean
+                    public CustomerController customerController(CustomerService customerService) {
+                        return new CustomerController(customerService);
+                    }
+                }</pre>
+        <p>The resolution mechanism is pretty much identical to constructor-based dependency injection. </p>
+        <h2>Bean life cycle methods</h2>
+        <p>@Bean annotation provides initMethod and destroyMethod attributes to perform certain actions after bean
+            initialization or before bean destruction by a container.</p>
+        <pre>public class Foo {
+                public void init() {
+                        // initialization logic via xml config
+                }
+        }
+        
+        public class Bar {
+                public void cleanup() {
+                        // destruction logic via xml config
+                }
+        }
+        
+        @Configuration
+        public class AppConfig {
+        
+                @Bean(initMethod = "init")
+                public Foo foo() {
+                        return new Foo();
+                }
+        
+                @Bean(destroyMethod = "cleanup")
+                public Bar bar() {
+                        return new Bar();
+                }
+        
+        }</pre>
+        <h2>Specifying Bean Scope Using the @Scope Annotation</h2>
+        <p>You can specify that your beans defined with the @Bean annotation should have a specific scope. You can use
+            any of the standard scopes specified in the Bean Scopes. The default scope is a singleton, but you can
+            override this with the @Scope annotation:</p>
+        <pre>import org.springframework.context.annotation.Bean;
+                import org.springframework.context.annotation.Configuration;
+                import org.springframework.context.annotation.Scope;
+                
+                import com.companyname.projectname.customer.CustomerService;
+                import com.companyname.projectname.order.OrderService;
+                
+                @Configuration
+                public class Application {
+                
+                    @Bean
+                    @Scope("prototype")
+                    public CustomerService customerService() {
+                        return new CustomerService();
+                    }
+                 
+                    @Bean
+                    @Scope("prototype")
+                    public OrderService orderService() {
+                        return new OrderService();
+                    }
+                }</pre>
+        <h2>Customizing Bean Naming</h2>
+        <p>By default, the bean name is the same as the method name. We can specify the bean name using the name
+            attribute of @Bean annotation:</p>
+        <pre>import org.springframework.context.annotation.Bean;
+                import org.springframework.context.annotation.Configuration;
+                
+                import com.companyname.projectname.customer.CustomerService;
+                import com.companyname.projectname.order.OrderService;
+                
+                @Configuration
+                public class Application {
+                
+                    @Bean(name = "cService")
+                    public CustomerService customerService() {
+                        return new CustomerService();
+                    }
+                 
+                    @Bean(name = "oService")
+                    public OrderService orderService() {
+                        return new OrderService();
+                    }
+                }</pre>
+        <h2>Bean Aliasing</h2>
+        <p>As discussed in Naming beans, it is sometimes desirable to give a single bean multiple names, otherwise known
+            as bean aliasing. The name attribute of the @Bean annotation accepts a String array for this purpose.</p>
+            <pre>@Configuration
+                public class AppConfig {
+                
+                        @Bean(name = { "dataSource", "subsystemA-dataSource", "subsystemB-dataSource" })
+                        public DataSource dataSource() {
+                                // instantiate, configure and return DataSource bean...
+                        }
+                
+                }</pre>
+                <h2>Injecting inter-bean dependencies</h2>
+                <p>When @Bean have dependencies on one another, expressing that dependency is as simple as having one bean method call another:</p>
+                <pre>@Configuration
+                    public class AppConfig {
+                            @Bean
+                            public Foo foo() {
+                                    return new Foo(bar());
+                            }
+                    
+                            @Bean
+                            public Bar bar() {
+                                    return new Bar();
+                            }
+                    }</pre>
+                    <p>That's all about @Bean annotation.</p>
+
+    </div>
+</body>
+
+</html>

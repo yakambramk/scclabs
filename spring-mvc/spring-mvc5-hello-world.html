@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width-device-width, initial-scale=1.0">
+    <title>Spring MVC 5 - Hello World Example</title>
+   <style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    color: #333;
+   overflow: auto;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+h1, h2 {
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+h1 {
+    color: red;
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+p, li {
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+    color: #3D85C6;
+    line-height: 2.5;
+    font-weight: bold;
+}
+
+a:hover {
+    color: red;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px 0;
+}
+
+pre {
+    background-color: #f6f8fa;
+    border-radius: 3px;
+    box-sizing: border-box;
+    font-family: Consolas, monospace;
+    font-size: 13.6px;
+    line-height: 1.45;
+    margin-bottom: 20px;
+    padding: 16px;
+    overflow: auto;
+    word-wrap: break-word;
+}
+
+@media (max-width: 1200px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .container {
+        padding: 0 10px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+    }
+
+    p, li {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 10px;
+    }
+
+    h1 {
+        font-size: 1.4rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    p, li {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 0 5px;
+    }
+
+    h1 {
+        font-size: 1.2rem;
+    }
+
+    h2 {
+        font-size: 1.1rem;
+    }
+
+    p, li {
+        font-size: 0.85rem;
+    }
+
+    a {
+        font-size: 0.9rem;
+    }
+}
+
+   </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring MVC 5 - Hello World Example</h1>
+        <p>In this article, we will learn how to create a simple <b>Hello World Spring MVC Application </b> using Spring
+            MVC 5
+            +, JSP, Maven build tool, and Eclipse IDE.</p>
+        <p>In this example, we will use a Java-based configuration that is we configure the Spring
+            <b>DispatcherServlet</b> and
+            spring beans configuration using all Java Code (no XML).
+        </p>
+        <h2>Tools and technologies used </h2>
+        <ul>
+            <li> Spring MVC - 5.1.0 RELEASE</li>
+            <li> JDK - 1.8 or later</li>
+            <li> Maven - 3.5.1</li>
+            <li> Apache Tomcat - 8.5</li>
+            <li> IDE - STS/Eclipse Neon.3</li>
+            <li> JSTL - 1.2.1</li>
+        </ul>
+        <h2>Spring MVC Hello World Application Flow</h2>
+        <img src="/assets/spring-mvc-image/spring mvc flow.001.jpeg" alt="" class="image-fluid">
+        <h2>Development Steps
+        </h2>
+        <ol>
+            <li> Create Maven Web Application</li>
+            <li> Add Dependencies - pom.xml File</li>
+            <li> Project Structure</li>
+            <li> Spring Configuration - AppConfig.java</li>
+            <li> Servlet Container Initialization - MySpringMvcDispatcherServletInitializer.java</li>
+            <li> Model Class - HelloWorld.java</li>
+            <li> Controller Class - HelloWorldController.java</li>
+            <li> View - helloworld.jsp</li>
+            <li> Build + Deploy + Run an application</li>
+            <li> Demo</li>
+        </ol>
+        <h2>1. Create Maven Web Application</h2>
+        <p>Let's create a Maven-based web application either using a command line or from Eclipse IDE.</p>
+        <ol>
+            <li>Use the<a href="/spring-mvc/simple-maven-web-application.html   "> Guide to Create Maven Web Application</a>link to create a maven project using a
+                command line. </li>
+            <li>Use<a href=""> Create Maven Web Application using Eclipse IDE</a> link to create a maven web application
+                using IDE Eclipse.</li>
+        </ol>
+        <p>Once you created a maven web application, refer to pom.xml file jar dependencies.</p>
+        <h2>2. Add Dependencies - pom.xml File</h2>
+        <p>Refer to the following pom.xml file and add jar dependencies to your pom.xml.</p>
+        <pre>
+            &lt;project xmlns="https://maven.apache.org/POM/4.0.0"
+            xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd"&gt;
+               &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+               &lt;groupId&gt;net.javaguides.springmvc&lt;/groupId&gt;
+               &lt;artifactId&gt;springmvc5-helloworld-exmaple&lt;/artifactId&gt;
+               &lt;packaging&gt;war&lt;/packaging&gt;
+               &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+               &lt;name&gt;springmvc5-helloworld-exmaple Maven Webapp&lt;/name&gt;
+               &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+               &lt;properties&gt;
+                  &lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;
+               &lt;/properties&gt;
+               &lt;dependencies&gt;
+                   &lt;!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc --&gt;
+                   &lt;dependency&gt;
+                       &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+                       &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+                       &lt;version&gt;5.1.0.RELEASE&lt;/version&gt;
+                   &lt;/dependency&gt;
+           
+                   &lt;!-- JSTL Dependency --&gt;
+                   &lt;dependency&gt;
+                       &lt;groupId&gt;javax.servlet.jsp.jstl&lt;/groupId&gt;
+                       &lt;artifactId&gt;javax.servlet.jsp.jstl-api&lt;/artifactId&gt;
+                       &lt;version&gt;1.2.1&lt;/version&gt;
+                   &lt;/dependency&gt;
+                   &lt;dependency&gt;
+                       &lt;groupId&gt;taglibs&lt;/groupId&gt;
+                       &lt;artifactId&gt;standard&lt;/artifactId&gt;
+                       &lt;version&gt;1.1.2&lt;/version&gt;
+                   &lt;/dependency&gt;
+           
+                   &lt;!-- Servlet Dependency --&gt;
+                   &lt;dependency&gt;
+                        &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+                        &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+                        &lt;version&gt;3.1.0&lt;/version&gt;
+                        &lt;scope&gt;provided&lt;/scope&gt;
+                   &lt;/dependency&gt;
+           
+                   &lt;!-- JSP Dependency --&gt;
+                   &lt;dependency&gt;
+                       &lt;groupId&gt;javax.servlet.jsp&lt;/groupId&gt;
+                       &lt;artifactId&gt;javax.servlet.jsp-api&lt;/artifactId&gt;
+                       &lt;version&gt;2.3.1&lt;/version&gt;
+                       &lt;scope&gt;provided&lt;/scope&gt;
+                   &lt;/dependency&gt;
+                &lt;/dependencies&gt;
+               &lt;build&gt;
+                   &lt;sourceDirectory&gt;src/main/java&lt;/sourceDirectory&gt;
+                   &lt;plugins&gt;
+                       &lt;plugin&gt;
+                           &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                           &lt;version&gt;3.5.1&lt;/version&gt;
+                           &lt;configuration&gt;
+                               &lt;source&gt;1.8&lt;/source&gt;
+                               &lt;target&gt;1.8&lt;/target&gt;
+                           &lt;/configuration&gt;
+                       &lt;/plugin&gt;
+                   &lt;/plugins&gt;
+                &lt;/build&gt;
+           &lt;/project&gt;
+        </pre>
+        <p> Note that we are using spring-webmvc dependency for a Spring MVC web application.</p>
+        <p> Next, let's create a standard project structure, please refer to below diagram.</p>
+        <h2>3. Project Structure</h2>
+        <p>Standard project structure for your reference -</p>
+        <img src="/assets/spring-mvc-image/project-staructure.PNG" alt="" class="image-fluid">
+        <p>As the name suggests Spring MVC, look at the diagram we are using the Model-View-Controller approach.</p>
+        <p><b>Model</b> - HelloWorld.java</p>
+        <p> <b>View </b>- helloworld.java</p>
+        <p> <b>Controller</b> - HelloWorldController.java</p>
+        <p>Next step, we will configure Spring beans using Java-based configuration. </p>
+        <h2>4. Spring Configuration - AppConfig.java</h2>
+        <p>Create an AppConfig class and annotated it with <a href="spring-configuration-annotation.html"> @Configuration</a>, @EnableWebMvc, and @ComponentScan annotations
+            as follows.</p>
+        <pre>package net.javaguides.springmvc.helloworld.config;
+
+            import org.springframework.context.annotation.Bean;
+            import org.springframework.context.annotation.ComponentScan;
+            import org.springframework.context.annotation.Configuration;
+            import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+            import org.springframework.web.servlet.view.InternalResourceViewResolver;
+            import org.springframework.web.servlet.view.JstlView;
+            
+            
+            @Configuration
+            @EnableWebMvc
+            @ComponentScan(basePackages = {
+                "net.javaguides.springmvc.helloworld"
+            })
+            public class AppConfig {
+            
+                @Bean
+                public InternalResourceViewResolver resolver() {
+                    InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+                    resolver.setViewClass(JstlView.class);
+                    resolver.setPrefix("/WEB-INF/views/");
+                    resolver.setSuffix(".jsp");
+                    return resolver;
+                }
+            }</pre>
+        <p>Let's understand few important annotations as below:</p>
+        <ul>
+            <li>The <a href="">@Configuration </a>is a class-level annotation indicating that an object is a source of
+                bean definitions.</li>
+            <li>The <b>@EnableWebMvc </b>enables default Spring MVC configuration and provides the functionality
+                equivalent to <b> mvc:annotation-driven/ </b>element in XML based configuration.</li>
+            <li>The <b>@ComponentScan </b>scans the stereotype annotations (@Controller, @Service, etc...) in a package
+                specified by <b>basePackages </b>attribute.</li>
+        </ul>
+        <h2>InternalResourceViewResolver
+        </h2>
+        <p>This ViewResolver allows us to set properties such as prefix or suffix to the view name to generate the final
+            view page URL:</p>
+        <pre>  @Bean
+            public InternalResourceViewResolver resolver() {
+                InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+                resolver.setViewClass(JstlView.class);
+                resolver.setPrefix("/WEB-INF/views/");
+                resolver.setSuffix(".jsp");
+                return resolver;
+            }</pre>
+        <p>We only need a simple JSP page, placed in the /WEB-INF/view folder. In this example, we have used
+            <b>helloworld.jsp</b> as the view <b>- /WEB-INF/views/helloworld.jsp</b>
+        </p>
+        <h2>5. Servlet Container Initialization - SpringMvcDispatcherServletInitializer.java</h2>
+        <p>Let's configure Spring MVC <b>DispatcherServlet</b> and set up URL mappings to Spring MVC
+            <b>DispatcherServlet</b>.
+        </p>
+        <p>Create a <b>SpringMvcDispatcherServletInitializer</b> class by extending the
+            <b>AbstractAnnotationConfigDispatcherServletInitializer</b> class as follows.
+        </p>
+        <pre>package net.javaguides.springmvc.helloworld.config;
+
+            import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+            
+           
+            public class SpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+            
+                @Override
+                protected Class <?> [] getRootConfigClasses() {
+                    // TODO Auto-generated method stub
+                    return null;
+                }
+            
+                @Override
+                protected Class <?> [] getServletConfigClasses() {
+                    return new Class[] {
+                        AppConfig.class
+                    };
+                }
+            
+                @Override
+                protected String[] getServletMappings() {
+                    return new String[] {
+                        "/"
+                    };
+                }
+            }
+            </pre>
+        <h2>6. Model Class - HelloWorld.java</h2>
+        <p>As we know that Spring MVC uses a model-view-controller design pattern. Let's create a model -
+            <b>HelloWorld.java</b> with message and DateTime fields. This model data will be rendered on a view (JSP
+            file).
+        </p>
+        <pre>package net.javaguides.springmvc.helloworld.model;
+
+            public class HelloWorld {
+                private String message;
+                private String dateTime;
+                public String getMessage() {
+                    return message;
+                }
+                public void setMessage(String message) {
+                    this.message = message;
+                }
+                public String getDateTime() {
+                    return dateTime;
+                }
+                public void setDateTime(String dateTime) {
+                    this.dateTime = dateTime;
+                }
+            }</pre>
+        <p>Next, we will create a Controller to handle a request, populate the model with some data, and returns the
+            view to a browser</p>
+        <h2>7. Controller Class - HelloWorldController.java</h2>
+        <p>Create a <b>HelloWorldController</b> class annotated with <b> @Controller</b> annotation under
+            <b> net.javaguides.springmvc.helloworld.controller</b> package and write the following code in it.
+        </p>
+        <pre>package net.javaguides.springmvc.helloworld.controller;
+
+            import java.time.LocalDateTime;
+            
+            import org.springframework.stereotype.Controller;
+            import org.springframework.ui.Model;
+            import org.springframework.web.bind.annotation.RequestMapping;
+            
+            import net.javaguides.springmvc.helloworld.model.HelloWorld;
+            
+            /**
+             * @author Ramesh Fadatare
+             */
+            @Controller
+            public class HelloWorldController {
+            
+                @RequestMapping("/helloworld")
+                public String handler(Model model) {
+            
+                    HelloWorld helloWorld = new HelloWorld();
+                    helloWorld.setMessage("Hello World Example Using Spring MVC 5!!!");
+                    helloWorld.setDateTime(LocalDateTime.now().toString());
+                    model.addAttribute("helloWorld", helloWorld);
+                    return "helloworld";
+                }
+            }</pre>
+        <h2>8. View - helloworld.jsp</h2>
+        <p>Let's create an <b>helloworld.jsp</b> file under <b>src/main/webapp/WEB-INF/views</b> folder and write the
+            following code in it.</p>
+        <pre>
+                &lt;%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+                pageEncoding="ISO-8859-1"%&gt;
+                &lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%&gt;
+                &lt;!DOCTYPE html&gt;
+                &lt;html&gt;
+                &lt;head&gt;&lt;%@ page isELIgnored="false" %&gt;
+                &lt;meta charset="ISO-8859-1"&gt;
+                &lt;title&gt;Spring 5 MVC - Hello World Example | javaguides.net&lt;/title&gt;
+                &lt;/head&gt;
+                &lt;body&gt;
+                &lt;h2&gt;${helloWorld.message}&lt;/h2&gt;
+                &lt;h4&gt;Server date time is : ${helloWorld.dateTime}&lt;/h4&gt;
+                &lt;/body&gt;
+                &lt;/html&gt;
+            </pre>
+        <h2>9. Build + Deploy + Run an application</h2>
+        <p>As we are using the maven build tool so first, we will need to build this application using the following
+            maven command:</p>
+        <pre>clean install</pre>
+        <p>Once build success, then we will run this application on tomcat server 8.5 in IDE or we can also deploy war
+            file on external tomcat <b>webapps</b> folder and run the application.</p>
+        <h2>10. Demo</h2>
+        <p>Once an application is up and running in tomcat then hit this link into browser: <a
+                href="">http://localhost:8080/springmvc5-helloworld-exmaple/helloworld</a></p>
+        <p>We will see the below page on the browser with the current date-time and a message from a model.</p>
+        <img src="/assets/spring-mvc-image/demo-springmvc-helloworld.PNG" alt="" class="image-fluid">
+        <p>That's all. </p>
+        <h2>What's next?</h2>
+        <p>In the next Spring MVC tutorial, we will learn <a href="./spring-mvc-sign-up-form-handling.html"> how to do Signup form handling using Spring MVC.</a></p>
+    </div>
+</body>
+
+</html>

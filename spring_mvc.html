@@ -9,51 +9,132 @@
     <title>Spring MVC Tutorial</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+        color: #333;
+       overflow: auto;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 0 20px;
+    }
+    
+    h1, h2 {
+        margin: 20px 0;
+        font-weight: bold;
+    }
+    
+    h1 {
+        color: red;
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    p, li {
+        letter-spacing: 0.5px;
+        margin-bottom: 20px;
+        font-size: 1rem;
+    }
+    
+    a {
+        text-decoration: none;
+        cursor: pointer;
+        color: #3D85C6;
+        line-height: 2.5;
+        font-weight: bold;
+    }
+    
+    a:hover {
+        color: red;
+    }
+    
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 20px 0;
+    }
+    
+    @media (max-width: 1200px) {
         .container {
-            max-width: 1000px;
-            margin: auto;
+            padding: 0 15px;
         }
-
+    
         h1 {
-            color: red;
-            margin: 30px 0;
-            font-weight: bold;
+            font-size: 1.8rem;
         }
-
+    
         h2 {
-            margin: 20px 0;
-            font-weight: bold;
+            font-size: 1.4rem;
         }
-
-        p {
-            line-height: 1.6;
-            letter-spacing: 0.5px;
+    }
+    
+    @media (max-width: 992px) {
+        .container {
+            padding: 0 10px;
         }
-
+    
+        h1 {
+            font-size: 1.6rem;
+        }
+    
+        h2 {
+            font-size: 1.3rem;
+        }
+    
+        p, li {
+            font-size: 0.95rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .container {
+            padding: 0 10px;
+        }
+    
+        h1 {
+            font-size: 1.4rem;
+        }
+    
+        h2 {
+            font-size: 1.2rem;
+        }
+    
+        p, li {
+            font-size: 0.9rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .container {
+            padding: 0 5px;
+        }
+    
+        h1 {
+            font-size: 1.2rem;
+        }
+    
+        h2 {
+            font-size: 1.1rem;
+        }
+    
+        p, li {
+            font-size: 0.85rem;
+        }
+    
         a {
-            text-decoration: none;
-            cursor: pointer;
-            color: #3D85C6;
-            line-height: 2.5;
-            font-weight: bold;
+            font-size: 0.9rem;
         }
-
-        a:hover {
-            color: red;
-            font-weight: bold;
-        }
-
-        li {
-            letter-spacing: 0.5px;
-            margin: 15px 0;
-        }
-
-    </style>
+    }
+    
+       </style>
 </head>
 
 <body>
@@ -75,7 +156,7 @@
         </ul>
         <h2>Spring MVC Getting Started/Basics</h2>
         <ul>
-            <li><a href="">Spring MVC 5 - Hello World Example </a> - In this article, we will learn how to create a
+            <li><a href="./spring-mvc/spring-mvc5-hello-world.html">Spring MVC 5 - Hello World Example </a> - In this article, we will learn how to create a
                 simple Hello World Spring MVC Application using Spring MVC 5 +, JSP, Maven build tool and Eclipse
                 IDE</li>
             <li><a href="">How Spring MVC Works Internally </a>- In this article, we will learn step by step how
