@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Spring Import Annotation with Example</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring @Import Annotation with Example</h1>
+        <p>In this article, we will discuss how to use Spring @Import annotation with examples.</p>
+        <h2>@Import Annotation Overview</h2>
+        <ul>
+            <li>The @Import annotation indicates one or more @Configuration classes to import.</li>
+            <li>@Bean definitions declared in imported @Configuration classes should be accessed by using @Autowired
+                injection. Either the bean itself can be autowired, or the configuration class instance declaring the
+                bean can be autowired.</li>
+            <li>The @Import annotation may be declared at the class level or as a meta-annotation.</li>
+        </ul>
+        <p>Below diagram shows an internal implementation of @Import annotation:</p>
+        <img src="/assets/spring-mvc-image/import.PNG" alt="" class="image-fluid">
+        <p>If XML or other non-@Configuration bean definition resources need to be imported, use the @ImportResource
+            annotation instead. For example, if you want to load config.properties file then you can use @ImportResource
+            annotation to load respective property files.</p>
+        <p>In Spring XML-based configuration we use an &lt;import&gt; element to load multiple Spring bean configuration
+            files. </p>
+        <p>Example:</p>
+        <pre>&lt;beans xmlns="http://www.springframework.org/schema/beans"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd"&gt;
+               
+                &lt;import resource="common/spring-common.xml"/&gt;
+                       &lt;import resource="dao/spring-dao.xml"/&gt;
+                       &lt;import resource="beans/spring-beans.xml"/&gt;
+                
+               &lt;/beans&gt;
+</pre>
+        <h2>Spring @Import Annotation Example</h2>
+        <p>Spring provides the alternative @Import annotation which allows for loading @Bean definitions from another
+            configuration class.</p>
+        <pre>@Configuration
+    public class ConfigA {
+    
+        @Bean
+        public A a() {
+            return new A();
+        }
+    }
+    
+    @Configuration
+    @Import(ConfigA.class)
+    public class ConfigB {
+    
+        @Bean
+        public B b() {
+            return new B();
+        }
+    }</pre>
+        <p>Now, rather than needing to specify both ConfigA class and ConfigB class when instantiating the context, only
+            ConfigB needs to be supplied explicitly:</p>
+            <pre>public static void main(String[] args) {
+                ApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigB.class);
+            
+                // now both beans A and B will be available...
+                A a = ctx.getBean(A.class);
+                B b = ctx.getBean(B.class);
+            }</pre>
+            <h2>Load Multiple Configuration Class Files Example</h2>
+            <p>@Import annotation also can be used to load @Bean's from multiple configuration class files.</p>
+            <pre>@Configuration
+                public class ConfigA {
+                
+                    @Bean
+                    public A a() {
+                        return new A();
+                    }
+                }
+                
+                @Configuration
+                public class ConfigB {
+                
+                    @Bean
+                    public B b() {
+                        return new B();
+                    }
+                }
+                
+                @Configuration
+                public class ConfigC {
+                
+                    @Bean
+                    public C c() {
+                        return new C();
+                    }
+                }
+                
+                @Configuration
+                @Import(value = {ConfigA.class, ConfigB.class, ConfigC.class})
+                public class ConfigD {
+                
+                    @Bean
+                    public D d() {
+                        return new D();
+                    }
+                }</pre>
+
+    </div>
+</body>
+
+</html>

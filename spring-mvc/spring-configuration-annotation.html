@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Spring Configuration Annotation with Example</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring @Configuration Annotation with Example</h1>
+        <p>In this article, we will discuss a very important Spring Java-based configuration annotation which is a
+            @Configuration annotation with examples.</p>
+        <h2>@Configuration Annotation Overview</h2>
+        <p>Spring <b>@Configuration</b> annotation is part of the spring core framework. </p>
+        <p>Spring <b>@Configuration </b>annotation indicates that the class has <a href="./spring-bean-annotation-with-example.html">@Bean</a> definition methods.
+            So Spring container can process the class and generate Spring Beans to be used in the application.</p>
+        <p>Calls to @Bean methods on @Configuration classes can also be used to define inter-bean dependencies.</p>
+        <h2>Importing Additional Configuration Classes</h2>
+        <p>You need not put all your @Configuration into a single class. The <a href="./spring-import-annotations-with-example.html">@Import</a> annotation can be
+            used to import
+            additional configuration classes. Alternatively, you can use @ComponentScan to automatically pick up all
+            Spring components, including @Configuration classes.</p>
+        <p>Read more about @Import annotation on <a href="./spring-import-annotations-with-example.html"> Spring @Import Annotation with Example</a></p>
+        <h2>Refer below diagram shows an internal implementation for your reference:</h2>
+        <img src="/assets/spring-mvc-image/configuration.PNG" alt="" class="image-fluid">
+        <h2>@Configuration Annotation Example</h2>
+        <p>The simplest possible @Configuration class would read as follows:</p>
+        <pre>import org.springframework.boot.SpringApplication;
+                import org.springframework.context.annotation.Bean;
+                import org.springframework.context.annotation.Configuration;
+                
+                import com.companyname.projectname.customer.CustomerService;
+                import com.companyname.projectname.order.OrderService;
+                
+                @Configuration
+                public class Application {
+                
+                     @Bean
+                     public CustomerService customerService() {
+                         return new CustomerService();
+                     }
+                 
+                     @Bean
+                     public OrderService orderService() {
+                         return new OrderService();
+                     }
+                } </pre>
+        <p>The AppConfig class above would be equivalent to the following Spring XML:</p>
+        <pre>&lt;beans&gt;
+                &lt;bean id="customerService" class="com.companyname.projectname.CustomerService"/&gt;
+                &lt;bean id="orderService" class="com.companyname.projectname.OrderService"/&gt;
+        &lt;/beans&gt;
+</pre>
+        <h2>Injecting inter-bean dependencies</h2>
+        <p>When @Bean have dependencies on one another, expressing that dependency is as simple as having one bean
+            method call another:</p>
+            <pre>@Configuration
+                public class AppConfig {
+                
+                    @Bean
+                    public Foo foo() {
+                        return new Foo(bar());
+                    }
+                
+                    @Bean
+                    public Bar bar() {
+                        return new Bar();
+                    }
+                }</pre>
+            <p>In the example above, the foo bean receives a reference to the bar via constructor injection. </p>
+    </div>
+    
+</body>
+
+</html>

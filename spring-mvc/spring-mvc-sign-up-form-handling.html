@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Spring MVC Form Handling - Sign Up Form Example</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring MVC Form Handling - Sign Up Form Example</h1>
+        <p>In this article, we will learn how to create and submit a simple form (signup form) in Spring MVC application
+            using Spring MVC 5+, Maven build tool, JSP, and Eclipse IDE or STS.</p>
+
+        <p>In this example, we will use a Java-based configuration that is we configure the Spring DispatcherServlet
+            and spring beans configuration using all Java Code (no XML).</p>
+        <h2>video</h2>
+        <video src=""></video>
+        <p>In this example, we will use the @ModelAttribute and @RequestMapping annotations to handle the form data. So
+            let us proceed to write a simple Spring MVC application for the user signup form.</p>
+        <h2>Tools and technologies used</h2>
+        <ul>
+            <li> Spring MVC - 5.1.0 RELEASE</li>
+            <li> JDK - 1.8 or later</li>
+            <li> Maven - 3.5.1</li>
+            <li> Apache Tomcat - 8.5</li>
+            <li> IDE - STS/Eclipse Neon.3</li>
+            <li> JSTL - 1.2.1</li>
+            <li> JSP - 2.3.1</li>
+
+        </ul>
+        <p>Follow below 11 development steps to develop a complete end-to-end Spring MVC form handling application.</p>
+        <h2>Development Steps</h2>
+        <ol>
+            <li> Create Maven Web Application</li>
+            <li> Add Dependencies - pom.xml File</li>
+            <li> Project Structure</li>
+            <li> Spring Configuration - MVCConfig.java</li>
+            <li> Servlet Container Initialization - SpringMvcDispatcherServletInitializer.java</li>
+            <li> Model Class - SignUpForm.java</li>
+            <li> Controller Class - SignUpController.java</li>
+            <li> Views - signup-form.jsp and signup-success.jsp</li>
+            <li> Serve Static Resources - CSS and JS</li>
+            <li> Build and Run an application</li>
+            <li> Demo</li>
+        </ol>
+        <h2>1. Create Maven Web Application</h2>
+        <p>Let's create a Maven-based web application either using a command line or from Eclipse IDE.
+        </p>
+        <ol>
+            <li>Use the <a href="simple-maven-web-application.html">Guide to Create Maven Web Application</a> link to
+                create a maven project using a command line. </li>
+            <li> Use Create Maven Web Application using Eclipse IDE link to create a maven web application using IDE
+                Eclipse.
+            </li>
+        </ol>
+        <p>Once you created a maven web application, refer to the pom.xml file jar dependencies.</p>
+        <h2>2. Add Dependencies - pom.xml File</h2>
+        <p>Refer to the following pom.xml file and add jar dependencies to your pom.xml.</p>
+        <pre>&lt;project
+            xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+            xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+          xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+            &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+            &lt;groupId&gt;net.javaguides.springmvc&lt;/groupId&gt;
+            &lt;artifactId&gt;springmvc5-form-handling&lt;/artifactId&gt;
+            &lt;packaging&gt;war&lt;/packaging&gt;
+            &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+            &lt;name&gt;springmvc5-form-handling Maven Webapp&lt;/name&gt;
+            &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+            &lt;properties&gt;
+                &lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;
+            &lt;/properties&gt;
+            &lt;dependencies&gt;
+                &lt;!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc --&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+                    &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+                    &lt;version&gt;5.1.0.RELEASE&lt;/version&gt;
+                &lt;/dependency&gt;
+                &lt;!-- JSTL Dependency --&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;javax.servlet.jsp.jstl&lt;/groupId&gt;
+                    &lt;artifactId&gt;javax.servlet.jsp.jstl-api&lt;/artifactId&gt;
+                    &lt;version&gt;1.2.1&lt;/version&gt;
+                &lt;/dependency&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;taglibs&lt;/groupId&gt;
+                    &lt;artifactId&gt;standard&lt;/artifactId&gt;
+                    &lt;version&gt;1.1.2&lt;/version&gt;
+                &lt;/dependency&gt;
+                &lt;!-- Servlet Dependency --&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+                    &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+                    &lt;version&gt;3.1.0&lt;/version&gt;
+                    &lt;scope&gt;provided&lt;/scope&gt;
+                &lt;/dependency&gt;
+                &lt;!-- JSP Dependency --&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;javax.servlet.jsp&lt;/groupId&gt;
+                    &lt;artifactId&gt;javax.servlet.jsp-api&lt;/artifactId&gt;
+                    &lt;version&gt;2.3.1&lt;/version&gt;
+                    &lt;scope&gt;provided&lt;/scope&gt;
+                &lt;/dependency&gt;
+            &lt;/dependencies&gt;
+            &lt;build&gt;
+                &lt;sourceDirectory&gt;src/main/java&lt;/sourceDirectory&gt;
+                &lt;plugins&gt;
+                    &lt;plugin&gt;
+                        &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                        &lt;version&gt;3.5.1&lt;/version&gt;
+                        &lt;configuration&gt;
+                            &lt;source&gt;1.8&lt;/source&gt;
+                            &lt;target&gt;1.8&lt;/target&gt;
+                        &lt;/configuration&gt;
+                    &lt;/plugin&gt;
+                &lt;/plugins&gt;
+            &lt;/build&gt;
+        &lt;/project&gt;
+        </pre>
+        <p>Note that we are using spring-webmvc dependency for a Spring MVC web application. </p>
+        <p> Next, let's create a standard project structure, please refer to the below diagram.</p>
+        <h2>3. Project Structure</h2>
+        <p>Standard project structure for your reference -</p>
+        <img src="/assets/spring-mvc-image/spring-mvc5-project-structure.PNG" alt="" class="image-fluid">
+        <p>As the name suggests Spring MVC, look at the above diagram we are using the Model-View-Controller approach.
+        </p>
+        <p><b>Model</b> - SignUpForm.java </p>
+        <p><b>Views</b> - signup-form.jsp and signup-success.jsp</p>
+        <p><b> Controller </b>- SignUpController.java </p>
+        <p>Next step, we will configure Spring beans using Java-based configuration.</p>
+        <h2>4. Spring Configuration - MVCConfig.java</h2>
+        <p>Create an MVCConfig class and annotated it with @Configuration, @EnableWebMvc, and @ComponentScan
+            annotations. In this MVCConfig class, we configure the resource handler to serve the static resources (CSS,
+            JavaScript, or Images) in the Spring MVC application. </p>
+        <p>To configure the resource handler, we need to override the default addResourceHandlers() method of
+            WebMvcConfigurer interface in our web @Configuration class as follows.</p>
+        <pre>package net.javaguides.springmvc.form.config;
+
+                import org.springframework.context.annotation.Bean;
+                import org.springframework.context.annotation.ComponentScan;
+                import org.springframework.context.annotation.Configuration;
+                import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+                import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+                import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+                import org.springframework.web.servlet.view.InternalResourceViewResolver;
+                import org.springframework.web.servlet.view.JstlView;
+                
+                /**
+                 * @author Ramesh Fadatare
+                 */
+                
+                @Configuration
+                @EnableWebMvc
+                @ComponentScan(basePackages = {
+                    "net.javaguides.springmvc.form"
+                })
+                public class MVCConfig implements WebMvcConfigurer {
+                
+                    @Bean
+                    public InternalResourceViewResolver resolver() {
+                        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+                        resolver.setViewClass(JstlView.class);
+                        resolver.setPrefix("/WEB-INF/views/");
+                        resolver.setSuffix(".jsp");
+                        return resolver;
+                    }
+                
+                    @Override
+                    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+                        registry
+                            .addResourceHandler("/resources/**")
+                            .addResourceLocations("/resources/");
+                    }
+                }
+                </pre>
+        <p>Let's look at few important annotations from the above file.
+        </p>
+        <ul>
+            <li>The @Configuration is a class-level annotation indicating that an object is a source of bean
+                definitions.</li>
+            <li> The @EnableWebMvc enables default Spring MVC configuration and provides the functionality equivalent to
+                mvc:annotation-driven/ element in XML based configuration.</li>
+            <li>The @ComponentScan scans the stereotype annotations (@Controller, @Service, etc...) in a package
+                specified by basePackages attribute.</li>
+        </ul>
+        <h2>5. Servlet Container Initialization - SpringMvcDispatcherServletInitializer.java</h2>
+        <p>In Spring MVC, The DispatcherServlet needs to be declared and mapped for processing all requests either using
+            java or web.xml configuration.</p>
+        <p> In a Ser vlet 3.0+ environment, you can use AbstractAnnotationConfigDispatcherServletInitializer class to
+            register and initialize the DispatcherServlet programmatically as follows.</p>
+        <pre>package net.javaguides.springmvc.form.config;
+
+                import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+                
+                /**
+                 * @author Ramesh Fadatare
+                 */
+                public class SpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+                
+                    @Override
+                    protected Class << ? > [] getRootConfigClasses() {
+                        // TODO Auto-generated method stub
+                        return null;
+                    }
+                
+                    @Override
+                    protected Class << ? > [] getServletConfigClasses() {
+                        return new Class[] {
+                            MVCConfig.class
+                        };
+                    }
+                
+                    @Override
+                    protected String[] getServletMappings() {
+                        return new String[] {
+                            "/"
+                        };
+                    }
+                }</pre>
+        <p>Next step, we will create a SignUpForm class Model.</p>
+        <h2>6. Model Class - SignUpForm.java</h2>
+        <p>Let's create a SignUpForm Java class for binding data to the model and rendering model data on views.</p>
+        <pre>package net.javaguides.springmvc.form.model;
+
+                    public class SignUpForm {
+                        private String firstName;
+                        private String lastName;
+                        private String email;
+                        private String userName;
+                        private String password;
+                        public String getFirstName() {
+                            return firstName;
+                        }
+                        public void setFirstName(String firstName) {
+                            this.firstName = firstName;
+                        }
+                        public String getLastName() {
+                            return lastName;
+                        }
+                        public void setLastName(String lastName) {
+                            this.lastName = lastName;
+                        }
+                        public String getEmail() {
+                            return email;
+                        }
+                        public void setEmail(String email) {
+                            this.email = email;
+                        }
+                        public String getUserName() {
+                            return userName;
+                        }
+                        public void setUserName(String userName) {
+                            this.userName = userName;
+                        }
+                        public String getPassword() {
+                            return password;
+                        }
+                        public void setPassword(String password) {
+                            this.password = password;
+                        }
+                    }</pre>
+        <h2>7. Controller Class - SignUpController.java</h2>
+        <p>Let's create a SignUpController controller class annotated with @Controller annotation as follows:</p>
+        <pre>package net.javaguides.springmvc.form.controller;
+
+                        import org.springframework.stereotype.Controller;
+                        import org.springframework.ui.Model;
+                        import org.springframework.web.bind.annotation.GetMapping;
+                        import org.springframework.web.bind.annotation.ModelAttribute;
+                        import org.springframework.web.bind.annotation.PostMapping;
+                        
+                        import net.javaguides.springmvc.form.model.SignUpForm;
+                        
+                        /**
+                         * SignUpController class for User sign up form processing
+                         * 
+                         * @author Ramesh Fadatare
+                         */
+                        @Controller
+                        public class SignUpController {
+                        
+                            /**
+                             * Create new signUpForm object for empty from
+                             * 
+                             * @return
+                             */
+                            @ModelAttribute("signUpForm")
+                            public SignUpForm setSignUpForm() {
+                                return new SignUpForm();
+                            }
+                        
+                            /**
+                             * Method to show the initial HTML form
+                             * 
+                             * @return
+                             */
+                            @GetMapping("/showSignUpForm")
+                            public String showForm() {
+                                return "signup-form";
+                            }
+                        
+                            /**
+                             * Save User sign up form
+                             * 
+                             * @param signUpForm
+                             * @param model
+                             * @return
+                             */
+                            @PostMapping("/saveSignUpForm")
+                            public String saveUser(@ModelAttribute("signUpForm") SignUpForm signUpForm, Model model) {
+                        
+                                // Implement business logic to save user details into a database
+                                // .....
+                        
+                                System.out.println("FirstName : " + signUpForm.getFirstName());
+                                System.out.println("LastName : " + signUpForm.getLastName());
+                                System.out.println("Username : " + signUpForm.getUserName());
+                                System.out.println("Password : " + signUpForm.getPassword());
+                                System.out.println("Email : " + signUpForm.getEmail());
+                        
+                                model.addAttribute("message", "User SignUp successfully.");
+                                model.addAttribute("user", signUpForm);
+                        
+                                return "signup-success";
+                            }
+                        }</pre>
+        <p>Please refer to comments that are self-descriptive. So far we have created a model and controller, now in the
+            next step, we will create views.</p>
+        <h2>8. Views - signup-form.jsp and signup-success.jsp</h2>
+        <h2>signup-form.jsp</h2>
+        <pre>
+                &lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=ISO-8859-1&quot;
+                    pageEncoding=&quot;ISO-8859-1&quot;%&gt;
+                   &lt;%@ taglib uri=&quot;http://www.springframework.org/tags/form&quot; prefix=&quot;form&quot;%&gt;
+                   &lt;%@taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot;%&gt;
+                   &lt;!DOCTYPE html&gt;
+                   &lt;html&gt;
+                   &lt;head&gt;
+                   &lt;meta charset=&quot;ISO-8859-1&quot;&gt;
+                   &lt;title&gt;Spring MVC 5 - form handling | Java Guides&lt;/title&gt;
+                   &lt;link href=&quot;&lt;c:url value=&quot;/resources/css/bootstrap.min.css&quot; /&gt;&quot;
+                    rel=&quot;stylesheet&quot;&gt;
+                   &lt;script src=&quot;&lt;c:url value=&quot;/resources/js/jquery-1.11.1.min.js&quot; /&gt;&quot;&gt;&lt;/script&gt;
+                   &lt;script src=&quot;&lt;c:url value=&quot;/resources/js/bootstrap.min.js&quot; /&gt;&quot;&gt;&lt;/script&gt;
+                   
+                   &lt;/head&gt;
+                   &lt;body&gt;
+                    &lt;div class=&quot;container&quot;&gt;
+                     &lt;div class=&quot;col-md-offset-2 col-md-7&quot;&gt;
+                      &lt;h2 class=&quot;text-center&quot;&gt;Spring MVC 5 Form Handling Example -
+                       Sign up Form&lt;/h2&gt;
+                      &lt;div class=&quot;panel panel-info&quot;&gt;
+                       &lt;div class=&quot;panel-heading&quot;&gt;
+                        &lt;div class=&quot;panel-title&quot;&gt;Sign Up&lt;/div&gt;
+                       &lt;/div&gt;
+                       &lt;div class=&quot;panel-body&quot;&gt;
+                        &lt;form:form action=&quot;saveSignUpForm&quot; cssClass=&quot;form-horizontal&quot;
+                         method=&quot;post&quot; modelAttribute=&quot;signUpForm&quot;&gt;
+                   
+                         &lt;div class=&quot;form-group&quot;&gt;
+                          &lt;label for=&quot;firstname&quot; class=&quot;col-md-3 control-label&quot;&gt;First
+                           Name&lt;/label&gt;
+                          &lt;div class=&quot;col-md-9&quot;&gt;
+                           &lt;form:input path=&quot;firstName&quot; cssClass=&quot;form-control&quot; /&gt;
+                          &lt;/div&gt;
+                         &lt;/div&gt;
+                         &lt;div class=&quot;form-group&quot;&gt;
+                          &lt;label for=&quot;lastname&quot; class=&quot;col-md-3 control-label&quot;&gt;Last
+                           Name&lt;/label&gt;
+                          &lt;div class=&quot;col-md-9&quot;&gt;
+                           &lt;form:input path=&quot;lastName&quot; cssClass=&quot;form-control&quot; /&gt;
+                          &lt;/div&gt;
+                         &lt;/div&gt;
+                   
+                         &lt;div class=&quot;form-group&quot;&gt;
+                          &lt;label for=&quot;icode&quot; class=&quot;col-md-3 control-label&quot;&gt;User
+                           Name &lt;/label&gt;
+                          &lt;div class=&quot;col-md-9&quot;&gt;
+                           &lt;form:input path=&quot;userName&quot; cssClass=&quot;form-control&quot; /&gt;
+                          &lt;/div&gt;
+                         &lt;/div&gt;
+                   
+                         &lt;div class=&quot;form-group&quot;&gt;
+                          &lt;label for=&quot;password&quot; class=&quot;col-md-3 control-label&quot;&gt;Password&lt;/label&gt;
+                          &lt;div class=&quot;col-md-9&quot;&gt;
+                           &lt;form:password path=&quot;password&quot; cssClass=&quot;form-control&quot; /&gt;
+                          &lt;/div&gt;
+                         &lt;/div&gt;
+                         &lt;div class=&quot;form-group&quot;&gt;
+                          &lt;label for=&quot;email&quot; class=&quot;col-md-3 control-label&quot;&gt;Email&lt;/label&gt;
+                          &lt;div class=&quot;col-md-9&quot;&gt;
+                           &lt;form:input path=&quot;email&quot; cssClass=&quot;form-control&quot; /&gt;
+                          &lt;/div&gt;
+                         &lt;/div&gt;
+                   
+                         &lt;div class=&quot;form-group&quot;&gt;
+                          &lt;!-- Button --&gt;
+                          &lt;div class=&quot;col-md-offset-3 col-md-9&quot;&gt;
+                           &lt;form:button cssClass=&quot;btn btn-primary&quot;&gt;Submit&lt;/form:button&gt;
+                          &lt;/div&gt;
+                         &lt;/div&gt;
+                   
+                        &lt;/form:form&gt;
+                       &lt;/div&gt;
+                      &lt;/div&gt;
+                     &lt;/div&gt;
+                    &lt;/div&gt;
+                   &lt;/body&gt;
+                   &lt;/html&gt;</pre>
+
+        <h2>signup-success.jsp</h2>
+        <p>This view is called once we will submit the signup form successfully. On this page, we will see signup form
+            submitted data.</p>
+        <pre>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=ISO-8859-1&quot;
+                pageEncoding=&quot;ISO-8859-1&quot;%&gt;
+               &lt;%@ taglib uri=&quot;http://java.sun.com/jsp/jstl/core&quot; prefix=&quot;c&quot;%&gt;
+               &lt;!DOCTYPE html&gt;
+               &lt;html&gt;
+               &lt;head&gt;
+               &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
+               &lt;title&gt;javaguides.net&lt;/title&gt;
+               &lt;link href=&quot;&lt;c:url value=&quot;/resources/css/bootstrap.min.css&quot; /&gt;&quot;
+                rel=&quot;stylesheet&quot;&gt;
+               &lt;script src=&quot;&lt;c:url value=&quot;/resources/js/jquery-1.11.1.min.js&quot; /&gt;&quot;&gt;&lt;/script&gt;
+               &lt;script src=&quot;&lt;c:url value=&quot;/resources/js/bootstrap.min.js&quot; /&gt;&quot;&gt;&lt;/script&gt;
+               &lt;/head&gt;
+               &lt;body&gt;
+                &lt;div class=&quot;container&quot;&gt;
+                 &lt;div class=&quot;col-md-offset-2 col-md-7&quot;&gt;
+                  &lt;h1&gt;${message}&lt;/h1&gt;
+                  &lt;hr /&gt;
+               
+                  &lt;table class=&quot;table table-striped table-bordered&quot;&gt;
+                   &lt;tr&gt;
+                    &lt;td&gt;&lt;b&gt;First Name &lt;/b&gt;: ${user.firstName}&lt;/td&gt;
+                   &lt;/tr&gt;
+                   &lt;tr&gt;
+                    &lt;td&gt;&lt;b&gt;Last Name &lt;/b&gt; : ${user.lastName}&lt;/td&gt;
+                   &lt;/tr&gt;
+                   &lt;tr&gt;
+                    &lt;td&gt;&lt;b&gt;UserName &lt;/b&gt; : ${user.userName}&lt;/td&gt;
+                   &lt;/tr&gt;
+                   &lt;tr&gt;
+                    &lt;td&gt;&lt;b&gt;Email &lt;/b&gt;: ${user.email}&lt;/td&gt;
+                   &lt;/tr&gt;
+                  &lt;/table&gt;
+                 &lt;/div&gt;
+                &lt;/div&gt;
+               &lt;/body&gt;
+               &lt;/html&gt;</pre>
+        <h2>9. Static Resources - CSS and JS</h2>
+        <p>Under the resources folder, create the CSS and js folders. Place bootstrap, jquery CSS, and js file in
+            respective folders as shown in the below diagram.</p>
+        <img src="/assets/spring-mvc-image/static-resources.PNG" alt="" class="image-fluid">
+        <h2>10. Build and Run an application</h2>
+        <p>As we are using the maven build tool so first, we will need to build this application using the following
+            maven command:</p>
+        <pre>clean install</pre>
+        <p>Once build success, then we will run this application on tomcat server 8.5 in IDE or we can also deploy war
+            file on external tomcat webapps folder and run the application.</p>
+            <h2>11. Demo</h2>
+            <p>On entering the URL, you will see the following page.</p>
+            <img src="/assets/spring-mvc-image/signup-form.PNG" alt="" class="image-fluid">
+            <p>Fill the above signup form and hit submit button will navigate to the signup success page as shown below:</p>
+            <img src="/assets/spring-mvc-image/signup-confirmation.PNG" alt="" class="image-fluid">
+
+    </div>
+</body>
+
+</html>
