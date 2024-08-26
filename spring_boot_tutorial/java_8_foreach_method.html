@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+      .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 18px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+<body>
+   <div class="content" >
+    <div class="overlap-container">
+        <div class="container">
+            <h1>Java 8 forEach Method</h1>
+            <h4>Author : Sai K</h4>
+            <p>Java 8 introduced the forEach method, which is a powerful way to iterate over collections in a more functional<br><br> style. This guide will provide a comprehensive overview of the forEach method, including its usage, benefits, and <br><br>examples.</p>
+            <h2>Table of Contents</h2>
+            <ol>
+                <li>Introduction</li><br>
+                <li>Why Use forEach?</li><br>
+                <li>Syntax</li><br>
+                <li>Using forEach with Lists</li><br>
+                <li>Using forEach with Maps</li><br>
+                <li>Using forEach with Streams</li><br>
+                <li>Handling Exceptions in forEach</li><br>
+                <li>Conclusion</li>
+            </ol>
+            <h2>1. Introductions</h2>
+            <p>The forEach method is part of the Java 8 Stream API and provides a new way to iterate over collections. It is a terminal operation that performs an action for each element of the stream.</p>
+            <h2>2. Why Use forEach?</h2>
+<ul>
+    <li> Simpler Syntax: Reduces boilerplate code compared to traditional loops.</li><br>
+    <li>Functional Programming: Encourages a more functional programming style.</li><br>
+    <li>Parallel Processing: Can be used with parallel streams for improved performance.</li><br>
+</ul>
+<h2>3. Syntax</h2>
+<p>The forEach method takes a single parameter, which is a functional interface Consumer. The Consumer interface represents an operation that accepts a single input argument and returns no result.</p>
+<pre><code>
+    void forEach(Consumer<? super T> action)
+</code></pre>
+<h2>4. Using forEach with Lists</h2>
+<h3>Example: Iterating Over a List</h3>
+<pre><code>
+import java.util.Arrays;
+import java.util.List;
+
+public class ForEachListExample {
+    public static void main(String[] args) {
+        List<String> fruits = Arrays.asList("Apple", "Banana", "Orange");
+
+        // Using forEach with a lambda expression
+        fruits.forEach(fruit -> System.out.println(fruit));
+
+        // Using forEach with a method reference
+        fruits.forEach(System.out::println);
+    }
+}
+</code></pre>
+<h2>5. Using forEach with Maps</h2>
+<h3>Example: Iterating Over a Map</h3>
+<pre><code>
+    import java.util.HashMap;
+import java.util.Map;
+
+public class ForEachMapExample {
+    public static void main(String[] args) {
+        Map<String, Integer> fruitMap = new HashMap<>();
+        fruitMap.put("Apple", 3);
+        fruitMap.put("Banana", 2);
+        fruitMap.put("Orange", 5);
+
+        // Using forEach with a lambda expression
+        fruitMap.forEach((key, value) -> System.out.println(key + ": " + value));
+
+        // Using forEach with a method reference (custom method)
+        fruitMap.forEach(ForEachMapExample::printEntry);
+    }
+
+    private static void printEntry(String key, Integer value) {
+        System.out.println(key + ": " + value);
+    }
+}
+</code></pre>
+<h2>6. Using forEach with Streams</h2>
+<h3>Example: Iterating Over a Stream</h3>
+<pre><code>
+    import java.util.Arrays;
+import java.util.List;
+
+public class ForEachStreamExample {
+    public static void main(String[] args) {
+        List<String> fruits = Arrays.asList("Apple", "Banana", "Orange");
+
+        // Using stream and forEach
+        fruits.stream().forEach(fruit -> System.out.println(fruit));
+
+        // Using parallel stream and forEach
+        fruits.parallelStream().forEach(fruit -> System.out.println("Parallel: " + fruit));
+    }
+}
+</code></pre>
+<h2>7. Handling Exceptions in forEach</h2>
+<h3>Example: Handling Exceptions</h3>
+<p>If you need to handle exceptions within the forEach method, you can wrap the lambda expression in a try-catch <br><br>block.</p>
+<pre><code>
+    import java.util.Arrays;
+import java.util.List;
+
+public class ForEachExceptionExample {
+    public static void main(String[] args) {
+        List<String> fruits = Arrays.asList("Apple", "Banana", "Orange");
+
+        // Using forEach with exception handling
+        fruits.forEach(fruit -> {
+            try {
+                if (fruit.equals("Banana")) {
+                    throw new Exception("Exception for Banana");
+                }
+                System.out.println(fruit);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+        });
+    }
+}
+</code></pre>
+<h2>8. Conclusion</h2>
+<p>The forEach method introduced in Java 8 provides a more concise and functional way to iterate over collections.<br><br> It supports lambda expressions and method references, making the code more readable and expressive. By <br><br>leveraging the forEach method, you can improve the clarity and maintainability of your code.</p>
+<h2>Summary of Key Points:</h2>
+<ul>
+    <li>Simpler Syntax: Reduces boilerplate code.</li><br>
+    <li>Functional Style: Encourages the use of functional programming techniques.</li><br>
+    <li>Parallel Processing: Can be used with parallel streams.</li><br>
+    <li>Exception Handling: Can handle exceptions using try-catch within the lambda.</li><br>
+</ul>
+<p>Feel free to experiment with the examples provided and incorporate the forEach method into your Java<br><br> applications to make your code more modern and concise!</p>
+        </div>
+    </div>
+   </div>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot ChatGPT Integration Tutorial</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 18px;
+        
+        
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+       
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container mt-3">
+                <h1>Spring Boot ChatGPT Integration Tutorial</h1>
+                <h4>author :Sai K</h4>
+                <P>In this tutorial, we will integrate ChatGPT with a Spring Boot application using the new RestClient
+                    class<br><br> introduced in Spring Boot 3.2. We will demonstrate how to call the ChatGPT APIs using
+                    this REST client to <br><br>generate responses based on user input</P>
+                <h2>Introduction</h2>
+                <p>ChatGPT, developed by OpenAI, is a powerful AI model that can generate human-like text based on input
+                    <br><br>prompts. Integrating ChatGPT with a Spring Boot application allows you to leverage its
+                    capabilities to build,<br><br> intelligent applications that can interact with users in a
+                    conversational manner.</p>
+
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li>Java 17 or later</li><br>
+                    <li>Maven 3.8.1 or later</li><br>
+                    <li>OpenAI API Key</li>
+                </ul>
+
+                <h2>1. Setting Up the Project</h2>
+                <h3>Step 1: Create a New Spring Boot Project</h3>
+
+                <p>Use Spring Initializr to create a new Spring Boot project. Include dependencies for Spring Web and
+                    Spring AI.</p>
+                <h3>Using Spring Initializr:</h3>
+                <ul class="steps">
+                    <li class="">Go to <a href="https://start.spring.io/"> start.spring.io</a></li><br>
+                    <li>Select</li><br>
+                    <ul class="circle-list">
+                        <li>Project: Maven Project</li><br>
+                        <li>Language: Java</li><br>
+                        <li>Spring Boot: 3.0.0 (or latest)</li><br>
+                        <li> Dependencies: Spring Web</li><br>
+                    </ul>
+                    <li>Generate the project and unzip it.</li>
+                </ul>
+                <h3>Step 2: Add Dependencies</h3>
+                <p>Add your OpenAI API key to application.properties.</p>
+               <pre><code>
+                openai.api.key=your_openai_api_key
+                openai.api.url=https://api.openai.com/v1/completions</code></pre>
+
+                <h2>Step 2: Configure RestClient</h2>
+                <p>Create a configuration class to set up the RestClient.</p>
+<pre><code>
+    package com.example.demo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestClient;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public RestClient restClient() {
+        return RestClient.builder().build();
+    }
+}
+</code></pre>
+                <h2>3. Creating the ChatGPT Client</h2>
+                <h3>Step 1: Define the Request and Response Models</h3>
+                <P>Create models for the request and response data.</P>
+                <h3>ChatGPTRequest.java</h3>
+                <pre><code>
+ package com.example.demo.model;
+
+import java.util.List;
+
+public class ChatGPTRequest {
+    private String model;
+    private List<ChatGPTMessage> messages;
+
+    // Getters and setters
+}
+
+public class ChatGPTMessage {
+    private String role;
+    private String content;
+
+    // Getters and setters
+}
+                </code></pre>
+                <h3>ChatGPTResponse.java</h3>
+                <pre><code>
+ package com.example.demo.model;
+
+import java.util.List;
+
+public class ChatGPTResponse {
+    private List<Choice> choices;
+
+    // Getters and setters
+
+    public static class Choice {
+        private ChatGPTMessage message;
+
+        // Getters and setters
+    }
+}
+                </code></pre>
+                <h3>Step 2: Create the ChatGPT Client Service</h3>
+                <p>Create a service to interact with the ChatGPT API.</p>
+                <pre><code>
+                    package com.example.demo.service;
+
+import com.example.demo.model.ChatGPTRequest;
+import com.example.demo.model.ChatGPTResponse;
+import com.example.demo.model.ChatGPTMessage;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
+
+import java.util.Collections;
+
+@Service
+public class ChatGPTService {
+
+    private final RestClient restClient;
+
+    @Value("${openai.api.key}")
+    private String apiKey;
+
+    @Value("${openai.api.url}")
+    private String apiUrl;
+
+    public ChatGPTService(RestClient restClient) {
+        this.restClient = restClient;
+    }
+
+    public String getChatGPTResponse(String userMessage) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(apiKey);
+
+        ChatGPTMessage userMessageObj = new ChatGPTMessage();
+        userMessageObj.setRole("user");
+        userMessageObj.setContent(userMessage);
+
+        ChatGPTRequest request = new ChatGPTRequest();
+        request.setModel("gpt-3.5-turbo");
+        request.setMessages(Collections.singletonList(userMessageObj));
+
+        HttpEntity<ChatGPTRequest> entity = new HttpEntity<>(request, headers);
+
+        ChatGPTResponse response = restClient.exchange(apiUrl, HttpMethod.POST, entity, ChatGPTResponse.class).getBody();
+
+        return response != null && !response.getChoices().isEmpty()
+                ? response.getChoices().get(0).getMessage().getContent()
+                : "No response from ChatGPT";
+    }
+}
+                </code></pre>
+<h2>4. Creating the Chatbot Controller</h2>
+<h3>Step 1: Create a Controller to Expose the Service</h3>
+<p>Create a controller to expose an endpoint for the chatbot.</p>
+<pre><code>
+    package com.example.demo.controller;
+
+import com.example.demo.service.ChatGPTService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class ChatbotController {
+
+    private final ChatGPTService chatGPTService;
+
+    @Autowired
+    public ChatbotController(ChatGPTService chatGPTService) {
+        this.chatGPTService = chatGPTService;
+    }
+
+    @GetMapping("/chat")
+    public String chat(@RequestParam String message) {
+        return chatGPTService.getChatGPTResponse(message);
+    }
+}
+</code></pre>
+<h2>5. Testing the Integration</h2>
+<h3>Step 1: Run the Application</h3>
+<p>Run your Spring Boot application. Ensure the application starts without errors.</p>
+<h3>Step 2: Access the Chat Endpoint</h3>
+<p>Use Postman, curl, or your browser to test the endpoint. For example:</p>
+<pre><code>
+    http://localhost:8080/chat?message=Hello, how are you?
+</code></pre>
+<p>You should receive a response generated by the ChatGPT model based on the provided message.</p>
+
+<h2>Conclusion</h2>
+<p>This tutorial demonstrated how to integrate ChatGPT with a Spring Boot application using RestClient to call the <br><br>ChatGPT APIs. You learned how to configure Spring Boot, create a service to interact with the ChatGPT API, and<br><br> expose an endpoint for user interaction. This setup allows you to integrate AI-powered chat functionalities into <br><br>your Spring Boot applications, enhancing user experience with intelligent and dynamic responses. </p>
+<p>Explore further customization and enhancements to leverage the full potential of AI in your projects.</p>
+<h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot + Spring AI Example (Chatbot Example)</title>
+</head>
+<style>
+    .content{
+        flex-flow:0.5 ;
+        padding: 40px;
+
+    }
+    .container{
+        max-width: 800px;
+        margin: auto;
+    }
+  
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+    h1{
+        color: red;
+        margin-bottom: 20px;
+        text-align: left ;
+    }
+    h4{
+        color: red;
+    }
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 18px;
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container mt-3">
+                <h1>Spring Boot + Spring AI Example (Chatbot Example)</h1>
+                <h4>author: Sai K</h4>
+                <h2>Introduction</h2>
+                <p>In this tutorial, we will guide you through the steps to integrate Spring AI into a Spring application to create a <br><br>chatbot. this example demonstrates how to set up the project, configure spring AI, and create a chatbot that <br><br>interacts with users using AI-generated responses. By the end of this tutorial, you wii have  a fuctional chatbot<br><br> powered by Spring AI.</p>
+
+                <h2>1. Setting Up the Project</h2>
+                <h3>Step 1: Create a New Spring Boot Project</h3>
+
+                <p>Use Spring Initializr to create a new Spring Boot project. Include dependencies for Spring Web and
+                    Spring AI.</p>
+                <h3>Using Spring Initializr:</h3>
+                <ul class="steps">
+                    <li class="">Go to <a href="https://start.spring.io/"> start.spring.io</a></li><br>
+                    <li>Select</li><br>
+                    <ul class="circle-list">
+                        <li>Project: Maven Project</li><br>
+                        <li>Language: Java</li><br>
+                        <li>Spring Boot: 3.0.0 (or latest)</li><br>
+                        <li> Dependencies: Spring Web</li><br>
+                    </ul>
+                    <li>Generate the project and unzip it.</li>
+                </ul>
+                <h3>Step 2: Add Dependencies</h3>
+                <p>In your project's pom.xml, add the necessary dependencies for Spring AI.</p>
+                <img src="../assets/springboot images/dependecies.png.PNG" alt="add_dependencies_image"
+                    class="imge-fluid">
+
+                <h2>Step 1: Add API Key to Configuration</h2>
+                <p>Add your OpenAI API key to application.properties or application.yml.</p>
+                <p>For application.properties:</p>
+
+                <img src="../assets/springboot images/dependecies.png1.PNG" alt="add_dependencies_image"
+                    class="imge-fluid">
+                <h3>Step 2: Configure Spring Beans</h3>
+                <p>Create a configuration class to set up the necessary Spring beans, including the OpenAiClient and
+                    ChatClient.</p>
+                    <pre><code>
+ package com.example.demo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.ai.openai.OpenAiClient;
+import org.springframework.ai.openai.OpenAiChatClient;
+import org.springframework.ai.openai.ChatClient;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public OpenAiClient openAiClient() {
+        return new OpenAiClient();
+    }
+
+    @Bean
+    public ChatClient chatClient(OpenAiClient openAiClient) {
+        return new OpenAiChatClient(openAiClient);
+    }
+}
+  </code></pre>
+<h2>3.Creating the Chatbox Service</h2>
+<h3>Step 1: Create a Chatbox Service </h3>
+<p>Create a service to Chatbox interactions with the AI model.</p>
+<pre><code>
+    package com.example.demo.service;
+
+import org.springframework.ai.openai.ChatClient;
+import org.springframework.ai.openai.model.ChatMessage;
+import org.springframework.ai.openai.model.ChatRequest;
+import org.springframework.ai.openai.model.ChatResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ChatbotService {
+
+    private final ChatClient chatClient;
+
+    @Autowired
+    public ChatbotService(ChatClient chatClient) {
+        this.chatClient = chatClient;
+    }
+
+    public String getChatResponse(String userMessage) {
+        ChatMessage userMsg = new ChatMessage("user", userMessage);
+
+        ChatRequest request = new ChatRequest();
+        request.setMessages(List.of(userMsg));
+
+        ChatResponse response = chatClient.sendMessage(request);
+        return response.getReply();
+    }
+}
+</code></pre>
+<h3>Step 2: Create a Controller to Expose the Service</h3>
+<p>Create a controller a Controller to Expose the Service</p>
+<pre>
+    <code>
+        package com.example.demo.controller;
+
+import com.example.demo.service.ChatbotService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class ChatbotController {
+
+    private final ChatbotService chatbotService;
+
+    @Autowired
+    public ChatbotController(ChatbotService chatbotService) {
+        this.chatbotService = chatbotService;
+    }
+
+    @GetMapping("/chat")
+    public String chat(@RequestParam String message) {
+        return chatbotService.getChatResponse(message);
+    }
+}
+    </code>
+</pre>
+
+<h2>4. Testing the Integration</h2>
+<h3>Step 1: Run the Application </h3>
+<p>Run your Spring Boot application. Ensure the application starts without errors.</p>
+<h3>Step 2: Acess the Chat Endpoint </h3>
+<p>Use Postman, curl,or your browser to test the endpoint. For example:</p>
+<pre><code>http://localhost:8080/chat?message=Hello, how are you?</code></pre>
+<h2>Understanding Spring Boot Autoconfiguration for Spring AI</h2>
+<h3>What is Spring Boot Autoconfiguration?</h3>
+<p>Spring Boot autoconfiguration simplifies the process of setting up Spring applications by automatically <br><br>configuring beans based on the classpath settings, other beans, and various property settings. This eliminates <br><br>the need for boilerplate code and manual configuration.
+</p>
+<h2>How Spring AI Uses Autoconfiguration</h2>
+<p>When you include the spring-ai-openai-spring-boot-starter dependency, Spring Boot's autoconfiguration feature<br><br> automatically configures the necessary beans for Spring AI. This means that Spring AI will:
+</p>
+<p>1.Detect the presence of Spring AI and OpenAI client libraries on the classpath.</p>
+<p>2.Read the properties defined in application.properties or application.yml (e.g., openai.api.key).</p>
+<p>3.Automatically configure and instantiate the OpenAiClient and ChatClient beans.</p>
+<p>This automatic configuration reduces the setup time and effort, allowing developers to focus on building the core<br><br> functionalities of their application.</p>
+<h2>Example of Autoconfiguration</h2>
+<p>With the spring-ai-openai-spring-boot-starter, you don't need to manually define and instantiate the beans for<br><br> OpenAiClient and ChatClient. Simply including the starter dependency and providing the necessary configuration <br><br>properties is enough to set up the AI components in your Spring Boot application.</p>
+<pre><code>
+    package com.example.demo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.ai.openai.OpenAiClient;
+import org.springframework.ai.openai.OpenAiChatClient;
+import org.springframework.ai.openai.ChatClient;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public OpenAiClient openAiClient() {
+        return new OpenAiClient();
+    }
+
+    @Bean
+    public ChatClient chatClient(OpenAiClient openAiClient) {
+        return new OpenAiChatClient(openAiClient);
+    }
+}
+</code></pre>
+<h2>Conclusion</h2>
+<p>This tutorial demonstrated how to set up and use Spring AI to create a chatbot in a Spring Boot application. You<br><br> learned how to configure Spring AI, create a service to interact with the AI model, and expose an endpoint for<br><br>user interaction. </p>
+<p>Additionally, we covered how Spring Boot autoconfiguration simplifies the setup process by automatically<br><br>configuring necessary beans. This setup allows you to integrate AI-powered chat functionalities into your Spring <br><br>Boot applications, enhancing user experience with intelligent and dynamic responses. </p>
+<p>Explore further customization and enhancements to leverage the full potential of AI in your projects.</p>
+            </div>
+        </div>
+    </div>
+   
+</body>
+</html>
