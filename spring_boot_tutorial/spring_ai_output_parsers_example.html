@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring AI Output Parsers Example</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 18px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring AI Output Parsers Example</h1>
+                <h4>author: Sai K</h4>
+                <p>Spring AI provides several output parsers to handle the responses from AI models effectively. This
+                    tutorial will demonstrate how to use different output parsers in a Spring Boot application,
+                    including BeanOutputParser, MapOutputParser, and ListOutputParser.</p>
+                <h2>Introduction</h2>
+                <p>Output parsers in Spring AI allow you to process and format the responses from AI models into usable
+                    data structures such as beans, maps, and lists. This tutorial will walk you through the use of these
+                    parsers with step-by-step examples.</p>
+                <h2>1. Setting Up the Project</h2>
+                <h3>Step 1: Create a New Spring Boot Project</h3>
+
+                <p>Use Spring Initializr to create a new Spring Boot project. Include dependencies for Spring Web and
+                    Spring AI.</p>
+                <h3>Using Spring Initializr:</h3>
+                <ul class="steps">
+                    <li class="">Go to <a href="https://start.spring.io/"> start.spring.io</a></li><br>
+                    <li>Select</li><br>
+                    <ul class="circle-list">
+                        <li>Project: Maven Project</li><br>
+                        <li>Language: Java</li><br>
+                        <li>Spring Boot: 3.0.0 (or latest)</li><br>
+                        <li> Dependencies: Spring Web</li><br>
+                    </ul>
+                    <li>Generate the project and unzip it.</li>
+                </ul>
+                <h2>Step 2: Add Dependencies</h2>
+                <p>In your project's pom.xml, ensure you have the necessary dependencies.</p>
+                <pre><code>
+     < dependency>
+         < groupId>org.springframework.ai</groupId>
+         < artifactId>spring-ai-openai-spring-boot-starter</artifactId>
+         < version>1.0.0</version>
+     < /dependency>
+     < dependency>
+         < groupId>org.springframework.boot</groupId>
+         < artifactId>spring-boot-starter-web</artifactId>
+     < /dependency>
+                </code></pre>
+                <h2>2. Configuring the Application</h2>
+                <h3>Step 1: Add API Key to Configuration</h3>
+                <p>Add your OpenAI API key to application.properties.</p>
+                <pre><code>
+openai.api.key=your_openai_api_key
+openai.api.url=https://api.openai.com/v1/completions
+               </code></pre>
+                <h3>Step 2: Configure ChatClient</h3>
+                <p>Create a configuration class to set up the ChatClient.</p>
+                <pre><code>
+ package com.example.demo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.ai.openai.OpenAiClient;
+import org.springframework.ai.openai.OpenAiChatClient;
+import org.springframework.ai.openai.ChatClient;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public OpenAiClient openAiClient() {
+        return new OpenAiClient();
+    }
+
+    @Bean
+    public ChatClient chatClient(OpenAiClient openAiClient) {
+        return new OpenAiChatClient(openAiClient);
+    }
+}
+               </code></pre>
+                <h2>3. Using Output Parsers</h2>
+                <h3>Step 1: Define the Output Models</h3>
+                <p>Let's create models for the bean and other structures that will be parsed from the AI response.</p>
+                <h2>Product.java</h2>
+                <pre><code>
+ package com.example.demo.model;
+
+public class Product {
+    private String name;
+    private double price;
+
+    // Getters and setters
+}
+               </code></pre>
+                <h3>Step 2: Create the Output Parsers</h3>
+                <p>Let's create services to demonstrate the different output parsers.</p>
+                <h2>BeanOutputParserExample.java</h2>
+                <pre><code>
+                package com.example.demo.service;
+
+import com.example.demo.model.Product;
+import org.springframework.ai.openai.ChatClient;
+import org.springframework.ai.openai.model.ChatMessage;
+import org.springframework.ai.openai.model.ChatRequest;
+import org.springframework.ai.openai.model.ChatResponse;
+import org.springframework.ai.output.BeanOutputParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class BeanOutputParserExample {
+
+    private final ChatClient chatClient;
+
+    @Autowired
+    public BeanOutputParserExample(ChatClient chatClient) {
+        this.chatClient = chatClient;
+    }
+
+    public Product parseResponseToBean(String userMessage) {
+        ChatMessage userMsg = new ChatMessage("user", userMessage);
+
+        ChatRequest request = new ChatRequest();
+        request.setMessages(List.of(userMsg));
+
+        ChatResponse response = chatClient.sendMessage(request);
+
+        BeanOutputParser<Product> parser = new BeanOutputParser<>(Product.class);
+        return parser.parse(response.getReply());
+    }
+}
+               </code></pre>
+                <h2>MapOutputParserExample.java</h2>
+                <pre><code>
+                package com.example.demo.service;
+
+import org.springframework.ai.openai.ChatClient;
+import org.springframework.ai.openai.model.ChatMessage;
+import org.springframework.ai.openai.model.ChatRequest;
+import org.springframework.ai.openai.model.ChatResponse;
+import org.springframework.ai.output.MapOutputParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+
+@Service
+public class MapOutputParserExample {
+
+    private final ChatClient chatClient;
+
+    @Autowired
+    public MapOutputParserExample(ChatClient chatClient) {
+        this.chatClient = chatClient;
+    }
+
+    public Map<String, Object> parseResponseToMap(String userMessage) {
+        ChatMessage userMsg = new ChatMessage("user", userMessage);
+
+        ChatRequest request = new ChatRequest();
+        request.setMessages(List.of(userMsg));
+
+        ChatResponse response = chatClient.sendMessage(request);
+
+        MapOutputParser parser = new MapOutputParser();
+        return parser.parse(response.getReply());
+    }
+}
+               </code></pre>
+                <h2>ListOutputParserExample.java</h2>
+                <pre><code>
+                package com.example.demo.service;
+
+import org.springframework.ai.openai.ChatClient;
+import org.springframework.ai.openai.model.ChatMessage;
+import org.springframework.ai.openai.model.ChatRequest;
+import org.springframework.ai.openai.model.ChatResponse;
+import org.springframework.ai.output.ListOutputParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ListOutputParserExample {
+
+    private final ChatClient chatClient;
+
+    @Autowired
+    public ListOutputParserExample(ChatClient chatClient) {
+        this.chatClient = chatClient;
+    }
+
+    public List<String> parseResponseToList(String userMessage) {
+        ChatMessage userMsg = new ChatMessage("user", userMessage);
+
+        ChatRequest request = new ChatRequest();
+        request.setMessages(List.of(userMsg));
+
+        ChatResponse response = chatClient.sendMessage(request);
+
+        ListOutputParser<String> parser = new ListOutputParser<>(String.class);
+        return parser.parse(response.getReply());
+    }
+}
+               </code></pre>
+                <h3>Step 3: Create Controllers to Expose the Services</h3>
+                <p>Create controllers to expose endpoints for each output parser example.</p>
+                <h2>BeanOutputParserController.java</h2>
+                <pre><code>
+ package com.example.demo.controller;
+
+import com.example.demo.model.Product;
+import com.example.demo.service.BeanOutputParserExample;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class BeanOutputParserController {
+
+    private final BeanOutputParserExample parserExample;
+
+    @Autowired
+    public BeanOutputParserController(BeanOutputParserExample parserExample) {
+        this.parserExample = parserExample;
+    }
+
+    @GetMapping("/parseToBean")
+    public Product parseToBean(@RequestParam String message) {
+        return parserExample.parseResponseToBean(message);
+    }
+}
+                </code></pre>
+                <h2>MapOutputParserController.java</h2>
+                <pre><code>
+package com.example.demo.controller;
+
+import com.example.demo.service.MapOutputParserExample;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+
+@RestController
+public class MapOutputParserController {
+
+    private final MapOutputParserExample parserExample;
+
+    @Autowired
+    public MapOutputParserController(MapOutputParserExample parserExample) {
+        this.parserExample = parserExample;
+    }
+
+    @GetMapping("/parseToMap")
+    public Map<String, Object> parseToMap(@RequestParam String message) {
+        return parserExample.parseResponseToMap(message);
+    }
+}z
+              </code></pre>
+                <h2>ListOutputParserController.java</h2>
+                <pre><code>
+package com.example.demo.controller;
+
+import com.example.demo.service.ListOutputParserExample;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+public class ListOutputParserController {
+
+    private final ListOutputParserExample parserExample;
+
+    @Autowired
+    public ListOutputParserController(ListOutputParserExample parserExample) {
+        this.parserExample = parserExample;
+    }
+
+    @GetMapping("/parseToList")
+    public List<String> parseToList(@RequestParam String message) {
+        return parserExample.parseResponseToList(message);
+    }
+}
+                </code></pre>
+                <h2> 4. Testing the Integration</h2>
+                <h3>Step 1: Run the Application</h3>
+                <p>Run your Spring Boot application. Ensure the application starts without errors.</p>
+                <h3>Step 2: Access the Endpoints</h3>
+                <p>Use Postman, curl, or your browser to test the endpoints.</p>
+                <h3>1.Parse to Bean</h3>
+                <pre><code>
+ http://localhost:8080/parseToBean?message=Describe a product with name and price.
+                </code></pre>
+                <p>Expected Response:</p>
+                <pre><code>
+                    {
+                        "name": "Laptop",
+                        "price": 999.99
+                    }
+                </code></pre>
+                <h2>2.Parse to Map</h2>
+                <pre><code>
+http://localhost:8080/parseToMap?message=Describe a product with details.
+                </code></pre>
+                <p>Expected Response:</p>
+                <pre><code>
+                {
+                    "name": "Laptop",
+                    "price": 999.99,
+                    "brand": "BrandName",
+                    "inStock": true
+                }
+            </code></pre>
+                <h2>3.Parse to List</h2>
+                <pre><code>
+http://localhost:8080/parseToList?message=List some popular programming languages.
+            </code></pre>
+                <p>Expected Response:</p>
+                <pre><code>
+                [
+                    "Java",
+                   "Python",
+                 "JavaScript",
+                  "C#",
+                "Ruby"
+               ]
+            </code></pre>
+                <h2>Conclusion</h2>
+                <p>This tutorial demonstrated how to set up and use different output parsers in a Spring Boot
+                    application with Spring<br><br> AI. We covered the following:</p>
+            <ol>
+                <li><b>BeanOutputParser:</b> Parsing responses into Java objects.</li><br>
+                <li><b>MapOutputParser: </b>Parsing responses into maps.</li><br>
+                <li><b>ListOutputParser:</b> Parsing responses into lists.</li><br>
+            </ol>
+            <p>By using these parsers, you can effectively process and utilize the AI-generated responses in your Spring Boot<br><br> applications, enhancing their functionality and user experience. Explore further customization and enhancements<br><br> to leverage the full potential of AI in your projects.</p>
+                </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
