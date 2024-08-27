@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 80%;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+
+        img {
+            margin: 0 5%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Annotation Based Container Configuration</h1>
+        <h2>Overview</h2>
+        <hr>
+        <p>Starting from Spring 2.5 it became possible to configure the dependency injection using annotations. So
+            instead of using XML to describe a bean wiring, you can move the bean configuration into the component class
+            itself by using annotations on the relevant class, method, or field declaration.</p>
+        <p><b><span style="color: red;">Important:</span> Annotation injection is performed before XML injection, thus
+                the latter configuration will override
+                the former for properties wired through both approaches.</b></p>
+        <h2>Why Spring Configuration with Annotations?</h2>
+        <hr>
+        <ol>
+            <li>XML configuration can be verbose</li>
+            <li>Easy to configure your Spring beans with Annotations</li>
+            <li>Annotations minimize the XML configuration</li>
+        </ol>
+        <h2>Spring Annotation Based Configuration Basics</h2>
+        <hr>
+        <h3>How to enable annotation-based wiring?</h3>
+        <p>Annotation wiring is not turned on in the Spring container by default. So, before we can use annotation-based
+            wiring, we will need to enable it in our Spring configuration file. So consider the following configuration
+            file in case you want to use any annotation in your Spring application.</p>
+        <pre><code>
+&ltxml version = "1.0" encoding = "UTF-8"?>
+
+&ltbeans xmlns = "http://www.springframework.org/schema/beans"
+   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:context = "http://www.springframework.org/schema/context"
+   xsi:schemaLocation = "http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+   http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+   &ltcontext:annotation-config/>
+   &lt!-- bean definitions go here --&gt
+
+&lt/beans>
+            </code></pre>
+        <p>Once <code style="color: red;">&ltcontext:annotation-config /&gt</code> is configured, you can start
+            annotating
+            your code to indicate that Spring should automatically wire values into properties, methods, and
+            constructors.</p>
+        <p>Let's discuss different annotations that Spring provides to configure annotation-based metadata
+            configuration.</p>
+        <ul>
+            <li>
+                <h3>@Required</h3>
+            </li>
+            <li>
+                <h3>@Autowired</h3>
+            </li>
+            <li>
+                <h2>@Qualifier</h2>
+            </li>
+            <li>
+                <h3>@Primary</h3>
+            </li>
+            <li>
+                <h3>@Resource</h3>
+            </li>
+            <li>
+                <h3>@PostConstruct and @PreDestroy (These are JSR-250 annotations)</h3>
+            </li>
+        </ul>
+        <h2>@Required</h2>
+        <p>The @Required annotation is method-level annotation and applied to the setter method of a bean.
+            This annotation simply indicates that the setter method must be configured to be dependency-injected with a
+            value at configuration time.</p>
+        <img src="../assets/spring-core-tutorial-images/required-annotation.PNG">
+        <p>This annotation simply indicates that the affected bean property must be populated at configuration time,
+            through an explicit property value in a bean definition or through autowiring.</p>
+        <h2>@Autowired</h2>
+        <p>We can use the @Autowired to mark a dependency which Spring is going to resolve and inject. We can use this
+            annotation with a constructor, setter, or field injection.</p>
+        <span>Constructor injection:</span>
+        <pre><code>
+class Car {
+    private Engine engine;
+         
+    @Autowired
+    Car(Engine engine) {
+        this.engine = engine;
+    }
+}
+
+</code></pre>
+        <span>Setter injection:</span>
+        <pre><code>
+class Car {
+    private Engine engine;
+         
+    @Autowired
+    void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+}
+    </code></pre>
+        <span>Field injection</span>
+        <pre><code>
+class Car {
+    @Autowired
+    private Engine engine;
+}  
+    </code></pre>
+        <p>Read more about the importance of @Autowired annotation on <a href="/spring-core-tutorial/spring-autowired-annotation-with-example.html" target="_blank">Spring @Autowired Annotation with
+                Example</a></p>
+        <h2>@Primary Annotation</h2>
+        <p>Use <code style="color: red">@Primary</code> to give higher preference to a bean when there are multiple
+            beans of the same type.</p>
+        <p>Let’s describe the problem in detail.</p>
+        <h3>Why is @Primary Needed?</h3>
+        <p>In some cases, we need to register more than one bean of the same type.</p>
+        In this example we have <code style="color: red">mySQLConnection()</code> and <code
+            style="color: red">oracleConnection()</code> beans of the <code style="color: red">Connection</code> type:
+        <pre><code>
+@Configuration
+public class Config {
+ 
+    @Bean
+    public Connection mySQLConnection() {
+        return new MySQLConnection();
+    }
+ 
+    @Bean
+    public Connection oracleConnection() {
+        return new OracleConnection();
+    }
+}
+            </code></pre>
+        <p>Spring throws <code style="color: red">NoUniqueBeanDefinitionException</code> if we try to run the
+            application.</p>
+        <p>To access beans with the same type we usually use <a href="">@Qualifier(“beanName”)</a>
+            annotation.</p>
+        <p>We apply to at the injection point along with <a href="/spring-core-tutorial/spring-autowired-annotation-with-example.html">@Autowired</a>. In our case, we select the beans at
+            the
+            configuration phase so <a href="">@Qualifier</a> can’t be applied here. We can learn more about <a
+                href="">@Qualifier</a> annotation by
+            following the link.</p>
+        <p>To resolve this issue Spring offers the @Primary annotation. The following example shows how to use
+            <code>@Primary</code> annotation in a spring application.
+        </p>
+        <p>Read more about the importance of <code>@Primary</code> annotation on <a href="">Spring - @Primary Annotation
+                Example</a></p>
+        <h3>@Qualifier</h3>
+        <p>We use @Qualifier annotation to resolve ambiguous dependencies.</p>
+        <ul>
+            <li>This annotation helps fine-tune annotation-based autowiring. There may be scenarios when we create more
+                than one bean of the same type and want to wire only one of them with a property. This can be controlled
+                using @Qualifier annotation along with the <code>@Autowired</code> annotation.</li>
+            <li>The <code>@Qualifier</code> is used to resolve ambiguous dependencies i.e, it helps @Autowired
+                annotations to choose one of the dependency.</li>
+        </ul>
+        If there are multiple implementations for a single interface then we can use <code>@Qualifier</code> to choose
+        required implementation at runtime.
+        <p>Example :</p>
+        <pre><code>
+    @Autowired 
+    @Qualifier("datasource") 
+    private DataSource datasource; 
+    
+    @Autowired 
+    @Qualifier("datasource1") 
+    private DataSource datasource;
+
+</code></pre>
+        <p>Read more about the importance of <code>@Qualifier</code> annotation on <a href="">Spring @Qualifier
+                Annotation Example</a></p>
+        <h3>@Resource</h3>
+        <p>Spring also supports injection using the JSR-250 <code>@Resource</code> annotation on fields or bean property
+            setter methods</p>
+        <pre><code>
+public class SimpleMovieLister {
+
+    private MovieFinder movieFinder;
+            
+    @Resource(name="myMovieFinder")
+    public void setMovieFinder(MovieFinder movieFinder) {
+        this.movieFinder = movieFinder;
+    }
+}
+        </code></pre>
+        <p>If no name is specified explicitly, the default name is derived from the field name or setter method.</p>
+        <h3>@PostConstruct and @PreDestroy</h3>
+        <p>Spring supports JSR-250 lifecycle annotations.</p>
+        <p>Consider <code style="color: red">DatabaseInitiaizer</code> bean, whose <code
+                style="color: red">init()</code> and <code style="color: red">destroy()</code> methods are annotated
+            with <code style="color: red">@PostConstruct</code> and <code style="color: red">@PreDestroy</code>
+            annotations respectively.</p>
+        <h3>DatabaseInitiaizer.java</h3>
+        <pre><code>
+package net.javaguides.spring;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class DatabaseInitiaizer {
+
+    private List < User > listOfUsers = new ArrayList < > ();
+
+    @PostConstruct
+    public void init() {
+        User user = new User(1, "User");
+        User user1 = new User(2, "Admin");
+        User user2 = new User(3, "SuperAdmin");
+
+        listOfUsers.add(user);
+        listOfUsers.add(user1);
+        listOfUsers.add(user2);
+        System.out.println("-----------List of users added in init() method ------------");
+        for (Iterator < User > iterator = listOfUsers.iterator(); iterator.hasNext();) {
+            User user3 = (User) iterator.next();
+            System.out.println(user3.toString());
+        }
+        // save to database
+
+    }
+
+    @PreDestroy
+    public void destroy() {
+        // Delete from database
+        listOfUsers.clear();
+        System.out.println("-----------After of users removed from List in destroy() method ------------");
+        for (Iterator < User > iterator = listOfUsers.iterator(); iterator.hasNext();) {
+            User user3 = (User) iterator.next();
+            System.out.println(user3.toString());
+        }
+    }
+}
+        </code></pre>
+        <p>Refer complete example of <code style="color: red">@PostConstruct</code> and <code
+                style="color: red">@PreDestroy</code> annotations on <a href="">Spring @PostConstruct and @PreDestroy
+                Example</a></p>
+        <h3>Are annotations better than XML for configuring Spring?</h3>
+        <p>I think the answer is it depends like each approach has its pros and cons, and usually, it is up to the
+            developer to decide which strategy suits them better. Due to the way they are defined, annotations provide a
+            lot of context in their declaration, leading to shorter and more concise configuration. However, XML excels
+            at wiring up components without touching their source code or recompiling them. Some developers prefer
+            having the wiring close to the source while others argue that annotated classes are no longer POJOs and,
+            furthermore, that the configuration becomes decentralized and harder to control.</p>
+        <p>No matter the choice, Spring can accommodate both styles and even mix them together. It’s worth pointing out
+            that through its <code>JavaConfig</code> option, Spring allows annotations to be used in a non-invasive way,
+            without
+            touching the target components source code and that in terms of tooling, all configuration styles are
+            supported by the <code>Spring Tool Suite.</code></p>
+        <h2>Conclusion</h2>
+        <p>In this post, we have learned the what is spring annotation based container configuration, how to enable
+            annotation configuration and we also have seen few annotations like <code
+                style="color: red">@Autowired</code>, <code style="color: red">@Qualifier</code>, <code
+                style="color: red">@Primary</code>,
+            <code style="color: red">@Required</code> and Spring supports JSR-250 based annotations which include <code
+                style="color: red">@Resource</code>, <code style="color: red">@PostConstruct</code>, and
+            <code style="color: red">@PreDestroy</code> annotations.
+        </p>
+    </div>
+</body>
+
+</html>

@@ -7,9 +7,10 @@
     <title></title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 20px; 
+            -webkit-text-size-adjust: 100%; 
         }
 
         .container {
@@ -59,18 +60,26 @@
             line-height: 1.8;
         }
 
-        img {
-            margin: 0 15%;
-        }
-
         pre {
             font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
-            font-size: 13.6px;
+            font-size: 14px;
             padding: 2%;
             line-height: 1.8 !important;
             border: solid 1px #3d85c6;
             border-radius: 6px;
             background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
         }
 
         code {
@@ -127,9 +136,10 @@
             defines how beans are created, configured, and assembled within the Spring IoC container. There are three
             primary ways to provide configuration metadata to the Spring container:</p>
         <ol>
-            <li><a href="/spring-core-tutorial/XML-based-configuration.html">XML-based configuration: </a>The traditional way to define beans and dependencies in XML
+            <li><a href="/spring-core-tutorial/spring-ioc-container-xml-config-example.html" target="_blank">XML-based configuration: </a>The
+                traditional way to define beans and dependencies in XML
                 files.</li>
-            <li><a href="">Annotation-based configuration: </a>Uses annotations in Java classes to define beans and
+            <li><a href="/spring-core-tutorial/spring-annotation-based-container-configuration.html" target="_blank">Annotation-based configuration: </a>Uses annotations in Java classes to define beans and
                 their dependencies.</li>
             <li><a href="">Java-based configuration: </a>Uses Java classes annotated with @Configuration and methods
                 annotated with @Bean to define beans and dependencies.</li>
@@ -167,40 +177,40 @@
         <h4>Step 1: Create a Maven Project</h4>
         <p>Add the necessary Spring dependencies to your <code>pom.xml file:</code></p>
         <pre><code>
-    < project xmlns="http://maven.apache.org/POM/4.0.0"
+     &ltproject xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-        < modelVersion>4.0.0</modelVersion>
-        < groupId>net.javaguides.spring</groupId>
-        < artifactId>spring-ioc-example</artifactId>
-        < version>0.0.1-SNAPSHOT</version>
-        < properties>
-        < maven.compiler.target>17</maven.compiler.target>
-        < maven.compiler.source>17</maven.compiler.source>
-        < /properties>
-        < dependencies>
-        < dependency>
-            < groupId>org.springframework</groupId>
-            < artifactId>spring-context</artifactId>
-            < version>6.0.6</version>
-        < /dependency>
-        < /dependencies>
-    < /project>
+         &ltmodelVersion>4.0.0</modelVersion>
+         &ltgroupId>net.javaguides.spring</groupId>
+         &ltartifactId>spring-ioc-example</artifactId>
+         &ltversion>0.0.1-SNAPSHOT</version>
+         &ltproperties>
+         &ltmaven.compiler.target>17</maven.compiler.target>
+         &ltmaven.compiler.source>17</maven.compiler.source>
+         &lt/properties>
+         &ltdependencies>
+          &ltdependency>
+           &ltgroupId>org.springframework</groupId>
+           &ltartifactId>spring-context</artifactId>
+           &ltversion>6.0.6</version>
+         &ltdependency>
+        &ltdependencies>
+    &ltproject>
 </code></pre>
 
         <h4>Step 2: Define Spring Beans in XML</h4>
         <p>Create an <code>applicationContext.xml</code> file in the src/main/resources directory:</p>
         <pre><code>
-            < ?xml version="1.0" encoding="UTF-8"?>
-            < beans xmlns="http://www.springframework.org/schema/beans"
+            &lt?xml version="1.0" encoding="UTF-8"?>
+            &ltbeans xmlns="http://www.springframework.org/schema/beans"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
              http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-            < bean id="greetingService" class="net.javaguides.spring.ioc.GreetingService">
-            < property name="message" value="Hello, Spring XML Configuration!"/>
-            < /bean>
-            < /beans>
+             &ltbean id="greetingService" class="net.javaguides.spring.ioc.GreetingService">
+             &ltproperty name="message" value="Hello, Spring XML Configuration!"/>
+             &lt/bean>
+            &lt/beans>
         </code></pre>
 
         <h4>Step 3: Create a Java Class to Retrieve Beans</h4>
