@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        img {
+            margin: 0 15%;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Create Maven Project using Command Line</h1>
+        <p>In this guide, we'll walk through the steps to create a simple Maven project using the command line. This
+            tutorial assumes that you have already installed Maven and JDK 21 on your machine.</p>
+        <h2>Step 1: Verify Maven and Java Installation</h2>
+        <p>Before we begin, let's verify that Maven and Java are correctly installed on your system.</p>
+        <h3>Verify Maven Installation</h3>
+        <p>Open your command line terminal and type:</p>
+        <pre><code>mvn -v</code></pre>
+        <p>You should see an output similar to:</p>
+        <pre><code>
+    Apache Maven 3.8.5 (b89d5959fcde851dcb1c8946e2987cb6db844df6)
+    Maven home: /usr/local/apache-maven-3.8.5
+    Java version: 21, vendor: Oracle Corporation
+    Java home: /usr/lib/jvm/java-21</code></pre>
+        <h3>Verify Java Installation</h3>
+        <p>Type the following command to check your Java version:</p>
+        <pre><code>java -version</code></pre>
+        <p>You should see an output similar to:</p>
+        <pre><code>
+    java version "21" 2023-09-21 LTS
+    Java(TM) SE Runtime Environment (build 21+36-LTS-1491)
+    Java HotSpot(TM) 64-Bit Server VM (build 21+36-LTS-1491, mixed mode, sharing)</code></pre>
+        <h2>Step 2: Create a Simple Maven Project</h2>
+        <p>We'll use Maven's <code>archetype:generate</code> goal to create a simple project. This goal generates a
+            project structure based on a predefined archetype.</p>
+        <p>Run the following command in your terminal:</p>
+        <pre><code>mvn archetype:generate -DgroupId=com.companyname.projectname -DartifactId=simple-maven-project -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</code></pre>
+        <p>This command creates a new Maven project with the following parameters:</p>
+        <ul>
+            <li><code>groupId: </code>The identifier for your project’s group. Typically follows the reverse domain name
+                convention.</li>
+            <li><code>artifactId: </code>The name of your project.</li>
+            <li><code>archetypeArtifactId: </code>Specifies the archetype to use.
+                <code>maven-archetype-quickstart</code> is a simple archetype suitable for beginners.
+            </li>
+            <li><code>interactiveMode: </code> If set to false, it runs in batch mode without prompting for user input.
+            </li>
+        </ul>
+        <p>After executing the command, you should see an output similar to:</p>
+        <pre><code>
+    [INFO] Scanning for projects...
+    [INFO] ------------------------------------------------------------------------
+    [INFO] BUILD SUCCESS
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Total time: 12.345 s
+    [INFO] Finished at: 2023-07-09T14:50:30+05:30
+    [INFO] ------------------------------------------------------------------------</code></pre>
+        <h2>Step 3: Navigate to the Project Directory</h2>
+        <p>Change your directory to the newly created project directory:</p>
+        <pre><code>cd simple-maven-project</code></pre>
+        <h2>Step 4: Understand the Project Structure</h2>
+        <p>The generated project structure looks like this:</p>
+        <pre><code>
+simple-maven-project
+    │   pom.xml
+    └───src
+        ├───main
+        │   └───java
+        │       └───com
+        │           └───companyname
+        │               └───projectname
+        │                   └───App.java
+        └───test
+            └───java
+                └───com
+                    └───companyname
+                        └───projectname
+                            └───AppTest.java
+    </code></pre>
+        <h3>Key Files and Directories</h3>
+        <ul>
+            <li><code>pom.xml: </code>The Project Object Model file where you define your project configuration and
+                dependencies.</li>
+            <li><code>src/main/java: </code>Contains the source code of your application.</li>
+            <li><code>src/test/java: </code>Contains the test code for your application.</li>
+        </ul>
+        <h2>Step 5: Update the pom.xml File</h2>
+        <p>Open the <code>pom.xml</code> file and update it with the following content to ensure we use the latest
+            versions of Java and JUnit:</p>
+        <pre><code>
+&ltproject xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    &ltmodelVersion>4.0.0</modelVersion>
+
+    &ltgroupId>com.companyname.projectname</groupId>
+    &ltartifactId>simple-maven-project</artifactId>
+    &ltversion>1.0-SNAPSHOT</version>
+
+    &ltproperties>
+       &ltmaven.compiler.source>21</maven.compiler.source>
+       &ltmaven.compiler.target>21</maven.compiler.target>
+    &ltproperties>
+
+    &ltdependencies>
+        &ltdependency>
+            &ltgroupId>org.junit.jupiter</groupId>
+            &ltartifactId>junit-jupiter-api</artifactId>
+            &ltversion>5.9.3</version>
+            &ltscope>test</scope>
+        &ltdependency>
+        &ltdependency>
+           &ltgroupId>org.junit.jupiter</groupId>
+           &ltartifactId>junit-jupiter-engine</artifactId>
+           &ltversion>5.9.3</version>
+           &ltscope>test</scope>
+        &ltdependency>
+    &ltdependencies>
+
+    &ltbuild>
+        &ltplugins>
+            &ltplugin>
+                &ltgroupId>org.apache.maven.plugins</groupId>
+                &ltartifactId>maven-compiler-plugin</artifactId>
+                &ltversion>3.10.1</version>
+                &ltconfiguration>
+                  &ltsource>21</source>
+                  &lttarget>21</target>
+                &ltconfiguration>
+            &ltplugin>
+        &ltplugins>
+    &ltbuild>
+&ltproject>       
+    </code></pre>
+        <h2>Step 6: Build the Project</h2>
+        <p>Run the following command to build the project:</p>
+        <pre><code>mvn clean install</code></pre>
+        <p>This command will compile your project and run any tests. The output should indicate a successful build:</p>
+        <pre><code>
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.companyname.projectname.AppTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 2.345 s
+[INFO] Finished at: 2023-07-09T14:52:30+05:30
+[INFO] ------------------------------------------------------------------------
+    </code></pre>
+        <h2>Step 7: Running the Application</h2>
+        <p>The "Hello World!" message comes from the <code>App.java</code> file created by the Maven archetype. Open the
+        </p>
+        <p><code>src/main/java/com/companyname/projectname/App.java</code> file, and you will see the following code:
+        </p>
+        <pre><code>
+        package com.companyname.projectname;
+
+        /**
+         * Hello world!
+         *
+         */
+        public class App 
+        {
+            public static void main( String[] args )
+            {
+                System.out.println( "Hello World!" );
+            }
+        }</code></pre>
+        <h3>Running the Packaged JAR</h3>
+        <p>To run the application, first package it into a JAR file using Maven:</p>
+        <pre><code>mvn package</code></pre>
+        <p>This command will create a JAR file in the <code>target</code> directory.</p>
+        <p>Navigate to the <code>target</code> directory and run the JAR file using the following command:</p>
+        <pre><code>java -jar target/simple-maven-project-1.0-SNAPSHOT.jar</code></pre>
+        <p>You should see the output:</p>
+        <pre><code>Hello World!</code></pre>
+        <h2>Conclusion</h2>
+        <p>In this tutorial, we created a simple Maven project using the command line. We used Maven's
+            <code>archetype:generate</code> goal to generate a project structure, updated the <code>pom.xml</code> to
+            use the latest versions of
+            Java and JUnit, built the project, and ran the packaged JAR. Maven simplifies project management and
+            dependency management, making it a valuable tool for Java developers.
+        </p>
+    </div>
+</body>
+
+</html>

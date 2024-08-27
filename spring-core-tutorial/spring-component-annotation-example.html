@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+
+        img {
+            width: 100%;
+            height: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring @Component Annotation Example</h1>
+        <p>In this quick article, we will discuss how to use <code>@Component</code> annotation in Spring (Spring Boot)
+            based applications.</p>
+        <h2>Spring @Component Annotation Overview</h2>
+        <p>The @Component annotation indicates that an annotated class is a "component". Such classes are considered
+            candidates for auto-detection when using annotation-based configuration and classpath scanning.</p>
+        <p>In short, <code style="color: red;">@Component</code> is a class-level annotation. During the component scan,
+            Spring Framework
+            automatically
+            detects classes annotated with <code style="color: red;">@Component</code> annotation and creates Spring
+            beans for those
+            classes.</p>
+        <h3>Component Scanning</h3>
+        <p>Spring can automatically scan a package for beans if component scanning is enabled.</p>
+        <p><b>@ComponentScan</b> configures which packages to scan for classes with annotation configuration. We can
+            specify
+            the base package names directly with one of the <code style="color: red;">basePackages</code> or <code
+                style="color: red;">value</code> arguments (value is an alias for
+            basePackages):</p>
+        <pre><code>
+@Configuration
+@ComponentScan(basePackages = "com.javaguides.annotations")
+class UserConfig {}
+
+</code></pre>
+        <h2>Spring @Component Annotation Example</h2>
+        <p>Let’s create a very simple Spring boot maven application to showcase the use of Spring
+            <code style="color: red;">@Component</code> annotation and how Spring autodetects it with annotation-based
+            configuration and
+            classpath scanning.
+        </p>
+        <p>Add below Spring boot starter web dependency:</p>
+        <pre><code>
+&ltdependency>
+  &ltgroupId>org.springframework.boot</groupId>
+  &ltartifactId>spring-boot-starter-web</artifactId>
+&lt/dependency>
+
+</code></pre>
+        <h3>Create Spring Component class - ComponentDemo.java</h3>
+        <p>Let’s create a simple component class and mark it with <code style="color: red;">@Component</code>
+            annotation.</p>
+        <pre><code>
+@Component
+class ComponentDemo{
+    public String getValue() {
+        return "Hello World";
+    } 
+}
+
+</code></pre>
+        <p>Spring Container will automatically create and manage the spring bean for the above class because it is
+            annotated with <code style="color: red;">@Component</code> annotation.</p>
+        <h3>Running Spring Boot Application</h3>
+        <p>Note that we have created <b>ApplicationContext</b> and retrieved <b>ComponentDemo</b> bean using
+            <b>getBean()</b> Method.
+        </p>
+        <pre><code>
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.stereotype.Component;
+                
+@SpringBootApplication
+public class DemoApplication {
+                
+    public static void main(String[] args) {
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(DemoApplication.class, args);
+        ComponentDemo componentDemo = (ComponentDemo) applicationContext.getBean("componentDemo");
+        System.out.println(componentDemo.getValue());
+    }
+}
+                
+                
+@Component
+class ComponentDemo {
+    public String getValue() {
+        return "Hello World";
+    }
+}
+
+</code></pre>
+        <h4>Output:</h4>
+        <img src="../assets/spring-core-tutorial-images/compont-output.PNG">
+        <p>By default, the bean instances of this class have the same name as the class name with a lowercase initial.
+            On top of that, we can specify a different name using the optional value argument of this annotation.</p>
+        <pre><code>
+@Component("componentDemo")
+class ComponentDemo {
+    public String getValue() {
+        return "Hello World";
+    }
+}
+
+</code></pre>
+
+    </div>
+</body>
+
+</html>

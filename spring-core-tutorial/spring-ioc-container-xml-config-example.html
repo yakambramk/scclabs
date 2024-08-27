@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring IOC Container XML Config Example</h1>
+        <p>In this tutorial, we will explore a simple example to demonstrate the Spring IoC (Inversion of Control)
+            Container with XML-based configuration metadata.</p>
+        <h2>Introduction</h2>
+        <p>In a previous article, we discussed <a href="/spring-core-tutorial/spring_ioc_container_overview.html" target="_blank">What
+                is Spring IOC Container and how it works.</a> Now, let's
+            dive into a practical example to understand how to configure Spring beans using XML-based configuration
+            metadata.</p>
+        <h3>Ways to Supply Configuration Metadata to the Spring IoC Container</h3>
+        <ol>
+            <li><a href="/spring-core-tutorial/XML-based-configuration.html" target="_blank"></a>XML-based configuration</li>
+            <li><a href=""></a>Annotation-based configuration</li>
+            <li><a href=""></a>Java-based configuration</li>
+        </ol>
+        <h2>Spring IOC Container XML Config Example</h2>
+        <p>In this example, we will supply XML-based configuration metadata to the Spring IoC container.</p>
+        <h4>Development Steps</h4>
+        <p>Follow these steps to develop a Spring application:</p>
+        <ol>
+            <li>Create a simple Maven Project</li>
+            <li>Add Maven Dependencies</li>
+            <li>Configure HelloWorld Spring Beans</li>
+            <li>Create a Spring Container</li>
+            <li>Retrieve Beans from the Spring Container</li>
+        </ol>
+        <h3>Tools and Technologies Used</h3>
+        <ul>
+            <li>Spring Framework - 6.0.6</li>
+            <li>JDK - 17 or later</li>
+            <li>Maven - 3.2+</li>
+            <li>IDE - Eclipse Mars/STS</li>
+        </ul>
+        <h4>Step 1: Create a Simple Maven Project</h4>
+        <p>Create a simple Maven project using your favourite IDE and refer to the <a
+                href="/spring-core-tutorial/simple_maven_project.html" target="_blank">Guide to Create a Simple
+                Maven Project.</a></p>
+        <h4>Step 2: Project Structure</h4>
+        <p>The below diagram shows a project structure for your reference:</p>
+        <img src="../assets/spring-core-tutorial-images/project-structure.png">
+        <h4>Step 3: Add Maven Dependencies</h4>
+        <p>Add the following content to the <code>pom.xml file:</code></p>
+        <pre><code>
+    &ltproject xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         &ltmodelVersion>4.0.0</modelVersion>
+         &ltgroupId>net.javaguides.spring</groupId>
+         &ltartifactId>spring-ioc-example</artifactId>
+         &ltversion>0.0.1-SNAPSHOT</version>
+         &ltproperties>
+            &ltmaven.compiler.target>17</maven.compiler.target>
+            &ltmaven.compiler.source>17</maven.compiler.source>
+        &lt/properties>
+        &ltdependencies>
+            &ltdependency>
+               &ltgroupId>org.springframework</groupId>
+               &ltartifactId>spring-context</artifactId>
+               &ltversion>6.0.6</version>
+               &ltdependency>
+            &ltdependencies>
+    &ltproject></code></pre>
+        <h4>Step 4: Configure HelloWorld Spring Beans</h4>
+        <p><b>What is a Spring Bean?</b></p>
+        <p>A Spring bean is a Java object that is managed by the Spring container.</p>
+        <p>Create a <code>HelloWorld</code> Java class with the following content:</p>
+        <pre><code>
+    package net.javaguides.spring.ioc;
+
+    public class HelloWorld {
+        private String message;
+            
+        public void setMessage(String message) {
+            this.message = message;
+        }
+            
+        public void getMessage() {
+            System.out.println("My Message : " + message);
+        }
+    }</code></pre>
+        <p>Next, configure the <code>HelloWorld</code> class as a Spring bean using XML-based configuration:</p>
+        <pre><code>
+        &lt?xml version = "1.0" encoding = "UTF-8"?>
+        &ltbeans xmlns="http://www.springframework.org/schema/beans"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd">
+                
+            &ltbean id="helloWorld" class="net.javaguides.spring.ioc.HelloWorld">
+                <property name="message" value="Hello World!" />
+            &lt/bean>
+                
+        &ltbeans></code></pre>
+        <h4>Step 5: Create a Spring Container</h4>
+        <p>If you have a Spring bean configuration XML file in a standalone application, you can use</p>
+        <p><code>ClassPathXmlApplicationContext</code>class to load the file and get the container object.</p>
+        <pre><code>
+    package net.javaguides.spring.ioc;
+
+    import org.springframework.context.ApplicationContext;
+    import org.springframework.context.support.ClassPathXmlApplicationContext;
+                    
+    public class Application {
+        public static void main(String[] args) {
+            ApplicationContext context =
+                new ClassPathXmlApplicationContext("applicationContext.xml");
+        }
+    }</code></pre>
+        <h4>Step 6: Retrieve Beans from the Spring Container</h4>
+        <p>The <code>ApplicationContext</code> interface provides the <code>getBean()</code> method to retrieve the bean
+            from the Spring container.</p>
+        <pre><code>
+    package net.javaguides.spring.ioc;
+
+    import org.springframework.context.ApplicationContext;
+    import org.springframework.context.support.ClassPathXmlApplicationContext;
+    
+    public class Application {
+        public static void main(String[] args) {
+            ApplicationContext context =
+                new ClassPathXmlApplicationContext("applicationContext.xml");
+            HelloWorld obj = (HelloWorld) context.getBean("helloWorld");
+            obj.getMessage();
+        }
+    }</code></pre>
+        <h3>Output</h3>
+        <pre><code>My Message : Hello World!</code></pre>
+        <h2>Conclusion</h2>
+        <p>In this tutorial, we learned how to configure spring beans using XML-based configuration. We covered the
+            steps to create a Maven project, add dependencies, configure beans, create a Spring container, and retrieve
+            beans from the container.</p>
+        <h2>Additional Resources</h2>
+        <ul>
+            <li><a href="https://docs.spring.io/spring-framework/reference/core/beans.html" target="_blank">Spring Documentation: IoC
+                    Container</a></li>
+            <li><a href="/spring-core-tutorial/spring-ioc-container-xml-config-example.html" target="_blank">Spring IoC Container XML Config Example</a>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>

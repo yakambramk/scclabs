@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+
+        img {
+            width: 100%;
+            height: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring @Qualifier Annotation Example</h1>
+        <p>In this tutorial, we will see how to use Spring or Spring Boot <b>@Qualifier</b> annotation to resolve
+            ambiguous dependencies.</p>
+        <h2>Spring @Qualifier Annotation Overview</h2>
+        <p>The <code style="color: red;">@Qualifier</code> annotation is used in conjunction with <a
+                href="/spring-core-tutorial/spring-autowired-annotation-with-example.html" target="_blank">@Autowired</a> to avoid confusion when we have two or more
+            beans configured for the same type.</p>
+        <p>If there are multiple implementations for a single interface then we can use <code
+                style="color: red;">@Qualifier</code> to choose the required implementation at runtime.</p>
+        <h2>Spring @Qualifier Annotation Example</h2>
+        <p>Let's take a Message Processing Example - a message can be sent in many ways like Email, SMS, Twitter, etc.
+        </p>
+        <p>Let's create a <code style="color: red;">MessageService</code> interface for multiple message service
+            implementations - <code style="color: red;">EmailService</code>,
+            <code style="color: red;">SMSService</code>, and <code style="color: red;">TwitterService</code> classes.
+        </p>
+        <h3>MessageService interface</h3>
+        <pre><code>
+public interface MessageService {
+    public void sendMsg(String message);
+}
+
+</code></pre>
+        <p>Next, let's create implementations - <code style="color: red;">EmailService</code>, <code
+                style="color: red;">SMSService</code>, and <code style="color: red;">TwitterService</code> classes.</p>
+        <h3>EmailService Class</h3>
+        <pre><code>
+public class EmailService implements MessageService{
+
+    public void sendMsg(String message) {
+        System.out.println(message);
+    }
+}
+
+</code></pre>
+        <h3>SMSService Class</h3>
+        <pre><code>
+public class TwitterService implements MessageService{
+
+    public void sendMsg(String message) {
+        System.out.println(message);
+    }
+}
+
+</code></pre>
+        <h3>TwitterService Class</h3>
+        <pre><code>
+    public class SMSService implements MessageService{
+
+        public void sendMsg(String message) {
+             System.out.println(message);
+        }
+    }
+
+</code></pre>
+        <h3>MessageProcessor Interface and MessageProcessorImpl Class</h3>
+        <p>It's time to see the usage of @Qualifier annotation.</p>
+        <pre><code>
+    public interface MessageProcessor {
+        public void processMsg(String message);
+    }
+    
+    public class MessageProcessorImpl implements MessageProcessor {
+    
+        private MessageService messageService;
+    
+        // setter based DI
+        @Autowired
+        @Qualifier("twitterService")
+        public void setMessageService(MessageService messageService) {
+            this.messageService = messageService;
+        }
+     
+        // constructor based DI
+        @Autowired
+        public MessageProcessorImpl(@Qualifier("twitterService") MessageService messageService) {
+            this.messageService = messageService;
+        }
+     
+        public void processMsg(String message) {
+            messageService.sendMsg(message);
+        }
+    }
+</code></pre>
+        <p>In the above example, Dependency is injected by both setter and constructor so you can use either one of
+            them.</p>
+        <p>We have used <code style="color: red;">@Qualifier</code> to inject <code
+                style="color: red;">TwitterService</code> bean using constructor injection:</p>
+        <pre><code>
+// setter based DI
+@Autowired
+@Qualifier("twitterService")
+public void setMessageService(MessageService messageService) {
+    this.messageService = messageService;
+}
+                </code></pre>
+        <p>We have used <code style="color: red;">@Qualifier</code> to inject the <code
+                style="color: red;">TwitterService</code> bean using setter injection:</p>
+        <pre><code>
+// constructor based DI
+@Autowired
+public MessageProcessorImpl(@Qualifier("twitterService") MessageService messageService) {
+    this.messageService = messageService;
+}
+    </code></pre>
+        <p>If you want to inject EmailService bean instead of TwitterService bean then you can simply pass bean
+            EmailService bean name. For example:</p>
+        <pre><code>
+    // constructor based DI
+    @Autowired
+    public MessageProcessorImpl(@Qualifier("emailService") MessageService messageService) {
+        this.messageService = messageService;
+    }
+</code></pre>
+        <h3>AppConfiguration</h3>
+        <p>Let's write the java based configuration.</p>
+        <pre><code>
+    @Configuration
+    @ComponentScan("com.javadevsguide.springframework.di")
+    public class AppConfiguration {
+    
+        @Bean(name="emailService")
+        public MessageService emailService(){
+             return new EmailService();
+        }
+     
+        @Bean(name="twitterService")
+        public MessageService twitterService(){
+            return new TwitterService();
+        }
+     
+        @Bean(name="smsService")
+        public MessageService smsService(){
+            return new SMSService();
+        }
+     
+        @Bean
+        public MessageProcessor messageProcessor(){
+            return new MessageProcessorImpl(twitterService());
+        }
+    }
+
+</code></pre>
+        <h3>Testing</h3>
+        <p>Let's test the example using the Spring IOC container which is an <b>ApplicationContext</b> object.</p>
+        <pre><code>
+    public class TestApplication {
+        public static void main(String[] args) {
+            ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
+            MessageProcessor processor = applicationContext.getBean(MessageProcessor.class);
+            processor.processMsg("twitter message sending ");
+        }
+    }
+
+</code></pre>
+        <p>Output:</p>
+        <pre><code>twitter message sending </code></pre>
+        <h2>Conclusion</h2>
+        <p>In this example, we have seen how to use <code style="color: red;">@Qualifier</code> annotation in
+            conjunction with <a
+                href="/spring-core-tutorial/spring-autowired-annotation-with-example.html">@Autowired</a> to avoid
+            confusion when we have two or more beans configured for the same type.</p>
+
+
+
+
+
+    </div>
+</body>
+
+</html>
