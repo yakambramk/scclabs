@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+
+        img {
+            width: 100%;
+            height: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Boot Setter Injection Example</h1>
+        <p>In this tutorial, we will learn how to use setter-based dependency injection in the Spring boot application.
+        </p>
+        <p>Dependency Injection is a design pattern on which dependency of the object is injected by the framework
+            rather than created by the Object itself - It is also called IOC (Inversion of Control).</p>
+        <p>Dependency Injection reduces coupling between multiple objects as its dynamically injected by the framework.
+        </p>
+        <p>There are mainly three types of Dependency Injection: </p>
+        <ol>
+            <li><a href="/spring-core-tutorial/spring-boot-constructor-injection.html" target="_blank">Constructor Injection</a></li>
+            <li><a href="/spring-core-tutorial/spring-boot-setter-injection-example.html" target="_blank">Setter Injection</a></li>
+            <li><a href="/spring-core-tutorial/spring-boot-field-injection-example.html" target="_blank">Field Injection</a></li>
+        </ol>
+        <p>In this tutorial, we will see step by step how to use setter-based dependency injection in the Spring boot
+            application.</p>
+        <h2>Setter Injection Overview</h2>
+        <p>Setter injection uses the setter method to inject dependency on any Spring-managed bean.</p>
+        <p>Well, the Spring IOC container uses a setter method to inject dependency on any Spring-managed bean.</p>
+        <p>We have to annotate the setter method with the @Autowired annotation.</p>
+        <h2>Setter Injection Example</h2>
+        <p>In order to demonstrate the usage of setter injection, let's create a few interfaces and classes.</p>
+        <h3>MessageService</h3>
+        <pre><code>
+public interface MessageService {
+    void sendMessage(String message);
+}
+        </code></pre>
+        <h3>EmailService</h3>
+        <pre><code>
+import org.springframework.stereotype.Component;
+
+@Component
+public class EmailService implements MessageService{
+            
+    @Override
+    public void sendMessage(String message){
+        System.out.println(message);
+    }
+}
+
+</code></pre>
+        <p>We have annotated <code style="color: red;">EmailService</code> class with <a
+                href="/spring-core-tutorial/spring-component-annotation-example.html" target="_blank">@Component
+                annotation</a>
+            so the Spring container automatically creates
+            a Spring bean and manages its life cycle.</p>
+        <h3>SMSService</h3>
+        <pre><code>
+import org.springframework.stereotype.Component;
+
+@Component("smsService")
+public class SMSService implements MessageService{
+                
+    @Override
+    public void sendMessage(String message){
+        System.out.println(message);
+    }
+}
+            </code></pre>
+        <p>We have annotated <code style="color: red;">SMSService</code> class with <a
+                href="/spring-core-tutorial/spring-component-annotation-example.html" target="_blank">@Component
+                annotation</a> so the Spring container automatically creates a
+            Spring bean and manages its life cycle.</p>
+        <h2>MessageSender</h2>
+        <p>In setter injection, Spring will find the <a
+                href="/spring-core-tutorial/spring-autowired-annotation-with-example.html" target="_blank">@Autowired
+                annotation</a> and call the setter to inject the dependency.</p>
+        <pre><code>
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.beans.factory.annotation.Qualifier;
+    import org.springframework.stereotype.Component;
+    
+    @Component
+    public class MessageSender {
+    
+        private MessageService messageService;
+    
+        @Autowired
+        public void setMessageService(@Qualifier("emailService") MessageService messageService) {
+            this.messageService = messageService;
+            System.out.println("setter based dependency injection");
+        }
+    
+        public void sendMessage(String message){
+            this.messageService.sendMessage(message);
+        }
+    }
+
+</code></pre>
+        <p><a href="/spring-core-tutorial/spring-qualifier-annotation-example.html" target="_blank">@Qualifier</a>
+            annotation is used in conjunction with Autowired to avoid confusion when we have two or more beans
+            configured for the same type.</p>
+        <p>Spring container uses the below setter method to inject dependency on any Spring-managed bean (MessageSender
+            is a Spring bean):</p>
+        <pre><code>
+@Autowired
+public void setMessageService(@Qualifier("emailService") MessageService messageService) {
+    this.messageService = messageService;
+    System.out.println("setter based dependency injection");
+}
+
+            </code></pre>
+        <h3>AppConfig</h3>
+        <pre><code>
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+                
+@Configuration
+@ComponentScan(basePackages = "com.spring.core.di")
+    public class AppConfig {
+}
+
+            </code></pre>
+        <p><b>@Configuration: </b>Used to indicate that a configuration class declares one or more @Bean methods. These
+            classes
+            are processed by the Spring container to generate bean definitions and service requests for those beans at
+            runtime.</p>
+        <p><b>@ComponentScan: </b>This annotation is used to specify the base packages to scan for spring
+            beans/components.</p>
+        <h3>Testing</h3>
+        <p>Let's create ApplicationContext and test this example:</p>
+        <pre><code>
+    import org.springframework.context.ApplicationContext;
+    import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+    
+    public class Client {
+    
+        public static void main(String[] args) {
+    
+            String message = "Hi, good morning have a nice day!.";
+            ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+    
+            MessageSender messageSender = applicationContext.getBean(MessageSender.class);
+            messageSender.sendMessage(message);
+        }
+    }
+
+</code></pre>
+        <h2>Output:</h2>
+        <img src="../assets/spring-core-tutorial-images/setterInjection.png">
+        <h2>Injecting Multiple Dependencies using Setter Injection</h2>
+        <p>Let's see how to inject multiple dependencies using Setter injection.</p>
+        <h3>Example</h3>
+        <p>To inject multiple dependencies, we have to create multiple fields and their respective setter methods.</p>
+        <p>In the below example, the MessageSender class has multiple setter methods to inject multiple dependencies
+            using setter injection:</p>
+        <h2>Conclusion</h2>
+        <p>In this tutorial, we saw how to use setter-based dependency injection in the Spring boot application. Also,
+            check out <a href="/spring-core-tutorial/spring-boot-constructor-injection.html" target="_blank">Spring Boot Constructor Injection Example</a></p>
+
+
+
+    </div>
+
+</body>
+
+</html>

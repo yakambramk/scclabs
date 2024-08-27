@@ -197,7 +197,9 @@ class Car {
     private Engine engine;
 }  
     </code></pre>
-        <p>Read more about the importance of @Autowired annotation on <a href="/spring-core-tutorial/spring-autowired-annotation-with-example.html" target="_blank">Spring @Autowired Annotation with
+        <p>Read more about the importance of @Autowired annotation on <a
+                href="/spring-core-tutorial/spring-autowired-annotation-with-example.html" target="_blank">Spring
+                @Autowired Annotation with
                 Example</a></p>
         <h2>@Primary Annotation</h2>
         <p>Use <code style="color: red">@Primary</code> to give higher preference to a bean when there are multiple
@@ -224,17 +226,32 @@ public class Config {
             </code></pre>
         <p>Spring throws <code style="color: red">NoUniqueBeanDefinitionException</code> if we try to run the
             application.</p>
-        <p>To access beans with the same type we usually use <a href="">@Qualifier(“beanName”)</a>
+        <p>To access beans with the same type we usually use <a
+                href="/spring-core-tutorial/spring-qualifier-annotation-example.html"
+                target="_blank">@Qualifier(“beanName”)</a>
             annotation.</p>
-        <p>We apply to at the injection point along with <a href="/spring-core-tutorial/spring-autowired-annotation-with-example.html">@Autowired</a>. In our case, we select the beans at
+        <p>We apply to at the injection point along with <a
+                href="/spring-core-tutorial/spring-autowired-annotation-with-example.html"
+                target="_blank">@Autowired</a>. In our case, we select the beans at
             the
-            configuration phase so <a href="">@Qualifier</a> can’t be applied here. We can learn more about <a
-                href="">@Qualifier</a> annotation by
+            configuration phase so <a href="/spring-core-tutorial/spring-qualifier-annotation-example.html"
+                target="_blank">@Qualifier</a> can’t be applied here. We can learn more about <a
+                href="/spring-core-tutorial/spring-qualifier-annotation-example.html" target="_blank">@Qualifier</a>
+            annotation by
             following the link.</p>
         <p>To resolve this issue Spring offers the @Primary annotation. The following example shows how to use
             <code>@Primary</code> annotation in a spring application.
         </p>
-        <p>Read more about the importance of <code>@Primary</code> annotation on <a href="">Spring - @Primary Annotation
+        <p>The <code style="color: red">@Primary</code> annotation may be used on any class directly or indirectly
+            annotated with <code style="color: red">@Component</code> or on
+            factory methods annotated with <a href="/spring-mvc/spring-bean-annotation-with-example.html"
+                target="_blank">@Bean</a>. In this example, we will use <code style="color: red">@Primary</code>
+            annotation with
+            <code style="color: red">@Component</code> annotation.
+        </p>
+        <p>Read more about the importance of <code>@Primary</code> annotation on <a
+                href="/spring-core-tutorial/spring-primary-annotation-example.html" target="_blank">Spring - @Primary
+                Annotation
                 Example</a></p>
         <h3>@Qualifier</h3>
         <p>We use @Qualifier annotation to resolve ambiguous dependencies.</p>
@@ -258,7 +275,8 @@ public class Config {
     private DataSource datasource;
 
 </code></pre>
-        <p>Read more about the importance of <code>@Qualifier</code> annotation on <a href="">Spring @Qualifier
+        <p>Read more about the importance of <code>@Qualifier</code> annotation on <a
+                href="/spring-core-tutorial/spring-qualifier-annotation-example.html" target="_blank">Spring @Qualifier
                 Annotation Example</a></p>
         <h3>@Resource</h3>
         <p>Spring also supports injection using the JSR-250 <code>@Resource</code> annotation on fields or bean property
@@ -330,7 +348,9 @@ public class DatabaseInitiaizer {
 }
         </code></pre>
         <p>Refer complete example of <code style="color: red">@PostConstruct</code> and <code
-                style="color: red">@PreDestroy</code> annotations on <a href="">Spring @PostConstruct and @PreDestroy
+                style="color: red">@PreDestroy</code> annotations on <a
+                href="/spring-core-tutorial/spring-postconstruct-and-predestroy-example.html" target="_blank">Spring
+                @PostConstruct and @PreDestroy
                 Example</a></p>
         <h3>Are annotations better than XML for configuring Spring?</h3>
         <p>I think the answer is it depends like each approach has its pros and cons, and usually, it is up to the

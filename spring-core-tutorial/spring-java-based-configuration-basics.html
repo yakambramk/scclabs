@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+
+        img {
+            margin: auto 20px;
+            width: 50%;
+            height: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring - Java-based Container Configuration</h1>
+        <p>In this article, we will cover how to use annotations in our Java code to configure the Spring container.</p>
+        <h3>Basic Concepts: @Bean and @Configuration</h3>
+        <p>The central artifacts in Spring’s new Java-configuration support are <a href="">@Configuration</a>-annotated
+            classes and
+            <a href="">@Bean</a>-annotated methods.
+        </p>
+        <p>The <a href="">@Bean</a> annotation is used to indicate that a method instantiates, configures, and
+            initializes a new object
+            to be managed by the Spring IoC container. For those familiar with Spring’s XML configuration, the <a
+                href="">@Bean</a>
+            annotation plays the same role as the element. You can use <a href="">@Bean</a>-annotated methods with any
+            Spring
+            @Component. However, they are most often used with <a href="">@Configuration</a> beans.</p>
+        <p>Annotating a class with <a href="">@Configuration</a> indicates that its primary purpose is as a source of
+            bean definitions.
+            Furthermore, <a href="">@Configuration</a> classes let inter-bean dependencies be defined by calling other
+            <a href="">@Bean</a> methods in
+            the same class. The simplest possible <a href="">@Configuration</a> class reads as follows:
+        </p>
+        <p>The below simple example show usage of <a href="">@Bean</a> and <a href="">@Configuration</a> annotations.
+        </p>
+        <pre><code>
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.companyname.projectname.customer.CustomerService;
+import com.companyname.projectname.order.OrderService;
+
+@Configuration
+public class Application {
+
+    @Bean
+    public CustomerService customerService() {
+        return new CustomerService();
+    }
+
+    @Bean
+    public OrderService orderService() {
+        return new OrderService();
+    }
+}
+            </code></pre>
+        <p>The preceding configuration is exactly equivalent to the following Spring XML:</p>
+        <pre><code>
+&ltbeans>
+    &ltbean id="customerService" class="com.companyname.projectname.CustomerService"/>
+    &ltbean id="orderService" class="com.companyname.projectname.OrderService"/>
+&lt/beans>
+            </code></pre>
+        <p>Note that the method name and bean name in XML are exactly the same.</p>
+        <p>We have separate in-depth articles of <a href="">@Bean</a> and <a href="">@Configuration</a> annotations
+            here:</p>
+
+        >><a href="">Spring @Bean Annotation with Example</a>
+        >><a href="">Spring @Configuration Annotation with Example</a>
+        <h3>Instantiating the Spring Container by Using AnnotationConfigApplicationContext</h3>
+        <hr>
+        <p>Spring 3.0 introduced AnnotationConfigApplicationContext class which is implementation ApplicationContext
+            interface. It is capable of accepting not only <a href="">@Configuration</a> classes as input but also plain
+            @Component
+            classes and classes annotated with JSR-330 metadata.</p>
+        <p>When <a href="">@Configuration</a> classes are provided as input, the <a href="">@Configuration</a> class
+            itself is registered as a bean
+            definition and all declared <a href="">@Bean</a> methods within the class are also registered as bean
+            definitions.</p>
+        <p>When <code style="color:red;">@Component</code> and JSR-330 classes are provided, they are registered as bean
+            definitions, and it is assumed
+            that DI metadata such as <code style="color:red;">@Autowired</code> or <code
+                style="color:red;">@Inject</code> is used within those classes where necessary.</p>
+        <h3>Create Spring IOC Container</h3>
+        <p>We can use <a href="">@Configuration</a> classes as input when instantiating an
+            AnnotationConfigApplicationContext. This
+            allows for completely XML-free usage of the Spring container, as the following example shows:</p>
+        <pre><code>
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class Application {
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        MessageService messageService = context.getBean(MessageService.class);
+        messageService.setMessage("TwitterMessageService Implementation");
+        System.out.println(messageService.getMessage());
+
+        MessageService messageService1 = context.getBean(MessageService.class);
+        System.out.println(messageService1.getMessage());
+        context.close();
+    }
+}
+</code></pre>
+        <p><code style="color:red;">AnnotationConfigApplicationContext</code> is not limited to working only with
+            <a href="">@Configuration</a> classes. Any <code style="color:red;">@Component</code>
+            or JSR-330 annotated class may be supplied as input to the constructor, as the following example shows:
+        </p>
+        <pre><code>
+public static void main(String[] args) {
+    ApplicationContext ctx = new AnnotationConfigApplicationContext(MyServiceImpl.class, Dependency1.class, Dependency2.class);
+        MyService myService = ctx.getBean(MyService.class);
+        myService.doStuff();
+}
+        </code></pre>
+        <h3>Building the Container Programmatically by Using register(Class
+            <?>… )</h3>
+        <p>You can instantiate an <code style="color: red;">AnnotationConfigApplicationContext</code>
+             by using a no-arg constructor and then configure it by using the <code style="color: red;">register()</code> method. 
+             This approach is particularly useful when programmatically building an <code style="color: red;">AnnotationConfigApplicationContext</code>. 
+             The following example shows how to do so:</p>
+             <pre><code>
+public static void main(String[] args) {
+    AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+    ctx.register(AppConfig.class, OtherConfig.class);
+    ctx.register(AdditionalConfig.class);
+    ctx.refresh();
+    MyService myService = ctx.getBean(MyService.class);
+    myService.doStuff();
+}
+             </code></pre>
+             <h3>Enabling Component Scanning with scan(String… )</h3>
+             <p>To enable component scanning, you can annotate your <a href="">@Configuration</a> class as follows:</p>
+             <pre><code>
+package net.javaguides.spring.scope;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan(basePackages = "net.javaguides.spring")
+public class AppConfig {
+ 
+}
+             </code></pre>
+             <p>Use <code style="color: red;">@ComponentScan</code> annotation to enable auto component scanning in java based configuration, annotate your <a href="">@Configuration</a> class as shown above code sample.</p>
+
+<h3>In-depth Java-based Container Configuration Annotations</h3>
+>><a href=""> Spring Java Based Configuration Example</a> 
+<p>In this post, we will demonstrate the usage of Spring Java-based container configuration.</p>
+>><a href=""> Spring @Bean Annotation with Example</a>
+<p>In this article, we will discuss Spring Java configuration based <code style="color: red;">@Bean</code> annotation with examples. We will also discuss different scenarios of how and when to use <code style="color: red;">@Bean</code> annotation.</p>
+>><a href=""> Spring @Configuration Annotation with Example</a>
+<p>In this article, we will discuss a very important Spring Java based configuration annotation that is a <code style="color: red;">@Configuration</code> annotation with examples.</p>
+>><a href="">Spring @PropertySource Annotation with Example</a>
+<p>In Spring, you can use @PropertySource annotation to externalize your configuration to a properties file. In this article, we will discuss how to use @PropertySource to read a properties file and display the values with @Value and Environment.</p>
+>><a href=""> Spring @Import Annotation with Example</a>
+<p>In this article, we will discuss how to use Spring @Import annotation with examples.</p>
+>><a href=""> Spring @ImportResource Annotation Example</a>
+<p>In this article, we will quickly discuss how to use @ImportResource annotation with a simple Spring boot application.</p>
+    </div>
+</body>
+
+</html>
