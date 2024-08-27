@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+
+        /* Container class for the image */
+        .container-fluid {
+        padding: 0;
+        margin: 0;
+        background-color: #8ec4fa; /* Light background color to make the container visible */
+        }
+
+        /* Image wrapper */
+        .topImage {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        margin-top: 0;
+        margin-bottom: 20px; 
+        padding: 1px; 
+        border: 2px solid #dee2e6; 
+        }
+
+        /* Image styling */
+        .topImage img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        }
+
+        /* *************************************** */
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        .image {
+            text-align: center;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/What-is-Spring-Boot.jpg" alt="logo" />
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="heading">
+            <h3>What is Spring Boot and What are Spring Boot Key Features</h3>
+            <h6>Author: Shiva Krishna G</h6>
+        </div>
+        <p>In this introductory article, we will discuss:</p>
+        <ul>
+            <li>What is Spring Boot?</li>
+            <li>What are its goals?</li>
+            <li>We will discuss Spring boot key features</li>
+        </ul>
+        <hr>
+        <h3>What is the Spring Boot?</h3>
+        <p>Spring Boot is basically an extension of the Spring framework which eliminated the boilerplate configurations
+            required for setting up a Spring application.<br><br>
+
+            Spring Boot is an opinionated framework that helps developers build Spring-based applications quickly and
+            easily.<b>The main goal of Spring Boot is to quickly create Spring-based applications without requiring
+                developers to write the same boilerplate configuration again and again.</b>
+        </p>
+        <h3>Spring Boot Primary Goals</h3>
+        <ul>
+            <li>Provide a radically faster and widely accessible getting-started experience for all Spring development.
+            </li>
+            <li>Be opinionated out of the box but get out of the way quickly as requirements start to diverge from the
+                defaults.</li>
+            <li>Provide a range of non-functional features that are common to large classes of projects (such as
+                embedded servers, security, metrics, health checks, and externalized configuration).</li>
+            <li>Absolutely no code generation and no requirement for XML configuration.</li>
+        </ul>
+        <h3>Key Spring Boot features</h3>
+        <p>Let me a list of a few key features of the Spring boot and we will discuss each key feature briefly.</p>
+        <ol>
+            <li>Spring Boot starters</li>
+            <li>Spring Boot autoconfiguration</li>
+            <li>Elegant configuration management</li>
+            <li>Spring Boot Actuator</li>
+            <li>Easy-to-use embedded servlet container support</li>
+        </ol>
+        <h4>1. Spring Boot Starters</h4>
+        <p>Spring Boot offers many starter modules to get started quickly with many of the commonly used technologies,
+            like SpringMVC, JPA, MongoDB, Spring Batch, SpringSecurity, Solr, ElasticSearch, etc. These starters are
+            pre-configured with the most commonly used library dependencies so you don’t have to search for compatible
+            library versions and configure them manually.<br><br>
+            For example, the <span> spring-boot-starter-data-jpa </span> starter module includes all the dependencies
+            required to use Spring Data JPA, along with Hibernate library dependencies, as Hibernate is the most
+            commonly used JPA implementation.<br><br>
+
+            One more example, when we add the<span> spring-boot-starter-web</span> dependency, it will by default pull
+            all the commonly used libraries while developing Spring MVC applications, such
+            as<span>spring-webmvc</span>,<span> jackson-json</span>,<span> validation-API</span>, and
+            <span>tomcat</span>.<br><br>
+            Not only does the spring-boot-starter-web add all these libraries but it also configures the commonly
+            registered beans like<span>DispatcherServlet</span>,<span>ResourceHandlers</span>,
+            <span>MessageSource</span> , etc. with sensible defaults.<br><br>
+            Read more about starters on <a href="">Important Spring Boot Starters with Examples</a>
+        </p>
+        <h3>2. Spring Boot Autoconfiguration</h3>
+        <p>Spring Boot addresses the problem that Spring applications need complex configuration by eliminating the need
+            to manually set up the boilerplate configuration.<br><br>
+            Spring Boot takes an opinionated view of the application and configures various components automatically, by
+            registering beans based on various criteria. The criteria can be:
+        </p>
+        <ul>
+            <li>Availability of a particular class in a classpath</li>
+            <li>Presence or absence of a Spring bean</li>
+            <li>Presence of a system property</li>
+            <li>An absence of a configuration file</li>
+        </ul>
+        <p>For example, if you have the<span> spring-webmvc</span> dependency in your classpath, Spring Boot assumes you
+            are trying
+            to build a SpringMVC-based web application and automatically tries to register<span>
+                DispatcherServlet</span> if it is
+            not already registered. If you have any embedded database drivers in the classpath, such as H2 or HSQL, and
+            if you haven’t configured a<span> DataSource</span> bean explicitly, then Spring Boot will automatically
+            register a
+            <span> DataSource</span> bean using in-memory database settings.
+        </p><Br>
+        <h3>3. Elegant Configuration Management</h3>
+        <p>Spring supports externalizing configurable properties using the @PropertySource configuration. Spring Boot
+            takes it even further by using sensible defaults and powerful type-safe property binding to bean properties.
+            Spring Boot supports having separate configuration files for different profiles without requiring many
+            configurations.</p>
+        <h3>4. Spring Boot Actuator</h3>
+        <p>Being able to get the various details of an application running in production is crucial to many
+            applications. The Spring Boot actuator provides a wide variety of such production-ready features without
+            requiring developers to write much code. Some of the Spring actuator features are:</p>
+        <ul>
+            <li>Can view the application bean configuration details</li>
+            <li>Can view the application URL mappings, environment details, and configuration parameter values</li>
+            <li>Can view the registered health check metrics</li>
+        </ul>
+        <p>Read more about Spring Boot Actuator on Spring Boot Actuator</p><br>
+        <h3>5. Easy-to-Use Embedded Servlet Container Support</h3>
+        <p>Traditionally, while building web applications, you need to create <span> WAR-type</span> modules and then
+            deploy them on external servers like <span> Tomcat</span>,<span>WildFly</span>, etc. But by using Spring
+            Boot, you can create a<span> JAR-type</span> module and embed the servlet container in the application very
+            easily so that the application will be a self-contained deployment unit. <br><br>
+            Also, during development, you can easily run the Spring Boot JAR type module as a Java application from the
+            IDE or from the command line using a build tool like Maven or Gradle.</p><br>
+        <h3>System Requirements</h3>
+        <p>Spring Boot 2+ requires Java 8 or 9 and Spring Framework 5.1.0.RELEASE or above.<br><br>
+        <div class="image mt-2 mb-4  mx-auto ">
+            <img src="../../assets/springboot images/build-tool-support.PNG" alt="logo" class="img-fluid" />
+        </div><br>
+        Explicit build support is provided for the following build tools:</p>
+
+        <h3>Servlet Containers</h3>
+        <p>Spring Boot supports the following embedded servlet containers:</p>
+        <div class="image mt-2 mb-4  mx-auto ">
+            <img src="../../assets/springboot images/servlet-containers.PNG" alt="logo" class="img-fluid" />
+        </div><br>
+        <p>You can also deploy Spring Boot applications to any Servlet 3.1+ compatible container.</p>
+        <h3>What's Next?</h3>
+        <p>In this article, we had a quick overview of Spring boot, what is Spring Boot, what are its goals, and Spring
+            Boot's key features.<br><br>
+
+            In the next tutorial, we will learn how to develop a simple RESTFul web service application using Spring
+            Boot.</p><br>
+
+        <h3>Related Spring and Spring Boot Tutorials/Guides:</h3>
+        <p>
+            <button type="button" class="btn btn-outline-primary">Spring Boot Tutorials [500+]s</button>
+            <button type="button" class="btn btn-outline-secondary">Spring Boot Testing Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Spring Boot Microservice Tutorial</button>
+            <button type="button" class="btn btn-outline-danger">Spring Boot Kafka Microservices </button>
+            <button type="button" class="btn btn-outline-warning">Spring Boot + Apache Kafka Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Spring Core Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Spring MVC Tutorial </button>
+            <button type="button" class="btn btn-outline-secondary">Spring Data JPA Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Spring Framework for Beginners</button>
+            <button type="button" class="btn btn-outline-danger">Spring AOP Tutorial</button>
+            <button type="button" class="btn btn-outline-warning">Spring Security Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Spring Exceptions Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Spring Boot Interview Questions</button>
+            <button type="button" class="btn btn-outline-dark">Spring Boot Microservices Interview Questions</button>
+            <button type="button" class="btn btn-outline-primary">Apache Kafka Tutorials </button>
+            <button type="button" class="btn btn-outline-secondary">Docker Tutorials and Guides</button>
+            <button type="button" class="btn btn-outline-success">Spring Boot RabbitMQ Tutorials</button>
+            <button type="button" class="btn btn-outline-danger">Angular CRUD Example with Spring Boot </button>
+            <button type="button" class="btn btn-outline-warning">Spring Boot + Angular 12 CRUD Full Stack</button>
+            <button type="button" class="btn btn-outline-info">Spring Boot + Angular 8 CRUD Full Stack</button>
+            <button type="button" class="btn btn-outline-danger">Spring Boot + Angular 10 CRUD Full Stack </button>
+            <button type="button" class="btn btn-outline-primary">React JS ( React Hooks) + Spring Boot</button>
+            <button type="button" class="btn btn-outline-secondary">Spring Boot + React JS CRUD Full Stack</button>
+            <button type="button" class="btn btn-outline-success">Spring Boot Thymeleaf CRUD Full Stack </button>
+            <button type="button" class="btn btn-outline-danger">Spring Boot User Registration and Login</button>
+            <button type="button" class="btn btn-outline-warning">Node Js + Express + MongoDB CRUDVue</button>
+            <button type="button" class="btn btn-outline-info">JS + Spring Boot REST API Tutorial</button>
+        </p>
+
+
+    </div>
+</body>
+
+</html>
