@@ -97,12 +97,20 @@
         <h1>Spring @Autowired Annotation Example</h1>
         <p>In this article, we will learn <code style="color: red">@Autowired</code> annotation to inject the dependency
             automatically
-            using 
-            <a href="/spring-core-tutorial/spring-boot-constructor-injection.html" target="_blank">Constructor injection</a>, <a href="">Setter injection</a>, and <a href="">Field injection</a>.
+            using
+            <a href="/spring-core-tutorial/spring-boot-constructor-injection.html" target="_blank">Constructor
+                injection</a>, <a href="/spring-core-tutorial/spring-boot-setter-injection-example.html"
+                target="_blank">Setter injection</a>, and <a
+                href="/spring-core-tutorial/spring-boot-field-injection-example.html" target="_blank">Field
+                injection</a>.
         <h2>@Autowired Annotation Overview</h2>
         <p>The <code style="color: red">@Autowired</code> annotation is used to inject the bean automatically.</p>
-        <p>The <code style="color: red">@Autowired</code> annotation is used in <a href="">Constructor injection</a>, <a
-                href="">Setter injection</a>, and <a href="">Field injection</a>.</p>
+        <p>The <code style="color: red">@Autowired</code> annotation is used in <a
+                href="/spring-core-tutorial/spring-boot-constructor-injection.html" target="_blank">Constructor
+                injection</a>, <a href="/spring-core-tutorial/spring-boot-setter-injection-example.html"
+                target="_blank">Setter
+                injection</a>, and <a href="/spring-core-tutorial/spring-boot-field-injection-example.html"
+                target="_blank">Field injection</a>.</p>
         </p>
         <h2>Constructor Injection using @Autowired Annotation</h2>
         <p>Let's create Interfaces and classes required to demonstrate @Autowired annotation.</p>
@@ -170,7 +178,8 @@ public class PizzaController {
         </code></pre>
         <p>In this above code snippet, we are using <code style="color: red">@Autowired</code> annotation to inject
             VegPizza dependency in
-            PizzaController class using constructor injection. Note that we are using <a href="/spring-core-tutorial/spring-qualifier-annotation-example.html" target="_blank">@Qualifier
+            PizzaController class using constructor injection. Note that we are using <a
+                href="/spring-core-tutorial/spring-qualifier-annotation-example.html" target="_blank">@Qualifier
                 annotation</a> in
             conjunction with @Autowired to avoid confusion when we have two or more beans configured for the same type.
         </p>
@@ -247,7 +256,9 @@ public class PizzaController {
     </code></pre>
         <p>In this above code snippet, we are using <code style="color: red">@Autowired</code> annotation to inject
             VegPizza dependency in
-            PizzaController class using setter injection. Note that we are using <a href="/spring-core-tutorial/spring-qualifier-annotation-example.html" target="_blank">@Qualifier annotation</a> in
+            PizzaController class using setter injection. Note that we are using <a
+                href="/spring-core-tutorial/spring-qualifier-annotation-example.html" target="_blank">@Qualifier
+                annotation</a> in
             conjunction
             with @Autowired to avoid confusion when we have two or more beans configured for the same type.</p>
         <h3>Setter injection using @Autowired annotation:</h3>
@@ -329,7 +340,9 @@ private Pizza pizza;
 </code></pre>
         <p>In this above code snippet, we are using <code style="color: red">@Autowired</code> annotation to inject
             VegPizza dependency in
-            PizzaController class using field injection. Note that we are using <a href="">@Qualifier annotation</a> in
+            PizzaController class using field injection. Note that we are using <a
+                href="/spring-core-tutorial/spring-qualifier-annotation-example.html" target="_blank">@Qualifier
+                annotation</a> in
             conjunction
             with @Autowired to avoid confusion when we have two or more beans configured for the same type.</p>
         <h3>Field injection using @Autowired annotation:</h3>
@@ -371,8 +384,11 @@ Veg Pizza
 </code></pre>
         <h2>Conclusion</h2>
         <p>In this article, we learned <code style="color: red">@Autowired</code> annotation to inject the dependency
-            automatically using <a href="">Constructor injection</a>, <a href="">Setter injection</a>, and <a
-                href="">Field injection</a>.</p>
+            automatically using <a href="/spring-core-tutorial/spring-boot-constructor-injection.html"
+                target="_blank">Constructor injection</a>, <a
+                href="/spring-core-tutorial/spring-qualifier-annotation-example.html" target="_blank">Setter
+                injection</a>, and <a href="/spring-core-tutorial/spring-boot-field-injection-example.html"
+                target="_blank">Field injection</a>.</p>
         <h2>Related Spring and Spring Boot Annotations</h2>
         <ul>
             <li><a href="">Spring Boot @Bean Annotation Example</a></li>

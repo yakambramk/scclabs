@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h4 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring @PostConstruct and @PreDestroy Example</h1>
+        <p>In this article, we will discuss how to use the <code>@PostConstruct</code> and <code>@PreDestroy</code>
+            annotations in a Spring Boot
+            application. These annotations are part of the Java EE specification and are used to define lifecycle
+            callback methods for a bean.</p>
+        <h3>Table of Contents</h3>
+        <ol>
+            <li>Introduction</li>
+            <li>Key Concepts</li>
+            <li>Using @PostConstruct and @PreDestroy in Spring</li>
+            <li>Example Project Setup</li>
+            <li>Real-World Use Case: Database Initialization</li>
+            <li>Example Implementation</li>
+            <li>Running the Application</li>
+            <li>Conclusion</li>
+        </ol>
+        <h3>Introduction</h3>
+        <p>The <code>@PostConstruct</code> annotation is used on a method that needs to be executed after dependency
+            injection is
+            done to perform any initialization. Similarly, the <code>@PreDestroy</code> annotation is used on methods
+            that need to be
+            executed before the bean is destroyed. These annotations are particularly useful for resource management and
+            cleanup tasks.</p>
+        <h3>Key Concepts</h3>
+        <ul>
+            <li><b>@PostConstruct: </b>Annotates a method that should be executed after the bean's dependencies have
+                been injected.</li>
+            <li><b>@PreDestroy: </b>Annotates a method that should be executed just before the bean is removed from the
+                context or destroyed.</li>
+        </ul>
+        <h3>Using @PostConstruct and @PreDestroy in Spring</h3>
+        <h4>@PostConstruct</h4>
+        <p>This annotation is used on a method that needs to be run after the bean has been initialized and all
+            dependencies have been injected. It is typically used for performing any setup or initialization tasks that
+            need to be done after the bean's properties have been set.</p>
+        <h4>@PreDestroy</h4>
+        <p>This annotation is used on a method that needs to be run before the bean is destroyed. It is typically used
+            for cleanup tasks such as releasing resources or closing connections.</p>
+        <h3>Example Project Setup</h3>
+        <p>Let's create a simple Maven project to demonstrate the usage of <code>@PostConstruct</code> and
+            <code>@PreDestroy</code> annotations in
+            a Spring application.
+        </p>
+        <h4>1. Create a Simple Maven Project</h4>
+        <p>Create a simple Maven project using your favourite IDE. Below is the project structure for your reference:
+        </p>
+        <pre><code>
+src
+├── main
+│   ├── java
+│   │   └── net
+│   │       └── javaguides
+│   │           └── spring
+│   │               ├── AppConfig.java
+│   │               ├── Application.java
+│   │               ├── MessageService.java
+│   │               ├── MessageServiceImpl.java
+│   │               └── DatabaseService.java
+│   └── resources
+│       └── application.properties
+        </code></pre>
+        <h4>2. The pom.xml File</h4>
+        <p>Make sure to use Java 17 or later for Spring Framework 6:</p>
+        <pre><code>
+&ltproject xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    &ltmodelVersion>4.0.0</modelVersion>
+    &ltgroupId>net.javaguides</groupId>
+    &ltartifactId>spring-postconstruct-predestroy</artifactId>
+    &ltversion>1.0-SNAPSHOT</version>
+    &ltproperties>
+        &ltmaven.compiler.source>17</maven.compiler.source>
+        &ltmaven.compiler.target>17</maven.compiler.target>
+    &lt/properties>
+    &ltdependencies>
+        &ltdependency>
+            &ltgroupId>org.springframework.boot</groupId>
+            &ltartifactId>spring-boot-starter</artifactId>
+            &ltversion>3.0.0</version>
+        &lt/dependency>
+        &ltdependency>
+            &ltgroupId>org.springframework.boot</groupId>
+            &ltartifactId>spring-boot-starter-data-jpa</artifactId>
+            &ltversion>3.0.0</version>
+        &lt/dependency>
+        &ltdependency>
+            &ltgroupId>com.h2database</groupId>
+            &ltartifactId>h2</artifactId>
+            &ltscope>runtime</scope>
+        &lt/dependency>
+    &lt/dependencies>
+&lt/project>
+        </code></pre>
+        <h2>Real-World Use Case: Database Initialization</h2>
+        <p>In a real-world application, you might need to initialize a database at startup and clean up resources when
+            the application shuts down. The <code>@PostConstruct</code> and <code>@PreDestroy</code> annotations are
+            perfect for such tasks.</p>
+        <h3>Example Implementation</h3>
+        <h4>3. Create the MessageService Interface</h4>
+        <p><b>MessageService.java</b></p>
+        <pre><code>
+package net.javaguides.spring;
+
+public interface MessageService {
+    String getMessage();
+}
+            </code></pre>
+        <h3>4. Create the MessageServiceImpl Class</h3>
+        <p><b>MessageServiceImpl.java</b></p>
+        <pre><code>
+package net.javaguides.spring;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MessageServiceImpl implements MessageService {
+
+    private String message;
+
+    @PostConstruct
+    public void init() {
+        message = "Hello, Spring!";
+        System.out.println("PostConstruct: MessageService initialized with message: " + message);
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    @PreDestroy
+    public void cleanup() {
+        System.out.println("PreDestroy: Cleaning up resources...");
+    }
+}
+            </code></pre>
+        <h3>5. Create the DatabaseService Class</h3>
+        <p>DatabaseService.java</p>
+        <pre><code>
+package net.javaguides.spring;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import org.springframework.stereotype.Component;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.Statement;
+
+@Component
+public class DatabaseService {
+
+    private final DataSource dataSource;
+
+    public DatabaseService(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    @PostConstruct
+    public void initDatabase() {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+            statement.execute("CREATE TABLE IF NOT EXISTS Users (id INT AUTO_INCREMENT, name VARCHAR(255), PRIMARY KEY (id))");
+            statement.execute("INSERT INTO Users (name) VALUES ('John Doe')");
+            System.out.println("PostConstruct: Database initialized");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @PreDestroy
+    public void cleanupDatabase() {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+            statement.execute("DROP TABLE IF EXISTS Users");
+            System.out.println("PreDestroy: Database cleaned up");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+            </code></pre>
+        <h3>6. Create the AppConfig Class</h3>
+        <p>AppConfig.java</p>
+        <pre><code>
+package net.javaguides.spring;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan(basePackages = "net.javaguides.spring")
+public class AppConfig {
+}
+            </code></pre>
+        <h3>7. Create the Main Application Class</h3>
+        <p>Application.java</p>
+        <pre><code>
+package net.javaguides.spring;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class Application {
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        MessageService messageService = context.getBean(MessageService.class);
+        System.out.println("Message from MessageService: " + messageService.getMessage());
+        context.close();
+    }
+}
+            </code></pre>
+        <p>In this class:</p>
+        <ul>
+            <li><code>AnnotationConfigApplicationContext</code> is used to create and manage the Spring application
+                context.</li>
+            <li><code>context.getBean(MessageService.class)</code> retrieves a bean of type MessageService from the
+                Spring context.</li>
+            <li>The <code>close</code> method on <code>context</code> triggers the <code>@PreDestroy</code> method.</li>
+        </ul>
+        <h3>Running the Application</h3>
+        <p>When you run the <code>Application</code> class, you should see the following output:</p>
+        <pre><code>
+PostConstruct: Database initialized
+PostConstruct: MessageService initialized with message: Hello, Spring!
+Message from MessageService: Hello, Spring!
+PreDestroy: Cleaning up resources...
+PreDestroy: Database cleaned up
+        </code></pre>
+        <p>Explanation:</p>
+        <ul>
+            <li>The <code>initDatabase</code> method is called after the <code>DatabaseService</code> bean is
+                initialized, setting up the database and inserting initial data.</li>
+            <li>The <code>init</code> method is called after the <code>MessageServiceImpl</code> bean is initialized,
+                setting the message and
+                printing the initialization message.</li>
+            <li>The <code>getMessage</code> method prints the message to the console.</li>
+            <li>The <code>cleanup</code> method is called before the <code>MessageServiceImpl</code> bean is destroyed,
+                cleaning up any resources.</li>
+            <li>The <code>cleanupDatabase</code> method is called before the <code>DatabaseService</code> bean is
+                destroyed, dropping the database table.</li>
+        </ul>
+        <h3>Conclusion</h3>
+        <p>In this article, we demonstrated how to use the <code>@PostConstruct</code> and <code>@PreDestroy</code>
+            annotations in a Spring Boot
+            application. By using these annotations, we can perform initialization and cleanup tasks for our beans. The
+            example showed how to initialize a database at startup and clean up resources when the application shuts
+            down, which is a common real-world use case.</p>
+
+
+    </div>
+
+</body>
+
+</html>
