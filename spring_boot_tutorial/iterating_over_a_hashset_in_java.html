@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iterating over a HashSet in Java</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Iterating over a Hashset in Java</h1>
+                <h4>author :Sai K</h4>
+                <P>A HashSet is a collection that implements the Set interface, backed by a HashMap. It stores elements
+                    in no <br><br>particular order and does not allow duplicates. This guide will provide examples of how to
+                    iterate over a HashSet <br><br> using different methods, including detailed explanations and outputs.
+                    Additionally, it will cover how to iterate over <br><br> a HashSet containing custom objects.</P>
+                <h2>Table of Contents</h2>
+                <ul>
+                    <li>1.Introduction</li><br>
+                    <li>2.Using Enhanced For-Loop</li><br>
+                    <li>3.Using Iterator</li><br>
+                    <li>4.Using forEach Method (Java 8)</li><br>
+                    <li>5.Using Stream API (Java 8)</li><br>
+                    <li>6.Iterating Over a HashSet with Custom Objects</li><br>
+                    <li>7.Conclusion</li>
+                </ul>
+                <h2>1. Introduction</h2>
+                <p>A HashSet is a part of the Java Collections Framework and is an implementation of the Set interface
+                    that does <br> <br>not allow duplicate elements. It is useful for scenarios where you need a set that ensures
+                    uniqueness without any <br> <br>specific ordering.</p>
+                <h2>2. Using Enhanced For-Loop</h2>
+                <p>The enhanced for-loop (or for-each loop) provides a simple and readable way to iterate over a
+                    HashSet.</p>
+                <h3>Example: Using Enhanced For-Loop</h3>
+                <pre><code>
+import java.util.HashSet;
+import java.util.Set;
+
+public class EnhancedForLoopExample {
+    public static void main(String[] args) {
+        Set<String> fruits = new HashSet<>();
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Orange");
+
+        for (String fruit : fruits) {
+            System.out.println(fruit);
+        }
+    }
+}
+                </code></pre>
+                <h2>Output:</h2>
+                <pre><code>
+        Apple
+        Banana
+        Orange
+                </code></pre>
+                <h2>3. Using Iterator</h2>
+                <p>The Iterator provides a way to iterate over the elements and allows element removal during iteration if needed.</p>
+                <h3>Example: Using Iterator</h3>
+                <pre><code>
+                    import java.util.HashSet;
+                    import java.util.Iterator;
+                    import java.util.Set;
+                    
+                    public class IteratorExample {
+                        public static void main(String[] args) {
+                            Set<String> fruits = new HashSet<>();
+                            fruits.add("Apple");
+                            fruits.add("Banana");
+                            fruits.add("Orange");
+                    
+                            Iterator<String> iterator = fruits.iterator();
+                            while (iterator.hasNext()) {
+                                String fruit = iterator.next();
+                                System.out.println(fruit);
+                            }
+                        }
+                    }</code></pre>
+                    <h2>Output:</h2>
+                    <pre><code>
+                        Apple
+                        Banana
+                        Orange
+                    </code></pre>
+                    <h2>4. Using forEach Method (Java 8)</h2>
+                    <p>The forEach method is part of the Java 8 Stream API and provides a functional approach to iteration.</p>
+                    <h3>Example: Using forEach Method</h3>
+                    <pre><code>
+import java.util.HashSet;
+import java.util.Set;
+
+public class ForEachMethodExample {
+    public static void main(String[] args) {
+        Set<String> fruits = new HashSet<>();
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Orange");
+
+        // Using forEach with lambda expression
+        fruits.forEach(fruit -> System.out.println(fruit));
+
+        // Using forEach with method reference
+        fruits.forEach(System.out::println);
+    }
+}
+                    </code></pre>
+                    <h2>Output:</h2>
+                    <pre><code>
+                        Apple
+                        Banana
+                        Orange
+                    </code></pre>
+                    <h2>5. Using Stream API (Java 8)</h2>
+                    <p>The Stream API provides a powerful way to process sequences of elements, including iteration.</p>
+                    <h3>Example: Using Stream API</h3>
+                    <pre><code>
+import java.util.HashSet;
+import java.util.Set;
+
+public class StreamAPIExample {
+    public static void main(String[] args) {
+        Set<String> fruits = new HashSet<>();
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Orange");
+
+        // Using stream and forEach
+        fruits.stream().forEach(fruit -> System.out.println(fruit));
+
+        // Using parallel stream and forEach
+        fruits.parallelStream().forEach(fruit -> System.out.println("Parallel: " + fruit));
+    }
+}
+                    </code></pre>
+                    <h2>Output:</h2>
+                    <pre><code>
+                        Apple
+                        Banana
+                        Orange
+                        Parallel: Apple
+                        Parallel: Banana
+                        Parallel: Orange
+                    </code></pre>
+                    <h2>6. Iterating Over a HashSet with Custom Objects</h2>
+                    <p>When dealing with custom objects in a HashSet, it is important to override the equals and hashCode methods to <br><br>ensure the uniqueness of the elements. Here is an example using a custom Person class.</p>
+                    <h2>Custom Object Example: Using Enhanced For-Loop</h2>
+                    <pre><code>
+import java.util.HashSet;
+import java.util.Set;
+
+class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Person person = (Person) obj;
+        return age == person.age && name.equals(person.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode() * 31 + age;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{name='" + name + "', age=" + age + '}';
+    }
+}
+
+public class CustomObjectExample {
+    public static void main(String[] args) {
+        Set<Person> persons = new HashSet<>();
+        persons.add(new Person("Alice", 30));
+        persons.add(new Person("Bob", 25));
+        persons.add(new Person("Charlie", 35));
+
+        // Using Enhanced For-Loop
+        System.out.println("Using Enhanced For-Loop:");
+        for (Person person : persons) {
+            System.out.println(person);
+        }
+
+        // Using Iterator
+        System.out.println("\nUsing Iterator:");
+        Iterator<Person> iterator = persons.iterator();
+        while (iterator.hasNext()) {
+            Person person = iterator.next();
+            System.out.println(person);
+        }
+
+        // Using forEach Method (Java 8)
+        System.out.println("\nUsing forEach Method (Java 8):");
+        persons.forEach(person -> System.out.println(person));
+
+        // Using Stream API (Java 8)
+        System.out.println("\nUsing Stream API (Java 8):");
+        persons.stream().forEach(person -> System.out.println(person));
+    }
+}
+                    </code></pre>
+                    <h2>Output:</h2>
+                    <pre><code>
+Using Enhanced For-Loop:
+Person{name='Alice', age=30}
+Person{name='Bob', age=25}
+Person{name='Charlie', age=35}
+
+Using Iterator:
+Person{name='Alice', age=30}
+Person{name='Bob', age=25}
+Person{name='Charlie', age=35}
+
+Using forEach Method (Java 8):
+Person{name='Alice', age=30}
+Person{name='Bob', age=25}
+Person{name='Charlie', age=35}
+
+Using Stream API (Java 8):
+Person{name='Alice', age=30}
+Person{name='Bob', age=25}
+Person{name='Charlie', age=35}
+                    </code></pre>
+                    <h2>7. Conclusion</h2>
+                    <p>In this guide, we covered various methods to iterate over a HashSet in Java:</p>
+                    <ul>
+                        <li><b>Using Enhanced For-Loop:</b> Simplifies code and improves readability.</li><br>
+                        <li><b>Using Iterator:</b> Allows element removal during iteration.</li><br>
+                        <li><b>Using forEach Method (Java 8):</b> Provides a functional programming approach.</li><br>
+                        <li><b>Using Stream API (Java 8):</b> Offers powerful operations for processing sequences of elements, including <br> <br> parallel processing.</li><br>
+                    </ul>
+                    <p>Additionally, we demonstrated how to iterate over a HashSet containing custom objects, ensuring the proper <br><br>implementation of equals and hashCode methods for correct behavior in a set.</p>
+                    <h2>Related Java and Advanced Java Tutorials/Guides</h2>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
