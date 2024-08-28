@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        
+       .container-fluid {
+        width: 100%;
+        background-color: rgb(16, 1, 1); 
+        padding: 0;
+        margin: 0;
+    }
+
+    .topImage {
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+    }
+
+    .topImage img {
+        max-width: 60%;
+        height: auto; 
+        border-radius: 8px; 
+    }
+
+    .heading {
+        color: rgb(204, 145, 9);
+    }
+
+    span {
+        background-color: rgb(224, 237, 235);
+        color: #d73a49;
+    }
+
+    pre {
+        background-color: #282c34;
+        color: #edf3f2;
+        padding: 20px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 18px;
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        unicode-bidi: isolate;
+    }
+
+    .btn {
+        transition: transform 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: scale(1.1); /* Zoom in */
+    }
+
+    .btn:active {
+        transform: scale(0.9); /* Zoom out on click */
+    }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/Apo2MBDZi.png" alt="logo" />
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="heading">
+            <h3>Spring Boot Embedded Servers - Tomcat, Jetty and Undertow</h3>
+            <h6>Author: Shiva Krishna G</h6>
+        </div><br>
+        <P>In this article, we will discuss what is default  spring boot embedded  web server, how to change the embedded server and how to configure the embedded server.<br><br>
+            Spring Boot includes support for embedded Tomcat, Jetty, and Undertow servers. Most developers use the appropriate “Starter” to obtain a fully configured instance. By default, spring boot embedded tomcat server, which listens for HTTP requests on port 8080.<br><br>
+            Spring Boot supports the following embedded servlet containers:</P>
+
+
+
+            <p>You can also deploy Spring Boot applications to any Servlet 3.1+ compatible container.</p>
+            <h3>1. Spring Boot Default Embedded Server - Tomcat</h3>
+            <p>We use spring-boot-starter-web starter to create Spring boot web applications or Rest API development. The spring-boot-starter-web stater project internally provides below dependency in its pom.xml:</p>
+            <code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;
+    &lt;version&gt;2.0.5.RELEASE&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre></code>
+                <p>You can see that by default Spring boot web starter includes a dependency on starter tomcat.<br><br>
+                    Again <b>spring-boot-starter-tomcat</b> starter has the following dependencies.</p>
+                    <code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+    &lt;artifactId&gt;tomcat-embed-core&lt;/artifactId&gt;
+    &lt;version&gt;8.5.23&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+    &lt;artifactId&gt;tomcat-embed-el&lt;/artifactId&gt;
+    &lt;version&gt;8.5.23&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+    &lt;artifactId&gt;tomcat-embed-websocket&lt;/artifactId&gt;
+    &lt;version&gt;8.5.23&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre></code>
+                        <p>The <b>spring-boot-starter-tomcat</b> starter brings in all the dependencies need to run Tomcat as an embedded server.</p>
+                        <h3>2. Use Another Web Server</h3>
+                        <p>As we knew that, for servlet stack applications, the spring-boot-starter-web includes Tomcat by including spring-boot-starter-tomcat, but you can use spring-boot-starter-jetty or spring-boot-starter-undertow instead.<br><br>
+                            When switching to a different HTTP server, you need to exclude the default dependencies in addition to including the one you need. Spring Boot provides separate starters for HTTP servers to help make this process as easy as possible.<br><br>
+                            Let's look at how to configure Jetty and Undertow web servers.</p>
+                            <h3>2.1 Using Jetty as Embedded Server with Spring Boot</h3>
+                            <p>The below Maven example shows how to exclude Tomcat and include Jetty for Spring MVC:</p>
+                            <code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;exclusions&gt;
+        &lt;!-- Exclude the Tomcat dependency --&gt;
+        &lt;exclusion&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+    &lt;/exclusions&gt;
+&lt;/dependency&gt;
+&lt;!-- Use Jetty instead --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-jetty&lt;/artifactId&gt;
+&lt;/dependency&gt;</pre></code>
+                                <h3>2.2 Using Undertow as Embedded Server with Spring Boot</h3>
+                                <p>The below Maven example shows how to exclude Tomcat and include Undertow for Spring MVC:</p>
+                                <code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;exclusions&gt;
+         &lt;!-- Exclude the Tomcat dependency --&gt;
+        &lt;exclusion&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+    &lt;/exclusions&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-undertow&lt;/artifactId&gt;
+&lt;/dependency&gt;</pre></code>
+                                    <h3>3. Disabling the Web Server</h3>
+                                    <p>If your classpath contains the necessary bits to start a web server, Spring Boot will automatically start it. To disable this behaviour configure the web application type in your application.properties, as shown in the following example:</p>
+                                    <code><pre>
+spring.main.web-application-type=none</pre></code>
+                                        <h3>4. Change the HTTP Port</h3>
+                                        <p>In a standalone application, the main HTTP port defaults to 8080 but can be set with server.port in application.properties:</p>
+                                        <div class=" mt-2 mb-4">
+                                            <img src="../../assets/springboot images/server-port-conext-path.PNG" alt="logo" />
+                                        </div><br>
+                                        <p>Now the server will start on port<a href="http://localhost:8081">http://localhost:8081</a>.<br><br>
+                                            Similarly, we can do the same if we’re using an application.yml file:</p>
+                                            <code><pre>
+server:
+  port: 8081 </pre></code>
+                                                <p>Both files are loaded automatically by Spring Boot if placed in the<span>src/main/resources</span> directory of a Maven application.<br><br>
+                                                    Check out this article to know how to change default port and context path in spring boot applications.</p>
+                                        <h3>5. Discover the HTTP Port at Runtime</h3>
+                                        <p>We can access the port the server is running on from log output or from the<span>ServletWebServerApplicationContext</span> through its WebServer. For example, below test case that uses<br><br>
+                                            <span> @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)</span> can also inject the actual port into a field by using the<span> @LocalServerPort</span> annotation, as shown in the following example:</p>
+                                            <code><pre>
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
+public class MyWebIntegrationTests {
+
+    @Autowired
+    ServletWebServerApplicationContext server;
+
+    @LocalServerPort
+    int port;
+
+    // ...
+}</pre></code>
+                        <p>Note that<span> @LocalServerPort</span> is a meta-annotation for<span>@Value("${local.server.port}")</span>.</p>
+                        <h3>6. Enable HTTP Response Compression</h3>
+                        <P>HTTP response compression is supported by Jetty, Tomcat, and Undertow. It can be enabled in application.properties, as follows:</P>
+                        <code><pre>
+server.compression.enabled=true</pre></code>
+<br>
+<p>By default, responses are compressed only if their content type is one of the following:</p>
+                            <ul>
+                                <li>text/html</li>
+                                <li>text/xml</li>
+                                <li>text/plain</li>
+                                <li>text/css</li>
+                                <li>text/javascript</li>
+                                <li>application/javascript</li>
+                                <li>application/json</li>
+                                <li>application/xml</li>
+                            </ul>
+                            <h3>7. Configure SSL [HTTPS]</h3>
+                            <p><b>Self-Signed Certificate (SSL)</b> can be configured declaratively by setting the various  server.ssl.* properties, typically in<span> application.properties</span> or<span> application.yml</span>. The following example shows setting SSL properties in<span> application.properties</span>:</p>
+                            <code>
+                                <pre>
+server.port=8443
+server.ssl.key-store=classpath:keystore.jks
+server.ssl.key-store-password=secret
+server.ssl.key-password=another-secret</pre></code><br>
+                                    <p>Read more about how to configure SSL in  Spring boot applications at<a href="https://www.baeldung.com/spring-boot-https-self-signed-certificate">https://www.baeldung.com/spring-boot-https-self-signed-certificate</a></p>
+
+                                    <h3>Related Spring and Spring Boot Tutorials/Guides:</h3>
+                                    <p>
+                                        <button type="button" class="btn btn-outline-primary">Spring Boot Tutorials [500+]s</button>
+                                        <button type="button" class="btn btn-outline-secondary">Spring Boot Testing Tutorial</button>
+                                        <button type="button" class="btn btn-outline-success">Spring Boot Microservice Tutorial</button>
+                                        <button type="button" class="btn btn-outline-danger">Spring Boot Kafka Microservices </button>
+                                        <button type="button" class="btn btn-outline-warning">Spring Boot + Apache Kafka Tutorial</button>
+                                        <button type="button" class="btn btn-outline-info">Spring Core Tutorial</button>
+                                        <button type="button" class="btn btn-outline-primary">Spring MVC Tutorial </button>
+                                        <button type="button" class="btn btn-outline-secondary">Spring Data JPA Tutorial</button>
+                                        <button type="button" class="btn btn-outline-success">Spring Framework for Beginners</button>
+                                        <button type="button" class="btn btn-outline-danger">Spring AOP Tutorial</button>
+                                        <button type="button" class="btn btn-outline-warning">Spring Security Tutorial</button>
+                                        <button type="button" class="btn btn-outline-info">Spring Exceptions Tutorial</button>
+                                        <button type="button" class="btn btn-outline-primary">Spring Boot Interview Questions</button>
+                                        <button type="button" class="btn btn-outline-dark">Spring Boot Microservices Interview Questions</button>
+                                        <button type="button" class="btn btn-outline-primary">Apache Kafka Tutorials </button>
+                                        <button type="button" class="btn btn-outline-secondary">Docker Tutorials and Guides</button>
+                                        <button type="button" class="btn btn-outline-success">Spring Boot RabbitMQ Tutorials</button>
+                                        <button type="button" class="btn btn-outline-danger">Angular CRUD Example with Spring Boot </button>
+                                        <button type="button" class="btn btn-outline-warning">Spring Boot + Angular 12 CRUD Full Stack</button>
+                                        <button type="button" class="btn btn-outline-info">Spring Boot + Angular 8 CRUD Full Stack</button>
+                                        <button type="button" class="btn btn-outline-danger">Spring Boot + Angular 10 CRUD Full Stack </button>
+                                        <button type="button" class="btn btn-outline-primary">React JS ( React Hooks) + Spring Boot</button>
+                                        <button type="button" class="btn btn-outline-secondary">Spring Boot + React JS CRUD Full Stack</button>
+                                        <button type="button" class="btn btn-outline-success">Spring Boot Thymeleaf CRUD Full Stack </button>
+                                        <button type="button" class="btn btn-outline-danger">Spring Boot User Registration and Login</button>
+                                        <button type="button" class="btn btn-outline-warning">Node Js + Express + MongoDB CRUDVue</button>
+                                        <button type="button" class="btn btn-outline-info">JS + Spring Boot REST API Tutorial</button>
+                                    </p>
+
+
+    </div>
+</body>
+</html>
