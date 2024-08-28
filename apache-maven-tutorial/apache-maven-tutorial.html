@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maven Tutorial</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Maven Tutorial</h1>
+        <h2>Introduction</h2>
+        <p> Apache Maven is a tool that helps manage and build Java projects. It makes it easier to handle project
+            dependencies (libraries your project needs) and automate common tasks like compiling code and running tests.
+            Think of it as a project manager for your code, ensuring everything is organized and up to date.</p>
+        <h2>What is Apache Maven?</h2>
+        <p>Apache Maven is a software tool developed by the Apache Software Foundation. It helps developers manage a
+            project's build process, dependencies, and documentation. With Maven, you can easily compile your code, run
+            tests, and package your application for deployment.</p>
+        <h2>Features of Maven</h2>
+        <ol>
+            <li><b>Simple Project Setup:</b> Quickly create new projects with predefined templates.</li>
+            <li><b> Consistent Builds:</b> Use the same process to build projects, ensuring consistency.</li>
+            <li><b> Dependency Management:</b> Automatically download and manage project libraries.</li>
+            <li><b> Extensibility:</b> Add plugins to extend Maven's functionality.</li>
+            <li><b> Project Information:</b> Generate documentation and reports about your project.</li>
+        </ol>
+        <h2>Why Learn Maven?</h2>
+        <p>Learning Maven is beneficial for Java developers because it:</p>
+        <ul>
+            <li> Simplifies project setup and management. </li>
+            <li> Automates the process of compiling, testing, packaging, and deploying code.</li>
+            <li> Manages dependencies, ensuring that the correct versions are used across all projects.</li>
+            <li> Integrates with various development tools and IDEs, making development more efficient.</li>
+        </ul>
+        <h2>1. Maven Basics</h2>
+        <a href="./overview-maven.html">Overview Of Maven</a>
+        <p>Learn what Maven is and how it helps in managing projects efficiently.</p>
+
+        <a href="./apache-maven-standard-directory-layout.html">Apache Maven Standard Directory Layout</a>
+        <p>Understand the standard directory layout Maven follows to keep projects organized.</p>
+
+        <a href="./getting-started-with-maven.html">Getting Started with Maven</a>
+        <p>A guide for beginners on how to install and start using Maven.</p>
+        <a href="./maven-dependency-mechanism.html">Maven Dependency Mechanism</a>
+        <p>Learn how Maven manages project dependencies and how to declare them in your project.</p>
+        <a href="">Guide to Maven Repository</a>
+        <p>An explanation of Maven repositories and how they store and retrieve project dependencies.</p>
+        <h2>2. Maven Project Development Guides</h2>
+        <a href="">Guide to Create a Simple Maven Project</a>
+        <p>Step-by-step instructions to create a basic Maven project.</p>
+        <a href="">Guide to Creating a Simple Maven Web Application</a>
+        <p>Learn how to create a simple web application using Maven.</p>
+        <a href="">How to Create Maven Multi-Module using Command Line</a>
+        <p>Instructions on creating a multi-module Maven project from the command line.</p>
+        <a href="">Source Code Quality Checks using PMD Plugin</a>
+        <p>Learn how to use the PMD plugin to check the quality of your code.</p>
+        <a href="">Setting the Java Version in Maven Projects</a>
+        <p>Learn how to set the Java version in your Maven projects.</p>
+        <h2>3. Maven with Eclipse</h2>
+        <a href=""> How to Create a Simple Maven Project in Eclipse</a>
+        <p>Step-by-step guide to creating a Maven project in Eclipse IDE.</p>
+
+        <a href="">How to Create a Web Project Using Maven in Eclipse</a>
+        <p>Learn how to create a web project with Maven in Eclipse.</p>
+
+        <a href="">How to Create a Multi-Module Maven Project in Eclipse</a>
+        <p>Instructions for setting up a multi-module Maven project in Eclipse.</p>
+
+        <a href="">How to Convert Java Project to Maven Project in Eclipse</a>
+        <p>Learn how to convert an existing Java project to a Maven project in Eclipse.</p>
+        <h2>4. Maven Plugins</h2>
+        <a href="">Apache Maven Compiler Plugin</a>
+        <p>Learn how to use the compiler plugin to compile your Java code.</p>
+
+        <a href="">Maven Surefire Plugin</a>
+        <p>Use the Surefire plugin to run unit tests.</p>
+
+        <a href="">Maven Failsafe Plugin</a>
+        <p>Use the Failsafe plugin to run integration tests.</p>
+
+        <a href="">Apache Maven Assembly Plugin</a>
+        <p>Create distributions of your project using the Assembly plugin.</p>
+
+        <a href="">Apache Maven Checkstyle Plugin</a>
+        <p>Ensure your code adheres to coding standards with the Checkstyle plugin.</p>
+
+        <a href="">Apache Maven Dependency Plugin</a>
+        <p>Manage project dependencies using the Dependency plugin.</p>
+
+        <a href="">Apache Maven Help Plugin</a>
+        <p>Get help and information about your Maven project with the Help plugin.</p>
+
+        <a href="">Apache Maven PMD Plugin</a>
+        <p>Analyze your code for potential errors using the PMD plugin.</p>
+
+        <a href="">Apache Maven Resources Plugin</a>
+        <p>Manage resources like configuration files and static files with the Resources plugin.</p>
+
+        <a href="">Apache Maven Site Plugin</a>
+        <p>Generate project documentation using the Site plugin.</p>
+
+        <a href="">Apache Maven Source Plugin</a>
+        <p>Create source JARs for your project using the Source plugin.</p>
+
+        <a href="">Apache Maven Clean Plugin</a>
+        <p>Clean your project by removing files generated at build-time with the Clean plugin.</p>
+
+        <a href="">Apache Maven WAR Plugin</a>
+        <p>Package your project as a WAR file for web applications using the WAR plugin.</p>
+
+        <h2>5. Tips and Tricks</h2>
+        <a href="">Top Maven Plugins for Java Developers</a>
+        <p>Discover the most useful Maven plugins for Java developers.</p>
+
+        <a href="">Maven Commands Reference</a>
+        <p>A handy reference for common Maven commands.</p>
+
+        <a href="">Maven Cheat Sheet</a>
+        <p>A quick reference guide to essential Maven commands and concepts.</p>
+
+        <a href="">Maven Skipping Tests</a>
+        <p>A quick reference guide to how Maven provides several options for skipping tests during the build process.
+        </p>
+
+        <h2>6. Maven Database Dependencies</h2>
+        <a href="">PostgreSQL JDBC Driver Maven Dependency</a>
+        <p>Learn how to use PostgreSQL JDBC Driver Maven Dependency to connect the Java application with the PostgreSQL
+            database.</p>
+
+        <a href="">MySQL Connector Java Maven Dependency</a>
+        <p>Learn how to use MySQL JDBC Driver Maven Dependency to connect the Java application to the MySQL database.
+        </p>
+
+        <a href="">Oracle JDBC Driver Maven Dependency</a>
+        <p>Learn how to use Oracle JDBC Driver Maven Dependency to connect the Java application to the Oracle database.
+        </p>
+
+    </div>
+</body>
+
+</html>

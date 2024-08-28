@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache Maven Standard Directory Layout</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Apache Maven Standard Directory Layout</h1>
+        <p> Apache Maven follows a standard directory layout for organizing project files. This layout provides a
+            structured and consistent way to manage project resources, making it easier for developers to navigate and
+            maintain projects. Understanding and using the standard directory layout is crucial for effective Maven
+            project management. In this blog post, we'll explore the key components of the Maven standard directory
+            layout and explain the purpose of each directory and file.</p>
+        <h2>Overview of the Standard Directory Layout</h2>
+        <p>Here's an overview of the standard directory layout in a Maven project:</p>
+        <pre>my-maven-project
+                ├── pom.xml
+                ├── src
+                │   ├── main
+                │   │   ├── java
+                │   │   ├── resources
+                │   │   ├── filters
+                │   │   ├── assembly
+                │   │   ├── config
+                │   │   ├── scripts
+                │   │   └── webapp
+                │   │       ├── WEB-INF
+                │   │       └── META-INF
+                │   └── test
+                │       ├── java
+                │       ├── resources
+                │       └── filters
+                └── target</pre>
+        <p>Let's dive into each part of the directory layout and understand its purpose.</p>
+        <h2>1. pom.xml</h2>
+        <p>The pom.xml file is the core of a Maven project. It contains project configuration information such as
+            dependencies, plugins, build configurations, and other settings. Here's a basic example of a pom.xml file:
+        </p>
+        <pre>
+            &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+                     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+                     xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+                &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+            
+                &lt;groupId&gt;com.example&lt;/groupId&gt;
+                &lt;artifactId&gt;my-maven-project&lt;/artifactId&gt;
+                &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+                &lt;packaging&gt;jar&lt;/packaging&gt;
+            
+                &lt;name&gt;my-maven-project&lt;/name&gt;
+                &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+            
+                &lt;properties&gt;
+                    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+                    &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+                    &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+                &lt;/properties&gt;
+            
+                &lt;dependencies&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+                        &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt;
+                        &lt;version&gt;5.10.0&lt;/version&gt;
+                        &lt;scope&gt;test&lt;/scope&gt;
+                    &lt;/dependency&gt;
+                &lt;/dependencies&gt;
+            &lt;/project&gt;
+            </pre>
+        <h2>2. src Directory</h2>
+        <p>The src directory is where all the source code, resources, and other files are stored. It contains two main
+            subdirectories: main and test.</p>
+        <p><b>src/main</b></p>
+        <p>This directory contains the main source code and resources of the project.</p>
+        <ul>
+            <li><b>java:</b> This directory contains the Java source files.</li>
+            <li><b> resources:</b> This directory contains non-Java resources, such as configuration files, properties
+                files, and other static resources.</li>
+            <li><b> filters:</b> This directory contains filter files used during the resource filtering process.</li>
+            <li><b> assembly:</b> This directory contains assembly descriptors, which define how the project should be
+                assembled into a distribution package.</li>
+            <li><b> config: </b>This directory contains configuration files.</li>
+            <li><b> scripts: </b>This directory contains scripts used by the project.</li>
+            <li><b> webapp: </b>This directory contains web application resources. It is structured similarly to a WAR
+                file.</li>
+        </ul>
+        <p><b>src/test</b></p>
+        <p>This directory contains the test source code and resources.</p>
+        <ul>
+            <li><b>java:</b> This directory contains the Java test files.</li>
+            <li><b> resources: </b>This directory contains non-Java test resources.</li>
+            <li><b> filters:</b> This directory contains filter files used during the resource filtering process.</li>
+        </ul>
+        <h2>3. target Directory</h2>
+        <p>The target directory is where Maven stores the output of the build process. This includes compiled classes,
+            JAR files, WAR files, and other generated resources. The target directory is created during the build
+            process and is typically not included in version control.</p>
+        <h2>Detailed Explanation of Key Directories</h2>
+        <p><b>src/main/java</b></p>
+        <p>This directory contains the main Java source code for the project. The package structure within this
+            directory should follow the standard Java package naming conventions.</p>
+        <p><b>src/main/resources</b></p>
+        <p>This directory contains non-Java resources required by the application. These resources are copied to the
+            classpath during the build process and can be accessed by the application at runtime.</p>
+        <p><b>src/main/webapp</b></p>
+        <p>This directory is used for web applications and contains web resources such as JSP files, HTML files, CSS
+            files, JavaScript files, and other static resources. It also contains the WEB-INF directory, which includes
+            web application configuration files like web.xml.</p>
+        <p><b>src/test/java</b></p>
+        <p>This directory contains the Java source files for unit tests. The package structure within this directory
+            should mirror the package structure in src/main/java.</p>
+        <p><b>src/test/resources</b></p>
+        <p>This directory contains non-Java resources required for testing. These resources are copied to the classpath
+            during the test phase and can be accessed by the test classes.</p>
+        <p><b>target</b></p>
+        <p>The target directory is where Maven stores the compiled output, including classes, JAR files, WAR files, and
+            other generated resources. This directory is created during the build process and is typically cleaned up
+            before a new build.</p>
+        <h2>Conclusion</h2>
+        <p>Understanding the standard directory layout in Maven is crucial for effective project management and
+            collaboration. By following this layout, you ensure that your project is organized in a consistent and
+            predictable manner, making it easier for you and other developers to navigate and maintain the project.
+            Whether you're working on a simple Java application or a complex multi-module project, adhering to the Maven
+            standard directory layout will help you manage your project more efficiently.</p>
+
+
+    </div>
+</body>
+
+</html>
