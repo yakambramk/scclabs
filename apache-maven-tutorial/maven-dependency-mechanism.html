@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maven Dependency Management</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1> Maven Dependency Management </h1>
+        <p> Maven is a powerful tool that simplifies the management of a project's dependencies. It automates the
+            process of downloading and including the necessary libraries, which is essential for building Java
+            applications. This blog post will cover the essential aspects of Maven's dependency management, including
+            how to declare dependencies, the scope of dependencies, transitive dependencies, dependency management, and
+            how to handle exclusions and conflicts. We will also provide a complete example to illustrate these
+            concepts.</p>
+        <h2>Table of Contents</h2>
+        <ol>
+            <li> Understanding Dependencies </li>
+            <li> Declaring Dependencies in POM</li>
+            <li> Scope of Dependencies</li>
+            <li> Transitive Dependencies</li>
+            <li> Dependency Management</li>
+            <li> Excluding Dependencies</li>
+            <li> Repositories</li>
+            <li> Resolving Conflicts</li>
+            <li> Complete Example</li>
+            <li> Conclusion</li>
+        </ol>
+        <h2>1. Understanding Dependencies</h2>
+        <p>In Maven, a dependency is an external library or module required by your project. Dependencies are specified
+            in the Project Object Model (POM) file. Maven uses these dependencies during the build process to ensure
+            that all necessary components are available.</p>
+        <h2>2. Declaring Dependencies in POM</h2>
+        <p>Dependencies are declared in the &lt;dependencies> section of the POM file. Each dependency is specified with
+            the following elements:</p>
+        <ul>
+            <li><b>groupId: </b>The group or organization that the dependency belongs to.</li>
+            <li><b> artifactId:</b> The unique identifier of the dependency.</li>
+            <li><b> version:</b> The version of the dependency to be used.</li>
+            <li><b> scope:</b> The phase of the build process during which the dependency is required.</li>
+        </ul>
+        <pre>
+            &lt;dependencies&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+                    &lt;artifactId&gt;junit-jupiter-api&lt;/artifactId&gt;
+                    &lt;version&gt;5.9.3&lt;/version&gt;
+                    &lt;scope&gt;test&lt;/scope&gt;
+                &lt;/dependency&gt;
+            &lt;/dependencies&gt;
+            </pre>
+        <h2>3. Scope of Dependencies</h2>
+        <p>The scope element defines the visibility of a dependency. Maven supports several scopes:</p>
+        <ul>
+            <li><b>compile:</b> Default scope, available in all classpaths.</li>
+            <li><b>provided:</b> Available during compilation but not included in the final package.</li>
+            <li><b> runtime:</b> Available during runtime but not during compilation.</li>
+            <li><b> test:</b> Only available during testing.</li>
+            <li><b> system:</b> Similar to provided but requires the dependency to be explicitly provided.</li>
+            <li><b> import:</b> Only available for dependencyManagement section, imports a dependency POM.</li>
+        </ul>
+        <p><b>Example</b></p>
+        <pre>
+            &lt;dependency&gt;
+                &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+                &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+                &lt;version&gt;4.0.1&lt;/version&gt;
+                &lt;scope&gt;provided&lt;/scope&gt;
+            &lt;/dependency&gt;
+            </pre>
+        <h2>4. Transitive Dependencies</h2>
+        <p>Maven resolves not only the direct dependencies but also the dependencies of these dependencies, known as
+            transitive dependencies. This ensures that all required libraries are included in the build.</p>
+        <p><b>Example</b></p>
+        <p>If junit depends on hamcrest-core, Maven will automatically include these transitive dependencies in the
+            project.</p>
+        <h2>5. Dependency Management</h2>
+        <p>The &lt;dependencyManagement> section is used to define a set of dependencies that can be inherited by child
+            projects. It provides a central place to manage dependency versions.</p>
+        <p><b>Example</b></p>
+        <pre>
+                    &lt;dependencyManagement&gt;
+                        &lt;dependencies&gt;
+                            &lt;dependency&gt;
+                                &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+                                &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+                                &lt;version&gt;2.17.2&lt;/version&gt;
+                            &lt;/dependency&gt;
+                        &lt;/dependencies&gt;
+                    &lt;/dependencyManagement&gt;
+                    </pre>
+        <h2>6. Excluding Dependencies</h2>
+        <p>In some cases, you may need to exclude specific transitive dependencies. This can be done using the
+            &lt;exclusions> element.</p>
+        <p><b>Example</b></p>
+        <pre>
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+                    &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+                    &lt;version&gt;5.4.32.Final&lt;/version&gt;
+                    &lt;exclusions&gt;
+                        &lt;exclusion&gt;
+                            &lt;groupId&gt;org.jboss.logging&lt;/groupId&gt;
+                            &lt;artifactId&gt;jboss-logging&lt;/artifactId&gt;
+                        &lt;/exclusion&gt;
+                    &lt;/exclusions&gt;
+                &lt;/dependency&gt;
+                </pre>
+        <h2>7. Repositories</h2>
+        <p>Maven uses repositories to download dependencies. There are two types of repositories:</p>
+        <ul>
+            <li><b>Local Repository:</b> Located on the developer's machine, Maven caches downloaded dependencies here.
+            </li>
+            <li><b> Remote Repository:</b> Public repositories like Maven Central or custom company repositories where
+                dependencies are hosted.</li>
+        </ul>
+        <p><b>Configuring Repositories</b></p>
+        <p>Repositories can be configured in the POM file or in the Maven settings file (settings.xml).</p>
+        <p><b>Example</b></p>
+        <pre>
+            &lt;repositories&gt;
+                &lt;repository&gt;
+                    &lt;id&gt;central&lt;/id&gt;
+                    &lt;url&gt;https://repo.maven.apache.org/maven2&lt;/url&gt;
+                &lt;/repository&gt;
+            &lt;/repositories&gt;
+            </pre>
+        <h2>8. Resolving Conflicts</h2>
+        <p>When multiple versions of a dependency are included, Maven resolves conflicts using the nearest definition
+            strategy. The version specified in the nearest POM file (closest to the project) takes precedence.</p>
+        <p><b>Example</b></p>
+        <p>If both Project A and Project B include different versions of the same dependency, Maven will choose the
+            version specified in the POM file of the project that is directly referenced.</p>
+        <p><b>Using Dependency Mediation</b></p>
+        <p>To explicitly control the version of a dependency, you can use the &lt;dependencyManagement> section.</p>
+        <p><b>Example</b></p>
+        <pre>
+                &lt;dependencyManagement&gt;
+                    &lt;dependencies&gt;
+                        &lt;dependency&gt;
+                            &lt;groupId&gt;com.google.guava&lt;/groupId&gt;
+                            &lt;artifactId&gt;guava&lt;/artifactId&gt;
+                            &lt;version&gt;31.0.1-jre&lt;/version&gt;
+                        &lt;/dependency&gt;
+                    &lt;/dependencies&gt;
+                &lt;/dependencyManagement&gt;
+                </pre>
+        <h2>9. Complete Example</h2>
+        <p>Let's put everything together with a complete example of a simple Java project.</p>
+        <p><b>Project Structure</b></p>
+        <pre>my-app
+    │   pom.xml
+    └───src
+        └───main
+            └───java
+                └───com
+                    └───example
+                        └───app
+                            │   App.java
+    └───src
+        └───test
+            └───java
+                └───com
+                    └───example
+                        └───app
+                            │   AppTest.java</pre>
+        <p><b>pom.xml</b></p>
+        <pre>
+            &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+                     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+                     xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+                &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+            
+                &lt;groupId&gt;com.example&lt;/groupId&gt;
+                &lt;artifactId&gt;my-app&lt;/artifactId&gt;
+                &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+                &lt;packaging&gt;jar&lt;/packaging&gt;
+            
+                &lt;name&gt;My Maven App&lt;/name&gt;
+                &lt;description&gt;Example Maven Project&lt;/description&gt;
+            
+                &lt;properties&gt;
+                    &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+                    &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+                &lt;/properties&gt;
+            
+                &lt;dependencyManagement&gt;
+                    &lt;dependencies&gt;
+                        &lt;dependency&gt;
+                            &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+                            &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+                            &lt;version&gt;2.17.2&lt;/version&gt;
+                        &lt;/dependency&gt;
+                    &lt;/dependencies&gt;
+                &lt;/dependencyManagement&gt;
+            
+                &lt;dependencies&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+                        &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+                    &lt;/dependency&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+                        &lt;artifactId&gt;junit-jupiter-api&lt;/artifactId&gt;
+                        &lt;version&gt;5.9.3&lt;/version&gt;
+                        &lt;scope&gt;test&lt;/scope&gt;
+                    &lt;/dependency&gt;
+                &lt;/dependencies&gt;
+            
+                &lt;repositories&gt;
+                    &lt;repository&gt;
+                        &lt;id&gt;central&lt;/id&gt;
+                        &lt;url&gt;https://repo.maven.apache.org/maven2&lt;/url&gt;
+                    &lt;/repository&gt;
+                &lt;/repositories&gt;
+            
+                &lt;build&gt;
+                    &lt;plugins&gt;
+                        &lt;plugin&gt;
+                            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                            &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                            &lt;version&gt;3.8.1&lt;/version&gt;
+                            &lt;configuration&gt;
+                                &lt;source&gt;21&lt;/source&gt;
+                                &lt;target&gt;21&lt;/target&gt;
+                            &lt;/configuration&gt;
+                        &lt;/plugin&gt;
+                    &lt;/plugins&gt;
+                &lt;/build&gt;
+            &lt;/project&gt;
+            </pre>
+        <p><b> App.java</b></p>
+        <pre>package com.example.app;
+
+    import com.fasterxml.jackson.databind.ObjectMapper;
+    
+    public class App {
+        public static void main(String[] args) {
+            ObjectMapper mapper = new ObjectMapper();
+            System.out.println("Hello, Maven!");
+        }
+    }</pre>
+        <p><b>AppTest.java</b></p>
+        <pre>package com.example.app;
+
+        import org.junit.jupiter.api.Test;
+        
+        import static org.junit.jupiter.api.Assertions.assertTrue;
+        
+        public class AppTest {
+            @Test
+            public void testApp() {
+                assertTrue(true);
+            }
+        }</pre>
+        <h2>Conclusion</h2>
+        <p>Maven simplifies dependency management by automating the download and inclusion of necessary libraries.
+            Understanding how to declare dependencies, manage scopes, handle transitive dependencies, and resolve
+            conflicts is crucial for efficient project management. The example provided demonstrates how to set up a
+            basic Java project with Maven, ensuring that all necessary components are available for building and testing
+            the application.</p>
+
+
+    </div>
+</body>
+
+</html>

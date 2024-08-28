@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>overview of Maven</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Introduction to Apache Maven</h1>
+        <p>Apache Maven is a powerful project management and build automation tool used primarily for Java projects. It
+            simplifies the build process, dependency management, and project configuration. In this blog post, we will
+            introduce you to Apache Maven, explain its key concepts, and guide you through the basics of using Maven in
+            your projects.</p>
+        <h2>What is Apache Maven?</h2>
+        <p>Maven is a build tool for managing a project's build, reporting, and documentation from a central piece of
+            information called a Project Object Model (POM). It allows developers to automate the build process, manage
+            dependencies, and ensure consistent project structures across multiple projects.</p>
+        <h2>Key Concepts of Maven</h2>
+        <p><b>POM (Project Object Model)</b></p>
+        <p>The POM file, pom.xml, is the core of a Maven project. It contains information about the project and
+            configuration details used by Maven to build the project. A basic pom.xml file looks like this:</p>
+        <pre>
+                &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+                         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+                         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+                    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+                    &lt;groupId&gt;com.example&lt;/groupId&gt;
+                    &lt;artifactId&gt;my-app&lt;/artifactId&gt;
+                    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+                &lt;/project&gt;
+                </pre>
+        <p><b>Dependencies</b></p>
+        <p>Maven makes it easy to manage dependencies. Instead of manually downloading JAR files, you can specify them
+            in your pom.xml, and Maven will handle the rest. For example, to add the JUnit library as a dependency, you
+            include the following in your pom.xml:</p>
+        <pre>
+                &lt;dependencies&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+                        &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt;
+                        &lt;version&gt;5.8.2&lt;/version&gt;
+                        &lt;scope&gt;test&lt;/scope&gt;
+                    &lt;/dependency&gt;
+                &lt;/dependencies&gt;
+                </pre>
+        <p><b>Repositories</b></p>
+        <p>Maven repositories are locations where Maven stores project artifacts and dependencies. There are two types
+            of repositories:</p>
+        <ol>
+            <li><b>Local Repository:</b> A directory on your computer where Maven caches downloaded artifacts.</li>
+            <li><b> Remote Repository: </b>A central server where Maven fetches dependencies that are not available in
+                the local repository. The most commonly used remote repository is Maven Central.</li>
+        </ol>
+        <p><b>Build Lifecycle</b></p>
+        <p>Maven has a well-defined build lifecycle consisting of several phases. Some of the key phases are:</p>
+        <ul>
+            <li><b>validate:</b> Validates that the project is correct and all necessary information is available.</li>
+            <li><b> compile: </b>Compiles the source code of the project.</li>
+            <li><b> test:</b> Tests the compiled source code using a suitable unit testing framework.</li>
+            <li><b> package: </b>Packages the compiled code into a distributable format, such as a JAR or WAR file.</li>
+            <li><b> verify:</b> Runs any checks to verify the package is valid and meets quality criteria.</li>
+            <li><b> install:</b> Installs the package into the local repository for use as a dependency in other local
+                projects.</li>
+            <li><b> deploy: </b>Deploys the final package to a remote repository for sharing with other developers and
+                projects.</li>
+        </ul>
+        <h2>Getting Started with Maven</h2>
+        <p><b>Prerequisites</b></p>
+        <p>Before you begin, ensure you have the following installed:</p>
+        <ol>
+            <li><b>Java Development Kit (JDK): </b> Maven requires JDK to compile and run Java projects.</li>
+            <li><b> Maven:</b> Download and install Maven from the official website.</li>
+        </ol>
+        <p><b>Setting Up Maven</b></p>
+        <p><b>Verify Installation:</b> Open your terminal or command prompt and type:</p>
+        <pre>mvn -version</pre>
+        <p>You should see output displaying the Maven version and Java version.</p>
+        <h2>Creating a Simple Maven Project</h2>
+        <p>Follow these steps to create a simple Maven project:</p>
+        <ol>
+            <li>Open your terminal or command prompt.</li>
+            <li>Run the following command to create a new Maven project.</li>
+        </ol>
+        <pre>mvn archetype:generate -DgroupId=com.example -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</pre>
+        <p>3.Navigate to the project directory:
+        </p>
+        <pre>cd my-app</pre>
+        <p>4.Your project structure should look like this:</p>
+        <pre>my-app
+            ├── pom.xml
+            └── src
+                ├── main
+                │   └── java
+                │       └── com
+                │           └── example
+                │               └── App.java
+                └── test
+                    └── java
+                        └── com
+                            └── example
+                                └── AppTest.java</pre>
+        <p><b>Building and Running the Project</b></p>
+        <p>1.<b>Compile the project:</b></p>
+        <pre>mvn compile</pre>
+
+        <p>2. <b>Run the tests:</b></p>
+        <pre>mvn test</pre>
+
+        <p>2. <b>Package the project:</b></p>
+        <pre>mvn package</pre>
+        <p>This command creates a JAR file in the target directory.</p>
+
+        <p>4. <b>Run the application:</b></p>
+        <pre>java -cp target/my-app-1.0-SNAPSHOT.jar com.example.App</pre>
+        <p>You should see "Hello World!" printed to the console.</p>
+        <h2>Understanding the Generated Code</h2>
+        <ul>
+            <li><b> App.java:</b> This is the main class of your application. It typically contains the main method
+                where your application starts.</li>
+            <li><b> AppTest.java:</b> This is a test class for testing App.java. It contains unit tests that verify the
+                behavior of your code.</li>
+        </ul>
+        <h2>Adding More Dependencies</h2>
+        <p>To add more dependencies to your project, simply include them in the pom.xml file within the
+            &lt;dependencies> section.
+
+            For example, to add the Jackson library for JSON processing, add the following dependency:</p>
+        <pre>
+                &lt;dependencies&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+                        &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+                        &lt;version&gt;2.14.0&lt;/version&gt;
+                    &lt;/dependency&gt;
+                &lt;/dependencies&gt;
+                </pre>
+        <h2>Conclusion</h2>
+        <p>Apache Maven is an essential tool for Java developers, providing a powerful way to manage project builds,
+            dependencies, and configurations. By understanding the basics of Maven, you can streamline your development
+            process and ensure consistency across your projects. This introduction has covered the fundamental concepts
+            and provided a simple example to get you started. As you become more familiar with Maven, you'll discover
+            many more features and capabilities that can further enhance your development workflow.</p>
+
+        <p> To learn more, check out the complete Maven tutorial: <a
+                href="/apache-maven-tutorial/apache-maven-tutorial.html">Apache Maven Tutorial</a></p>
+
+
+
+
+
+    </div>
+</body>
+
+</html>
