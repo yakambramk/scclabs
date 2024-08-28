@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Spring MVC JSP Form Tags Tutorial</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring MVC JSP Form Tags Tutorial</h1>
+        <p>In this tutorial, we're going to discuss all Spring MVC related JSP form tags with an example.</p>
+        <p> We will use discuss below important spring MVC form tags in this tutorial:</p>
+        <ul>
+            <li> form tag</li>
+            <li> text fields tag</li>
+            <li> select tag</li>
+            <li> check-box(s)</li>
+            <li> radio box(s)</li>
+            <li> password tag</li>
+            <li> button tag</li>
+            <li> errors tag etc.</li>
+        </ul>
+        <p> So we all know about HTML forms, right?. We'll learn how to use forms with Spring. And in particular, Spring
+            has support for form tags, and these are form tags that are configurable, and we can reuse them on a
+            webpage.</p>
+        <p>Well, these Spring MVC form tags give us extra support. For example, they support data binding so this allows
+            us to automatically set data and retrieve data from Java objects and beans.</p>
+        <p> As of version 2.0, Spring provides a comprehensive set of data binding-aware tags for handling form elements
+            when using JSP and Spring Web MVC.</p>
+        <p> Each tag provides support for the set of attributes of its corresponding HTML tag counterpart, making the
+            tags familiar and intuitive to use. The tag-generated HTML is HTML 4.01/XHTML 1.0 compliant.</p>
+        <p> In this tutorial, we will first discuss all the Spring' form tags and later we will see a complete
+            end-to-end example with Spring MVC.</p>
+        <h2>Spring’s form tag library</h2>
+        <ul>
+            <li> The form tag </li>
+            <li> The input tag</li>
+            <li> The checkbox tag</li>
+            <li> The checkboxes tag</li>
+            <li> The radiobutton tag</li>
+            <li> The radiobuttons tag</li>
+            <li> The password tag</li>
+            <li> The select tag</li>
+            <li> The option tag</li>
+            <li> The options tag</li>
+            <li> The textarea tag</li>
+            <li> The hidden tag</li>
+            <li> The errors tag</li>
+            <li> HTML5 tags</li>
+        </ul>
+        <p>Let’s go through all these form tags and look at an example of how each tag is used. We have included
+            generated HTML snippets where certain tags require further commentary.</p>
+        <h2>Steps to Use and Configure Spring MVC form Tags</h2>
+        <p>The form tag library comes bundled in <b>spring-webmvc.jar. </b>The library descriptor is called
+            <b>spring-form.tld.</b>
+        </p>
+        <h2>How To Reference Spring MVC Form Tags</h2>
+        <p>To use the tags from this library, add the following directive to the top of your JSP page:</p>
+        <pre>&lt;%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %&gt;</pre>
+        <p>where a form is the tag name prefix you want to use for the tags from this library.</p>
+        <p>The form tag</p>
+        <p>This tag renders an HTML 'form' tag and exposes a binding path to inner tags for binding. It puts the command
+            object in the PageContext so that the command object can be accessed by inner tags. All the other tags in
+            this library are nested tags of the form tag.</p>
+        <p>Let’s assume we have a domain object called <b>User</b>. It is a JavaBean with properties such as
+            <b>firstName</b> and
+            <b>lastName</b>. We will use it as the form backing object of our form controller which returns
+            <b>form.jsp</b>. Below is
+            an example of what <b>form.jsp </b>would look like:
+        </p>
+        <pre>
+                &lt;form:form&gt;
+                    &lt;table&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;First Name:&lt;/td&gt;
+                            &lt;td&gt;
+                                &lt;form:input path="firstName" /&gt;
+                            &lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;Last Name:&lt;/td&gt;
+                            &lt;td&gt;
+                                &lt;form:input path="lastName" /&gt;
+                            &lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td colspan="2"&gt;
+                                &lt;input type="submit" value="Save Changes" /&gt;
+                            &lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/table&gt;
+                &lt;/form:form&gt;
+                </pre>
+        <p> The <b>firstName</b> and <b>lastName</b> values are retrieved from the command object placed in the
+            <b>PageContext</b> by the
+            page controller.
+        </p>
+        <p> When the form is loaded, spring MVC will call getter methods - <b>user.getFirstName()</b> and
+            <b>user.getLastName()</b> to
+            get the values. When the form is submitted, Spring MVC will call user.setFirstName() and user.setLastName()
+            methods to set the values.
+        </p>
+
+        <p> The generated HTML looks like a standard form:</p>
+        <pre>
+            &lt;form method="POST"&gt;
+                &lt;table&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;First Name:&lt;/td&gt;
+                        &lt;td&gt;&lt;input name="firstName" type="text" value="Harry" /&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;Last Name:&lt;/td&gt;
+                        &lt;td&gt;&lt;input name="lastName" type="text" value="Potter" /&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td colspan="2"&gt;
+                            &lt;input type="submit" value="Save Changes" /&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/form&gt;
+            </pre>
+        <h2>The input tag</h2>
+        <p>This input tag renders an HTML 'input' tag using the bound value and type='text' by default. For an example:
+        </p>
+        <pre>
+    &lt;form:input path="firstName"/&gt;
+    &lt;form:input path="lastName"/&gt;
+    </pre>
+        <p>The generated HTML looks like a standard form:</p>
+        <pre>
+        &lt;input name="firstName" type="text" value="Harry"/&gt;
+        &lt;input name="lastName" type="text" value="Potter"/&gt;
+        </pre>
+        <p>Starting with Spring 3.1 you can use other types such as HTML5-specific types like 'email', 'tel', 'date',
+            and others.</p>
+        <h2>The checkbox tag
+        </h2>
+        <p>This tag renders an HTML 'input' tag with type 'checkbox'.</p>
+        <p> Let’s assume our <b>User</b> has preferences such as newsletter subscription and a list of hobbies. Below is
+            an example of the <b>Preferences</b> class:</p>
+        <pre>public class Preferences {
+
+            private boolean receiveNewsletter;
+            private String[] interests;
+            private String favouriteWord;
+        
+            public boolean isReceiveNewsletter() {
+                return receiveNewsletter;
+            }
+        
+            public void setReceiveNewsletter(boolean receiveNewsletter) {
+                this.receiveNewsletter = receiveNewsletter;
+            }
+        
+            public String[] getInterests() {
+                return interests;
+            }
+        
+            public void setInterests(String[] interests) {
+                this.interests = interests;
+            }
+        
+            public String getFavouriteWord() {
+                return favouriteWord;
+            }
+        
+            public void setFavouriteWord(String favouriteWord) {
+                this.favouriteWord = favouriteWord;
+            }
+        }</pre>
+        <p>The <b>form.jsp</b> would look like:</p>
+        <pre>
+            &lt;form:form&gt;
+                &lt;table&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;Subscribe to newsletter?:&lt;/td&gt;
+                        &lt;%-- Approach 1: Property is of type java.lang.Boolean --%&gt;
+                            &lt;td&gt;
+                                &lt;form:checkbox path="preferences.receiveNewsletter" /&gt;
+                            &lt;/td&gt;
+                    &lt;/tr&gt;
+            
+                    &lt;tr&gt;
+                        &lt;td&gt;Interests:&lt;/td&gt;
+                        &lt;%-- Approach 2: Property is of an array or of type java.util.Collection --%&gt;
+                            &lt;td&gt;
+                                Quidditch:
+                                &lt;form:checkbox path="preferences.interests" value="Quidditch" /&gt; Herbology:
+                                &lt;form:checkbox path="preferences.interests" value="Herbology" /&gt; Defence Against the Dark Arts:
+                                &lt;form:checkbox path="preferences.interests" value="Defence Against the Dark Arts" /&gt;
+                            &lt;/td&gt;
+                    &lt;/tr&gt;
+            
+                    &lt;tr&gt;
+                        &lt;td&gt;Favourite Word:&lt;/td&gt;
+                        &lt;%-- Approach 3: Property is of type java.lang.Object --%&gt;
+                            &lt;td&gt;
+                                Magic:
+                                &lt;form:checkbox path="preferences.favouriteWord" value="Magic" /&gt;
+                            &lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/form:form&gt;
+            </pre>
+        <p>There are 3 approaches to the checkbox tag which should meet all our checkbox needs.</p>
+        <ol>
+            <li> Approach One - When the bound value is of type <b>java.lang.Boolean,</b> the input(checkbox) is marked
+                as 'checked' if the bound value is true. The value attribute corresponds to the resolved value of the
+                <b>setValue(Object)</b> value property.
+            </li>
+            <li> Approach Two - When the bound value is of type array or <b>java.util.Collection,</b> the
+                input(checkbox) is marked as 'checked' if the configured <b>setValue(Object)</b> value is present in the
+                bound <b>collection</b>.</li>
+            <li> Approach Three - For any other bound value type, the input(checkbox) is marked as 'checked' if the
+                configured <b>setValue(Object)</b> is equal to the bound value.</li>
+        </ol>
+        <p>Note that regardless of the approach, the same HTML structure is generated. Below is an HTML snippet of some
+            checkboxes:</p>
+        <pre>
+                &lt;tr&gt;
+                    &lt;td&gt;Interests:&lt;/td&gt;
+                    &lt;td&gt;
+                        Quidditch: &lt;input name="preferences.interests" type="checkbox" value="Quidditch" /&gt;
+                        &lt;input type="hidden" value="1" name="_preferences.interests" /&gt; Herbology: &lt;input name="preferences.interests" type="checkbox" value="Herbology" /&gt;
+                        &lt;input type="hidden" value="1" name="_preferences.interests" /&gt; Defence Against the Dark Arts: &lt;input name="preferences.interests" type="checkbox" value="Defence Against the Dark Arts" /&gt;
+                        &lt;input type="hidden" value="1" name="_preferences.interests" /&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                </pre>
+        <h2>The checkboxes tag</h2>
+        <p> This tag renders multiple HTML 'input' tags with type 'checkbox'. </p>
+        <p> Below is an example of the JSP using this tag:</p>
+        <pre>
+                    &lt;form:form&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;Interests:&lt;/td&gt;
+                                &lt;td&gt;
+                                    &lt;%-- Property is of an array or of type java.util.Collection --%&gt;
+                                        &lt;form:checkboxes path="preferences.interests" items="${interestList}" /&gt;
+                                &lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                    &lt;/form:form&gt;
+                    </pre>
+        <h2>The radiobutton tag</h2>
+        <p> This tag renders an HTML 'input' tag with type 'radio'.</p>
+        <p> A typical usage pattern will involve multiple tag instances bound to the same property but with different
+            values.</p>
+        <pre>
+                        &lt;tr&gt;
+                            &lt;td&gt;Sex:&lt;/td&gt;
+                            &lt;td&gt;
+                                Male:
+                                &lt;form:radiobutton path="sex" value="M" /&gt; &lt;br/&gt; Female:
+                                &lt;form:radiobutton path="sex" value="F" /&gt;
+                            &lt;/td&gt;
+                        &lt;/tr&gt;
+                        </pre>
+        <h2>The radiobuttons tag</h2>
+        <p>This tag renders multiple HTML 'input' tags with type 'radio'. For example:</p>
+        <pre>
+                            &lt;tr&gt;
+                                &lt;td&gt;Sex:&lt;/td&gt;
+                                &lt;td&gt;
+                                    &lt;form:radiobuttons path="sex" items="${sexOptions}" /&gt;
+                                &lt;/td&gt;
+                            &lt;/tr&gt;
+                            </pre>
+        <h2>The password tag</h2>
+        <p>This tag renders an HTML 'input' tag with type 'password' using the bound value.</p>
+        <pre>
+                                &lt;tr&gt;
+                                    &lt;td&gt;Password:&lt;/td&gt;
+                                    &lt;td&gt;
+                                        &lt;form:password path="password" /&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                </pre>
+        <p>Please note that by default, the password value is not shown. If you do want the password value to be shown,
+            then set the value of the 'showPassword' attribute to true, like so.</p>
+        <pre>
+                                    &lt;tr&gt;
+                                        &lt;td&gt;Password:&lt;/td&gt;
+                                        &lt;td&gt;
+                                            &lt;form:password path="password" value="^76525bvHGq" showPassword="true" /&gt;
+                                        &lt;/td&gt;
+                                    &lt;/tr&gt;
+                                    </pre>
+        <h2>The select tag</h2>
+        <p>This tag renders an HTML 'select' element. It supports data binding to the selected option as well as the use
+            of nested options and options tags.</p>
+        <p> Let’s assume a User has a list of skills.</p>
+        <pre>
+            &lt;tr&gt;
+                &lt;td&gt;Skills:&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;form:select path="skills" items="${skills}" /&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            </pre>
+        <p>If the User’s skill were in Herbology, the HTML source of the 'Skills' row would look like:</p>
+        <pre>
+    &lt;tr&gt;
+        &lt;td&gt;Skills:&lt;/td&gt;
+        &lt;td&gt;
+            &lt;select name="skills" multiple="true"&gt;
+                &lt;option value="Potions"&gt;Potions&lt;/option&gt;
+                &lt;option value="Herbology" selected="selected"&gt;Herbology&lt;/option&gt;
+                &lt;option value="Quidditch"&gt;Quidditch&lt;/option&gt;
+            &lt;/select&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    </pre>
+        <h2>The option tag</h2>
+        <p>This tag renders an HTML 'option'. It sets 'selected' as appropriate based on the bound value.</p>
+        <pre>
+        &lt;tr&gt;
+            &lt;td&gt;House:&lt;/td&gt;
+            &lt;td&gt;
+                &lt;form:select path="house"&gt;
+                    &lt;form:option value="Gryffindor" /&gt;
+                    &lt;form:option value="Hufflepuff" /&gt;
+                    &lt;form:option value="Ravenclaw" /&gt;
+                    &lt;form:option value="Slytherin" /&gt;
+                &lt;/form:select&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        </pre>
+        <p>If the User’s house was in Gryffindor, the HTML source of the 'House' row would look like:</p>
+        <pre>
+    &lt;tr&gt;
+        &lt;td&gt;House:&lt;/td&gt;
+        &lt;td&gt;
+            &lt;select name="house"&gt;
+                &lt;option value="Gryffindor" selected="selected"&gt;Gryffindor&lt;/option&gt;
+                &lt;option value="Hufflepuff"&gt;Hufflepuff&lt;/option&gt;
+                &lt;option value="Ravenclaw"&gt;Ravenclaw&lt;/option&gt;
+                &lt;option value="Slytherin"&gt;Slytherin&lt;/option&gt;
+            &lt;/select&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    </pre>
+        <h2>The options tag</h2>
+        <p>This tag renders a list of HTML 'option' tags. It sets the 'selected' attribute as appropriate based on the
+            bound value.</p>
+        <pre>
+        &lt;tr&gt;
+            &lt;td&gt;Country:&lt;/td&gt;
+            &lt;td&gt;
+                &lt;form:select path="country"&gt;
+                    &lt;form:option value="-" label="--Please Select" /&gt;
+                    &lt;form:options items="${countryList}" itemValue="code" itemLabel="name" /&gt;
+                &lt;/form:select&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        </pre>
+        <p>If the User lived in the UK, the HTML source of the 'Country' row would look like:</p>
+        <pre>
+    &lt;tr&gt;
+        &lt;td&gt;Country:&lt;/td&gt;
+        &lt;td&gt;
+            &lt;select name="country"&gt;
+                &lt;option value="-"&gt;--Please Select&lt;/option&gt;
+                &lt;option value="AT"&gt;Austria&lt;/option&gt;
+                &lt;option value="UK" selected="selected"&gt;United Kingdom&lt;/option&gt;
+                &lt;option value="US"&gt;United States&lt;/option&gt;
+            &lt;/select&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    </pre>
+        <h2>The textarea tag</h2>
+        <p>This tag renders an HTML 'textarea'.</p>
+        <pre>
+        &lt;tr&gt;
+            &lt;td&gt;Notes:&lt;/td&gt;
+            &lt;td&gt;
+                &lt;form:textarea path="notes" rows="3" cols="20" /&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+                &lt;form:errors path="notes" /&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        </pre>
+        <h2>The hidden tag </h2>
+        <p>This tag renders an HTML 'input' tag with type 'hidden' using the bound value. To submit an unbound hidden
+            value, use the HTML input tag with type 'hidden'.</p>
+        <pre>&lt;form:hidden path="house"/&gt;</pre>
+        <p>If we choose to submit the 'house' value as a hidden one, the HTML would look like this:</p>
+        <pre>&lt;input name="house" type="hidden" value="Gryffindor"/></pre>
+        <h2>The errors tag</h2>
+        <p>This tag renders field errors in an HTML 'span' tag. It provides access to the errors created in your
+            controller or those that were created by any validators associated with your controller.</p>
+        <p> Let’s assume we want to display all error messages for the <b>firstName</b> and <b>lastName</b> fields once
+            we submit the form. We have a validator for instances of the <b>User</b> class called <b>UserValidator</b>.
+        </p>
+        <pre>public class UserValidator implements Validator {
+
+            public boolean supports(Class candidate) {
+                return User.class.isAssignableFrom(candidate);
+            }
+        
+            public void validate(Object obj, Errors errors) {
+                ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "required", "Field is required.");
+                ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "required", "Field is required.");
+            }
+        }</pre>
+        <p>The form.jsp would look like:</p>
+        <pre>
+            &lt;form:form&gt;
+                &lt;table&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;First Name:&lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;form:input path="firstName" /&gt;
+                        &lt;/td&gt;
+                        &lt;!-- Show errors for firstName field --&gt;
+                        &lt;td&gt;
+                            &lt;form:errors path="firstName" /&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+            
+                    &lt;tr&gt;
+                        &lt;td&gt;Last Name:&lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;form:input path="lastName" /&gt;
+                        &lt;/td&gt;
+                        &lt;!-- Show errors for lastName field --&gt;
+                        &lt;td&gt;
+                            &lt;form:errors path="lastName" /&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td colspan="3"&gt;
+                            &lt;input type="submit" value="Save Changes" /&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/form:form&gt;
+            </pre>
+        <p>If we submit a form with empty values in the firstName and lastName fields, this is what the HTML would look
+            like:</p>
+        <pre>
+    &lt;form method="POST"&gt;
+        &lt;table&gt;
+            &lt;tr&gt;
+                &lt;td&gt;First Name:&lt;/td&gt;
+                &lt;td&gt;&lt;input name="firstName" type="text" value="" /&gt;&lt;/td&gt;
+                &lt;!-- Associated errors to firstName field displayed --&gt;
+                &lt;td&gt;&lt;span name="firstName.errors"&gt;Field is required.&lt;/span&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+    
+            &lt;tr&gt;
+                &lt;td&gt;Last Name:&lt;/td&gt;
+                &lt;td&gt;&lt;input name="lastName" type="text" value="" /&gt;&lt;/td&gt;
+                &lt;!-- Associated errors to lastName field displayed --&gt;
+                &lt;td&gt;&lt;span name="lastName.errors"&gt;Field is required.&lt;/span&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td colspan="3"&gt;
+                    &lt;input type="submit" value="Save Changes" /&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/table&gt;
+    &lt;/form&gt;
+    </pre>
+        <p> What if we want to display the entire list of errors for a given page? The example below shows that the
+            errors tag also supports some basic wildcarding functionality.</p>
+        <p> path="*" - displays all errors</p>
+        <p> path="lastName" - displays all errors associated with the lastName field</p>
+        <p> if a path is omitted - object errors only are displayed</p>
+        <p> The example below will display a list of errors at the top of the page, followed by field-specific errors
+            next to the fields:</p>
+        <pre>
+            &lt;form:form&gt;
+                &lt;form:errors path="*" cssClass="errorBox" /&gt;
+                &lt;table&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;First Name:&lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;form:input path="firstName" /&gt;
+                        &lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;form:errors path="firstName" /&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;Last Name:&lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;form:input path="lastName" /&gt;
+                        &lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;form:errors path="lastName" /&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td colspan="3"&gt;
+                            &lt;input type="submit" value="Save Changes" /&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/form:form&gt;
+            </pre>
+        <p>The HTML would look like this:
+        </p>
+        <pre>
+                    &lt;form method="POST"&gt;
+                        &lt;span name="*.errors" class="errorBox"&gt;Field is required.&lt;br/&gt;Field is required.&lt;/span&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;First Name:&lt;/td&gt;
+                                &lt;td&gt;&lt;input name="firstName" type="text" value="" /&gt;&lt;/td&gt;
+                                &lt;td&gt;&lt;span name="firstName.errors"&gt;Field is required.&lt;/span&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                    
+                            &lt;tr&gt;
+                                &lt;td&gt;Last Name:&lt;/td&gt;
+                                &lt;td&gt;&lt;input name="lastName" type="text" value="" /&gt;&lt;/td&gt;
+                                &lt;td&gt;&lt;span name="lastName.errors"&gt;Field is required.&lt;/span&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td colspan="3"&gt;
+                                    &lt;input type="submit" value="Save Changes" /&gt;
+                                &lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                    &lt;/form&gt;
+                    </pre>
+        <h2>HTML5 tags</h2>
+        <p> Starting with Spring 3, the Spring form tag library allows entering dynamic attributes, which means you can
+            enter any <b>HTML5</b> specific attributes.</p>
+        <p> In Spring 3.1, the form input tag supports entering a type attribute other than 'text'. This is intended to
+            allow rendering new <b>HTML5</b> specific input types such as 'email', 'date', 'range', and others. Note
+            that entering type='text' is not required since 'text' is the default type.</p>
+        <h2>Spring MVC Form Tags Complete Example</h2>
+        <p>Let's create a simple Spring MVC project to demonstrate the usage of a few Spring MVC form tags with JSP.</p>
+        <p> In this example, we will use a Java-based configuration that is we configure the Spring Dispatcher Servlet
+            and spring beans configuration using all Java Code (no XML).</p>
+        <h2>Tools and technologies used</h2>
+        <ul>
+            <li> Spring MVC - 5.1.0 RELEASE </li>
+            <li> JDK - 1.8 or later </li>
+            <li> Maven - 3.5.1 </li>
+            <li> Apache Tomcat - 8.5 </li>
+            <li> IDE - STS/Eclipse Neon.3 </li>
+            <li> JSTL - 1.2.1 </li>
+            <li> JSP - 2.3.1</li>
+        </ul>
+        <p>Follow below 11 development steps to develop a complete end-to-end Spring MVC form handling application.</p>
+        <h2>Development Steps</h2>
+        <ol>
+
+            <li> Create Maven Web Application </li>
+            <li> Add Dependencies - pom.xml File </li>
+            <li> Project Structure </li>
+            <li> Spring Configuration - MVCConfig.java </li>
+            <li> Servlet Container Initialization - SpringMvcDispatcherServletInitializer.java </li>
+            <li> Model Class - User.java </li>
+            <li> Controller Class - UserController.java </li>
+            <li> Views - user.jsp and users.jsp </li>
+            <li> Build and Run an application </li>
+            <li> Demo
+            </li>
+        </ol>
+        <h2>1. Create Maven Web Application</h2>
+        <p>Let's create a Maven-based web application either using a command line or from Eclipse IDE.</p>
+        <ol>
+            <li> Use <a href="./simple-maven-web-application.html"> Guide to Create Maven Web Application</a> link to
+                create a maven project using a command line. </li>
+            <li> Use <a href="./create-a-maven-web-project-with-eclipse.html">Create Maven Web Application using Eclipse
+                    IDE</a> link to create a maven web application using IDE Eclipse. Once you created a maven web
+                application, refer to pom.xml file jar dependencies.</li>
+        </ol>
+        <h2>2. Add Dependencies - pom.xml File</h2>
+        <pre>
+            &lt;project
+                xmlns="http://maven.apache.org/POM/4.0.0"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+                &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+                &lt;groupId&gt;net.javaguides.springmvc&lt;/groupId&gt;
+                &lt;artifactId&gt;springmvc5-form-tags&lt;/artifactId&gt;
+                &lt;packaging&gt;war&lt;/packaging&gt;
+                &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+                &lt;name&gt;springmvc5-form-tags Maven Webapp&lt;/name&gt;
+                &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+                &lt;properties&gt;
+                    &lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;
+                &lt;/properties&gt;
+                &lt;dependencies&gt;
+                    &lt;!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc --&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+                        &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+                        &lt;version&gt;5.1.0.RELEASE&lt;/version&gt;
+                    &lt;/dependency&gt;
+                    &lt;!-- JSTL Dependency --&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;javax.servlet.jsp.jstl&lt;/groupId&gt;
+                        &lt;artifactId&gt;javax.servlet.jsp.jstl-api&lt;/artifactId&gt;
+                        &lt;version&gt;1.2.1&lt;/version&gt;
+                    &lt;/dependency&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;taglibs&lt;/groupId&gt;
+                        &lt;artifactId&gt;standard&lt;/artifactId&gt;
+                        &lt;version&gt;1.1.2&lt;/version&gt;
+                    &lt;/dependency&gt;
+                    &lt;!-- Servlet Dependency --&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+                        &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+                        &lt;version&gt;3.1.0&lt;/version&gt;
+                        &lt;scope&gt;provided&lt;/scope&gt;
+                    &lt;/dependency&gt;
+                    &lt;!-- JSP Dependency --&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;javax.servlet.jsp&lt;/groupId&gt;
+                        &lt;artifactId&gt;javax.servlet.jsp-api&lt;/artifactId&gt;
+                        &lt;version&gt;2.3.1&lt;/version&gt;
+                        &lt;scope&gt;provided&lt;/scope&gt;
+                    &lt;/dependency&gt;
+                &lt;/dependencies&gt;
+                &lt;build&gt;
+                    &lt;sourceDirectory&gt;src/main/java&lt;/sourceDirectory&gt;
+                    &lt;plugins&gt;
+                        &lt;plugin&gt;
+                            &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                            &lt;version&gt;3.5.1&lt;/version&gt;
+                            &lt;configuration&gt;
+                                &lt;source&gt;1.8&lt;/source&gt;
+                                &lt;target&gt;1.8&lt;/target&gt;
+                            &lt;/configuration&gt;
+                        &lt;/plugin&gt;
+                    &lt;/plugins&gt;
+                &lt;/build&gt;
+            &lt;/project&gt;
+            </pre>
+        <p>Note that we are using <b>spring-webmvc </b>dependency for a Spring MVC web application. </p>
+        <p> Next, let's create a standard project structure, please refer to the below diagram.</p>
+        <h2>3. Project Structure</h2>
+        <p>Standard project structure for your reference -</p>
+        <img src="/assets/spring-mvc-image/project-structure (3).PNG" alt="" class="image-fluid">
+        <p>As the name suggests Spring MVC, look at the above diagram we are using the Model-View-Controller approach.
+        </p>
+        <p><b>Model </b>- User.java </p>
+        <p><b> Views </b>- user.jsp, users.jsp</p>
+        <p><b> Controller </b>- UserController.java </p>
+        <p>Next step, we will configure Spring beans using Java-based configuration.</p>
+        <h2>4. Spring Configuration - MVCConfig.java</h2>
+        <p>Create an MVCConfig class and annotated it with <b>@Configuration, @EnableWebMvc</b>, and
+            <b>@ComponentScan</b> annotations.
+        </p>
+        <pre>package net.javaguides.springmvc.form.config;
+
+            import org.springframework.context.annotation.Bean;
+            import org.springframework.context.annotation.ComponentScan;
+            import org.springframework.context.annotation.Configuration;
+            import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+            import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+            import org.springframework.web.servlet.view.InternalResourceViewResolver;
+            import org.springframework.web.servlet.view.JstlView;
+            
+           
+            
+            @Configuration
+            @EnableWebMvc
+            @ComponentScan(basePackages = {
+                "net.javaguides.springmvc.form"
+            })
+            public class MVCConfig implements WebMvcConfigurer {
+            
+                @Bean
+                public InternalResourceViewResolver resolver() {
+                    InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+                    resolver.setViewClass(JstlView.class);
+                    resolver.setPrefix("/WEB-INF/views/");
+                    resolver.setSuffix(".jsp");
+                    return resolver;
+                }
+            }</pre>
+        <h2>5. Servlet Container Initialization - SpringMvcDispatcherServletInitializer.java</h2>
+        <p>In Spring MVC, The <b>DispatcherServlet</b> needs to be declared and mapped for processing all requests
+            either using java or <b>web.xml</b> configuration.</p>
+        <p> In a Servlet 3.0+ environment, you can use <b>AbstractAnnotationConfigDispatcherServletInitializer</b> class
+            to register and initialize the <b>DispatcherServlet</b> programmatically as follows.</p>
+        <pre>package net.javaguides.springmvc.form.config;
+
+                import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+                
+                
+                public class SpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+                
+                    @Override
+                    protected Class << ? > [] getRootConfigClasses() {
+                        // TODO Auto-generated method stub
+                        return null;
+                    }
+                
+                    @Override
+                    protected Class << ? > [] getServletConfigClasses() {
+                        return new Class[] {
+                            MVCConfig.class
+                        };
+                    }
+                
+                    @Override
+                    protected String[] getServletMappings() {
+                        return new String[] {
+                            "/"
+                        };
+                    }
+                }</pre>
+        <h2>6. Model Class - User.java</h2>
+        <p>Let's create a <b>User</b> Java class for binding data to the model and rendering model data on views.</p>
+        <pre>package net.javaguides.springmvc.form.model;
+
+                    public class User {
+                        private String username;
+                        private String password;
+                        private String address;
+                        private boolean receivePaper;
+                        private String[] favoriteFrameworks;
+                        private String gender;
+                        private String favoriteNumber;
+                        private String country;
+                    
+                        public String getUsername() {
+                            return username;
+                        }
+                    
+                        public void setUsername(String username) {
+                            this.username = username;
+                        }
+                    
+                        public String getPassword() {
+                            return password;
+                        }
+                    
+                        public void setPassword(String password) {
+                            this.password = password;
+                        }
+                    
+                        public String getAddress() {
+                            return address;
+                        }
+                    
+                        public void setAddress(String address) {
+                            this.address = address;
+                        }
+                    
+                        public boolean isReceivePaper() {
+                            return receivePaper;
+                        }
+                    
+                        public void setReceivePaper(boolean receivePaper) {
+                            this.receivePaper = receivePaper;
+                        }
+                    
+                        public String[] getFavoriteFrameworks() {
+                            return favoriteFrameworks;
+                        }
+                    
+                        public void setFavoriteFrameworks(String[] favoriteFrameworks) {
+                            this.favoriteFrameworks = favoriteFrameworks;
+                        }
+                    
+                        public String getGender() {
+                            return gender;
+                        }
+                    
+                        public void setGender(String gender) {
+                            this.gender = gender;
+                        }
+                    
+                        public String getFavoriteNumber() {
+                            return favoriteNumber;
+                        }
+                    
+                        public void setFavoriteNumber(String favoriteNumber) {
+                            this.favoriteNumber = favoriteNumber;
+                        }
+                    
+                        public String getCountry() {
+                            return country;
+                        }
+                    
+                        public void setCountry(String country) {
+                            this.country = country;
+                        }
+                    }</pre>
+        <h2>7. Controller Class - UserController.java</h2>
+        <p>Let's create a <b>UserController</b> controller class annotated with <b>@Controller</b> annotation as
+            follows:</p>
+        <pre>package net.javaguides.springmvc.form.controller;
+
+                        import java.util.ArrayList;
+                        import java.util.HashMap;
+                        import java.util.List;
+                        import java.util.Map;
+                        
+                        import org.springframework.stereotype.Controller;
+                        import org.springframework.ui.ModelMap;
+                        import org.springframework.web.bind.annotation.ModelAttribute;
+                        import org.springframework.web.bind.annotation.RequestMapping;
+                        import org.springframework.web.bind.annotation.RequestMethod;
+                        import org.springframework.web.servlet.ModelAndView;
+                        
+                        import net.javaguides.springmvc.form.model.User;
+                        
+                        @Controller
+                        public class UserController {
+                        
+                            @RequestMapping(value = "/user", method = RequestMethod.GET)
+                            public ModelAndView user() {
+                                User user = new User();
+                                user.setFavoriteFrameworks((new String[] {
+                                    "Spring MVC",
+                                    "Struts 2"
+                                }));
+                                user.setGender("M");
+                                ModelAndView modelAndView = new ModelAndView("user", "command", user);
+                                return modelAndView;
+                            }
+                        
+                            @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+                            public String addUser(@ModelAttribute("SpringWeb") User user,
+                                ModelMap model) {
+                                model.addAttribute("username", user.getUsername());
+                                model.addAttribute("password", user.getPassword());
+                                model.addAttribute("address", user.getAddress());
+                                model.addAttribute("receivePaper", user.isReceivePaper());
+                                model.addAttribute("favoriteFrameworks", user.getFavoriteFrameworks());
+                                model.addAttribute("gender", user.getGender());
+                                model.addAttribute("favoriteNumber", user.getFavoriteNumber());
+                                model.addAttribute("country", user.getCountry());
+                                return "users";
+                            }
+                        
+                            @ModelAttribute("webFrameworkList")
+                            public Object[] getWebFrameworkList() {
+                                List < String > webFrameworkList = new ArrayList < String > ();
+                                webFrameworkList.add("Spring MVC");
+                                webFrameworkList.add("Struts 1");
+                                webFrameworkList.add("Struts 2");
+                                webFrameworkList.add("Apache Wicket");
+                                return webFrameworkList.toArray();
+                            }
+                        
+                            @ModelAttribute("numbersList")
+                            public List < String > getNumbersList() {
+                                List < String > numbersList = new ArrayList < String > ();
+                                numbersList.add("1");
+                                numbersList.add("2");
+                                numbersList.add("3");
+                                numbersList.add("4");
+                                return numbersList;
+                            }
+                        
+                            @ModelAttribute("countryList")
+                            public Map < String, String > getCountryList() {
+                                Map < String, String > countryList = new HashMap < String, String > ();
+                                countryList.put("US", "United States");
+                                countryList.put("CH", "China");
+                                countryList.put("SG", "Singapore");
+                                countryList.put("MY", "Malaysia");
+                                return countryList;
+                            }
+                        }</pre>
+        <h2>8. Views - user.jsp and users.jsp</h2>
+        <p><b>user.jsp</b></p>
+        <pre>
+                            &lt;%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %&gt;
+                            &lt;%@ page isELIgnored="false" %&gt;
+                            &lt;html&gt;
+                                &lt;head&gt;
+                                    &lt;title&gt;Spring MVC Form Handling&lt;/title&gt;
+                                &lt;/head&gt;
+                                &lt;body&gt;
+                                    &lt;h2&gt;User Information&lt;/h2&gt;
+                                    &lt;form:form method="POST" action="addUser"&gt;
+                                        &lt;table&gt;
+                                            &lt;tr&gt;
+                                                &lt;td&gt;
+                                                    &lt;form:label path="username"&gt;User Name&lt;/form:label&gt;
+                                                &lt;/td&gt;
+                                                &lt;td&gt;
+                                                    &lt;form:input path="username" /&gt;
+                                                &lt;/td&gt;
+                                            &lt;/tr&gt;
+                                            &lt;tr&gt;
+                                                &lt;td&gt;
+                                                    &lt;form:label path="password"&gt;Password&lt;/form:label&gt;
+                                                &lt;/td&gt;
+                                                &lt;td&gt;
+                                                    &lt;form:password path="password" /&gt;
+                                                &lt;/td&gt;
+                                            &lt;/tr&gt;
+                                            &lt;tr&gt;
+                                                &lt;td&gt;
+                                                    &lt;form:label path="address"&gt;Address&lt;/form:label&gt;
+                                                &lt;/td&gt;
+                                                &lt;td&gt;
+                                                    &lt;form:textarea path="address" rows="5" cols="30" /&gt;
+                                                &lt;/td&gt;
+                                            &lt;/tr&gt;
+                                            &lt;tr&gt;
+                                                &lt;td&gt;
+                                                    &lt;form:label path="receivePaper"&gt;Subscribe Newsletter&lt;/form:label&gt;
+                                                &lt;/td&gt;
+                                                &lt;td&gt;
+                                                    &lt;form:checkbox path="receivePaper" /&gt;
+                                                &lt;/td&gt;
+                                            &lt;/tr&gt;
+                                            &lt;tr&gt;
+                                                &lt;td&gt;
+                                                    &lt;form:label path="favoriteFrameworks"&gt;Favorite Web Frameworks&lt;/form:label&gt;
+                                                &lt;/td&gt;
+                                                &lt;td&gt;
+                                                    &lt;form:checkboxes items="${webFrameworkList}" path="favoriteFrameworks" /&gt;
+                                                &lt;/td&gt;
+                                            &lt;/tr&gt;
+                                            &lt;tr&gt;
+                                                &lt;td&gt;
+                                                    &lt;form:label path="gender"&gt;Gender&lt;/form:label&gt;
+                                                &lt;/td&gt;
+                                                &lt;td&gt;
+                                                    &lt;form:radiobutton path="gender" value="M" label="Male" /&gt;
+                                                    &lt;form:radiobutton path="gender" value="F" label="Female" /&gt;
+                                                &lt;/td&gt;
+                                            &lt;/tr&gt;
+                                            &lt;tr&gt;
+                                                &lt;td&gt;
+                                                    &lt;form:label path="favoriteNumber"&gt;Favorite Number&lt;/form:label&gt;
+                                                &lt;/td&gt;
+                                                &lt;td&gt;
+                                                    &lt;form:radiobuttons path="favoriteNumber" items="${numbersList}" /&gt;
+                                                &lt;/td&gt;
+                                            &lt;/tr&gt;
+                                            &lt;tr&gt;
+                                                &lt;td&gt;
+                                                    &lt;form:label path="country"&gt;Country&lt;/form:label&gt;
+                                                &lt;/td&gt;
+                                                &lt;td&gt;
+                                                    &lt;form:select path="country"&gt;
+                                                        &lt;form:option value="NONE" label="Select" /&gt;
+                                                        &lt;form:options items="${countryList}" /&gt;
+                                                    &lt;/form:select&gt;
+                                                &lt;/td&gt;
+                                            &lt;/tr&gt;
+                                            &lt;tr&gt;
+                                                &lt;td colspan="2"&gt;
+                                                    &lt;input type="submit" value="Submit" /&gt;
+                                                &lt;/td&gt;
+                                            &lt;/tr&gt;
+                                        &lt;/table&gt;
+                                    &lt;/form:form&gt;
+                                &lt;/body&gt;
+                            &lt;/html&gt;
+                            </pre>
+        <p><b>users.jsp</b></p>
+        <pre>
+                                &lt;%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %&gt;
+                                &lt;html&gt;
+                                
+                                &lt;head&gt;
+                                    &lt;title&gt;Spring MVC Form Handling&lt;/title&gt;
+                                    &lt;%@ page isELIgnored="false" %&gt;
+                                &lt;/head&gt;
+                                
+                                &lt;body&gt;
+                                    &lt;h2&gt;Submitted User Information&lt;/h2&gt;
+                                    &lt;table&gt;
+                                        &lt;tr&gt;
+                                            &lt;td&gt;Username&lt;/td&gt;
+                                            &lt;td&gt;${username}&lt;/td&gt;
+                                        &lt;/tr&gt;
+                                        &lt;tr&gt;
+                                            &lt;td&gt;Password&lt;/td&gt;
+                                            &lt;td&gt;${password}&lt;/td&gt;
+                                        &lt;/tr&gt;
+                                        &lt;tr&gt;
+                                            &lt;td&gt;Address&lt;/td&gt;
+                                            &lt;td&gt;${address}&lt;/td&gt;
+                                        &lt;/tr&gt;
+                                        &lt;tr&gt;
+                                            &lt;td&gt;Subscribed to Newsletter&lt;/td&gt;
+                                            &lt;td&gt;${receivePaper}&lt;/td&gt;
+                                        &lt;/tr&gt;
+                                        &lt;tr&gt;
+                                            &lt;td&gt;Favorite Web Frameworks&lt;/td&gt;
+                                            &lt;td&gt;
+                                                &lt;% String[] favoriteFrameworks = (String[])request.getAttribute("favoriteFrameworks"); %&gt;
+                                                &lt;% for(String framework: favoriteFrameworks) { %&gt;
+                                                    &lt;%= framework %&gt;&lt;br /&gt;
+                                                &lt;% } %&gt;
+                                            &lt;/td&gt;
+                                        &lt;/tr&gt;
+                                        &lt;tr&gt;
+                                            &lt;td&gt;Gender&lt;/td&gt;
+                                            &lt;td&gt;&lt;%= (gender=="M"? "Male" : "Female") %&gt;&lt;/td&gt;
+                                        &lt;/tr&gt;
+                                        &lt;tr&gt;
+                                            &lt;td&gt;Favourite Number&lt;/td&gt;
+                                            &lt;td&gt;${favoriteNumber}&lt;/td&gt;
+                                        &lt;/tr&gt;
+                                        &lt;tr&gt;
+                                            &lt;td&gt;Country&lt;/td&gt;
+                                            &lt;td&gt;${country}&lt;/td&gt;
+                                        &lt;/tr&gt;
+                                    &lt;/table&gt;
+                                &lt;/body&gt;
+                                &lt;/html&gt;
+                                </pre>
+        <h2>9. Build and Run an application
+        </h2>
+        <p>As we are using the maven build tool so first, we will need to build this application using the following
+            maven command:</p>
+        <pre>clean install</pre>
+        <p>Once build success, then we will run this application on tomcat server 8.5 in IDE or we can also deploy war
+            file on external tomcat webapps folder and run the application.</p>
+        <h2>10. Demo</h2>
+        <p>Once an application is up and running in tomcat server then hit this link into browser: <a
+                href="">http://localhost:8080/springmvc5-form-tags/user</a></p>
+<p>On entering the URL, you will see the following page.</p>
+<img src="/assets/spring-mvc-image/user-information.PNG" alt="" class="image-fluid">
+<p>Fill the above user information form and hit submit button will navigate to users information page as shown below:</p>
+<img src="/assets/spring-mvc-image/users-information.PNG" alt="" class="image-fluid">
+<p>That's all about Spring's form tags. </p>
+
+    </div>
+</body>
+
+</html>

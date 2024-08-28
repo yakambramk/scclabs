@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Spring mvc form vaidation with annotations</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring MVC Form Validation using Annotations - Hibernate Validator</h1>
+        <p>In this tutorial, we're going to learn how to perform form validation in the Spring MVC web application using
+            Java bean validation annotations.</p>
+        <p>Note that we don't use Spring boot, we use plain Spring MVC libraries in this tutorial.</p>
+        <p>So, what's the need for validation? Well, you may have a form and you may want to validate the fields to make
+            sure you have required fields, numbers in a given range, validate the format, for example, for a postal code
+            or you may want to add your own custom business rule for validation, etc.</p>
+        <p>In this tutorial, we will use Hibernate validator library which is the implementation of Java's standard Bean
+            Validation API.</p>
+        <p>Now, let's talk about Spring support for validation. So, Spring version 4 and higher supports the Bean
+            Validation API which is a good thing. So, it's actually the preferred method for validation when building
+            Spring apps.</p>
+        <h2>Important Java bean validations</h2>
+        <ul>
+            <li><b>@NotNull </b>validates that the annotated property value is not null.</li>
+            <li><b> @Size</b> validates that the annotated property value has a size between the attributes min and max;
+                can be applied to String, Collection, Map, and array properties.</li>
+            <li><b> @Min </b> validates that the annotated property has a value not smaller than the value attribute.
+            </li>
+            <li><b> @Max </b> that the annotated property has a value no larger than the value attribute.</li>
+            <li><b> @Email </b> validates that the annotated property is a valid email address.</li>
+            <li><b> @NotEmpty </b> that the property is not null or empty; can be applied to String, Collection, Map, or
+                Array values.</li>
+            <li><b> @NotBlank </b> can be applied only to text values and validates that the property is not null or
+                whitespace.</li>
+        </ul>
+        <p>These all are built-in validation rules but we can also create our own custom validation rule along with our
+            own custom Java annotation.</p>
+        <p> In this example, we will use a Java-based configuration that is we configure the Spring Dispatcher Servlet
+            and spring beans configuration using all Java Code (no XML).</p>
+        <h2>
+            Tools and technologies used
+        </h2>
+        <ul>
+            <li> Spring MVC - 5.1.0 RELEASE </li>
+            <li> JDK - 1.8 or later</li>
+            <li> Maven - 3.5.1</li>
+            <li> Apache Tomcat - 8.5</li>
+            <li> IDE - STS/Eclipse Neon.3</li>
+            <li> JSTL - 1.2.1</li>
+            <li> JSP - 2.3.1</li>
+        </ul>
+        <p>Follow below 10 development steps to develop a complete end-to-end Spring MVC form validation application.
+        </p>
+        <h2>Development Steps</h2>
+        <ol>
+            <li> Create Maven Web Application</li>
+            <li> Add Dependencies - pom.xml File</li>
+            <li> Project Structure</li>
+            <li> Spring Configuration - MVCConfig.java</li>
+            <li> Servlet Container Initialization - SpringMvcDispatcherServletInitializer.java</li>
+            <li> Model Class - Customer.java</li>
+            <li> Controller Class - CustomerController.java</li>
+            <li> Views - customer-form.jsp and customer-confirmation.jsp</li>
+            <li> Build and Run an application</li>
+            <li> Demo</li>
+        </ol>
+        <h2>1. Create Maven Web Application</h2>
+        <p>Let's create a Maven-based web application either using a command line or from Eclipse IDE.</p>
+        <ol>
+            <li>1. Use the <a href="./simple-maven-web-application.html">Guide to Create Maven Web Application </a>link
+                to create a maven project using a command line. </li>
+            <li> 2. Use <a href="./create-a-maven-web-project-with-eclipse.html">Create Maven Web Application using
+                    Eclipse IDE</a> link to create a maven web application using IDE Eclipse.</li>
+        </ol>
+        <p>Once you created a maven web application, refer to the pom.xml file jar dependencies.</p>
+        <h2>2. Add Dependencies - pom.xml File</h2>
+        <p>Refer to the following pom.xml file and add dependencies to your pom.xml.</p>
+        <pre>
+            &lt;project
+                xmlns="http://maven.apache.org/POM/4.0.0"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+                &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+                &lt;groupId&gt;net.javaguides.springmvc&lt;/groupId&gt;
+                &lt;artifactId&gt;springmvc5-form-validation&lt;/artifactId&gt;
+                &lt;packaging&gt;war&lt;/packaging&gt;
+                &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+                &lt;name&gt;springmvc5-form-validation Maven Webapp&lt;/name&gt;
+                &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+                &lt;properties&gt;
+                    &lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;
+                &lt;/properties&gt;
+                &lt;dependencies&gt;
+                    &lt;!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc --&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+                        &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+                        &lt;version&gt;5.1.0.RELEASE&lt;/version&gt;
+                    &lt;/dependency&gt;
+                    &lt;!-- Hibernate Validator --&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+                        &lt;artifactId&gt;hibernate-validator&lt;/artifactId&gt;
+                        &lt;version&gt;5.4.1.Final&lt;/version&gt;
+                    &lt;/dependency&gt;
+                    &lt;!-- JSTL Dependency --&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;javax.servlet.jsp.jstl&lt;/groupId&gt;
+                        &lt;artifactId&gt;javax.servlet.jsp.jstl-api&lt;/artifactId&gt;
+                        &lt;version&gt;1.2.1&lt;/version&gt;
+                    &lt;/dependency&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;taglibs&lt;/groupId&gt;
+                        &lt;artifactId&gt;standard&lt;/artifactId&gt;
+                        &lt;version&gt;1.1.2&lt;/version&gt;
+                    &lt;/dependency&gt;
+                    &lt;!-- Servlet Dependency --&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+                        &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+                        &lt;version&gt;3.1.0&lt;/version&gt;
+                        &lt;scope&gt;provided&lt;/scope&gt;
+                    &lt;/dependency&gt;
+                    &lt;!-- JSP Dependency --&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;javax.servlet.jsp&lt;/groupId&gt;
+                        &lt;artifactId&gt;javax.servlet.jsp-api&lt;/artifactId&gt;
+                        &lt;version&gt;2.3.1&lt;/version&gt;
+                        &lt;scope&gt;provided&lt;/scope&gt;
+                    &lt;/dependency&gt;
+                &lt;/dependencies&gt;
+                &lt;build&gt;
+                    &lt;sourceDirectory&gt;src/main/java&lt;/sourceDirectory&gt;
+                    &lt;plugins&gt;
+                        &lt;plugin&gt;
+                            &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                            &lt;version&gt;3.5.1&lt;/version&gt;
+                            &lt;configuration&gt;
+                                &lt;source&gt;1.8&lt;/source&gt;
+                                &lt;target&gt;1.8&lt;/target&gt;
+                            &lt;/configuration&gt;
+                        &lt;/plugin&gt;
+                    &lt;/plugins&gt;
+                &lt;/build&gt;
+            &lt;/project&gt;
+            </pre>
+        <h2>3. Project Structure</h2>
+        <p>Standard project structure for your reference -</p>
+        <img src="/assets/spring-mvc-image/project-structure (2).PNG" alt="" class="image-fluid">
+        <p>As the name suggests Spring MVC, look at the above diagram we are using the Model-View-Controller approach.
+        </p>
+        <p> <b>Model </b> - Customer.java</p>
+        <p></p> <b>Views</b> - customer-form.jsp and customer-confirmation.jsp</p>
+        <p></p> <b>Controller</b> - CustomerController.java</p>
+        <p>Next step, we will configure Spring beans using Java-based configuration.</p>
+        <h2>4. Spring Configuration - MVCConfig.java</h2>
+        <p>Create an MVCConfig class and annotated it with @Configuration, @EnableWebMvc, and @ComponentScan
+            annotations.</p>
+        <pre>package net.javaguides.springmvc.form.config;
+
+        import org.springframework.context.annotation.Bean;
+        import org.springframework.context.annotation.ComponentScan;
+        import org.springframework.context.annotation.Configuration;
+        import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+        import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+        import org.springframework.web.servlet.view.InternalResourceViewResolver;
+        import org.springframework.web.servlet.view.JstlView;
+        
+        
+        @Configuration
+        @EnableWebMvc
+        @ComponentScan(basePackages = {
+            "net.javaguides.springmvc.form"
+        })
+        public class MVCConfig implements WebMvcConfigurer {
+        
+            @Bean
+            public InternalResourceViewResolver resolver() {
+                InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+                resolver.setViewClass(JstlView.class);
+                resolver.setPrefix("/WEB-INF/views/");
+                resolver.setSuffix(".jsp");
+                return resolver;
+            }
+        }</pre>
+        <p>Let's look at few important annotations from the above file.</p>
+        <ul>
+            <li>The <b>@Configuration</b> is a class-level annotation indicating that an object is a source of bean
+                definitions.</li>
+            <li> The <b>@EnableWebMvc </b>enables default Spring MVC configuration and provides the functionality
+                equivalent to mvc:annotation-driven/ element in XML based configuration.</li>
+            <li> The <b> @ComponentScan </b>scans the stereotype annotations (@Controller, @Service etc...) in a package
+                specified by basePackages attribute.</li>
+        </ul>
+        <h2>5. Servlet Container Initialization - SpringMvcDispatcherServletInitializer.java</h2>
+        <p>In Spring MVC, the <b>DispatcherServlet</b> needs to be declared and mapped for processing all requests
+            either using java or web.xml configuration.</p>
+        <p> In a Servlet 3.0+ environment, you can use <b>AbstractAnnotationConfigDispatcherServletInitializer</b> class
+            to register and initialize the <b>DispatcherServlet</b> programmatically as follows.</p>
+        <pre>package net.javaguides.springmvc.form.config;
+
+                import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+                
+                
+                public class SpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+                
+                    @Override
+                    protected Class << ? > [] getRootConfigClasses() {
+                        // TODO Auto-generated method stub
+                        return null;
+                    }
+                
+                    @Override
+                    protected Class << ? > [] getServletConfigClasses() {
+                        return new Class[] {
+                            MVCConfig.class
+                        };
+                    }
+                
+                    @Override
+                    protected String[] getServletMappings() {
+                        return new String[] {
+                            "/"
+                        };
+                    }
+                }</pre>
+        <p>Next step, we will create a Customer class Model.</p>
+        <h2>6. Model Class - Customer.java</h2>
+        <p>Let's create a <b>Customer</b> model class, whose field names are annotated with <b>Hibernate Validator</b>
+            constraint annotations.
+            We will use this class for binding form data to the model and exposing model data to views.</p>
+        <pre>package net.javaguides.springmvc.form.model;
+
+                        import javax.validation.constraints.Max;
+                        import javax.validation.constraints.Min;
+                        import javax.validation.constraints.NotNull;
+                        import javax.validation.constraints.Pattern;
+                        import javax.validation.constraints.Size;
+                        
+                        import org.hibernate.validator.constraints.Email;
+                        
+                        public class Customer {
+                        
+                            private String firstName;
+                        
+                            @NotNull(message = "is required")
+                            @Size(min = 1, message = "is required")
+                            private String lastName;
+                        
+                            @NotNull(message = "is required")
+                            @Min(value = 0, message = "must be greater than or equal to zero")
+                            @Max(value = 10, message = "must be less than or equal to 10")
+                            private Integer freePasses;
+                        
+                            @Pattern(regexp = "^[a-zA-Z0-9]{5}", message = "only 5 chars/digits")
+                            private String postalCode;
+                        
+                            @NotNull(message = "is required")
+                            @Email(message = "Invalid email! Please enter valid email")
+                            private String email;
+                        
+                            public String getPostalCode() {
+                                return postalCode;
+                            }
+                        
+                            public void setPostalCode(String postalCode) {
+                                this.postalCode = postalCode;
+                            }
+                        
+                            public Integer getFreePasses() {
+                                return freePasses;
+                            }
+                        
+                            public void setFreePasses(Integer freePasses) {
+                                this.freePasses = freePasses;
+                            }
+                        
+                            public String getFirstName() {
+                                return firstName;
+                            }
+                        
+                            public void setFirstName(String firstName) {
+                                this.firstName = firstName;
+                            }
+                        
+                            public String getLastName() {
+                                return lastName;
+                            }
+                        
+                            public void setLastName(String lastName) {
+                                this.lastName = lastName;
+                            }
+                        
+                            public String getEmail() {
+                                return email;
+                            }
+                        
+                            public void setEmail(String email) {
+                                this.email = email;
+                            }
+                        }</pre>
+        <p>Note that we have use Validation annotations such as <b>@NotNull, @Size, @Min, @Max, @Email, @Pattern</b>,
+            and <b>@NotEmpty.</b></p>
+        <h2>7. Controller Class - CustomerController.java</h2>
+        <p>Let's create <b>CustomerController </b>controller class annotated with <b>@Controller</b> annotation as
+            follows:</p>
+        <pre>package net.javaguides.springmvc.form.controller;
+
+                import javax.validation.Valid;
+                
+                import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+                import org.springframework.stereotype.Controller;
+                import org.springframework.ui.Model;
+                import org.springframework.validation.BindingResult;
+                import org.springframework.web.bind.WebDataBinder;
+                import org.springframework.web.bind.annotation.InitBinder;
+                import org.springframework.web.bind.annotation.ModelAttribute;
+                import org.springframework.web.bind.annotation.RequestMapping;
+                
+                import net.javaguides.springmvc.form.model.Customer;
+                
+                @Controller
+                @RequestMapping("/customer")
+                public class CustomerController {
+                
+                    // add an initbinder ... to convert trim input strings
+                    // remove leading and trailing whitespace
+                    // resolve issue for our validation
+                
+                    @InitBinder
+                    public void initBinder(WebDataBinder dataBinder) {
+                
+                        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+                
+                        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+                    }
+                
+                
+                    @RequestMapping("/showForm")
+                    public String showForm(Model theModel) {
+                
+                        theModel.addAttribute("customer", new Customer());
+                
+                        return "customer-form";
+                    }
+                
+                    @RequestMapping("/processForm")
+                    public String processForm(
+                        @Valid @ModelAttribute("customer") Customer theCustomer,
+                        BindingResult theBindingResult) {
+                
+                        if (theBindingResult.hasErrors()) {
+                            return "customer-form";
+                        } else {
+                            return "customer-confirmation";
+                        }
+                    }
+                }</pre>
+        <h2>8. Views - customer-form.jsp and customer-confirmation.jsp</h2>
+        <p><b>customer-form.jsp</b></p>
+        <pre>
+                    &lt;%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %&gt;
+                    
+                    &lt;html&gt;
+                    
+                    &lt;head&gt;
+                        &lt;title&gt;Customer Registration Form&lt;/title&gt;
+                    
+                        &lt;style&gt;
+                            .error {
+                                color: red;
+                            }
+                        &lt;/style&gt;
+                    &lt;/head&gt;
+                    
+                    &lt;body&gt;
+                        &lt;h1&gt;Spring MVC 5 - Form Validation Example&lt;/h1&gt;
+                        &lt;i&gt;Fill out the form. Asterisk (*) means required.&lt;/i&gt;
+                        &lt;br&gt;&lt;br&gt;
+                    
+                        &lt;form:form action="processForm" modelAttribute="customer"&gt;
+                    
+                            First name:
+                            &lt;form:input path="firstName" /&gt;
+                    
+                            &lt;br&gt;&lt;br&gt; Last name (*):
+                            &lt;form:input path="lastName" /&gt;
+                            &lt;form:errors path="lastName" cssClass="error" /&gt;
+                    
+                            &lt;br&gt;&lt;br&gt; Free passes (*):
+                            &lt;form:input path="freePasses" /&gt;
+                            &lt;form:errors path="freePasses" cssClass="error" /&gt;
+                    
+                            &lt;br&gt;&lt;br&gt; Email (*):
+                            &lt;form:input path="email" /&gt;
+                            &lt;form:errors path="email" cssClass="error" /&gt;
+                    
+                            &lt;br&gt;&lt;br&gt; Postal Code:
+                            &lt;form:input path="postalCode" /&gt;
+                            &lt;form:errors path="postalCode" cssClass="error" /&gt;
+                    
+                            &lt;br&gt;&lt;br&gt;
+                    
+                            &lt;input type="submit" value="Submit" /&gt;
+                    
+                        &lt;/form:form&gt;
+                    
+                    &lt;/body&gt;
+                    
+                    &lt;/html&gt;
+                    </pre>
+        <p><b>customer-confirmation.jsp</b></p>
+        <pre>
+                        &lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+                        
+                        &lt;!DOCTYPE html&gt;
+                        
+                        &lt;html&gt;
+                        
+                        &lt;head&gt;
+                            &lt;title&gt;Customer Confirmation&lt;/title&gt;
+                        &lt;/head&gt;
+                        
+                        &lt;body&gt;
+                        
+                            The customer is confirmed: ${customer.firstName} ${customer.lastName}
+                        
+                            &lt;br&gt;&lt;br&gt; Free passes: ${customer.freePasses}
+                        
+                            &lt;br&gt;&lt;br&gt; Email: ${customer.email}
+                        
+                            &lt;br&gt;&lt;br&gt; Postal Code: ${customer.postalCode}
+                        
+                        &lt;/body&gt;
+                        
+                        &lt;/html&gt;
+                        </pre>
+        <h2>9. Build and Run an application</h2>
+        <p>As we are using the maven build tool so first, we will need to build this application using the following
+            maven command:</p>
+        <pre>clean install</pre>
+        <p>Once build success, then we will run this application on tomcat server 8.5 in IDE or we can also deploy war
+            file on external tomcat webapps folder and run the application</p>
+        <h2>Demo</h2>
+        <p>Once an application is up and running in tomcat server then hit this link into browser: <a
+                href="">http://localhost:8080/springmvc5-form-validation/customer/processForm</a></p>
+        <p>On entering the URL, you will see the following page.</p>
+        <img src="/assets/spring-mvc-image/customer-showform.PNG" alt="" class="image-fluid">
+        <p>Fill the above form with proper input and hit submit button will navigate to the customer confirmation success page as shown below:</p>
+        <img src="/assets/spring-mvc-image/customer-confirmation.PNG" alt="" class="image-fluid">
+
+
+
+    </div>
+</body>
+
+</html>
