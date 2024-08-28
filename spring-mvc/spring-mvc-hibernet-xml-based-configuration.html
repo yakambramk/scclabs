@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Spring MVC + Hibernate XML Based Configuration Example</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring MVC + Hibernate XML Based Configuration Example</h1>
+        <p> In this tutorial, we will learn how to create a Spring MVC project ( without Spring Boot) and integrate
+            Spring MVC with Hibernate ORM framework using XML-based configuration.</p>
+        <p> For Java-based configuration, check out <a href="./spring-mvc-hybernet-jsp-mysql-crud.html">Spring MVC 5 +
+                Hibernate 5 + JSP + MySQL CRUD Tutorial.</a></p>
+        <p>To integrate Hibernate with the Spring MVC application, you can use the <b>LocalSessionFactoryBean</b> class,
+            which
+            setup a shared <b>SessionFactory</b> object within a Spring application context. This <b>SessionFactory</b>
+            object can be
+            passed to DAO classes via dependencies injection.
+        </p>
+        <h2>Short note on how Spring supports Hibernate integration:</h2>
+        <p> Basically, in order to support Hibernate integration, Spring provides two key beans available in the
+            org.springframework.orm.hibernate5 package: </p>
+        <p><b>LocalSessionFactoryBean: </b> creates a Hibernate’s SessionFactory which is injected into Hibernate-based
+            DAO classes. </p>
+        <p> <b>HibernateTransactionManager:</b> provides transaction support code for a SessionFactory. Programmers can
+            use <b>@Transactional</b> annotation in DAO methods to avoid writing boiler-plate transaction code
+            explicitly.</p>
+        <h2>Tools and technologies used</h2>
+        <ul>
+            <li> Spring MVC - 5.1.0 RELEASE </li>
+            <li> Hibernate - 5.2.17.Final </li>
+            <li> JDK - 1.8 or later </li>
+            <li> Maven - 3.5.1 </li>
+            <li> Apache Tomcat - 8.5 </li>
+            <li> IDE - STS/Eclipse Neon.3 </li>
+            <li> JSTL - 1.2.1 </li>
+            <li> JSP - 2.3.1 </li>
+            <li> MySQL - 5.1.47</li>
+        </ul>
+        <p>Let me list out development steps so that it will be easy to develop and understand the Spring MVC
+            application step by step.</p>
+        <h2>Development Steps</h2>
+        <ol>
+            <li> Create Maven Web Application </li>
+            <li> Add Dependencies - pom.xml File</li>
+            <li> Project Structure</li>
+            <li> web.xml - Register a DispatcherServlet using XML-based Spring configuration</li>
+            <li> spring-mvc-crud-demo-servlet.xml - Spring and Hibernate Integration using XML-based Spring
+                configuration</li>
+            <li> JPA Entity - Customer.java</li>
+            <li> Spring MVC Controller Class - CustomerController.java</li>
+            <li> Service Layer - CustomerService.java and CustomerServiceImpl.java</li>
+            <li> DAO Layer - CustomerDAO.java and CustomerDAOImpl.java 11 JSP Views - customer-form.jsp and
+                list-customers.jsp</li>
+            <li> Serve Static Resources - CSS and JS</li>
+            <li> JSP Views - customer-form.jsp and list-customers.jsp</li>
+            <li> Build and Run an application</li>
+            <li> Demo</li>
+        </ol>
+        <h2>1. Create a Maven Web Application</h2>
+        <p>Let's create a Maven-based web application either using a command line or from Eclipse IDE.</p>
+        <ul>
+            <li> Use the <a href="./simple-maven-web-application.html">Guide to Create a Maven Web Application</a> link
+                to create a Maven project using a command line.
+            </li>
+            <li> Use <a href="./create-a-maven-web-project-with-eclipse.html">Create Maven Web Application using Eclipse
+                    IDE</a> link to create a maven web application using IDE
+                Eclipse.</li>
+            <h2>2. Add Dependencies - pom.xml File</h2>
+            <p>Let’s look at all the maven dependencies are required for hibernate and spring MVC framework integration.
+            </p>
+            <pre>
+                    &lt;project
+                        xmlns="http://maven.apache.org/POM/4.0.0"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+                        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+                        &lt;groupId&gt;net.javaguides.springmvc&lt;/groupId&gt;
+                        &lt;artifactId&gt;springmvc5-hibernate5-jsp-mysql-example&lt;/artifactId&gt;
+                        &lt;packaging&gt;war&lt;/packaging&gt;
+                        &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+                        &lt;name&gt;springmvc5-hibernate5-jsp-mysql-example Maven Webapp&lt;/name&gt;
+                        &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+                        &lt;properties&gt;
+                            &lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;
+                            &lt;spring.version&gt;5.1.0.RELEASE&lt;/spring.version&gt;
+                            &lt;hibernate.version&gt;5.3.5.Final&lt;/hibernate.version&gt;
+                            &lt;hibernate.validator&gt;5.4.1.Final&lt;/hibernate.validator&gt;
+                            &lt;c3p0.version&gt;0.9.5.2&lt;/c3p0.version&gt;
+                            &lt;jstl.version&gt;1.2.1&lt;/jstl.version&gt;
+                            &lt;tld.version&gt;1.1.2&lt;/tld.version&gt;
+                            &lt;servlets.version&gt;3.1.0&lt;/servlets.version&gt;
+                            &lt;jsp.version&gt;2.3.1&lt;/jsp.version&gt;
+                            &lt;hsqldb.version&gt;1.8.0.10&lt;/hsqldb.version&gt;
+                        &lt;/properties&gt;
+                        &lt;dependencies&gt;
+                            &lt;!-- Spring MVC Dependency --&gt;
+                            &lt;dependency&gt;
+                                &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+                                &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+                                &lt;version&gt;${spring.version}&lt;/version&gt;
+                            &lt;/dependency&gt;
+                            &lt;!-- Spring ORM --&gt;
+                            &lt;dependency&gt;
+                                &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+                                &lt;artifactId&gt;spring-orm&lt;/artifactId&gt;
+                                &lt;version&gt;${spring.version}&lt;/version&gt;
+                            &lt;/dependency&gt;
+                            &lt;!-- Hibernate Core --&gt;
+                            &lt;dependency&gt;
+                                &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+                                &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+                                &lt;version&gt;5.2.17.Final&lt;/version&gt;
+                            &lt;/dependency&gt;
+                            &lt;!-- Hibernate Validator --&gt;
+                            &lt;dependency&gt;
+                                &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+                                &lt;artifactId&gt;hibernate-validator&lt;/artifactId&gt;
+                                &lt;version&gt;${hibernate.validator}&lt;/version&gt;
+                            &lt;/dependency&gt;
+                            &lt;!-- JSTL Dependency --&gt;
+                            &lt;dependency&gt;
+                                &lt;groupId&gt;javax.servlet.jsp.jstl&lt;/groupId&gt;
+                                &lt;artifactId&gt;javax.servlet.jsp.jstl-api&lt;/artifactId&gt;
+                                &lt;version&gt;${jstl.version}&lt;/version&gt;
+                            &lt;/dependency&gt;
+                            &lt;dependency&gt;
+                                &lt;groupId&gt;taglibs&lt;/groupId&gt;
+                                &lt;artifactId&gt;standard&lt;/artifactId&gt;
+                                &lt;version&gt;${tld.version}&lt;/version&gt;
+                            &lt;/dependency&gt;
+                            &lt;!-- Servlet Dependency --&gt;
+                            &lt;dependency&gt;
+                                &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+                                &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+                                &lt;version&gt;${servlets.version}&lt;/version&gt;
+                                &lt;scope&gt;provided&lt;/scope&gt;
+                            &lt;/dependency&gt;
+                            &lt;!-- JSP Dependency --&gt;
+                            &lt;dependency&gt;
+                                &lt;groupId&gt;javax.servlet.jsp&lt;/groupId&gt;
+                                &lt;artifactId&gt;javax.servlet.jsp-api&lt;/artifactId&gt;
+                                &lt;version&gt;${jsp.version}&lt;/version&gt;
+                                &lt;scope&gt;provided&lt;/scope&gt;
+                            &lt;/dependency&gt;
+                            &lt;dependency&gt;
+                                &lt;groupId&gt;mysql&lt;/groupId&gt;
+                                &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+                                &lt;version&gt;5.1.47&lt;/version&gt;
+                            &lt;/dependency&gt;
+                        &lt;/dependencies&gt;
+                        &lt;build&gt;
+                            &lt;plugins&gt;
+                                &lt;plugin&gt;
+                                    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                                    &lt;version&gt;3.5.1&lt;/version&gt;
+                                    &lt;configuration&gt;
+                                        &lt;source&gt;1.8&lt;/source&gt;
+                                        &lt;target&gt;1.8&lt;/target&gt;
+                                    &lt;/configuration&gt;
+                                &lt;/plugin&gt;
+                            &lt;/plugins&gt;
+                        &lt;/build&gt;
+                    &lt;/project&gt;
+                    </pre>
+            <p>The spring-orm module provides the Spring integration with Hibernate:</p>
+            <pre>
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-orm&lt;/artifactId&gt;
+        &lt;version&gt;${spring.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    </pre>
+            <h2>3. Project Structure</h2>
+            <p>Our final project structure looks like the below image, we will look into each of the components one by
+                one.</p>
+            <img src="/assets/spring-mvc-image/spring-hibernate-xml.PNG" alt="" class="image-fluid">
+            <h2>Class Diagram</h2>
+            <img src="/assets/spring-mvc-image/springmvc-hibernate5-class-diagram.png" alt="" class="image-fluid">
+            <h2>4. Register a DispatcherServlet using XML-based Spring configuration</h2>
+            <p>In Spring MVC, The <b>DispatcherServlet</b> needs to be declared and mapped for processing all requests
+                either using web.xml configuration.
+                Let's use the below configuration in the <b>web.xml</b> file:</p>
+            <pre>
+            &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+            &lt;web-app
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1"&gt;
+                &lt;display-name&gt;spring-mvc-crud-demo&lt;/display-name&gt;
+                &lt;welcome-file-list&gt;
+                    &lt;welcome-file&gt;index.jsp&lt;/welcome-file&gt;
+                    &lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+                &lt;/welcome-file-list&gt;
+                &lt;servlet&gt;
+                    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+                    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+                    &lt;init-param&gt;
+                        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+                        &lt;param-value&gt;/WEB-INF/spring-mvc-crud-demo-servlet.xml&lt;/param-value&gt;
+                    &lt;/init-param&gt;
+                    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+                &lt;/servlet&gt;
+                &lt;servlet-mapping&gt;
+                    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+                    &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+                &lt;/servlet-mapping&gt;
+            &lt;/web-app&gt;
+            </pre>
+            <h2>5. Spring and Hibernate Integration using XML-based Spring configuration</h2>
+            <p>Hibernate configuration used in the example is based on hibernate XML based configuration.
+                Let's create <b>spring-mvc-crud-demo-servlet.xml </b>file and add the following configuration to it:</p>
+            <pre>
+        &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+        &lt;beans
+            xmlns="http://www.springframework.org/schema/beans"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:context="http://www.springframework.org/schema/context"
+            xmlns:tx="http://www.springframework.org/schema/tx"
+            xmlns:mvc="http://www.springframework.org/schema/mvc"
+         xsi:schemaLocation="
+          http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context.xsd
+          http://www.springframework.org/schema/mvc
+          http://www.springframework.org/schema/mvc/spring-mvc.xsd
+          http://www.springframework.org/schema/tx 
+          http://www.springframework.org/schema/tx/spring-tx.xsd"&gt;
+            &lt;!-- Add support for component scanning --&gt;
+            &lt;context:component-scan base-package="net.javaguides.springmvc" /&gt;
+            &lt;!-- Add support for conversion, formatting and validation support --&gt;
+            &lt;mvc:annotation-driven/&gt;
+            &lt;!-- Define Spring MVC view resolver --&gt;
+            &lt;bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"&gt;
+                &lt;property name="prefix" value="/WEB-INF/views/" /&gt;
+                &lt;property name="suffix" value=".jsp" /&gt;
+            &lt;/bean&gt;
+            &lt;!-- Step 1: Define Database DataSource / connection pool --&gt;
+            &lt;bean id="myDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+                  destroy-method="close"&gt;
+                &lt;property name="driverClass" value="com.mysql.jdbc.Driver" /&gt;
+                &lt;property name="jdbcUrl" value="jdbc:mysql://localhost:3306/demo?useSSL=false&amp;serverTimezone=UTC" /&gt;
+                &lt;property name="user" value="root" /&gt;
+                &lt;property name="password" value="root" /&gt;
+                &lt;!-- these are connection pool properties for C3P0 --&gt;
+                &lt;property name="minPoolSize" value="5" /&gt;
+                &lt;property name="maxPoolSize" value="20" /&gt;
+                &lt;property name="maxIdleTime" value="30000" /&gt;
+            &lt;/bean&gt;
+            &lt;!-- Step 2: Setup Hibernate session factory --&gt;
+            &lt;bean id="sessionFactory"
+          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"&gt;
+                &lt;property name="dataSource" ref="myDataSource" /&gt;
+                &lt;property name="packagesToScan" value="net.javaguides.springmvc.entity" /&gt;
+                &lt;property name="hibernateProperties"&gt;
+                    &lt;props&gt;
+                        &lt;prop key="hibernate.dialect"&gt;org.hibernate.dialect.MySQLDialect&lt;/prop&gt;
+                        &lt;prop key="hibernate.show_sql"&gt;true&lt;/prop&gt;
+                    &lt;/props&gt;
+                &lt;/property&gt;
+            &lt;/bean&gt;
+            &lt;!-- Step 3: Setup Hibernate transaction manager --&gt;
+            &lt;bean id="myTransactionManager"
+                    class="org.springframework.orm.hibernate5.HibernateTransactionManager"&gt;
+                &lt;property name="sessionFactory" ref="sessionFactory"/&gt;
+            &lt;/bean&gt;
+            &lt;!-- Step 4: Enable configuration of transactional behavior based on annotations --&gt;
+            &lt;tx:annotation-driven transaction-manager="myTransactionManager" /&gt;
+            &lt;!-- Add support for reading web resources: css, images, js, etc ... --&gt;
+            &lt;mvc:resources location="/resources/" mapping="/resources/**"&gt;&lt;/mvc:resources&gt;
+        &lt;/beans&gt;
+        </pre>
+            <h2>Configuring Spring MVC View Resolvers</h2>
+            <p><b>Add support for conversion, formatting and validation support:</b></p>
+            <pre>
+            &lt;!-- Add support for conversion, formatting and validation support --&gt;
+    &lt;mvc:annotation-driven/>
+        </pre>
+            <p><b>Add support for component scanning :</b></p>
+            <pre>
+             &lt;!-- Add support for component scanning --&gt;
+    &lt;context:component-scan base-package="net.javaguides.springmvc" />
+        </pre>
+            <p><b>Enable configuration of transactional behavior based on annotations:</b></p>
+            <p><b>Add support for reading web resources: css, images, js, etc:</b></p>
+            <pre>     &lt;!-- Add support for reading web resources: css, images, js, etc ... --&gt;
+            &lt;mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources></pre>
+            <p><b> Define Spring MVC view resolver:</b></p>
+            <pre>
+                &lt;!-- Define Spring MVC view resolver --&gt;
+                &lt;bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"&gt;
+                    &lt;property name="prefix" value="/WEB-INF/views/" /&gt;
+                    &lt;property name="suffix" value=".jsp" /&gt;
+                &lt;/bean&gt;
+                </pre>
+            <h2>6. JPA Entity - Customer.java</h2>
+            <p>Create a <b>@Entity</b> class, whose field names are annotated JPA annotations. We will use this entity
+                class
+                for mapping the database table with <b>Customer</b>. It will also be used for binding from data to the
+                model
+                using <b>@ModelAttribute</b> annotation in the controller's handler method.</p>
+            <pre>package net.javaguides.springmvc.entity;
+
+                    import javax.persistence.Column;
+                    import javax.persistence.Entity;
+                    import javax.persistence.GeneratedValue;
+                    import javax.persistence.GenerationType;
+                    import javax.persistence.Id;
+                    import javax.persistence.Table;
+                    
+                    @Entity
+                    @Table(name = "customer")
+                    public class Customer {
+                    
+                        @Id
+                        @GeneratedValue(strategy = GenerationType.IDENTITY)
+                        @Column(name = "id")
+                        private int id;
+                    
+                        @Column(name = "first_name")
+                        private String firstName;
+                    
+                        @Column(name = "last_name")
+                        private String lastName;
+                    
+                        @Column(name = "email")
+                        private String email;
+                    
+                        public Customer() {
+                    
+                        }
+                    
+                        public int getId() {
+                            return id;
+                        }
+                    
+                        public void setId(int id) {
+                            this.id = id;
+                        }
+                    
+                        public String getFirstName() {
+                            return firstName;
+                        }
+                    
+                        public void setFirstName(String firstName) {
+                            this.firstName = firstName;
+                        }
+                    
+                        public String getLastName() {
+                            return lastName;
+                        }
+                    
+                        public void setLastName(String lastName) {
+                            this.lastName = lastName;
+                        }
+                    
+                        public String getEmail() {
+                            return email;
+                        }
+                    
+                        public void setEmail(String email) {
+                            this.email = email;
+                        }
+                    
+                        @Override
+                        public String toString() {
+                            return "Customer [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + "]";
+                        }
+                    }</pre>
+            <p><b>7. Spring MVC Controller Class - CustomerController.java</b></p>
+            <p>Create a controller class to handle the <b>Customer</b> form data as follows.</p>
+            <pre>package net.javaguides.springmvc.controller;
+
+                        import java.util.List;
+                        
+                        import org.springframework.beans.factory.annotation.Autowired;
+                        import org.springframework.stereotype.Controller;
+                        import org.springframework.ui.Model;
+                        import org.springframework.web.bind.annotation.GetMapping;
+                        import org.springframework.web.bind.annotation.ModelAttribute;
+                        import org.springframework.web.bind.annotation.PostMapping;
+                        import org.springframework.web.bind.annotation.RequestMapping;
+                        import org.springframework.web.bind.annotation.RequestParam;
+                        
+                        import net.javaguides.springmvc.entity.Customer;
+                        import net.javaguides.springmvc.service.CustomerService;
+                        
+                        @Controller
+                        @RequestMapping("/customer")
+                        public class CustomerController {
+                        
+                            @Autowired
+                            private CustomerService customerService;
+                        
+                            @GetMapping("/list")
+                            public String listCustomers(Model theModel) {
+                                List < Customer > theCustomers = customerService.getCustomers();
+                                theModel.addAttribute("customers", theCustomers);
+                                return "list-customers";
+                            }
+                        
+                            @GetMapping("/showForm")
+                            public String showFormForAdd(Model theModel) {
+                                Customer theCustomer = new Customer();
+                                theModel.addAttribute("customer", theCustomer);
+                                return "customer-form";
+                            }
+                        
+                            @PostMapping("/saveCustomer")
+                            public String saveCustomer(@ModelAttribute("customer") Customer theCustomer) {
+                                customerService.saveCustomer(theCustomer);
+                                return "redirect:/customer/list";
+                            }
+                        
+                            @GetMapping("/updateForm")
+                            public String showFormForUpdate(@RequestParam("customerId") int theId,
+                                Model theModel) {
+                                Customer theCustomer = customerService.getCustomer(theId);
+                                theModel.addAttribute("customer", theCustomer);
+                                return "customer-form";
+                            }
+                        
+                            @GetMapping("/delete")
+                            public String deleteCustomer(@RequestParam("customerId") int theId) {
+                                customerService.deleteCustomer(theId);
+                                return "redirect:/customer/list";
+                            }
+                        }</pre>
+            <h2>8. Service Layer - CustomerService.java and CustomerServiceImpl.java</h2>
+            <p>Let's create the <b>CustomerService</b> interface and its implementation under
+                <b>net.javaguides.springmvc.service </b>package as follows.
+            </p>
+            <h2>CustomerService.java</h2>
+            <pre>package net.javaguides.springmvc.service;
+
+                    import java.util.List;
+                    
+                    import net.javaguides.springmvc.entity.Customer;
+                    
+                    public interface CustomerService {
+                    
+                        public List < Customer > getCustomers();
+                    
+                        public void saveCustomer(Customer theCustomer);
+                    
+                        public Customer getCustomer(int theId);
+                    
+                        public void deleteCustomer(int theId);
+                    
+                    }</pre>
+            <h2>CustomerServiceImpl.java</h2>
+            <p>We are using <b>@Transactional</b> annotation which is applied at service layer for transaction support.
+                <b>@Service</b> annotation used to annotate service layer implementation classes as in below file.
+            </p>
+            <pre>package net.javaguides.springmvc.service;
+
+                    import java.util.List;
+                    
+                    import org.springframework.beans.factory.annotation.Autowired;
+                    import org.springframework.stereotype.Service;
+                    import org.springframework.transaction.annotation.Transactional;
+                    
+                    import net.javaguides.springmvc.dao.CustomerDAO;
+                    import net.javaguides.springmvc.entity.Customer;
+                    
+                    @Service
+                    public class CustomerServiceImpl implements CustomerService {
+                    
+                        @Autowired
+                        private CustomerDAO customerDAO;
+                    
+                        @Override
+                        @Transactional
+                        public List < Customer > getCustomers() {
+                            return customerDAO.getCustomers();
+                        }
+                    
+                        @Override
+                        @Transactional
+                        public void saveCustomer(Customer theCustomer) {
+                            customerDAO.saveCustomer(theCustomer);
+                        }
+                    
+                        @Override
+                        @Transactional
+                        public Customer getCustomer(int theId) {
+                            return customerDAO.getCustomer(theId);
+                        }
+                    
+                        @Override
+                        @Transactional
+                        public void deleteCustomer(int theId) {
+                            customerDAO.deleteCustomer(theId);
+                        }
+                    }</pre>
+            <h2>9. DAO Layer - CustomerDAO.java and CustomerDAOImpl.java</h2>
+            <p>Let's create the DAO layer with the <b>CustomerDAO</b> interface and its implementation
+                <b>CustomerDAOImpl.java</b> class.
+                In Spring, we annotate DAO implementation classes with <b>@Repository</b> annotation.
+            </p>
+            <h2>CustomerDAO.java</h2>
+            <pre>package net.javaguides.springmvc.dao;
+
+                import java.util.List;
+                
+                import net.javaguides.springmvc.entity.Customer;
+                
+                public interface CustomerDAO {
+                
+                    public List < Customer > getCustomers();
+                
+                    public void saveCustomer(Customer theCustomer);
+                
+                    public Customer getCustomer(int theId);
+                
+                    public void deleteCustomer(int theId);
+                }</pre>
+            <h2>CustomerDAOImpl.java</h2>
+            <pre>package net.javaguides.springmvc.dao;
+
+                    import java.util.List;
+                    
+                    import javax.persistence.Query;
+                    import javax.persistence.criteria.CriteriaBuilder;
+                    import javax.persistence.criteria.CriteriaQuery;
+                    import javax.persistence.criteria.Root;
+                    
+                    import org.hibernate.Session;
+                    import org.hibernate.SessionFactory;
+                    import org.springframework.beans.factory.annotation.Autowired;
+                    import org.springframework.stereotype.Repository;
+                    
+                    import net.javaguides.springmvc.entity.Customer;
+                    
+                    @Repository
+                    public class CustomerDAOImpl implements CustomerDAO {
+                    
+                        @Autowired
+                        private SessionFactory sessionFactory;
+                    
+                        @Override
+                        public List < Customer > getCustomers() {
+                            Session session = sessionFactory.getCurrentSession();
+                            CriteriaBuilder cb = session.getCriteriaBuilder();
+                            CriteriaQuery < Customer > cq = cb.createQuery(Customer.class);
+                            Root < Customer > root = cq.from(Customer.class);
+                            cq.select(root);
+                            Query query = session.createQuery(cq);
+                            return query.getResultList();
+                        }
+                    
+                        @Override
+                        public void deleteCustomer(int id) {
+                            Session session = sessionFactory.getCurrentSession();
+                            Customer book = session.byId(Customer.class).load(id);
+                            session.delete(book);
+                        }
+                    
+                        @Override
+                        public void saveCustomer(Customer theCustomer) {
+                            Session currentSession = sessionFactory.getCurrentSession();
+                            currentSession.saveOrUpdate(theCustomer);
+                        }
+                    
+                        @Override
+                        public Customer getCustomer(int theId) {
+                            Session currentSession = sessionFactory.getCurrentSession();
+                            Customer theCustomer = currentSession.get(Customer.class, theId);
+                            return theCustomer;
+                        }
+                    }</pre>
+            <h2>10. JSP Views - customer-form.jsp and list-customers.jsp</h2>
+            <p><b>customer-form.jsp</b></p>
+            <pre>
+                        &lt;%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+                         pageEncoding="ISO-8859-1"%&gt;
+                        &lt;%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%&gt;
+                        &lt;%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%&gt;
+                        &lt;!DOCTYPE html&gt;
+                        &lt;html&gt;
+                        &lt;head&gt;
+                        &lt;meta charset="ISO-8859-1"&gt;
+                        &lt;title&gt;Spring MVC 5 - form handling | Java Guides&lt;/title&gt;
+                        &lt;link href="&lt;c:url value="/resources/css/bootstrap.min.css" /&gt;"
+                         rel="stylesheet"&gt;
+                        &lt;script src="&lt;c:url value="/resources/js/jquery-1.11.1.min.js" /&gt;"&gt;&lt;/script&gt;
+                        &lt;script src="&lt;c:url value="/resources/js/bootstrap.min.js" /&gt;"&gt;&lt;/script&gt;
+                        
+                        &lt;/head&gt;
+                        &lt;body&gt;
+                         &lt;div class="container"&gt;
+                          &lt;div class="col-md-offset-2 col-md-7"&gt;
+                           &lt;h2 class="text-center"&gt;Spring MVC 5 + Hibernate 5 + JSP + MySQL
+                            Example&lt;/h2&gt;
+                           &lt;div class="panel panel-info"&gt;
+                            &lt;div class="panel-heading"&gt;
+                             &lt;div class="panel-title"&gt;Add Customer&lt;/div&gt;
+                            &lt;/div&gt;
+                            &lt;div class="panel-body"&gt;
+                             &lt;form:form action="saveCustomer" cssClass="form-horizontal"
+                              method="post" modelAttribute="customer"&gt;
+                        
+                              &lt;!-- need to associate this data with customer id --&gt;
+                              &lt;form:hidden path="id" /&gt;
+                        
+                              &lt;div class="form-group"&gt;
+                               &lt;label for="firstname" class="col-md-3 control-label"&gt;First
+                                Name&lt;/label&gt;
+                               &lt;div class="col-md-9"&gt;
+                                &lt;form:input path="firstName" cssClass="form-control" /&gt;
+                               &lt;/div&gt;
+                              &lt;/div&gt;
+                              &lt;div class="form-group"&gt;
+                               &lt;label for="lastname" class="col-md-3 control-label"&gt;Last
+                                Name&lt;/label&gt;
+                               &lt;div class="col-md-9"&gt;
+                                &lt;form:input path="lastName" cssClass="form-control" /&gt;
+                               &lt;/div&gt;
+                              &lt;/div&gt;
+                        
+                              &lt;div class="form-group"&gt;
+                               &lt;label for="email" class="col-md-3 control-label"&gt;Email&lt;/label&gt;
+                               &lt;div class="col-md-9"&gt;
+                                &lt;form:input path="email" cssClass="form-control" /&gt;
+                               &lt;/div&gt;
+                              &lt;/div&gt;
+                        
+                              &lt;div class="form-group"&gt;
+                               &lt;!-- Button --&gt;
+                               &lt;div class="col-md-offset-3 col-md-9"&gt;
+                                &lt;form:button cssClass="btn btn-primary"&gt;Submit&lt;/form:button&gt;
+                               &lt;/div&gt;
+                              &lt;/div&gt;
+                        
+                             &lt;/form:form&gt;
+                            &lt;/div&gt;
+                           &lt;/div&gt;
+                          &lt;/div&gt;
+                         &lt;/div&gt;
+                        &lt;/body&gt;
+                        &lt;/html&gt;
+                        </pre>
+            <h2>list-customers.jsp</h2>
+            <pre>
+                            &lt;%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+                             pageEncoding="ISO-8859-1"%&gt;
+                            &lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%&gt;
+                            &lt;!DOCTYPE html&gt;
+                            &lt;html&gt;
+                            &lt;head&gt;
+                            &lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
+                            &lt;title&gt;javaguides.net&lt;/title&gt;
+                            &lt;link href="&lt;c:url value="/resources/css/bootstrap.min.css" /&gt;"
+                             rel="stylesheet"&gt;
+                            &lt;script src="&lt;c:url value="/resources/js/jquery-1.11.1.min.js" /&gt;"&gt;&lt;/script&gt;
+                            &lt;script src="&lt;c:url value="/resources/js/bootstrap.min.js" /&gt;"&gt;&lt;/script&gt;
+                            &lt;/head&gt;
+                            &lt;body&gt;
+                             &lt;div class="container"&gt;
+                              &lt;div class="col-md-offset-1 col-md-10"&gt;
+                               &lt;h2&gt;CRM - Customer Relationship Manager&lt;/h2&gt;
+                               &lt;hr /&gt;
+                            
+                               &lt;input type="button" value="Add Customer"
+                                onclick="window.location.href='showForm'; return false;"
+                                class="btn btn-primary" /&gt;
+                                &lt;br/&gt;&lt;br/&gt;
+                               &lt;div class="panel panel-info"&gt;
+                                &lt;div class="panel-heading"&gt;
+                                 &lt;div class="panel-title"&gt;Customer List&lt;/div&gt;
+                                &lt;/div&gt;
+                                &lt;div class="panel-body"&gt;
+                                 &lt;table class="table table-striped table-bordered"&gt;
+                                  &lt;tr&gt;
+                                   &lt;th&gt;First Name&lt;/th&gt;
+                                   &lt;th&gt;Last Name&lt;/th&gt;
+                                   &lt;th&gt;Email&lt;/th&gt;
+                                   &lt;th&gt;Action&lt;/th&gt;
+                                  &lt;/tr&gt;
+                            
+                                  &lt;!-- loop over and print our customers --&gt;
+                                  &lt;c:forEach var="tempCustomer" items="${customers}"&gt;
+                            
+                                   &lt;!-- construct an "update" link with customer id --&gt;
+                                   &lt;c:url var="updateLink" value="/customer/updateForm"&gt;
+                                    &lt;c:param name="customerId" value="${tempCustomer.id}" /&gt;
+                                   &lt;/c:url&gt;
+                            
+                                   &lt;!-- construct an "delete" link with customer id --&gt;
+                                   &lt;c:url var="deleteLink" value="/customer/delete"&gt;
+                                    &lt;c:param name="customerId" value="${tempCustomer.id}" /&gt;
+                                   &lt;/c:url&gt;
+                                   &lt;tr&gt;
+                                    &lt;td&gt;${tempCustomer.firstName}&lt;/td&gt;
+                                    &lt;td&gt;${tempCustomer.lastName}&lt;/td&gt;
+                                    &lt;td&gt;${tempCustomer.email}&lt;/td&gt;
+                                    &lt;td&gt;
+                                     &lt;!-- display the update link --&gt; &lt;a href="${updateLink}"&gt;Update&lt;/a&gt;
+                                     | &lt;a href="${deleteLink}"
+                                     onclick="if (!(confirm('Are you sure you want to delete this customer?'))) return false"&gt;Delete&lt;/a&gt;
+                                    &lt;/td&gt;
+                                   &lt;/tr&gt;
+                                  &lt;/c:forEach&gt;
+                                 &lt;/table&gt;
+                                &lt;/div&gt;
+                               &lt;/div&gt;
+                              &lt;/div&gt;
+                             &lt;/div&gt;
+                            &lt;/body&gt;
+                            &lt;/html&gt;
+                            </pre>
+            <h2>11. Serve Static Resources - CSS and JS</h2>
+            <ol>
+                <li> Create a <b>resource</b> folder under webapp directory. </li>
+                <li> Create <b>css </b>and <b>js</b> folders under the <b>resource</b> directory. </li>
+                <li> Download and keep <b>bootstrap.min.css</b> file under css folder </li>
+                <li> download and keep <b>bootstrap.min.js</b> and <b>jquery-1.11.1.min.js</b> files under the resource
+                    directory. Note that bootstrap min js is depended on jquery min js.</li>
+            </ol>
+            <h2>12. Build and Run an application</h2>
+            <p>As we are using the maven build tool so first, we will need to build this application using the following
+                maven command:</p>
+            <pre>clean install</pre>
+            <p>Once build success, then we will run this application on tomcat server 8.5 in IDE or we can also deploy
+                war file on external tomcat webapps folder and run the application.</p>
+            <h2>Demo</h2>
+            <p>Once an application is up and running in tomcat server then hit this link into browser: <a
+                    href="">http://localhost:8080/spring5-hibernate5-jsp-mysql-xmlconfig/customer/showForm</a></p>
+                    <h2>Add Customer page :</h2>
+                    <img src="/assets/spring-mvc-image/add-customer-form (1).PNG" alt="" class="image-fluid">
+                    <p><b>List of customers:</b></p>
+                    <img src="/assets/spring-mvc-image/list-of-customers (1).PNG" alt="" class="image-fluid" >
+
+
+
+
+
+
+
+    </div>
+</body>
+
+</html>
