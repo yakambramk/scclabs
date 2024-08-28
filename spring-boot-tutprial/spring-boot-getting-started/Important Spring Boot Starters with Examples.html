@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+       .container-fluid {
+        width: 100%;
+        background-color: rgb(49, 15, 105); /* Updated color */
+        padding: 0;
+        margin: 0;
+    }
+
+    .topImage {
+        display: flex;
+        justify-content: center; /* Centers the image horizontally */
+        align-items: center; /* Centers the image vertically */
+    }
+
+    .topImage img {
+        max-width: 60%; /* Ensures the image is responsive */
+        height: 40%; /* Maintains the aspect ratio */
+        border-radius: 1px; /* Optional: adds rounded corners to the image */
+    }
+
+    .heading {
+        color: rgb(204, 145, 9);
+    }
+
+    span {
+        background-color: rgb(224, 237, 235);
+        color: #d73a49;
+    }
+
+    pre {
+        background-color: #282c34;
+        color: #edf3f2;
+        padding: 20px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 18px;
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        unicode-bidi: isolate;
+    }
+
+    .btn {
+        transition: transform 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: scale(1.1); /* Zoom in */
+    }
+
+    .btn:active {
+        transform: scale(0.9); /* Zoom out on click */
+    }
+    </style>
+    </head>
+
+
+    <body>
+        <div class="container-fluid">
+            <div class="topImage mt-2 mb-4">
+                <img src="../../assets/springboot images/spring boot starters with examples.jpg" alt="logo" />
+            </div>
+        </div>
+    
+        <div class="container">
+            <div class="heading">
+                <h3>Important Spring Boot Starters with Examples</h3>
+                <h6>Author: Shiva Krishna G</h6>
+            </div><br>
+            <p>In this article, we will discuss important  Spring Boot starters with examples.<br><br>
+                We can categories  Spring boot starters into three categories</p>
+                <ol>
+                    <li>Spring Boot application starters</li>
+                    <li>Spring Boot production starters</li>
+                    <li>Spring Boot technical starters</li>
+                </ol>
+                <h3>1. Spring Boot application starters</h3>
+                <P>Starters are a set of convenient dependency descriptors that you can include in your application. You get a one-stop shop for all the Spring and related technologies that you need without having to hunt through sample code and copy-paste loads of dependency descriptors. For example
+                </P>
+                <h4>spring-boot-starter-web Starter</h4>
+                <p>While developing the REST service; we can use libraries like Spring MVC, Tomcat and Jackson – a lot of dependencies for a single application.<br><br>
+                    Spring Boot starters can help to reduce the number of manually added dependencies just by adding one dependency. So instead of manually specifying the dependencies just add one starter as in the following example:</p><br>
+                    <code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;</pre></code><br>
+                        <h4>spring-boot-starter-data-jpa Starter</h4>
+                        <p>If you want to get started using Spring and JPA for database access, include the<span> spring-boot-starter-data-jpa</span> dependency in your project.</p>
+                        <code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt; </pre></code><br>
+                            <h4>spring-boot-starter-test Starter</h4>
+                            <p>For testing, we usually use the following set of libraries: Spring Test, JUnit, Hamcrest, and Mockito. We can include all of these libraries manually, but Spring Boot starter can be used to automatically include these libraries in the following way:</p>
+                            <code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</pre></code><br>
+                                <p>Let's list all the important Spring Boot starters with examples.<br>
+                                    >><span>spring-boot-starter-test</span>- Starter for testing Spring Boot applications with libraries including JUnit, Hamcrest and Mockito<br>
+
+                                    <b>Example for this starter:</b><a href=""> Spring Boot 2 REST APIs Integration Testing</a><br><br>
+
+                                    >><span> spring-boot-starter-thymeleaf</span> - Starter for building MVC web applications using Thymeleaf views<br>
+                                    <b>Example for this starter:</b><a href="">Boot 2 MVC Web Application Thymeleaf JPA MySQL Example</a><br><br>
+
+                                    >> <span>spring-boot-starter-web</span> - Starter for building web, including RESTful, applications using Spring MVC. Uses Tomcat as the default embedded container<br>
+                                    <b>Example for this starter:</b><a href="">Spring Boot 2 Hibernate 5 MySQL CRUD REST API Tutorial</a><br><br>
+
+                                    >><span> spring-boot-starter-data-jpa</span> - Starter for using Spring Data JPA with Hibernate<br>
+                                    <b>Example for this starter:</b><a href=""> Spring Boot 2 JPA MySQL CRUD Example</a><br><br>
+
+                                    >> <span>spring-boot-starter-activemq</span> - Starter for JMS messaging using Apache ActiveMQ.<br>
+                                    <b>Example for this starter available on GitHub</b><a href=""> spring-boot-sample-activemq</a><br><br>
+
+                                    >> <span>spring-boot-starter-amqp</span> - Starter for using Spring AMQP and Rabbit MQ<br>
+                                    <b>Example for this starter available on GitHub</b><a href=""> spring-boot-sample-amqp</a><br><br>
+
+                                    >> <span>spring-boot-starter-aop</span> - Starter for aspect-oriented programming with Spring AOP and AspectJ<br>
+                                    <b>Example for this starter available on GitHub</b><a href=""> spring-boot-sample-aop</a><br><br>
+
+                                    >> <span>spring-boot-starter-batch</span> - Starter for using Spring Batch<br>
+                                    <b>Example for this starter available on GitHub</b><a href=""> spring-boot-sample-batch</a><br><br>
+
+                                    >> <span>spring-boot-starter-cache</span> - Starter for using Spring Framework’s caching support<br>
+                                    <b>Example for this starter available on GitHub</b><a href=""> spring-boot-sample-cache</a><br><br>
+
+                                    >> <span>spring-boot-starter-data-cassandra</span> - Starter for using Cassandra distributed database and Spring Data Cassandra<br>
+                                    <b> Example for this starter available on GitHub</b><a href=""> spring-boot-sample-data-cassandra</a><br><br>
+
+                                    >> <span>spring-boot-starter-data-couchbase</span> - Starter for using Couchbase document-oriented database and Spring Data Couchbase<br>
+                                    <b> Example for this starter available on GitHub </b><a href="">spring-boot-sample-data-couchbase</a><br><br>
+
+                                    >> <span>spring-boot-starter-data-elasticsearch</span> - Starter for using Elasticsearch search and analytics engine and Spring Data Elasticsearch<br>
+                                    <b>Example for this starter available on GitHub</b><a href=""> spring-boot-sample-data-elasticsearch</a><br><br>
+
+                                    >> <span>spring-boot-starter-data-ldap</span> - Starter for using Spring Data LDAP<br>
+                                    <b> Example for this starter available on GitHub</b><a href=""> spring-boot-sample-data-ldap</a><br><br>
+
+                                    >> <span>spring-boot-starter-data-mongodb</span> - Starter for using MongoDB document-oriented database and Spring Data MongoDB<br>
+                                    <b> Example for this starter available on GitHub</b><a href=""> spring-boot-sample-data-mongodb</a><br><br>
+
+                                    >> <span>spring-boot-starter-data-neo4j</span> - Starter for using Neo4j graph database and Spring Data Neo4j<br>
+                                    <b> Example for this starter available on GitHub</b><a href=""> spring-boot-sample-data-neo4j</a><br><br>
+
+                                    >> <span>spring-boot-starter-data-redis</span> - Starter for using Redis key-value data store with Spring Data Redis and the Lettuce client<br>
+                                    <b> Example for this starter available on GitHub</b><a href=""> spring-boot-sample-data-redis</a><br><br>
+
+                                    >> <span>spring-boot-starter-data-rest</span> - Starter for exposing Spring Data repositories over REST using Spring Data REST<br>
+                                    <b> Example for this starter available on GitHub</b><a href=""> spring-boot-sample-data-rest</a><br><br>
+
+                                    >> <span>spring-boot-starter-data-solr</span> - Starter for using the Apache Solr search platform with Spring Data Solr<br>
+                                    <b> Example for this starter available on GitHub</b><a href=""> spring-boot-sample-data-solr</a><br><br>
+
+                                    >> <span>spring-boot-starter-freemarker</span> - Starter for building MVC  web applications using FreeMarker views<br>
+                                    <b> Example for this starter available on GitHub </b><a href="">spring-boot-sample-web-freemarker</a><br><br>
+
+                                    >> <span>spring-boot-starter-hateoas</span> - Starter for building hypermedia-based  RESTful web application with Spring MVC and Spring HATEOAS<br>
+                                    <b> Example for this starter available on GitHub</b><a href=""> spring-boot-sample-hateoas</a><br><br>
+
+                                    >> <span>spring-boot-starter-integration</span> - Starter for using Spring Integration<br>
+                                    <b> Example for this starter available on GitHub</b><a href=""> spring-boot-sample-integration</a><br><br>
+
+                                    >> <span>spring-boot-starter-jdbc </span>- Starter for using JDBC with the HikariCP connection pool<br>
+                                    <b> Example for this starter available on GitHub</b><a href=""> spring-boot-sample-web-secure-jdbc</a><br><br>
+
+                                    >> <span>spring-boot-starter-jersey</span> - Starter for building RESTful web applications using JAX-RS and Jersey. An alternative to spring-boot-starter-web<br>
+                                    <b> Example for this starter available on GitHub</b><a href=""> spring-boot-sample-jersey</a><br><br>
+
+                                    >> <span>spring-boot-starter-jooq</span> - Starter for using jOOQ to access SQL databases. An alternative to spring-boot-starter-data-jpa or spring-boot-starter-jdbc<br>
+                                    <b> Example for this starter available on GitHub</b><a href=""> spring-boot-sample-jooq</a><br><br>
+
+                                    >> <span>spring-boot-starter-mustache</span> - Starter for building web applications using Mustache views<br>
+                                    <b> Example for this starter available on GitHub</b><a href=""> spring-boot-sample-web-mustache</a><br><br>
+
+                                    >> <span>spring-boot-starter-quartz</span> - Starter for using the Quartz scheduler <br>
+                                    <b> Example for this starter available on GitHub</b><a href=""> spring-boot-sample-quartz</a><br><br>
+
+                                    >> <span>spring-boot-starter-security</span> - Starter for using Spring Security<br>
+                                    <b> Example for this starter:</b><a href=""> spring-boot-sample-secure</a><br><br>
+
+                                    >><span> spring-boot-starter-web-services</span> - Starter for using Spring Web Services<br>
+                                    <b> Example for this starter available on GitHub</b><a href=""> spring-boot-sample-webservices</a><br><br>
+
+                                    >> <span>spring-boot-starter-webflux</span> - Starter for building WebFlux applications using Spring Framework’s Reactive Web support<br>
+                                    <b> Example for this starter available on GitHub</b><a href=""> spring-boot-sample-secure-webflux</a><br><br>
+
+                                    >> <span>spring-boot-starter-websocket</span> - Starter for building WebSocket applications using Spring Framework’s WebSocket support<br><br>
+                                    
+                                    Example for this starter available on GitHub <a href="">spring-boot-sample-websocket-tomcat</a>
+                                    <div style="border-left: 8px solid rgb(237, 21, 21); height: 80px;"><br>
+                                        <p > Learn more complete Spring Boot on<a href="http://127.0.0.1:5500/spring_boot_tutorial.html"> Spring Boot Tutorial</a></p>
+                                    </div><br>
+                                    </p><br>
+                                    <h4>2. Spring Boot production starters </h4>
+                                    <p>In addition to the above application starters, the following starters can be used to add production ready features:<br><br>
+
+                                       <span> spring-boot-starter-actuator</span> -  Starter for using Spring Boot’s Actuator which provides production ready features to help you monitor and manage your application<br><br>
+                                        
+                                        Finally, Spring Boot also includes the following starters that can be used if you want to exclude or swap specific technical facets:</p><br>
+                                        <h4>3. Spring Boot technical starters</h4>
+                                        <div class=" mt-2 mb-4">
+                                            <img src="../../assets/springboot images/technical-starters.PNG" alt="logo"  class="img-fluid"/>
+                                        </div><br>
+                                        <h3>Related Spring and Spring Boot Tutorials/Guides:</h3>
+                                        <p>
+                                            <button type="button" class="btn btn-outline-primary">Spring Boot Tutorials [500+]s</button>
+                                            <button type="button" class="btn btn-outline-secondary">Spring Boot Testing Tutorial</button>
+                                            <button type="button" class="btn btn-outline-success">Spring Boot Microservice Tutorial</button>
+                                            <button type="button" class="btn btn-outline-danger">Spring Boot Kafka Microservices </button>
+                                            <button type="button" class="btn btn-outline-warning">Spring Boot + Apache Kafka Tutorial</button>
+                                            <button type="button" class="btn btn-outline-info">Spring Core Tutorial</button>
+                                            <button type="button" class="btn btn-outline-primary">Spring MVC Tutorial </button>
+                                            <button type="button" class="btn btn-outline-secondary">Spring Data JPA Tutorial</button>
+                                            <button type="button" class="btn btn-outline-success">Spring Framework for Beginners</button>
+                                            <button type="button" class="btn btn-outline-danger">Spring AOP Tutorial</button>
+                                            <button type="button" class="btn btn-outline-warning">Spring Security Tutorial</button>
+                                            <button type="button" class="btn btn-outline-info">Spring Exceptions Tutorial</button>
+                                            <button type="button" class="btn btn-outline-primary">Spring Boot Interview Questions</button>
+                                            <button type="button" class="btn btn-outline-dark">Spring Boot Microservices Interview Questions</button>
+                                            <button type="button" class="btn btn-outline-primary">Apache Kafka Tutorials </button>
+                                            <button type="button" class="btn btn-outline-secondary">Docker Tutorials and Guides</button>
+                                            <button type="button" class="btn btn-outline-success">Spring Boot RabbitMQ Tutorials</button>
+                                            <button type="button" class="btn btn-outline-danger">Angular CRUD Example with Spring Boot </button>
+                                            <button type="button" class="btn btn-outline-warning">Spring Boot + Angular 12 CRUD Full Stack</button>
+                                            <button type="button" class="btn btn-outline-info">Spring Boot + Angular 8 CRUD Full Stack</button>
+                                            <button type="button" class="btn btn-outline-danger">Spring Boot + Angular 10 CRUD Full Stack </button>
+                                            <button type="button" class="btn btn-outline-primary">React JS ( React Hooks) + Spring Boot</button>
+                                            <button type="button" class="btn btn-outline-secondary">Spring Boot + React JS CRUD Full Stack</button>
+                                            <button type="button" class="btn btn-outline-success">Spring Boot Thymeleaf CRUD Full Stack </button>
+                                            <button type="button" class="btn btn-outline-danger">Spring Boot User Registration and Login</button>
+                                            <button type="button" class="btn btn-outline-warning">Node Js + Express + MongoDB CRUDVue</button>
+                                            <button type="button" class="btn btn-outline-info">JS + Spring Boot REST API Tutorial</button>
+                                        </p>
+
+
+        </div>
+    </body>
+</html>
