@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>@PropertySource Spring Example</h1>
+        <p>In Spring, you can use <code style="color:red;">@PropertySource</code> annotation to externalize your
+            configuration to a properties file. In
+            this article, we will discuss how to use @<code style="color:red;">@PropertySource</code> to read a
+            properties file and display the values
+            with <code style="color:red;">@Value</code> and <code style="color:red;">Environment</code></p>
+        <p>The <code style="color:red;">@PropertySource</code> annotation provides a convenient and declarative
+            mechanism for adding a <code style="color:red;">PropertySource</code> to
+            Spring’s Environment. To be used in conjunction with <a
+                href="/spring-mvc/spring-configuration-annotation.html" target="_blank">@Configuration</a> classes.</p>
+        <h2>Spring @PropertySource Annotation with Simple Example</h2>
+        <p>In this example, we are reading database configuration from file <code
+                style="color:red;">config.properties</code> file and setting these
+            property values to <code style="color:red;">DataSourceConfig</code> class using <code
+                style="color:red;">Environment</code>.</p>
+        <pre><code>
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+
+@Configuration
+@PropertySource("classpath:config.properties")
+public class ProperySourceDemo implements InitializingBean {
+
+    @Autowired
+    Environment env;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        setDatabaseConfig();
+    }
+
+    private void setDatabaseConfig() {
+        DataSourceConfig config = new DataSourceConfig();
+        config.setDriver(env.getProperty("jdbc.driver"));
+        config.setUrl(env.getProperty("jdbc.url"));
+        config.setUsername(env.getProperty("jdbc.username"));
+        config.setPassword(env.getProperty("jdbc.password"));
+        System.out.println(config.toString());
+    }
+}
+                </code></pre>
+        <h2>Spring @PropertySource Annotation Placeholders Example</h2>
+        <p>Any ${…} placeholders present in a <code style="color:red;">@PropertySource</code> resource location will be
+            resolved against the set of
+            property sources already registered against the environment. </p>
+        <h4>For example:</h4>
+        <pre><code>
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+
+@Configuration
+@PropertySource("classpath:/com/${my.placeholder:default/path}/config.properties")
+public class ProperySourceDemo implements InitializingBean {
+
+    @Autowired
+    Environment env;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        setDatabaseConfig();
+    }
+
+    private void setDatabaseConfig() {
+       DataSourceConfig config = new DataSourceConfig();
+       config.setDriver(env.getProperty("jdbc.driver"));
+       config.setUrl(env.getProperty("jdbc.url"));
+       config.setUsername(env.getProperty("jdbc.username"));
+       config.setPassword(env.getProperty("jdbc.password"));
+       System.out.println(config.toString());
+    }
+}
+            </code></pre>
+        <p>Assuming that "my.placeholder" is present in one of the property sources already registered, e.g. system
+            properties or environment variables, the placeholder will be resolved to the corresponding value. If not,
+            then "default/path" will be used as a default. If no default is specified and a property cannot be resolved,
+            an <code style="color:red;">IllegalArgumentException</code> will be thrown</p>
+        <h2>@PropertySources Annotation - Include multiple properties files</h2>
+        <p>Introduces new <code style="color:red;">@PropertySources</code> to support Java 8 and a better way to include
+            multiple properties files.</p>
+        <pre><code>
+ @Configuration
+ @PropertySources({
+  @PropertySource("classpath:config.properties"),
+  @PropertySource("classpath:db.properties")
+ })
+ public class AppConfig {
+  //...
+ }
+    </code></pre>
+        <p>Allow <code style="color:red;">@PropertySource</code> to ignore the not found properties file.</p>
+        <pre><code>
+    @Configuration
+    @PropertySource("classpath:missing.properties")
+    public class AppConfig {
+     //...
+    }
+   
+</code></pre>
+        <p>If <code style="color:red;">missing.properties</code> is not found, the system is unable to start and throws
+            <code style="color:red;">FileNotFoundException</code>
+        </p>
+        <pre><code>
+Caused by: java.io.FileNotFoundException: 
+classpath resource [missiong.properties] cannot be opened because it does not exist
+
+            </code></pre>
+        <p>In Spring 4, you can use <code style="color:red;">ignoreResourceNotFound</code> to ignore the not found
+            properties file</p>
+        <pre><code>
+    @Configuration
+    @PropertySource(value="classpath:missing.properties", ignoreResourceNotFound=true)
+    public class AppConfig {
+     //...
+    }
+   
+           @PropertySources({
+     @PropertySource(value = "classpath:missing.properties", ignoreResourceNotFound=true),
+     @PropertySource("classpath:config.properties")
+           })
+
+</code></pre>
+        <h2>Spring @PropertySource Annotation Complete Example</h2>
+        <p>Let's create a simple Spring boot maven project to bootstrap quickly.</p>
+        <p>In this example, we are reading database configuration from the file <code
+                style="color:red;">config.properties</code> file and setting these
+            property values to <code style="color:red;">DataSourceConfig</code> class.</p>
+        <p>Create a maven project using Spring Initializr at <a
+                href="https://start.spring.io/">http://start.spring.io/</a>, which is an online Spring Boot
+            application generator.</p>
+        <img src="../assets/spring-core-tutorial-images/project-structure.png">
+        <p>Create a packing structure as per the above diagram.</p>
+        <h3>The pom.xml File</h3>
+        <hr>
+        <pre><code>
+&lt?xml version="1.0" encoding="UTF-8"?>
+&ltproject xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	&ltmodelVersion>4.0.0</modelVersion>
+
+	&ltgroupId>net.guides.springboot2</groupId>
+	&ltartifactId>spring-propertysource-example</artifactId>
+	&ltversion>0.0.1-SNAPSHOT</version>
+	&ltpackaging>jar</packaging>
+
+	&ltname>spring-propertysource-example</name>
+	&ltdescription>Demo project for Spring Boot</description>
+
+	&ltparent>
+		&ltgroupId>org.springframework.boot</groupId>
+		&ltartifactId>spring-boot-starter-parent</artifactId>
+		&ltversion>3.0.4</version>
+		&ltrelativePath/> <!-- lookup parent from repository -->
+    &lt/parent>
+
+	&ltproperties>
+        &ltproject.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		&ltproject.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		&ltjava.version>17</java.version>
+	&lt/properties>
+
+	&ltdependencies>
+        &ltdependency>
+            &ltgroupId>org.springframework.boot</groupId>
+            &ltartifactId>spring-boot-starter</artifactId>
+		&lt/dependency>
+
+		&ltdependency>
+            &ltgroupId>org.springframework.boot</groupId>
+            &ltartifactId>spring-boot-starter-test</artifactId>
+            &ltscope>test</scope>
+		&lt/dependency>
+    &lt/dependencies>
+
+	&ltbuild>
+        &ltplugins>
+            &ltplugin>
+                &ltgroupId>org.springframework.boot</groupId>
+                &ltartifactId>spring-boot-maven-plugin</artifactId>
+            &lt/plugin>
+        &lt/plugins>
+    &lt/build>
+&lt/project>
+
+            </code></pre>
+        <h3>Create a config.properties File</h3>
+        <hr>
+        <p>Let's create a <code style="color:red;">config.properties</code> file in classpath and we will use <code
+                style="color:red;">@PropertySource</code> annotation to read a
+            properties file and display the values with <code style="color: red;">@Value</code> and Environment.</p>
+        <pre><code>
+jdbc.driver=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://localhost:3306/dev_db
+jdbc.username=root
+jdbc.password=root
+
+            </code></pre>
+        <h3>Create DataSourceConfig.java File</h3>
+        <hr>
+        <pre><code>
+public class DataSourceConfig {
+    private String driver;
+    private String url;
+    private String username;
+    private String password;
+            
+    @Override
+    public String toString() {
+        return "DataSourceConfig [driver=" + driver + ", url=" + url + ", username=" + username + "]";
+    }
+            
+    public String getDriver() {
+        return driver;
+    }
+            
+    public void setDriver(String driver) {
+        this.driver = driver;
+    }
+            
+    public String getUrl() {
+        return url;
+    }
+            
+    public void setUrl(String url) {
+        this.url = url;
+    }
+            
+    public String getUsername() {
+        return username;
+    }
+            
+    public void setUsername(String username) {
+        this.username = username;
+    }
+            
+    public String getPassword() {
+        return password;
+    }
+            
+    public void setPassword(String password) {
+        this.password = password;
+    }
+}
+        </code></pre>
+        <h3>Create ProperySourceDemo.java File</h3>
+        <hr>
+        <pre><code>
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+
+@Configuration
+@PropertySource("classpath:config.properties")
+public class ProperySourceDemo implements InitializingBean {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProperySourceDemo.class);
+
+    @Value("${jdbc.driver}")
+    private String driver;
+
+    @Value("${jdbc.url}")
+    private String url;
+
+    @Value("${jdbc.username}")
+    private String username;
+
+    @Value("${jdbc.password}")
+    private String password;
+
+    @Autowired
+    Environment env;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        LOGGER.info(driver);
+        LOGGER.info(url);
+        LOGGER.info(password);
+        LOGGER.info(username);
+        setDatabaseConfig();
+    }
+
+    private void setDatabaseConfig() {
+        DataSourceConfig config = new DataSourceConfig();
+        config.setDriver(env.getProperty("jdbc.driver"));
+        config.setUrl(env.getProperty("jdbc.url"));
+        config.setUsername(env.getProperty("jdbc.username"));
+        config.setPassword(env.getProperty("jdbc.password"));
+        System.out.println(config.toString());
+    }
+}
+        </code></pre>
+        <h3>The Application.java File</h3>
+        <hr>
+        <p>This spring boot application has an entry point Java class called Application.java with the public static
+            void main(String[] args) method, which you can run to start the application.</p>
+        <pre><code>
+package net.guides.springboot2.springpropertysourceexample;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+
+</code></pre>
+        <p>Let's run <code style="color: red;">Application.java</code> class and observe the console output.</p>
+        <img src="../assets/spring-core-tutorial-images/output.PNG">
+        <p>Note that the database configurations are printed at the console using the <code
+                style="color: red;">Environment</code> class.</p>
+    </div>
+</body>
+
+</html>

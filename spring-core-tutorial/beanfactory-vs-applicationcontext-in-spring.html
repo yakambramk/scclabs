@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>BeanFactory vs ApplicationContext in Spring</h1>
+        <p> Spring provides two fundamental interfaces for managing the beans in a Spring container:
+            <code>BeanFactory</code> and
+            ApplicationContext. Understanding the differences between these interfaces is essential for effectively
+            managing Spring applications.
+        </p>
+        <h2>BeanFactory</h2>
+        <p><code>BeanFactory</code> is the root interface for accessing the Spring IoC (Inversion of Control) container.
+            It provides
+            the basic functionalities for managing beans, including instantiation, configuration, and dependency
+            management.</p>
+        <h3>Key Features of BeanFactory</h3>
+        <ol>
+            <li><b>Lazy Initialization</b>: Beans are created only when they are requested.</li>
+            <li><b>Lightweight</b>: Suitable for lightweight applications, where memory usage is a critical concern.
+            </li>
+            <li><b>Basic Container</b>: Provides only fundamental functionalities like dependency injection and bean
+                lifecycle management.</li>
+        </ol>
+        <h3>Usage Example</h3>
+        <pre><code>
+public class BeanFactoryExample {
+    public static void main(String[] args) {
+        Resource resource = new ClassPathResource("applicationContext.xml");
+        BeanFactory factory = new XmlBeanFactory(resource);
+                
+        // Retrieve the bean from the factory
+        MyBean myBean = (MyBean) factory.getBean("myBean");
+        myBean.doSomething();
+    }
+}
+            </code></pre>
+        <h3>When to Use BeanFactory</h3>
+        <ul>
+            <li>When memory consumption is a primary concern.</li>
+            <li>In standalone applications where advanced features of <code>ApplicationContext</code> are not required.
+            </li>
+        </ul>
+        <h2>ApplicationContext</h2>
+        <p><code>ApplicationContext</code> is an extension of <code>BeanFactory</code> that provides additional
+            functionalities, making it more
+            suitable for enterprise applications. It includes all the features of <code>BeanFactory</code> along with
+            several
+            advanced features.</p>
+        <h3>Key Features of ApplicationContext</h3>
+        <ol>
+            <li><b>Eager Initialization</b>: Beans are created at the time of container startup by default.</li>
+            <li><b>Internationalization</b>: Provides support for i18n (Internationalization) messages.</li>
+            <li><b>Event Propagation</b>: Allows registering and propagating events.</li>
+            <li><b>AOP</b>: Provides integration with Spring's AOP functionality.</li>
+            <li><b>Convenient Access</b>: Provides easy access to ApplicationEvent publishers, MessageSource, and more.
+            </li>
+            <li><b>Environment Management</b>: Manages properties and profiles.</li>
+        </ol>
+        <h3>Usage Example</h3>
+        <pre><code>
+    public class ApplicationContextExample {
+        public static void main(String[] args) {
+            ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+    
+            // Retrieve the bean from the context
+            MyBean myBean = (MyBean) context.getBean("myBean");
+            myBean.doSomething();
+        }
+    }
+
+</code></pre>
+        <h3>When to Use ApplicationContext</h3>
+        <ul>
+            <li>In enterprise applications where advanced features like event propagation, internationalization, and AOP
+                are required.</li>
+            <li>When you need a robust, feature-rich container for managing beans.</li>
+        </ul>
+        <h2>Comparison Table</h2>
+        <pre><code>
+| Feature                  | BeanFactory                          | ApplicationContext                        |
+|--------------------------|--------------------------------------|-------------------------------------------|
+| Initialization           | Lazy initialization                  | Eager initialization                      |
+| Event Handling           | Not supported                        | Supported                                 |
+| Internationalization     | Not supported                        | Supported                                 |
+| Annotation-based Config  | Limited support                      | Full support                              |
+| Environment Management   | Limited support                      | Full support                              |
+| AOP                      | Limited support                      | Full support                              |
+| Application Startup Time | Faster (due to lazy initialization)  | Slower (due to eager initialization)      |
+| Suitable for             | Lightweight and standalone apps      | Enterprise and large-scale applications   |
+
+</code></pre>
+        <h2>Conclusion</h2>
+        <p>Both <code>BeanFactory</code> and <code>ApplicationContext</code> serve as IoC containers in Spring, but they
+            cater to different needs.
+            <code>BeanFactory</code> is lightweight and suitable for simple, memory-sensitive applications, while
+            <code>ApplicationContext</code>
+            is more feature-rich and suited for enterprise-level applications requiring advanced features like event
+            propagation, internationalization, and AOP.
+        </p>
+        <p>For most Spring applications, especially those of considerable complexity and scale, <code>ApplicationContext</code> is
+            the preferred choice due to its extensive capabilities and ease of integration with Spring's ecosystem.
+            However, understanding <code>BeanFactory</code> is essential for scenarios where resource optimization is critical.</p>
+
+
+
+    </div>
+</body>
+
+</html>

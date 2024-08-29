@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring @DependsOn Annotation Example</h1>
+        <p>In this article, we will discuss how to use the <code>@DependsOn</code> annotation in Spring applications
+            with an example.
+            The <code>@DependsOn</code> annotation can force the Spring IoC container to initialize one or more beans
+            before the bean
+            which is annotated with <code>@DependsOn</code>.</p>
+        <p>The <code>@DependsOn</code> annotation may be used on any class directly or indirectly annotated with
+            <code>@Component</code> or on
+            methods annotated with <code>@Bean</code>.
+        </p>
+        <h2>Spring @DependsOn Annotation Example</h2>
+        <p>Let's create an example to demonstrate using the <code>@DependsOn</code> annotation in a Spring application.
+        </p>
+        <p>Let's create an example to demonstrate using the <code>@DependsOn</code> annotation in a Spring application.
+        </p>
+        <h3>1. Create a Simple Maven Project</h3>
+        <img src="../assets/spring-core-tutorial-images/project-structure.png">
+        <h3>2. The pom.xml File</h3>
+        <p>Make sure to use Java 17 or later for Spring Framework 6:</p>
+        <pre><code>
+&ltdependency>
+        &ltgroupId>org.springframework</groupId>
+        &ltartifactId>spring-core</artifactId>
+        &ltversion>6.1.8</version>
+&lt/dependency>
+&ltdependency>
+        &ltgroupId>org.springframework</groupId>
+        &ltartifactId>spring-context</artifactId>
+        &ltversion>6.1.8</version>
+&lt/dependency>
+            </code></pre>
+        <h3>3. Create Spring Beans</h3>
+        <h4><b>FirstBean.java</b></h4>
+        <pre><code>
+package net.javaguides.spring.dependson;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class FirstBean {
+
+    @Autowired
+    private SecondBean secondBean;
+
+    @Autowired
+    private ThirdBean thirdBean;
+
+    public FirstBean() {
+        System.out.println("FirstBean Initialized via Constructor");
+    }
+
+    public void populateBeans() {
+        secondBean.display();
+        thirdBean.display();
+    }
+}
+            </code></pre>
+        <h4><b>SecondBean.java</b></h4>
+        <pre><code>
+package net.javaguides.spring.dependson;
+
+public class SecondBean {
+    public SecondBean() {
+        System.out.println("SecondBean Initialized via Constructor");
+    }
+
+    public void display() {
+        System.out.println("SecondBean method called");
+    }
+}
+            </code></pre>
+        <h4>ThirdBean.java</h4>
+        <pre><codde>
+package net.javaguides.spring.dependson;
+
+public class ThirdBean {
+    public ThirdBean() {
+        System.out.println("ThirdBean Initialized via Constructor");
+    }
+
+    public void display() {
+        System.out.println("ThirdBean method called");
+    }
+}
+            </codde></pre>
+        <h3>4. Java-Based Configuration - AppConfig.java</h3>
+        <p>Declare the above beans in a Java-based configuration class.</p>
+        <h4>AppConfig.java</h4>
+        <pre><code>
+package net.javaguides.spring.dependson;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+
+@Configuration
+public class AppConfig {
+
+    @Bean("firstBean")
+    @DependsOn({"secondBean", "thirdBean"})
+    public FirstBean firstBean() {
+        return new FirstBean();
+    }
+
+    @Bean("secondBean")
+    public SecondBean secondBean() {
+        return new SecondBean();
+    }
+
+    @Bean("thirdBean")
+    public ThirdBean thirdBean() {
+        return new ThirdBean();
+    }
+}
+            </code></pre>
+        <h3>5. Running Spring Application - Application.java</h3>
+        <p>Create a main class to run the application.</p>
+        <h4>Application.java</h4>
+        <pre><code>
+package net.javaguides.spring.dependson;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class Application {
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        FirstBean bean = context.getBean(FirstBean.class);
+        bean.populateBeans();
+        context.close();
+    }
+}
+            </code></pre>
+        <h3>Output</h3>
+        <pre><code>
+SecondBean Initialized via Constructor
+ThirdBean Initialized via Constructor
+FirstBean Initialized via Constructor
+SecondBean method called
+ThirdBean method called
+        </code></pre>
+        <p>As you can see in the above output, the beans <code>SecondBean</code> and <code>ThirdBean</code> are
+            initialized before the bean
+            <code>FirstBean</code>. If you remove the <code>@DependsOn</code> annotation from the
+            <code>firstBean()</code> method of
+            <code>AppConfig</code> class, the order
+            of initialization of beans may be different on each run.
+        </p>
+        <h2>Conclusion</h2>
+        <p>The <code>@DependsOn</code> annotation in Spring ensures that certain beans are initialized before others.
+            This is
+            particularly useful when there are dependencies that need to be guaranteed to be up and running before
+            others. By using this annotation, you can control the initialization order and ensure proper configuration
+            of your Spring beans.</p>
+        <p>For more <a href="/spring_framework_tutorial.html" target="_blank">Spring</a> and <a
+                href="/spring_boot_tutorial.html" target="_blank">Spring Boot tutorials</a>, you can explore related
+            annotations like <code>@Bean</code>,
+            <code>@Qualifier</code>,
+            <code>@Autowired</code>, and more. Happy coding!
+        </p>
+    </div>
+</body>
+
+</html>

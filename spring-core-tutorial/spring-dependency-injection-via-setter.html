@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Dependency Injection via Setter Example</h1>
+        <p>In this article, we will learn how to use setter-based dependency injection in Spring applications.</p>
+        <p>In <b>setter dependency injection</b>, the <a href="/spring-core-tutorial/spring_ioc_container_overview.html" target="_blank">Spring IOC container</a> injects a component’s
+            dependencies via
+            JavaBean-style setter methods. A component’s setters expose the dependencies the IoC container can manage.
+        </p>
+        <p>In the below diagram, the highlighted part of the code shows a setter-based dependency injection example.</p>
+        <img src="../assets/spring-core-tutorial-images/setter-based-injection.PNG">
+        <h2>Spring Dependency Injection via Setter Example</h2>
+        <hr>
+        <p>Let's see the complete example to demonstrate the Setter-based dependency injection. In this example, we have
+            used spring Java-based container configuration.</p>
+        <b>You can download the source code of this article from my GitHub repository (link given at end of this
+            article).</b>
+        <h3>Maven POM Dependencies</h3>
+        <hr>
+        <p>Let's add a spring-context dependency to maven project like:</p>
+        <pre><code>
+&ltproject
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    &ltmodelVersion>4.0.0</modelVersion>
+    &ltgroupId>com.javadevsguide.springframework</groupId>
+    &ltartifactId>spring-dependency-injection</artifactId>
+    &ltversion>0.0.1-SNAPSHOT</version>
+    &ltdependencies>
+        &ltdependency>
+            &ltgroupId>org.springframework</groupId>
+            &ltartifactId>spring-context</artifactId>
+            &ltversion>5.0.0.RELEASE</version>
+        &lt/dependency>
+        &ltdependency>
+            &ltgroupId>junit</groupId>
+            &ltartifactId>junit</artifactId>
+            &ltversion>4.8.1</version>
+            &ltscope>test</scope>
+        &lt/dependency>
+    &lt/dependencies>
+&lt/project>
+            </code></pre>
+        <h3>Spring Components</h3>
+        <hr>
+        <p>Let's create a few Spring beans or components as follows.</p>
+        <h3>MessageService</h3>
+        <p>Let's create the <code style="color: red;">MessageService</code> interface and provide more than two
+            implementations for it:</p>
+        <pre><code>
+public interface MessageService {
+    public void sendMsg(String message);
+}
+            </code></pre>
+        <h3>EmailService, SMSService, and TwitterService</h3>
+        <p>Let's implement the <code style="color: red;">MessageService</code> interface. There are many ways to send a
+            message like email, SMS, Twitter, etc.</p>
+        <pre><code>
+@Service("EmailService")
+public class EmailService implements MessageService{
+    public void sendMsg(String message) {
+        System.out.println(message);
+    }
+}
+            </code></pre>
+        <pre><code>
+@Service("SMSService")
+public class SMSService implements MessageService{
+    public void sendMsg(String message) {
+        System.out.println(message);
+    }
+}
+            </code></pre>
+        <pre><code>
+@Service("TwitterService")
+public class TwitterService implements MessageService{
+    public void sendMsg(String message) {
+        System.out.println(message);
+    }
+}
+            </code></pre>
+        <p>Note that there are multiple implementations for the <code style="color: red;">MessageService</code>
+            interface so to avoid ambiguity, let's
+            use <a href="/spring-core-tutorial/spring-qualifier-annotation-example.html" target="_blank">@Qualifier</a>
+            annotation.</p>
+        <h3>Setter-based dependency injection</h3>
+        <p>It's time to demonstrate the usage of Setter-based dependency injection. To avoid decoupling always use
+            interfaces or abstract base classes as an instance variable and setter method arguments.
+        </p>
+        <p>In this example, we have used the <code style="color: red;">MessageService</code> interface.</p>
+        <pre><code>
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+import com.javadevsguide.springframework.di.service.MessageService;
+
+@Component
+public class SetterBasedInjection {
+    private MessageService messageService;
+
+    @Autowired
+    @Qualifier("TwitterService")
+    public void setMessageService(MessageService messageService) {
+        this.messageService = messageService;
+    }
+
+    public void processMsg(String message) {
+        messageService.sendMsg(message);
+    }
+}
+
+</code></pre>
+        <h3>Spring Configuration</h3>
+        <p>Let's create a spring configuration file using java class AppConfiguration and annotated with <a
+                href="/spring-mvc/spring-configuration-annotation.html" target="_blank">@Configuration</a>
+            annotation. This is equivalent to the spring XML configuration file without beans definition.</p>
+        <pre><code>
+package com.javadevsguide.springframework.di.config;
+
+import org.springframework.context.annotation.ComponentScan;
+
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan("com.javadevsguide.springframework.di")
+public class AppConfiguration {
+
+}
+
+</code></pre>
+        <h3>Testing</h3>
+        <p>Let's create an IOC container object that is an ApplicationContext object and get the beans from it.</p>
+        <pre><code>
+import org.springframework.context.ApplicationContext;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import com.javadevsguide.springframework.di.config.AppConfiguration;
+import com.javadevsguide.springframework.di.field.FieldBasedInjection;
+
+public class TestApplication {
+    public static void main(String[] args) {
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
+        FieldBasedInjection  fieldBasedInjection = applicationContext.getBean(FieldBasedInjection.class);
+        fieldBasedInjection.processMsg("twitter message sending ");
+    }
+}
+
+</code></pre>
+        <p>Once you run above class will run spring application as stand-alone and print below output to console.</p>
+        <p>Output:</p>
+        <pre><code>twitter message sending </code></pre>
+
+
+
+
+
+    </div>
+</body>
+
+</html>

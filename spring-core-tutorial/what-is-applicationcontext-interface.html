@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>ApplicationContext Interface and Its Implementation Classes</h1>
+        <p>The <code>ApplicationContext</code> is a central interface to provide configuration for a Spring application.
+            It is part
+            of the Spring IoC container and is responsible for instantiating, configuring, and assembling the beans. The
+            <code>ApplicationContext</code> interface extends the BeanFactory interface, adding more enterprise-specific
+            functionalities.
+        </p>
+        <h2>Features of ApplicationContext</h2>
+        <p>Here are some key features provided by the ApplicationContext:</p>
+        <ol>
+            <li><b>Bean Instantiation/Wiring</b>: Automatically handles the instantiation and wiring of beans.</li>
+            <li><b>Automatic BeanPostProcessor Registration</b>: Registers BeanPostProcessor implementations, allowing
+                custom modification of new bean instances.</li>
+            <li><b>Automatic BeanFactoryPostProcessor Registration</b>: Registers BeanFactoryPostProcessor
+                implementations, allowing custom modification of the application context's internal bean factory.</li>
+            <li><b>Convenient MessageSource Access</b>: Provides access to message sources, allowing easy
+                internationalization.</li>
+            <li><b>Application Event Publication</b>: Supports event propagation, allowing beans to publish and listen
+                to application events.</li>
+            <li><b>Resource Loading</b>: Provides a generic way to load file resources, such as classpath, file system,
+                and URLs.</li>
+        </ol>
+        <h3>ApplicationContext Interface</h3>
+        <p>The <code>ApplicationContext</code> interface is defined as follows:</p>
+        <pre><code>
+public interface ApplicationContext extends EnvironmentCapable, ListableBeanFactory, HierarchicalBeanFactory,
+                                             MessageSource, ApplicationEventPublisher, ResourcePatternResolver {
+    // Various methods to provide configuration, resource loading, and bean management
+}
+        </code></pre>
+        <h2>Common ApplicationContext Implementations</h2>
+        <p>Spring provides several implementations of the <code>ApplicationContext</code> interface, each serving
+            different use cases:</p>
+        <h3>1. AnnotationConfigApplicationContext</h3>
+        <p><code>AnnotationConfigApplicationContext</code> is used for standalone Java applications that use annotations
+            for configuration.</p>
+        <h4>Example:</h4>
+        <pre><code>
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        MyBean myBean = context.getBean(MyBean.class);
+        myBean.doSomething();
+    }
+}
+        </code></pre>
+        <h3>2. ClassPathXmlApplicationContext</h3>
+        <p><code>ClassPathXmlApplicationContext</code> loads the bean configuration XML file from the classpath.</p>
+        <h4>Example:</h4>
+        <pre><code>
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        MyBean myBean = context.getBean(MyBean.class);
+        myBean.doSomething();
+    }
+}
+        </code></pre>
+        <h3>3. FileSystemXmlApplicationContext</h3>
+        <p><code>FileSystemXmlApplicationContext</code> loads the bean configuration XML file from anywhere in the file
+            system.</p>
+        <h4>Example:</h4>
+        <pre><code>
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext context = new FileSystemXmlApplicationContext("C:/path/to/applicationContext.xml");
+        MyBean myBean = context.getBean(MyBean.class);
+        myBean.doSomething();
+    }
+}
+
+</code></pre>
+        <h3>4. AnnotationConfigWebApplicationContext and XmlWebApplicationContext</h3>
+        <p>These are used for web applications, providing context configuration for Spring MVC applications using
+            annotations and XML, respectively.</p>
+        <h4>Example for AnnotationConfigWebApplicationContext:</h4>
+        <pre><code>
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+
+public class WebAppInitializer implements WebApplicationInitializer {
+    @Override
+    public void onStartup(ServletContext servletContext) {
+        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+        context.register(WebConfig.class);
+        servletContext.addListener(new ContextLoaderListener(context));
+    }
+}
+            </code></pre>
+        <h4>Example for XmlWebApplicationContext:</h4>
+        <pre><code>
+&lt!-- web.xml --&gt
+&ltlistener>
+    &ltlistener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+&lt/listener>
+&ltcontext-param>
+    &ltparam-name>contextConfigLocation</param-name>
+    &ltparam-value>/WEB-INF/applicationContext.xml</param-value>
+&lt/context-param>
+            </code></pre>
+        <h2>Conclusion</h2>
+        <p>The <code>ApplicationContext</code> interface is a powerful and flexible part of the Spring IoC container. It
+            extends the
+            basic functionalities of the <code>BeanFactory</code> and provides advanced features such as
+            internationalization, event
+            propagation, and resource management. Understanding the different implementations of
+            <code>ApplicationContext</code> and
+            their use cases is crucial for effectively managing and configuring your Spring applications.
+        </p>
+    </div>
+</body>
+
+</html>
