@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Singleton and Prototype Bean Scopes Examples</h1>
+        <p>A simple example to demonstrates the difference between <code style="color: red;">singleton scope</code> and
+            <code style="color: red;">prototype scope</code> with an example.
+        </p>
+        <p>In this example, I have used a Java-based configuration using <code
+                style="color: red;">@Configuration</code>, <code style="color: red;">@Bean</code>, and <code
+                style="color: red;">@Scope annotations</code>.</p>
+        <p>Here’s an example to show you what’s the difference between bean scopes Singleton and Prototype. Let's create
+            UserService class which is common for Singleton and Prototype scope examples.</p>
+        <img src="../assets/spring-core-tutorial-images/Singleton and Prototype Bean Scopes Examples.png"
+            style="margin: 0 30%">
+        <hr>
+        <pre><code>
+public class UserService {
+ 
+    private String name;
+       
+    public String getName() {
+        return name;
+    }
+       
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+</code></pre>
+        <h2>Singleton scope example</h2>
+        <hr>
+        <p>If no bean scope is specified in bean configuration file, default to a singleton. Let's create the java based
+            configuration file.</p>
+        <pre><code>
+import org.springframework.context.annotation.Bean;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+
+import com.javadevsguide.springframework.di.service.UserService;
+
+@Configuration
+public class AppConfiguration {
+
+ @Bean
+ // @Scope("singleton")
+ public UserService userService(){
+  return new UserService();
+ }
+}
+            </code></pre>
+        <p>Note that <code style="color: red">@Scope("singleton")</code> annotation is commented as Singleton Scope is
+            the default.</p>
+        <p>Let's test this Singleton scope using application context standalone <code style="color: red">main()</code>
+            method.</p>
+        <pre><code>
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import com.javadevsguide.springframework.di.config.AppConfiguration;
+import com.javadevsguide.springframework.di.service.UserService;
+
+public class TestApplication {
+ public static void main(String[] args) {
+  ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
+  UserService  userService = applicationContext.getBean(UserService.class);
+  userService.setName("Singleton scope test");
+  System.out.println(userService.getName());
+  
+  UserService  userService1 = applicationContext.getBean(UserService.class);
+  System.out.println(userService1.getName());
+ }
+}
+            </code></pre>
+        <h3>Output :</h3>
+        <pre><code>
+Singleton scope test
+
+Singleton scope test
+            </code></pre>
+        <p>Since the bean ‘<b>userService’</b> is in singleton scope, the second retrieval by ‘<b>userService1’</b> will
+            display the
+            message set by ‘userService’ also, even it’s retrieve by a new <b>getBean()</b> method. In singleton, only a
+            single
+            instance per <code style="color: red;">Spring IoC container</code>, no matter how many time you retrieve it
+            with getBean(), it will always
+            return the same instance.</p>
+        <h2>Prototype scope example</h2>
+        <hr>
+        <p>Define <code>@Scope("prototype")</code> bean scope in bean java based configuration file. Let's create a java
+            based
+            configuration file.</p>
+        <pre><code>
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+
+import com.javadevsguide.springframework.di.service.UserService;
+
+@Configuration
+public class AppConfiguration {
+
+ @Bean
+ @Scope("prototype")
+ public UserService userService(){
+  return new UserService();
+ }
+}
+            </code></pre>
+        <p>Let's test this Prototype scope using application context standalone main() method.</p>
+        <pre><code>
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import com.javadevsguide.springframework.di.config.AppConfiguration;
+import com.javadevsguide.springframework.di.service.UserService;
+
+public class TestApplication {
+ public static void main(String[] args) {
+  ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
+  UserService  userService = applicationContext.getBean(UserService.class);
+  userService.setName("Prototype scope test");
+  System.out.println(userService.getName());
+  
+  UserService  userService1 = applicationContext.getBean(UserService.class);
+  System.out.println(userService1.getName());
+ }
+}
+            </code></pre>
+        <h3>Output:</h3>
+        <pre><code>
+Prototype scope test
+
+null
+            </code></pre>
+        <p>In the prototype scope, you will have a new instance for each <code style="color: red;">getBean()</code>
+            method called. since the output is
+            null in the second retrieval.</p>
+        <h2>Bean scopes annotations on spring annotation based configuration</h2>
+        <hr>
+        <p>You can also use annotation to define your bean scope.</p>
+        <pre><code>
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+@Service
+@Scope("prototype")
+public class CustomerService 
+{
+ String message;
+ 
+ public String getMessage() {
+  return message;
+ }
+
+ public void setMessage(String message) {
+  this.message = message;
+ }
+}
+            </code></pre>
+        <p>Enable auto component scanning</p>
+        <pre><code>
+@Configuration
+@ComponentScan("com.javadevsguide.springframework.di")
+public class AppConfiguration {
+}
+            </code></pre>
+        <h2>Conclusion</h2>
+        <p>In this example, we demonstrated the difference between singleton scope and prototype scope. Also in this
+            example, we have used a <code style="color: red;">Java-based configuration using</code>
+            <b>@Configuration</b>, <b>@Bean</b>, and <b>@Scope</b> annotations.
+        </p>
+    </div>
+</body>
+
+</html>

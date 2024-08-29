@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Dependency Injection via Constructor Example</h1>
+        <p>In this article, we will learn how to use constructor-based dependency injection in Spring Applications.</p>
+        <p>We can use either <a href="/spring-core-tutorial/spring-annotation-based-container-configuration.html"
+                target="_blank">Spring Annotation Based Container Configuration</a> or <a
+                href="/spring-core-tutorial//spring-java-based-configuration-basics.html" target="_blank">spring
+                Java-based container
+                configuration</a> or a mix of both to demonstrate this example</p>
+        <p><b>Constructor-based DI</b> is accomplished by the container invoking a constructor with a number of
+            arguments, each
+            representing a dependency.</p>
+        <p>In the below diagram, the highlighted code shows a Constructor-based dependency injection example.</p>
+        <img src="../assets/spring-core-tutorial-images/constructor-based-injection.PNG">
+        <p>Let's create a spring configuration file using java class <code style="color: red;">AppConfiguration</code>
+            which is annotated with
+            <a href="/spring-mvc/spring-configuration-annotation.html" target="_blank">@Configuration annotation</a>.
+            This is equivalent to spring XML configuration file without beans
+            definition.
+        </p>
+        <h3>AppConfiguration.java</h3>
+        <pre><code>
+package com.javadevsguide.springframework.di.config;
+
+import org.springframework.context.annotation.ComponentScan;
+            
+import org.springframework.context.annotation.Configuration;
+            
+@Configuration
+@ComponentScan("com.javadevsguide.springframework.di")
+public class AppConfiguration {
+            
+}
+        </code></pre>
+        Now create a <code style="color: red;">MessageService</code> interface and provide more than two implementations
+        for it.
+        <h3>MessageSerivce.java</h3>
+        <pre><code>
+public interface MessageService {
+    public void sendMsg(String message);
+}
+
+</code></pre>
+        <p>Let's implement the <code style="color: red;">MessageService</code> interface. There are many ways to send a
+            message like through email, SMS, twitter etc.</p>
+        <h3>Create EmailService, SMSService, and TwitterService Classes</h3>
+        <pre><code>
+@Service("EmailService")
+public class EmailService implements MessageService{
+    public void sendMsg(String message) {
+        System.out.println(message);
+    }
+}
+            </code></pre>
+        <pre><code>
+@Service("SMSService")
+public class SMSService implements MessageService{
+    public void sendMsg(String message) {
+         System.out.println(message);
+    }
+}
+            </code></pre>
+        <pre><code>
+@Service("TwitterService")
+public class TwitterService implements MessageService{
+    public void sendMsg(String message) {
+        System.out.println(message);
+    }
+}
+            </code></pre>
+        <p>Note that there are multiple implementations for <code style="color: red;">MessageService</code> interface so
+            to avoid ambiguity, let's use
+            <a href="/spring-core-tutorial/spring-qualifier-annotation-example.html" target="_blank">@Qualifier</a>
+            annotation.
+        </p>
+        <p>It's time to demonstrate the usage of Constructor-based dependency injection. To avoid decoupling always use
+            interfaces or abstract base classes as an instance variable and constructor arguments. In this example, we
+            have used the MessageService interface.</p>
+        <h3>ConstructorBasedInjection.java</h3>
+        <pre><code>
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+import com.javadevsguide.springframework.di.service.MessageService;
+
+@Component
+public class ConstructorBasedInjection {
+    private MessageService messageService;
+ 
+    @Autowired 
+    public ConstructorBasedInjection(@Qualifier("TwitterService")
+        MessageService messageService) {
+        super();
+        this.messageService = messageService;
+    }
+
+    public void processMsg(String message) {
+        messageService.sendMsg(message);
+    }
+            </code></pre>
+        <p>It's time to test the usage of Constructor-based dependency injection. Let's create an IOC container object
+            that is an <code style="color: red;">ApplicationContext</code> object and get the beans from it.</p>
+        <h3>Application.java</h3>
+        <pre><code>
+import org.springframework.context.ApplicationContext;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import com.javadevsguide.springframework.di.config.AppConfiguration;
+import com.javadevsguide.springframework.di.constructor.ConstructorBasedInjection;
+
+public class Application {
+    public static void main(String[] args) {
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
+        ConstructorBasedInjection  constructorBasedInjection = applicationContext.getBean(ConstructorBasedInjection.class);
+        constructorBasedInjection.processMsg("twitter message sending ");
+    }
+}
+            </code></pre>
+        <p>Note that we have used <code>AppConfiguration</code> class annotated with <a
+                href="/spring-mvc/spring-configuration-annotation.html" target="_blank">@Configuration</a> for
+            configurations.</p>
+        <h2>Conclusion</h2>
+        <p>In this article, we have demonstrated spring dependency injection via the constructor. </p>
+    </div>
+</body>
+
+</html>

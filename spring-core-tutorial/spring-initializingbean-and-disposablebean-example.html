@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring InitializingBean and DisposableBean Example</h1>
+        <p>In this tutorial, we will explore how to use the <code>InitializingBean</code> and
+            <code>DisposableBean</code> interfaces in Spring for
+            bean lifecycle management. These interfaces provide hooks for performing actions during bean initialization
+            and destruction.
+        </p>
+        <h2>Introduction</h2>
+        <p>Spring beans have a lifecycle that includes phases such as instantiation, property setting, initialization,
+            and destruction. By implementing the <code>InitializingBean</code> and <code>DisposableBean</code>
+            interfaces, we can hook into the
+            initialization and destruction phases to perform custom logic.</p>
+        <ul>
+            <li><b>InitializingBean: </b>The <code>afterPropertiesSet()</code> method is called after the bean's
+                properties have been set.</li>
+            <li><b>DisposableBean: </b>The <code>destroy()</code> method is called before the bean is destroyed.</li>
+        </ul>
+        <h3>Why Use InitializingBean and DisposableBean?</h3>
+        <ul>
+            <li><b>InitializingBean: </b>Useful for performing custom initialization logic after all properties have
+                been set.</li>
+            <li><b>DisposableBean: </b>Useful for performing custom cleanup logic before the bean is destroyed.</li>
+        </ul>
+        <h2>Project Setup</h2>
+        <h3>Step 1: Create a Spring Boot Project</h3>
+        <ol>
+            <li>Using Spring Initializr:
+                <ul>
+                    <li>Go to Spring Initializr.</li>
+                    <li>Select the following options:
+                        <ul>
+                            <li><b>Project: </b>Maven Project</li>
+                            <li><b>Language: </b>Java</li>
+                            <li><b>Spring Boot: </b>3.3.0</li>
+                        </ul>
+                    </li>
+                    <li>Add dependencies:
+                        <ul>
+                            <li>Spring Web</li>
+                        </ul>
+                    </li>
+                    <li>Click on <b>Generate</b> to download the project.</li>
+                </ul>
+
+            </li>
+            <li><b>Import the project</b>into your favorite IDE (Eclipse, IntelliJ, etc.).</li>
+        </ol>
+        <h3>Step 2: Create Bean Classes Implementing InitializingBean and DisposableBean</h3>
+        <p>Create two classes <code>MyInitializingBean</code> and <code>MyDisposableBean</code> which will implement
+            <code>InitializingBean</code> and <code>DisposableBean</code> respectively.
+        </p>
+        <h4>MyInitializingBean.java</h4>
+        <pre><code>
+package net.javaguides.spring.lifecycle;
+
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyInitializingBean implements InitializingBean {
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        // Custom initialization logic
+        System.out.println("MyInitializingBean: afterPropertiesSet method called");
+    }
+}
+        </code></pre>
+        <h4>MyDisposableBean.java</h4>
+        <pre><code>
+package net.javaguides.spring.lifecycle;
+
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyDisposableBean implements DisposableBean {
+
+    @Override
+    public void destroy() throws Exception {
+        // Custom cleanup logic
+        System.out.println("MyDisposableBean: destroy method called");
+    }
+}
+        </code></pre>
+        <h3>Step 3: Create the Main Application Class</h3>
+        <p>Create a main class to run your Spring Boot application.</p>
+        <h4>SpringLifecycleApplication.java</h4>
+        <pre><code>
+package net.javaguides.spring.lifecycle;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringLifecycleApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringLifecycleApplication.class, args);
+    }
+}
+        </code></pre>
+        <h3>Step 4: Run the Application</h3>
+        <p>Run the <code>SpringLifecycleApplication</code> class as a Java application. You should see the following
+            output in the console:</p>
+        <pre><code>MyInitializingBean: afterPropertiesSet method called</code></pre>
+        <h3>Step 5: Shut Down the Application</h3>
+        <p>When you shut down the application (e.g., by stopping the Spring Boot application in your IDE), you should
+            see the following output in the console:</p>
+        <pre><code>MyDisposableBean: destroy method called</code></pre>
+        <h3>Explanation</h3>
+        <ul>
+            <li><b>MyInitializingBean: </b>Implements <code>InitializingBean</code> and overrides the
+                <code>afterPropertiesSet</code> method to
+                include custom initialization logic. This method is called after the properties of the bean have been
+                set.
+            </li>
+            <li><b>MyDisposableBean: </b>Implements <code>DisposableBean</code> and overrides the <code>destroy</code>
+                method to include custom
+                cleanup logic. This method is called when the Spring container is shutting down.</li>
+        </ul>
+        <h3>Best Practices</h3>
+        <ul>
+            <li><b>Use Annotations: </b>For most scenarios, it is better to use <code>@PostConstruct</code> and
+                <code>@PreDestroy</code>
+                annotations for initialization and destruction callbacks as they are more concise and easier to manage.
+            </li>
+            <li><b>Avoid Overuse: </b>Do not overuse these interfaces. Use them only when you need custom logic that
+                cannot be handled by other means (like <code>@PostConstruct</code> and <code>@PreDestroy</code>).</li>
+        </ul>
+        <h2>Conclusion</h2>
+        <p>In this tutorial, we have learned how to use the <code>InitializingBean</code> and
+            <code>DisposableBean</code> interfaces in Spring for
+            managing bean lifecycle events. We have seen how to create a simple Spring Boot application to demonstrate
+            their usage and discussed best practices for their use.
+        </p>
+        <p>This approach ensures that your beans are properly initialized and cleaned up, making your application more
+            robust and maintainable.</p>
+        <h2>Additional Resources</h2>
+        <ul>
+            <li><a href="https://docs.spring.io/spring-framework/reference/core/beans/factory-nature.html">Spring
+                    Documentation: Bean Lifecycle</a></li>
+            <li><a href="/spring-core-tutorial/spring-postconstruct-and-predestroy-example.html">Spring @PostConstruct
+                    and @PreDestroy Example</a></li>
+        </ul>
+
+    </div>
+</body>
+
+</html>
