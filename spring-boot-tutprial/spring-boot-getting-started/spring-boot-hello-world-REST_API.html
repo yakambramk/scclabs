@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+                .container-fluid {
+            width: 100%;
+            background-color: rgb(31, 180, 254);
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center; /* Centers the image horizontally */
+            align-items: center; /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 70%; /* Ensures the image is responsive */
+            height: auto; /* Maintains the aspect ratio */
+            /* Adjust the bottom margin */
+            border-radius: 8px; /* Optional: adds rounded corners to the image */
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/rest api application.jpg" alt="logo" />
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="heading">
+            <h3>Spring Boot Hello World REST API</h3>
+            <h6>Author: Shiva Krishna G</h6>
+        </div><br>
+        <p>In the previous article, <a
+                href="http://127.0.0.1:5500/spring-boot-tutprial/spring-boot-getting-started/what_is_spring_boot_and_spring_boot_features.html">we
+                had a quick overview of Spring Boot and its key features</a>. In this article, we will learn how to
+            develop a simple Hello World REST API using Spring Boot. We use Maven to build this project since most IDEs
+            support it.<br><br>
+            We will use the latest version of Spring boot and make sure that you have installed Java 8+ on your
+            machine.<br><br>
+            Let's get started with our objective of what we will build?.
+        </p><br>
+        <h3>What we’ll build?</h3>
+        <p>We’ll build a REST API that will accept HTTP GET requests at:</p>
+        <code><pre>
+http://localhost:8080/hello-world </pre></code>
+        <p>and respond with a response String "Hello World!"</p>
+        <code><pre>
+Hello World!</pre></code> <br>
+
+
+        <h3>Tools and Technologies Used</h3>
+        <ul>
+            <li>Spring Boot - 3</li>
+            <li>JDK - 17 or later</li>
+            <li>Maven - 3.2+</li>
+            <li>IDE - Eclipse or Spring Tool Suite (STS)</li>
+        </ul>
+        <h3>1. Create Spring Boot Project</h3>
+        <p>Here is the complete<span> pom.xml</span> file for your reference:</p>
+        <code><pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;parent&gt;
+		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+		&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+		&lt;version&gt;3.0.4&lt;/version&gt;
+		&lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+	&lt;/parent&gt;
+	&lt;groupId&gt;com.springboot.app&lt;/groupId&gt;
+	&lt;artifactId&gt;springboot-first-app&lt;/artifactId&gt;
+	&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;springboot-first-app&lt;/name&gt;
+	&lt;description&gt;Spring Boot First Application&lt;/description&gt;
+	&lt;properties&gt;
+		&lt;java.version&gt;17&lt;/java.version&gt;
+	&lt;/properties&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+				&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+
+&lt;/project&gt;</pre></code>
+        <p>From the above pom.xml, let's understand a few important spring boot dependencies and plugins.</p><br>
+        <h4>spring-boot-starter-parent</h4>
+        <p>All Spring Boot projects typically use spring-boot-starter-parent as the parent in pom.xml.</p>
+        <code><pre>
+&lt;parent&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+    &lt;version&gt;3.0.4&lt;/version&gt;
+&lt;/parent&gt;</pre></code> <br>
+        <p>Parent Poms allow you to manage the following things for multiple child projects and modules:</p>
+        <ul>
+            <li>Configuration - Java Version and Other Properties</li>
+            <li>Dependency Management - Version of dependencies</li>
+            <li>Default Plugin Configuration</li>
+        </ul>
+        <h4>The spring-boot-starter-web Starter:</h4>
+        <p>We use<span> spring-boot-starter-web</span> dependency to develop RESTful web services.<br><br>
+            This dependency provides a tomcat server as the default embedded container:</p>
+        <code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt; </pre></code><br><br>
+
+        <h4>Spring Boot Maven plugin</h4>
+        <p>The Spring Boot Maven plugin provides many convenient features:</p>
+        <ul>
+            <li>It collects all the jars on the classpath and builds a single, runnable "über-jar", which makes it more
+                convenient to execute and transport your service</li>
+            <li>It searches for the public static void<span> main()</span> method to flag as a runnable class.</li>
+            <li>It provides a built-in dependency resolver that sets the version number to match Spring Boot
+                dependencies. You can override any version you wish, but it will default to Boot’s chosen set of
+                versions.</li>
+        </ul>
+        <p>The <span>spring-boot-starter-test</span> dependency will get automatically added to the Spring boot project for creating
+            JUnit test cases but in this article, we are not going to focus on JUnit test cases.</p><br>
+
+        <h3>3. Spring Boot Hello World REST API</h3>
+        <p>Let's create a <span>HelloWorldController</span> class and the below code to it:</p>
+        <code><pre>
+package com.springboot.first.app;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloWorldController {
+	
+	// GET HTTP Method
+	// http://localhost:8080/hello-world
+	@GetMapping("/hello-world")
+	public String helloWorld() {
+		return "Hello World!";
+	}
+} </pre></code>
+        <ul>
+            <li>The above code uses Spring 4’s new<span> @RestController</span> annotation, which marks the class as a controller
+                where every method returns a domain object instead of a view. It’s shorthand for<span> @Controller</span> and
+               <span> @ResponseBody</span> rolled together.</li>
+            <li><b>@GetMapping</b> annotation for mapping HTTP GET requests onto specific handler methods. Specifically,
+                <b>@GetMapping</b> is a composed annotation that acts as a shortcut for<span>@RequestMapping(method =
+                RequestMethod.GET)</span> x .</li>
+        </ul>
+        <h3>4. Run Spring Boot Application</h3>
+        <p>The below class<span> SpringbootFirstAppApplication</span> is the entry point that sets up the Spring Boot application.<br>
+            The <span>@SpringBootApplication</span> annotation enables auto-configuration and component scanning.
+        </p>
+        <code><pre>
+package com.springboot.first.app;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringbootFirstAppApplication {
+	public static void main(String[] args) {
+		SpringApplication.run(SpringbootFirstAppApplication.class, args);
+	}
+}</pre></code><br>
+        <P>@SpringBootApplication is a convenience annotation that adds all of the following annotations internally:</P>
+        <ul>
+            <li>@Configuration tags the class as a source of bean definitions for the application context.</li>
+            <li>@EnableAutoConfiguration tells Spring Boot to start adding beans based on classpath settings, other beans, and various property settings. Normally you would add @EnableWebMvc for a Spring MVC app, but Spring Boot adds it automatically when it sees spring-webmvc on the classpath. This flags the application as a web application and activates key behaviors such as setting up a DispatcherServlet.</li>
+            <li>@ComponentScan tells Spring to look for other components, configurations, and services in the hello package, allowing it to find the controllers. </li>
+        </ul>
+        <p>The<span> main()</span> method uses Spring Boot’s<span> SpringApplication.run()</span> method to launch an application. Did you notice that there wasn’t a single line of XML? No web.xml file either. This web application is 100% pure Java and you didn’t have to deal with configuring any plumbing or infrastructure.
+        </p><br>
+        <h5>Run spring boot application from the IDE:</h5>
+        <p>From your IDE, run the<span> SpringbootFirstAppApplication.main()</span> method as a standalone Java class that will start the embedded Tomcat server on port 8080 and point the browser to<a href="http://localhost:8080/">http://localhost:8080/</a>.</p>
+        <h5>Run the spring boot application using the command line:</h5>
+        <p>Just go to the root directory of the application and type the following command to run it -</p>
+        <code><pre>
+$ mvn spring-boot:run</pre></code>
+            <p>The application will start at Spring Boot’s default tomcat port 8080.</p>
+            <p>Just hit this link in a browser:<a href="http://localhost:8080/hello-world" ></a>. You will be able to see the response of this REST API in the browser.</p><br>
+
+            <h3>What's Next?</h3>
+            <p>In the next tutorial, we will discuss how to create a standard spring boot project structure or packaging structure.</p>
+            <div style="border-left: 8px solid rgb(237, 21, 21); height: 80px;"><br>
+                <p > Learn more complete Spring Boot on<a href="http://127.0.0.1:5500/spring_boot_tutorial.html"> Spring Boot Tutorial</a></p>
+            </div><br><br>
+            <h6><a href="">@Configuration</a></h6>
+
+            <h3>Related Spring and Spring Boot Tutorials/Guides:</h3>
+            <p>
+                <button type="button" class="btn btn-outline-primary">Spring Boot Tutorials [500+]s</button>
+                <button type="button" class="btn btn-outline-secondary">Spring Boot Testing Tutorial</button>
+                <button type="button" class="btn btn-outline-success">Spring Boot Microservice Tutorial</button>
+                <button type="button" class="btn btn-outline-danger">Spring Boot Kafka Microservices </button>
+                <button type="button" class="btn btn-outline-warning">Spring Boot + Apache Kafka Tutorial</button>
+                <button type="button" class="btn btn-outline-info">Spring Core Tutorial</button>
+                <button type="button" class="btn btn-outline-primary">Spring MVC Tutorial </button>
+                <button type="button" class="btn btn-outline-secondary">Spring Data JPA Tutorial</button>
+                <button type="button" class="btn btn-outline-success">Spring Framework for Beginners</button>
+                <button type="button" class="btn btn-outline-danger">Spring AOP Tutorial</button>
+                <button type="button" class="btn btn-outline-warning">Spring Security Tutorial</button>
+                <button type="button" class="btn btn-outline-info">Spring Exceptions Tutorial</button>
+                <button type="button" class="btn btn-outline-primary">Spring Boot Interview Questions</button>
+                <button type="button" class="btn btn-outline-dark">Spring Boot Microservices Interview Questions</button>
+                <button type="button" class="btn btn-outline-primary">Apache Kafka Tutorials </button>
+                <button type="button" class="btn btn-outline-secondary">Docker Tutorials and Guides</button>
+                <button type="button" class="btn btn-outline-success">Spring Boot RabbitMQ Tutorials</button>
+                <button type="button" class="btn btn-outline-danger">Angular CRUD Example with Spring Boot </button>
+                <button type="button" class="btn btn-outline-warning">Spring Boot + Angular 12 CRUD Full Stack</button>
+                <button type="button" class="btn btn-outline-info">Spring Boot + Angular 8 CRUD Full Stack</button>
+                <button type="button" class="btn btn-outline-danger">Spring Boot + Angular 10 CRUD Full Stack </button>
+                <button type="button" class="btn btn-outline-primary">React JS ( React Hooks) + Spring Boot</button>
+                <button type="button" class="btn btn-outline-secondary">Spring Boot + React JS CRUD Full Stack</button>
+                <button type="button" class="btn btn-outline-success">Spring Boot Thymeleaf CRUD Full Stack </button>
+                <button type="button" class="btn btn-outline-danger">Spring Boot User Registration and Login</button>
+                <button type="button" class="btn btn-outline-warning">Node Js + Express + MongoDB CRUDVue</button>
+                <button type="button" class="btn btn-outline-info">JS + Spring Boot REST API Tutorial</button>
+            </p>
+
+
+
+
+
+
+
+    </div>
+</body>
+
+</html>

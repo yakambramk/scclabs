@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Create a Maven Web Project with Eclipse</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1> Create a Maven Web Project with Eclipse </h1>
+        <p>This post demonstrates creating a Maven web project with eclipse. This is fairly simple.</p>
+        <p>Let’s begin.</p>
+
+        <p> 1: Start Eclipse, click on File->New->Other</p>
+        <img src="/assets/spring-mvc-image/SampleMvnProjectImg1.png" alt="" class="image-fluid">
+        <p>2: In the popped New wizard, scroll down and select Maven->Maven Project, click Next</p>
+        <img src="/assets/spring-mvc-image/SampleMvnProjectImg2.png" alt="" class="image-fluid"><br>
+        <img src="/assets/spring-mvc-image/SampleMvnProjectImg3.png" alt="" class="image-fluid">
+        <p>3: In above screen, leave the ‘Use default workspace location’ selected to create this project in the current
+            workspace.Click Next. Scroll down and select option with Artifact Id as maven-archetype-webapp.</p>
+        <img src="/assets/spring-mvc-image/SampleMvnProjectImg4.png" alt="" class="image-fluid">
+        <p>4: Click Next. Provide Group Id, Artifact Id & version. These parameters gives your project
+            deliverable(jar/war/ear …) a unique identity in repository. Click Finish. Refresh your project.</p>
+        <img src="/assets/spring-mvc-image/SampleMavenWebProject5.png" alt="" class="image-fluid">
+        <p>5: Your project structure should like below one.</p>
+        <img src="/assets/spring-mvc-image/SampleMavenWebProject6.png" alt="" class="image-fluid">
+        <p> <b>Note: </b>In case you do not see the src/main/java and src/test/java folder in your project structure, go
+            to Project>Properties>Java BuildPath>Libraries, select/change-to appropriate Java version, click OK, you
+            should see those folders now. You may also perform a maven-update on your project.</p>
+
+        <p> <b> Note: </b> recent Eclipse versions you don’t need to use mvn eclise:eclipse anymore, this functionality
+            is built-in with recent m2e eclipse plugin.</p>
+        <p>6: Finally, update your pom.xml based on your project requirement (adding dependencies, profile, plugins,
+            repositories, output format etc…)</p>
+        <p>Below is the default pom.xml generated for our project.</p>
+        <pre>
+                &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+                    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+                    &lt;groupId&gt;com.websystique.maven&lt;/groupId&gt;
+                    &lt;artifactId&gt;SampleMavenWebProject&lt;/artifactId&gt;
+                    &lt;packaging&gt;war&lt;/packaging&gt;
+                    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+                    &lt;name&gt;SampleMavenWebProject Maven Webapp&lt;/name&gt;
+                    &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+                    &lt;dependencies&gt;
+                        &lt;dependency&gt;
+                            &lt;groupId&gt;junit&lt;/groupId&gt;
+                            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+                            &lt;version&gt;3.8.1&lt;/version&gt;
+                            &lt;scope&gt;test&lt;/scope&gt;
+                        &lt;/dependency&gt;
+                    &lt;/dependencies&gt;
+                    &lt;build&gt;
+                        &lt;finalName&gt;SampleMavenWebProject&lt;/finalName&gt;
+                    &lt;/build&gt;
+                &lt;/project&gt;
+                </pre>
+        <p>For instance, if your code will be using spring framework and your test cases relies upon TestNG instead of
+            junit, your pom.xml will include the dependency for Spring and TestNG like below:</p>
+        <pre>
+                &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+                    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+                    &lt;groupId&gt;com.websystique.maven&lt;/groupId&gt;
+                    &lt;artifactId&gt;SampleMavenWebProject&lt;/artifactId&gt;
+                    &lt;packaging&gt;war&lt;/packaging&gt;
+                    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+                    &lt;name&gt;SampleMavenWebProject Maven Webapp&lt;/name&gt;
+                    &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+                    &lt;properties&gt;
+                        &lt;springframework.version&gt;4.0.5.RELEASE&lt;/springframework.version&gt;
+                        &lt;testng.version&gt;6.8.8&lt;/testng.version&gt;
+                    &lt;/properties&gt;
+                    &lt;dependencies&gt;
+                        &lt;dependency&gt;
+                            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+                            &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+                            &lt;version&gt;${springframework.version}&lt;/version&gt;
+                        &lt;/dependency&gt;
+                        &lt;dependency&gt;
+                            &lt;groupId&gt;org.testng&lt;/groupId&gt;
+                            &lt;artifactId&gt;testng&lt;/artifactId&gt;
+                            &lt;version&gt;${testng.version}&lt;/version&gt;
+                        &lt;/dependency&gt;
+                    &lt;/dependencies&gt;
+                    &lt;build&gt;
+                        &lt;pluginManagement&gt;
+                            &lt;plugins&gt;
+                                &lt;plugin&gt;
+                                    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                                    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                                    &lt;version&gt;3.2&lt;/version&gt;
+                                    &lt;configuration&gt;
+                                        &lt;source&gt;1.6&lt;/source&gt;
+                                        &lt;target&gt;1.6&lt;/target&gt;
+                                    &lt;/configuration&gt;
+                                &lt;/plugin&gt;
+                            &lt;/plugins&gt;
+                        &lt;/pluginManagement&gt;
+                        &lt;finalName&gt;SampleMavenWebProject&lt;/finalName&gt;
+                    &lt;/build&gt;
+                &lt;/project&gt;
+                </pre>
+        <p>Additionally, The Maven plugin maven-compiler-plugin has been added here to explicitly specify the
+            jdk-version we are going to use. Do note that it also forces eclipse to respect the jdk-version being used
+            for the project. if it is not present, and you perform mvn-update from within your eclipse, eclipse switches
+            jdk-version back to default jdk-version [1.5] which is annoying. So do add it in your project pom as well.
+        </p>
+
+        <p> That’s it.</p>
+
+    </div>
+</body>
+
+</html>
