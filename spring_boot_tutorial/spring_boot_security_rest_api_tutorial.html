@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Security REST API Tutorial</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Boot Security REST API Tutorial</h1>
+                <h4>author : Sai K</h4>
+                <p>This tutorial will guide you through building and securing a REST API using Spring Boot 3, Spring
+                    Security 6, and<br><br> Java 21. We will use Java Records to transfer data between the client and
+                    server. This tutorial is designed for <br><br> beginners and covers the following topics:</p><br>
+
+                <p>1.Introduction to Spring Boot for Beginners</p>
+                <p>2.Introduction to REST API</p>
+                <p>3.Introduction to Spring Security</p>
+                <p>4.Creating a Spring Boot Project</p>
+                <p>5.Creating CRUD REST APIs with MySQL Database</p>
+                <p>6.Securing the REST API using Basic Authentication</p>
+                <p>7.Securing the REST API using In-Memory Authentication</p>
+                <p>8.Securing the REST API using Database Authentication</p>
+                <img src="../assets/springboot images/spring_security_rest_api_tutorial.PNG" width="1000px"
+                    height="500px">
+                <h2>Introduction to Spring Boot</h2>
+                <p><a href="http://127.0.0.1:5500/spring_boot_tutorial.html">Spring Boot</a> is an open-source
+                    Java-based framework for creating stand-alone, production-grade Spring <br><br> applications. It
+                    simplifies the development process by providing defaults for code and annotation
+                    configuration,<br><br> enabling you to start coding quickly without worrying about setup details.
+                </p>
+                <h3>Key Features of Spring Boot</h3>
+
+                <ul>
+                    <li><b>Auto-Configuration:</b> Automatically configures your Spring application based on the
+                        dependencies you <br><br>have added to the project.</li><br>
+                    <li><b>Standalone: </b>Creates stand-alone Spring applications with embedded servers.</li><br>
+                    <li><b>Production-ready Features:</b>Includes production-ready features such as metrics, health
+                        checks, and<br><br> externalized configuration.</li><br>
+                    <li><b>Convention over Configuration: </b>Reduces the need for explicit configuration by following
+                        conventions.</li><br>
+                    <li><b>Spring Boot Starters:</b> Provides a set of pre-configured dependencies for various
+                        functionalities, making it<br><br> easy to get started.</li><br>
+                </ul>
+                <h2>Introduction to REST API</h2>
+                <p>A <a href="">REST API </a>(Representational State Transfer Application Programming Interface) is an
+                    architectural style for <br><br> building web services that interact over HTTP. REST APIs allow
+                    different software systems to communicate and <br><br> exchange data efficiently. The key principles
+                    of REST include statelessness, resource-based interactions, and <br><br> standardized HTTP methods
+                    like GET, POST, PUT, and DELETE.</p>
+                <h3>Key Principles of REST</h3>
+                <ul>
+                    <li><b>Stateless:</b> Each request from the client to the server must contain all the information
+                        needed to understand <br><br> and process the request.</li><br>
+                    <li><b>Resource-Based:</b> REST treats any content as a resource, such as users, posts, or items.
+                    </li><br>
+                    <li><b>HTTP Methods:</b> REST uses standard HTTP methods for CRUD operations (Create, Read, Update,
+                        Delete).</li><br>
+                </ul>
+                <h2>Introduction to Spring Security</h2>
+                <p><a href="http://127.0.0.1:5500/spring_security.html">Spring Security</a> is a powerful and highly
+                    customizable authentication and access-control framework for Java <br><br> applications. It is the
+                    de facto standard for securing Spring-based applications and provides comprehensive <br><br>
+                    security services for Java EE-based enterprise software applications.</p>
+                <h3>Key Features of Spring Security</h3>
+                <ul>
+                    <li><b>Authentication:</b> Verifying the identity of a user.</li><br>
+                    <li><b>Authorization:</b> Determining whether an authenticated user has access to a specific
+                        resource.</li><br>
+                    <li><b>Protection Against Attacks:</b> Such as session fixation, clickjacking, cross-site request
+                        forgery, etc.</li><br>
+                </ul>
+                <h2>Step 1: Creating a Spring Boot Project</h2>
+                <h3>Using Spring Initializr</h3>
+                <ul class="steps">
+                    <li class="">Go to <a href="https://start.spring.io/"> start.spring.io</a></li><br>
+                    <li>Select</li><br>
+                    <ul class="circle-list">
+                        <li><b>Project:</b> Maven Project</li><br>
+                        <li><b>Language:</b> Java</li><br>
+                        <li><b>Spring Boot: </b> 3.0.0 (or latest)</li><br>
+                        <li><b>Packaging:</b> Jar</li><br>
+                        <li><b>Java:</b> 21</li><br>
+                        <li> <b>Dependencies:</b>Spring Web,Spring Data JPA, MySQL Driver, Lombok, Spring Security</li>
+                        <br>
+                    </ul>
+                    <li>
+                        <p>3.Click on "Generate" to download the project.</p>
+                        <p>4.Unzip the downloaded project and open it in your favorite IDE.</p>
+                        <h3>Example Project Structure</h3>
+
+                        <pre><code>
+                            <span class="directory">spring-boot-security-rest-api/</span>
+                            ├── <span class="directory">src/</span>
+                            │   ├── <span class="directory">main/</span>
+                            │   │   ├── <span class="directory">java/</span>
+                            │   │   │   └── <span class="directory">com/example/demo/</span>
+                            │   │   │       └── <span class="java-file">DemoApplication.java</span>
+                            │   │   │       └── <span class="directory">controller/</span>
+                            │   │   │           └── <span class="java-file">ProductController.java</span>
+                            │   │   │           └── <span class="java-file">OrderController.java</span>
+                            │   │   │       └── <span class="directory">model/</span>
+                            │   │   │           └── <span class="java-file">Product.java</span>
+                            │   │   │           └── <span class="java-file">Order.java</span>
+                            │   │   │           └── <span class="java-file">User.java</span>
+                            │   │   │           └── <span class="java-file">Role.java</span>
+                            │   │   │       └── <span class="directory">repository/</span>
+                            │   │   │           └── <span class="java-file">ProductRepository.java</span>
+                            │   │   │           └── <span class="java-file">OrderRepository.java</span>
+                            │   │   │           └── <span class="java-file">UserRepository.java</span>
+                            │   │   │       └── <span class="directory">service/</span>
+                            │   │   │           └── <span class="java-file">ProductService.java</span>
+                            │   │   │           └── <span class="java-file">OrderService.java</span>
+                            │   │   │           └── <span class="java-file">UserService.java</span>
+                            │   │   │       └── <span class="directory">config/</span>
+                            │   │   │           └── <span class="java-file">SecurityConfig.java</span>
+                            │   │   └── <span class="directory">resources/</span>
+                            │   │       ├── <span class="directory">application.properties</span>
+                            │   └── <span class="directory">test/</span>
+                            │       └── <span class="directory">java/</span>
+                            │           └── <span class="directory">com/example/demo/</span>
+                            │               └── <span class="java-file">DemoApplicationTests.java</span>
+                            ├── <span class="directory">mvnw</span>
+                            ├── <span class="directory">mvnw.cmd</span>
+                            ├── <span class="directory">pom.xml</span>
+                            └── <span class="directory">.mvn/</span>
+                                └── <span class="directory">wrapper/</span>
+                                    └── <span class="directory">maven-wrapper.properties</span>
+                        </code></pre>
+                        <h2>Step 2: Creating CRUD REST APIs with MySQL Database</h2>
+                        <h3>Setting Up the Database</h3>
+                        <p>1.Create a MySQL database named spring_boot_db.</p>
+                        <h2>Configure Database Connection</h2>
+                        <p>1.Update the application.properties file to configure the MySQL database connection.</p>
+                        <pre><code>
+spring.datasource.url=jdbc:mysql://localhost:3306/spring_boot_db
+spring.datasource.username=root
+spring.datasource.password=root
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+        </code></pre>
+                        <h2>Create Entity Classes</h2>
+                        <p>Create a new package named model and add the Product and Order entity classes.</p>
+                        <pre><code>package com.example.demo.model;
+
+            import jakarta.persistence.Entity;
+            import jakarta.persistence.GeneratedValue;
+            import jakarta.persistence.GenerationType;
+            import jakarta.persistence.Id;
+            
+            @Entity
+            public class Product {
+            
+                @Id
+                @GeneratedValue(strategy = GenerationType.IDENTITY)
+                private Long id;
+                private String name;
+                private double price;
+            
+                public Product() {}
+            
+                public Product(String name, double price) {
+                    this.name = name;
+                    this.price = price;
+                }
+            
+                // Getters and setters
+                public Long getId() {
+                    return id;
+                }
+            
+                public void setId(Long id) {
+                    this.id = id;
+                }
+            
+                public String getName() {
+                    return name;
+                }
+            
+                public void setName(String name) {
+                    this.name = name;
+                }
+            
+                public double getPrice() {
+                    return price;
+                }
+            
+                public void setPrice(double price) {
+                    this.price = price;
+                }
+            }</code></pre>
+                        <pre><code>
+                package com.example.demo.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Order {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private Long productId;
+    private int quantity;
+
+    public Order() {}
+
+    public Order(Long productId, int quantity) {
+        this.productId = productId;
+        this.quantity = quantity;
+    }
+
+    // Getters and setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+}
+            </code></pre>
+                        <h2>Explanation</h2>
+                        <ul>
+                            <li>@Entity: Specifies that the class is an entity and is mapped to a database table.</li>
+                            <br>
+                            <li>@Id: Specifies the primary key of an entity.</li><br>
+                            <li>@GeneratedValue(strategy = GenerationType.IDENTITY): Provides the specification of
+                                generation <br><br> strategies for the primary key values.</li><br>
+                        </ul>
+                        <h2>Create Repository Interfaces</h2>
+                        <p>1.Create a new package named repository and add the ProductRepository and OrderRepository
+                            interfaces.</p>
+                        <pre><code>
+package com.example.demo.repository;
+
+import com.example.demo.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductRepository extends JpaRepository<Product, Long> {
+}
+        </code></pre>
+                        <pre><code>
+package com.example.demo.repository;
+
+import com.example.demo.model.Order;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface OrderRepository extends JpaRepository<Order, Long> {
+}
+        </code></pre>
+                        <h3>Explanation</h3>
+                        <ul>
+                            <li>extends JpaRepository<Product, Long>: Indicates that the ProductRepository interface
+                                    extends JpaRepository, <br><br>providing CRUD operations for the Product entity.
+                            </li><br>
+                            <li>extends JpaRepository<Order, Long>: Indicates that the OrderRepository interface extends
+                                    JpaRepository,<br><br> providing CRUD operations for the Order entity.</li><br>
+                        </ul>
+                        <h3>Create Service Classes</h3>
+                        <p>1.Create a new package named service and add the ProductService and OrderService classes.</p>
+                        <pre><code>
+    package com.example.demo.service;
+
+import com.example.demo.model.Product;
+import com.example.demo.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ProductService {
+
+    private final ProductRepository productRepository;
+
+    @Autowired
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    public Optional<Product> getProductById(Long id) {
+        return productRepository.findById(id);
+    }
+
+    public Product createProduct(Product product) {
+        return productRepository.save(product);
+    }
+
+    public Optional<Product> updateProduct(Long id, Product productDetails) {
+        return productRepository.findById(id).map(product -> {
+            product.setName(productDetails.getName());
+            product.setPrice(productDetails.getPrice());
+            return productRepository.save(product);
+        });
+    }
+
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
+    }
+}
+</code></pre>
+                        <pre><code>
+    package com.example.demo.service;
+
+import com.example.demo.model.Order;
+import com.example.demo.repository.OrderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class OrderService {
+
+    private final OrderRepository orderRepository;
+
+    @Autowired
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
+
+    public Optional<Order> getOrderById(Long id) {
+        return orderRepository.findById(id);
+    }
+
+    public Order createOrder(Order order) {
+        return orderRepository.save(order);
+    }
+
+    public Optional<Order> updateOrder(Long id, Order orderDetails) {
+        return orderRepository.findById(id).map(order -> {
+            order.setProductId(orderDetails.getProductId());
+            order.setQuantity(orderDetails.getQuantity());
+            return orderRepository.save(order);
+        });
+    }
+
+    public void deleteOrder(Long id) {
+        orderRepository.deleteById(id);
+    }
+}
+  </code></pre>
+                        <h2>Explanation</h2>
+                        <ul>
+                            <li>@Service: Indicates that the class is a service component in the Spring context.</li>
+                            <br>
+                            <li>public OrderService(OrderRepository orderRepository): Uses constructor-based dependency
+                                injection <br><br> to inject the OrderRepository bean.</li>
+                        </ul>
+                        <h3>Create Controller Classes</h3>
+                        <p>1.Create a new package named controller and add the ProductController and OrderController
+                            classes.</p>
+                        <pre><code>
+    package com.example.demo.controller;
+
+import com.example.demo.model.Product;
+import com.example.demo.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/products")
+public class ProductController {
+
+    private final ProductService productService;
+
+    @Autowired
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @GetMapping
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Product> getProductById(@PathVariable Long id) {
+        return productService.getProductById(id);
+    }
+
+    @PostMapping
+    public Product createProduct(@RequestBody Product product) {
+        return productService.createProduct(product);
+    }
+
+    @PutMapping("/{id}")
+    public Optional<Product> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
+        return productService.updateProduct(id, productDetails);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+    }
+}
+</code></pre>
+                        <pre><code>
+    package com.example.demo.controller;
+
+import com.example.demo.model.Order;
+import com.example.demo.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/orders")
+public class OrderController {
+
+    private final OrderService orderService;
+
+    @Autowired
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
+    @GetMapping
+    public List<Order> getAllOrders() {
+        return orderService.getAllOrders();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Order> getOrderById(@PathVariable Long id) {
+        return orderService.getOrderById(id);
+    }
+
+   @PostMapping
+    public Order createOrder(@RequestBody Order order) {
+        return orderService.createOrder(order);
+    }
+
+    @PutMapping("/{id}")
+    public Optional<Order> updateOrder(@PathVariable Long id, @RequestBody Order orderDetails) {
+        return orderService.updateOrder(id, orderDetails);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteOrder(@PathVariable Long id) {
+        orderService.deleteOrder(id);
+    }
+ }
+</code></pre>
+                        <h2>Explanation</h2>
+                        <ul>
+                            <li>@RestController: Indicates that the class is a REST controller.</li><br>
+                            <li>@RequestMapping("/api/products"): Maps HTTP requests to the /api/products URL.</li><br>
+                            <li>@RequestMapping("/api/orders"): Maps HTTP requests to the /api/orders URL.</li><br>
+                            <li>CRUD Methods: Implements CRUD operations for the Product and Order entities.</li><br>
+                        </ul>
+                        <h2>Step 3: Securing the REST API</h2>
+                        <h3>Securing the REST API using Basic In-memory Authentication</h3>
+                        <p>1.Add the SecurityConfig class in the config package.</p>
+                        <pre><code>
+    package com.example.demo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/orders/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/api/products/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+            )
+            .httpBasic(withDefaults());
+        return http.build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails user = User.withUsername("user")
+            .password("{noop}password")
+            .roles("USER")
+            .build();
+        UserDetails admin = User.withUsername("admin")
+            .password("{noop}admin")
+            .roles("ADMIN")
+            .build();
+        return new InMemoryUserDetailsManager(user, admin);
+    }
+}
+</code></pre>
+                        <h2>Explanation</h2>
+                        <ul>
+                            <li>@Configuration: Indicates that the class has @Bean definition methods.</li><br>
+                            <li>@EnableWebSecurity: Enables Spring Security's web security support.</li><br>
+                            <li>securityFilterChain(HttpSecurity http): Configures the security filter chain.</li><br>
+                            <li>http.csrf(csrf -> csrf.disable()): Disables CSRF protection.</li><br>
+                            <li>http.authorizeHttpRequests(auth ->
+                                auth.requestMatchers("/api/orders/**").hasAnyRole("USER",
+                                <br><br>
+                                "ADMIN").requestMatchers("/api/products/**").hasRole("ADMIN").anyRequest().authenticated()):
+                                <br><br> Configures authorization rules.
+                            </li><br>
+                            <li>http.httpBasic(withDefaults()): Configures basic HTTP authentication.</li><br>
+                            <li>userDetailsService(): Creates an in-memory user details manager with two users: one with
+                                the role <br><br> USER and the other with the role ADMIN.</li><br>
+                        </ul>
+                        <h2>Securing the REST API using Database Authentication</h2>
+                        <p>1.Create User and Role entities.</p>
+                        <pre><code>
+            package com.example.demo.model;
+
+import jakarta.persistence.*;
+import java.util.Set;
+
+@Entity
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String username;
+    private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "users_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
+
+    // Getters and setters
+}
+        </code></pre>
+                        <pre><code>
+            package com.example.demo.model;
+
+import jakarta.persistence.*;
+
+@Entity
+public class Role {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    // Getters and setters
+}
+        </code></pre>
+                        <p>2.Create UserRepository and RoleRepository.</p>
+                        <pre><code>
+package com.example.demo.repository;
+
+import com.example.demo.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findByUsername(String username);
+}
+        </code></pre>
+                        <pre><code>
+package com.example.demo.repository;
+
+import com.example.demo.model.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RoleRepository extends JpaRepository<Role, Long> {
+}
+        </code></pre>
+                        <p>3.Create UserService and UserDetailsServiceImpl.</p>
+                        <pre><code>
+package com.example.demo.service;
+
+import com.example.demo.model.Role;
+import com.example.demo.model.User;
+import com.example.demo.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Service
+public class UserDetailsServiceImpl implements UserDetailsService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        Set<GrantedAuthority> authorities = user.getRoles().stream()
+            .map(role -> new SimpleGrantedAuthority(role.getName()))
+            .collect(Collectors.toSet());
+
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+    }
+}
+        </code></pre>
+                        <p>4.Update SecurityConfig to use database authentication.</p>
+                        <pre><code>
+            package com.example.demo.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/orders/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/api/products/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+            )
+            .userDetailsService(userDetailsService)
+            .httpBasic(withDefaults());
+        return http.build();
+    }
+}
+        </code></pre>
+                        <h2>Explanation</h2>
+                        <ul>
+                            <li>@ManyToMany: Indicates a many-to-many relationship between User and Role.</li><br>
+                            <li>UserRepository: Extends JpaRepository, providing CRUD operations for the User entity.
+                            </li><br>
+                            <li>RoleRepository: Extends JpaRepository, providing CRUD operations for the Role entity.
+                            </li><br>
+                            <li>UserDetailsServiceImpl: Implements the UserDetailsService interface to load
+                                user-specific data.</li><br>
+                            <li>securityFilterChain(HttpSecurity http): Configures the security filter chain to use
+                                the<br><br>
+                                UserDetailsService for authentication.</li>
+                        </ul>
+                        <p>By following these steps, you will have a secured REST API where:</p>
+                        <ul>
+                            <li>Viewing and placing orders is accessible to users with the roles USER and ADMIN.</li>
+                            <br>
+                            <li>Managing products is accessible only to users with the role ADMIN.</li><br>
+                        </ul>
+                        <h2>Testing the REST APIs Using Postman</h2>
+                        <h3>1.Get All Products</h3>
+                        <ul>
+                            <li><b>Request:</b> GET /api/products</li><br>
+                            <li><b>Response:</b></li>
+                        </ul>
+                        <pre><code>
+    [
+  {
+    "id": 1,
+    "name": "Product 1",
+    "price": 100.0
+  },
+  {
+    "id": 2,
+    "name": "Product 2",
+    "price": 200.0
+  }
+]
+</code></pre>
+                        <h3>2.Get Product by ID</h3>
+                    <li><b>Request:</b> GET /api/products/{id}</li><br>
+                    <li><b>Response:</b></li>
+                    <pre><code>
+    {
+        "id": 1,
+        "name": "Product 1",
+        "price": 100.0
+      }
+</code></pre>
+                    <h3>3.Create Product</h3>
+                    <li><b>Request: </b>POST /api/products</li>
+                    <pre><code>{
+    "name": "New Product",
+    "price": 150.0
+  }</code></pre>
+                    <li><b>Response:</b></li>
+                    <pre><code>
+    {
+        "id": 3,
+        "name": "New Product",
+        "price": 150.0
+      }
+  </code></pre>
+                    <h3>4.Update Product</h3>
+                    <p><b>Request: </b>PUT /api/products/{id}</p>
+                    <pre><code>
+    {
+        "name": "Updated Product",
+        "price": 180.0
+      }
+  </code></pre>
+                    <li><b>Response:</b></li>
+                    <pre><code>
+ {
+   "id": 1,
+  "name": "Updated Product", "price": 180.0
+  }
+                    </code></pre>
+
+                    <h3>5.Delete Product</h3>
+                    <li><b>Request:</b> DELETE /api/products/{id}</li><br>
+                    <li><b>Response:</b> 204 No Content</li><br>
+                    <h3>6.Get All Orders</h3><br>
+                    <li><b>Request: </b>GET /api/orders</li><br>
+                    <li> <b>Response:</b></li>
+                    <pre><code>
+    [
+  {
+    "id": 1,
+    "productId": 1,
+    "quantity": 2
+  },
+  {
+    "id": 2,
+    "productId": 2,
+    "quantity": 1
+  }
+]
+</code></pre>
+                    <h3>7.Get Order by ID</h3>
+                    <ul>
+                        <li><b>Request:</b>GET /api/orders/{id}</li>
+                        <li> <b>Response:</b></li>
+                        <pre><code>
+    {
+        "id": 1,
+        "productId": 1,
+        "quantity": 2
+      }
+</code></pre>
+                        <h3>8.Create Order</h3>
+                        <ul>
+                            <li><b>Request:</b> POST /api/orders
+                            </li>
+                        </ul>
+                        <pre><code>
+    {
+        "productId": 1,
+        "quantity": 3
+      }
+</code></pre>
+                        <ul>
+                            <li> <b>Response:</b></li>
+                        </ul>
+                        <pre><code>{
+    "id": 3,
+    "productId": 1,
+    "quantity": 3
+  }</code></pre>
+                        <h3>9.Update Order</h3>
+                        <ul>
+                            <li><b>Request:</b>PUT /api/orders/{id}
+                            </li>
+                        </ul>
+                        <pre><code>{
+    "productId": 1,
+    "quantity": 5
+  }</code></pre>
+                        <ul>
+                            <li> <b>Response:</b></li>
+                        </ul>
+                        <pre><code>
+    {
+        "id": 1,
+        "productId": 1,
+        "quantity": 5
+      }
+  </code></pre>
+                        <h3>10.Delete Order</h3>
+                        <ul>
+                            <li><b>Request:</b> DELETE /api/orders/{id}</li><br>
+                            <li> <b>Response:</b>204 No Content</li><br>
+                        </ul>
+                        <p>This completes the setup and testing of securing REST APIs in Spring Boot using basic,
+                            in-memory,<br><br> and database authentication.</p>
+                        <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
