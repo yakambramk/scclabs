@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maven Multi-Module Project using Eclipse</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Maven Multi-Module Project using Eclipse</h1>
+        <p>Learn how to create a multi-module maven project in eclipse IDE. In this maven tutorial, we will learn to
+            create nested maven projects in Eclipse. 1. Multi-module Project Structure Let’s create a maven project
+            having modules packaging ear, war and jar types. We are creating the structure of …</p>
+        <p>Learn how to create a multi-module maven project in eclipse IDE. In this maven tutorial, we will learn to
+            create nested maven projects in Eclipse.</p>
+        <h2>1. Multi-module Project Structure</h2>
+        <p>Let’s create a maven project having modules packaging ear, war and jar types. We are creating the structure
+            of an enterprise application where the application will be deployed to applications servers (e.g. Weblogic,
+            WebSphere) as an EAR (Enterprise Application aRchive) file.</p>
+
+        <p> This EAR will contain one (or many) WAR (Web Application Resource) files and each war will include the
+            service project which has common code to all war files.</p>
+        <img src="/assets/spring-mvc-image/Projects-Relationship.webp" alt="" class="image-fluid">
+        <h2>1.1. Create Parent Project with Packaging type ‘pom’</h2>
+        <p>Create a new maven project in eclipse. Set it’s packaging type to ‘pom‘.</p>
+        <img src="/assets/spring-mvc-image/Create-new-maven-project.webp" alt="" class="image-fluid"><br>
+        <img src="/assets/spring-mvc-image/Fill-maven-group-id-and-artifact-id.webp" alt="" class="image-fluid"><br>
+        <img src="/assets/spring-mvc-image/Change-packaging-jar-to-pom.webp" alt="" class="image-fluid">
+        <h2>1.2. Create Child Project with EAR Packaging</h2>
+        <p>Create a new maven module in the parent project. Change its packaging type to 'ear'. This module can have
+            maven ear plugin which will ultimately build the ear file to be deployed on servers.</p>
+        <img src="/assets/spring-mvc-image/Create-new-maven-module.webp" alt="" class="image-fluid"><br>
+        <img src="/assets/spring-mvc-image/Add-Module-Name.webp" alt="" class="image-fluid"><br>
+        <img src="/assets/spring-mvc-image/Fill-archtype-details.webp" alt="" class="image-fluid">
+        <h2>1.3. Create Projects with Packaging type ‘war’ and ‘jar’</h2>
+        <p>Similar to ear module, create two more modules for war file and service jar file. Change their packaging
+            respectively and add maven plugins.</p>
+        <h2>1.4. Final Result</h2>
+        <p>Now observe the final project structure in eclipse and verify the pom.xml files for all projects.</p>
+        <pre>
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+            https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    
+        &lt;groupId&gt;com.howtodoinjava.app&lt;/groupId&gt;
+        &lt;artifactId&gt;HelloWorldApp&lt;/artifactId&gt;
+        &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;packaging&gt;pom&lt;/packaging&gt;
+    
+        &lt;name&gt;HelloWorldApp&lt;/name&gt;
+        &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+    
+        &lt;properties&gt;
+            &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+            &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;
+            &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;
+        &lt;/properties&gt;
+    
+        &lt;modules&gt;
+            &lt;module&gt;web&lt;/module&gt;
+            &lt;module&gt;service&lt;/module&gt;
+            &lt;module&gt;ear&lt;/module&gt;
+        &lt;/modules&gt;
+    &lt;/project&gt;
+    </pre>
+        <br>
+
+        <pre>
+        &lt;?xml version="1.0"?&gt;
+        &lt;project
+            xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+            xmlns="http://maven.apache.org/POM/4.0.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+            &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+            &lt;parent&gt;
+                &lt;groupId&gt;com.howtodoinjava.app&lt;/groupId&gt;
+                &lt;artifactId&gt;HelloWorldApp&lt;/artifactId&gt;
+                &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+            &lt;/parent&gt;
+            &lt;artifactId&gt;ear&lt;/artifactId&gt;
+            &lt;name&gt;ear&lt;/name&gt;
+            &lt;packaging&gt;ear&lt;/packaging&gt;
+            &lt;properties&gt;
+                &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+            &lt;/properties&gt;
+            &lt;dependencies&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;com.howtodoinjava.app&lt;/groupId&gt;
+                    &lt;artifactId&gt;web&lt;/artifactId&gt;
+                    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+                    &lt;type&gt;war&lt;/type&gt;
+                &lt;/dependency&gt;
+            &lt;/dependencies&gt;
+            &lt;build&gt;
+                &lt;pluginManagement&gt;
+                    &lt;plugins&gt;
+                        &lt;plugin&gt;
+                            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                            &lt;artifactId&gt;maven-ear-plugin&lt;/artifactId&gt;
+                            &lt;version&gt;3.0.1&lt;/version&gt;
+                            &lt;configuration&gt;
+                                &lt;modules&gt;
+                                    &lt;webModule&gt;
+                                        &lt;groupId&gt;com.howtodoinjava.app&lt;/groupId&gt;
+                                        &lt;artifactId&gt;web&lt;/artifactId&gt;
+                                        &lt;uri&gt;web-0.0.1-SNAPSHOT.war&lt;/uri&gt;
+                                        &lt;!-- Set custom context root --&gt;
+                                        &lt;contextRoot&gt;/application&lt;/contextRoot&gt;
+                                    &lt;/webModule&gt;
+                                &lt;/modules&gt;
+                            &lt;/configuration&gt;
+                        &lt;/plugin&gt;
+                    &lt;/plugins&gt;
+                &lt;/pluginManagement&gt;
+            &lt;/build&gt;
+        &lt;/project&gt;
+        </pre>
+        <br>
+
+        <pre>
+    &lt;?xml version="1.0"?&gt;
+    &lt;project
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+        &lt;parent&gt;
+            &lt;groupId&gt;com.howtodoinjava.app&lt;/groupId&gt;
+            &lt;artifactId&gt;HelloWorldApp&lt;/artifactId&gt;
+            &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;/parent&gt;
+        &lt;artifactId&gt;ear&lt;/artifactId&gt;
+        &lt;name&gt;ear&lt;/name&gt;
+        &lt;packaging&gt;ear&lt;/packaging&gt;
+        &lt;properties&gt;
+            &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;/properties&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;com.howtodoinjava.app&lt;/groupId&gt;
+                &lt;artifactId&gt;web&lt;/artifactId&gt;
+                &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+                &lt;type&gt;war&lt;/type&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+        &lt;build&gt;
+            &lt;pluginManagement&gt;
+                &lt;plugins&gt;
+                    &lt;plugin&gt;
+                        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                        &lt;artifactId&gt;maven-ear-plugin&lt;/artifactId&gt;
+                        &lt;version&gt;3.0.1&lt;/version&gt;
+                        &lt;configuration&gt;
+                            &lt;modules&gt;
+                                &lt;webModule&gt;
+                                    &lt;groupId&gt;com.howtodoinjava.app&lt;/groupId&gt;
+                                    &lt;artifactId&gt;web&lt;/artifactId&gt;
+                                    &lt;uri&gt;web-0.0.1-SNAPSHOT.war&lt;/uri&gt;
+                                    &lt;!-- Set custom context root --&gt;
+                                    &lt;contextRoot&gt;/application&lt;/contextRoot&gt;
+                                &lt;/webModule&gt;
+                            &lt;/modules&gt;
+                        &lt;/configuration&gt;
+                    &lt;/plugin&gt;
+                &lt;/plugins&gt;
+            &lt;/pluginManagement&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <br>
+
+        <pre>
+    &lt;?xml version="1.0"?&gt;
+    &lt;project
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+        &lt;parent&gt;
+            &lt;groupId&gt;com.howtodoinjava.app&lt;/groupId&gt;
+            &lt;artifactId&gt;HelloWorldApp&lt;/artifactId&gt;
+            &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;/parent&gt;
+        &lt;groupId&gt;com.howtodoinjava.app&lt;/groupId&gt;
+        &lt;artifactId&gt;service&lt;/artifactId&gt;
+        &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;name&gt;service&lt;/name&gt;
+        &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+        &lt;packaging&gt;jar&lt;/packaging&gt;
+        &lt;properties&gt;
+            &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;/properties&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;junit&lt;/groupId&gt;
+                &lt;artifactId&gt;junit&lt;/artifactId&gt;
+                &lt;version&gt;3.8.1&lt;/version&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    &lt;/project&gt;
+    </pre>
+        <p>To build the projects, run $mvn clean install command from the console.</p>
+        <pre>E:\devsetup\workspacetemp\HelloWorldApp>mvn clean install
+ 
+    [INFO] Scanning for projects...
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Reactor Build Order:
+    [INFO]
+    [INFO] HelloWorldApp                                                      [pom]
+    [INFO] service                                                            [jar]
+    [INFO] web                                                                [war]
+    [INFO] ear                                                                [ear]
+    [INFO]
+    ...
+    ...
+    [INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ service ---
+    [WARNING] JAR will be empty - no content was marked for inclusion!
+    [INFO] Building jar: E:\devsetup\workspacetemp\HelloWorldApp\service\target\service-0.0.1-SNAPSHOT.jar
+    [INFO]
+    ...
+    ...
+    [INFO] Packaging webapp
+    [INFO] Assembling webapp [web] in [E:\devsetup\workspacetemp\HelloWorldApp\web\target\web-0.0.1-SNAPSHOT]
+    [INFO] Processing war project
+    [INFO] Copying webapp resources [E:\devsetup\workspacetemp\HelloWorldApp\web\src\main\webapp]
+    [INFO] Webapp assembled in [47 msecs]
+    [INFO] Building war: E:\devsetup\workspacetemp\HelloWorldApp\web\target\web-0.0.1-SNAPSHOT.war
+    [INFO] WEB-INF\web.xml already added, skipping
+    [INFO]
+    ...
+    ...
+    [INFO]
+    [INFO] --- maven-ear-plugin:3.0.1:ear (default-ear) @ ear ---
+    [INFO] Copying artifact [war:com.howtodoinjava.app:web:0.0.1-SNAPSHOT] to [web-0.0.1-SNAPSHOT.war]
+    [INFO] Copy ear sources to E:\devsetup\workspacetemp\HelloWorldApp\ear\target\ear-0.0.1-SNAPSHOT
+    [INFO] Building jar: E:\devsetup\workspacetemp\HelloWorldApp\ear\target\ear-0.0.1-SNAPSHOT.ear
+    [INFO]
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Reactor Summary:
+    [INFO]
+    [INFO] HelloWorldApp 0.0.1-SNAPSHOT ....................... SUCCESS [  0.328 s]
+    [INFO] service ............................................ SUCCESS [  0.839 s]
+    [INFO] web ................................................ SUCCESS [  0.838 s]
+    [INFO] ear 0.0.1-SNAPSHOT ................................. SUCCESS [  0.588 s]
+    [INFO] ------------------------------------------------------------------------
+    [INFO] BUILD SUCCESS
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Total time: 2.749 s
+    [INFO] Finished at: 2018-11-18T15:04:52+05:30
+    [INFO] ------------------------------------------------------------------------</pre>
+
+        <p>The build generates an ear file with name ear-0.0.1-SNAPSHOT.ear. </p>
+
+        <p> Feel free to change the name of projects and generated packages as per your need.</p>
+        <h2>2. FAQs</h2>
+        <h2>2.1. GroupId is duplicate of parent groupId</h2>
+        <p>Maven child projects inherit properties from the parent project. If either group id or version id is same as
+            parent project for any maven module/project, then we can simply remove this entry.</p>
+        <img src="/assets/spring-mvc-image/Remove-duplicate-entries.webp" alt="" class="image-fluid">
+        <h2>2.2. Artifact is not a dependency of the project</h2>
+        <p>We may face this error when have added the module dependency (war) without specifying the type attribute.</p>
+        <img src="/assets/spring-mvc-image/Module-type-attribute.webp" alt="" class="image-fluid">
+        <p>Drop me your question related to creating a multi-module maven project in eclipse IDE.</p>
+
+        <p> Happy Learning !!</p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Create a Simple Maven Project in Eclipse</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>How to Create a Simple Maven Project in Eclipse</h1>
+        <p>In this article, we will show you how to create a simple maven project in Eclipse IDE.
+            We can also create a simple maven project using the command line, check out the same at <a
+                href="guide-to-create-a-simple-maven-project.html">Create a Simple Maven Project using Command-Line.</a>
+        </p>
+        <h2>Tools and technologies used</h2>
+        <ul>
+            <li>Eclipse Neon </li>
+            <li> Maven - 3.5.3</li>
+            <li> JDK - 1.8</li>
+        </ul>
+        <p>Let's create step by step a simple maven project in Eclipse IDE.</p>
+        <h2>Step-1</h2>
+        <ul>
+            <li>Open Eclipse</li>
+            <li> Click on <b>File -> New -> Maven Project</b></li>
+        </ul>
+        <img src="/assets/spring-mvc-image/step1.png" alt="" class="image-fluid">
+        <h2>Step-2
+        </h2>
+        <p>Click on Checkbox for both</p>
+        <ul>
+            <li>Create a simple project </li>
+            <li> Use default Workspace location</li>
+            <li> Click on next button</li>
+        </ul>
+        <img src="/assets/spring-mvc-image/step2.PNG" alt="" class="image-fluid">
+        <h2>Step-3</h2>
+        <p>Provide GroupId and ArtifactId in next screen.</p>
+        <ul>
+            <li><b> GroupId:</b> net.javaguides.maven-demo </li>
+            <li><b> Artifact Id:</b> maven-demo-project </li>
+            <li><b> Name: </b>maven-demo-project </li>
+            <li><b> Description:</b> Simple Maven Demo Project</li>
+        </ul>
+        <img src="/assets/spring-mvc-image/step3.PNG" alt="" class="image-fluid">
+        <h2>Step-4</h2>
+        <p>And you are all set. You should see a new Project in Eclipse with below structure.</p>
+        <img src="/assets/spring-mvc-image/step4.PNG" alt="" class="image-fluid">
+        <h2>Step-5</h2>
+        <p>As you can see in the maven project structure, the default java compiler version ( i.e. source and target
+            setting ) is 1.5. To change the default settings, add the following snippet to <b>pom.xml.</b></p>
+        <pre>
+                &lt;build&gt;
+                    &lt;plugins&gt;
+                        &lt;plugin&gt;
+                            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                            &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                            &lt;version&gt;3.6.0&lt;/version&gt;
+                            &lt;configuration&gt;
+                                &lt;source&gt;1.8&lt;/source&gt;
+                                &lt;target&gt;1.8&lt;/target&gt;
+                            &lt;/configuration&gt;
+                        &lt;/plugin&gt;
+                    &lt;/plugins&gt;
+                &lt;/build&gt;
+                </pre>
+        <p>After changes in <b>pom.xml</b> file, update the maven project. To update maven project right click on
+            <b>maven-project → Maven → Update Project</b>.</p>
+        <h2>Step-6</h2>
+        <p>Add some dependencies to <b>pom.xml</b> file. Here we are adding <b>junit </b>dependency to <b>pom.xml</b>.
+        </p>
+        <pre>
+    &lt;project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+        &lt;groupId&gt;net.javaguides.maven-demo&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-demo-project&lt;/artifactId&gt;
+        &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;description&gt;Simple Maven Demo Project&lt;/description&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;junit&lt;/groupId&gt;
+                &lt;artifactId&gt;junit&lt;/artifactId&gt;
+                &lt;version&gt;4.12&lt;/version&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.6.0&lt;/version&gt;
+                    &lt;configuration&gt;
+                        &lt;source&gt;1.8&lt;/source&gt;
+                        &lt;target&gt;1.8&lt;/target&gt;
+                    &lt;/configuration&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <p>Let's test our created project by creating a simple JUnit test.</p>
+        <h2>Step 7</h2>
+        <p>Create a package, named as <b>net.javaguides.simpleproject</b>, under <b>src/test/java</b> folder. Now create
+            a class <b>AppTest.java</b> under <b>src/test/java</b> package and write the following code in it.</p>
+<pre>package net.javaguides.simpleproject;
+
+    import org.junit.Assert;
+    import org.junit.Test;
+    
+    public class AppTest {
+        @Test
+        public void test() {
+            Assert.assertEquals("Hello Maven", new String("Hello Maven"));
+        }
+    }</pre>
+<h2>Step-8</h2>
+<p>Run your first maven project. Right click on <b>AppTest.java </b>→ Run as → JUnit Test.</p>
+<img src="/assets/spring-mvc-image/step8.PNG" alt="" class="image-fluid">
+
+    </div>
+</body>
+
+</html>

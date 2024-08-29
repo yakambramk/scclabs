@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>guide to create Maven Web Application </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Create a Simple Maven Web Application using Command Line</h1>
+        <p>In this tutorial, we will create a simple Maven web application using the command line. We will use the
+            latest versions of Java and dependencies. This guide will take you through the process of setting up the
+            project, adding necessary dependencies, configuring the web application, and running it.</p>
+        <h2>Prerequisites</h2>
+        <ul>
+            <li> JDK 21 installed</li>
+            <li> Maven installed</li>
+            <li> A web browser</li>
+        </ul>
+        <h2>Step 1: Generate a Maven Project</h2>
+        <p>First, open your command line terminal and run the following command to generate a Maven project:</p>
+        <pre>mvn archetype:generate -DgroupId=com.example -DartifactId=my-webapp -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false</pre>
+        <p>This command creates a Maven project with the basic directory structure for a web application.</p>
+        <h2>Step 2: Navigate to the Project Directory</h2>
+        <p>Change to the newly created project directory:</p>
+        <pre>cd my-webapp</pre>
+        <h2>Step 3: Update the pom.xml File</h2>
+        <p>Open the pom.xml file and update it to include the latest versions of dependencies and plugins. Here is an
+            example of an updated pom.xml:</p>
+        <pre>
+            &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+                     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+                     xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+                &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+            
+                &lt;groupId&gt;com.example&lt;/groupId&gt;
+                &lt;artifactId&gt;my-webapp&lt;/artifactId&gt;
+                &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+                &lt;packaging&gt;war&lt;/packaging&gt;
+            
+                &lt;name&gt;My Web Application&lt;/name&gt;
+                &lt;description&gt;A simple Maven web application&lt;/description&gt;
+            
+                &lt;properties&gt;
+                    &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+                    &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+                    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+                &lt;/properties&gt;
+            
+                &lt;dependencies&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+                        &lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+                        &lt;version&gt;6.0.0&lt;/version&gt;
+                        &lt;scope&gt;provided&lt;/scope&gt;
+                    &lt;/dependency&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;jakarta.jsp&lt;/groupId&gt;
+                        &lt;artifactId&gt;jakarta.jsp-api&lt;/artifactId&gt;
+                        &lt;version&gt;3.1.0&lt;/version&gt;
+                        &lt;scope&gt;provided&lt;/scope&gt;
+                    &lt;/dependency&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.glassfish.web&lt;/groupId&gt;
+                        &lt;artifactId&gt;jakarta.servlet.jsp.jstl&lt;/artifactId&gt;
+                        &lt;version&gt;3.0.0&lt;/version&gt;
+                    &lt;/dependency&gt;
+                &lt;/dependencies&gt;
+            
+                &lt;build&gt;
+                    &lt;plugins&gt;
+                        &lt;plugin&gt;
+                            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                            &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+                            &lt;version&gt;3.3.2&lt;/version&gt;
+                            &lt;configuration&gt;
+                                &lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;
+                            &lt;/configuration&gt;
+                        &lt;/plugin&gt;
+                        &lt;plugin&gt;
+                            &lt;groupId&gt;org.apache.tomcat.maven&lt;/groupId&gt;
+                            &lt;artifactId&gt;tomcat7-maven-plugin&lt;/artifactId&gt;
+                            &lt;version&gt;2.2&lt;/version&gt;
+                            &lt;configuration&gt;
+                                &lt;url&gt;http://localhost:8080/manager/text&lt;/url&gt;
+                                &lt;server&gt;TomcatServer&lt;/server&gt;
+                                &lt;path&gt;/my-webapp&lt;/path&gt;
+                            &lt;/configuration&gt;
+                        &lt;/plugin&gt;
+                    &lt;/plugins&gt;
+                &lt;/build&gt;
+            &lt;/project&gt;
+            </pre>
+        <h2>Step 4: Create the Web Application Directory Structure</h2>
+        <p>If not already created, ensure the directory structure is as follows:</p>
+        <pre>my-webapp
+                │   pom.xml
+                └───src
+                    └───main
+                        └───java
+                        └───resources
+                        └───webapp
+                            │   WEB-INF
+                            │   index.jsp</pre>
+        <ul>
+            <li><b> src/main/java:</b> Place your Java source files here.</li>
+            <li><b> src/main/resources:</b> Place your resource files here.</li>
+            <li><b> src/main/webapp:</b> Place your web content here (e.g., HTML, JSP files).</li>
+            <li><b> src/main/webapp/WEB-INF:</b> Place your web.xml file and other configuration files here.</li>
+        </ul>
+        <h2>Step 5: Create a Simple JSP Page</h2>
+        <p>Create a file named <b>index.jsp</b> in the <b>src/main/webapp</b> directory with the following content:</p>
+        <pre>
+            &lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt;
+            &lt;html&gt;
+            &lt;head&gt;
+                &lt;title&gt;My Web Application&lt;/title&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+                &lt;h2&gt;Hello, World!&lt;/h2&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;
+            </pre>
+        <h2>Step 6: Create web.xml File</h2>
+        <p>Create a file named web.xml in the <b>src/main/webapp/WEB-INF</b> directory with the following content:</p>
+        <pre>
+    &lt;!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd"&gt;
+    &lt;web-app&gt;
+        &lt;display-name&gt;Archetype Created Web Application&lt;/display-name&gt;
+    &lt;/web-app&gt;
+    </pre>
+        <h2>Step 7: Build the Project</h2>
+        <p>Run the following command to build the project:</p>
+        <pre>mvn clean package</pre>
+        <p>This command will generate a WAR file in the target directory.</p>
+        <h2>Step 8: Run the Application</h2>
+        <p>To run the web application, you can use an embedded Tomcat server. Add the following plugin configuration to
+            your pom.xml:</p>
+        <pre>
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.apache.tomcat.maven&lt;/groupId&gt;
+                    &lt;artifactId&gt;tomcat7-maven-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;2.2&lt;/version&gt;
+                    &lt;configuration&gt;
+                        &lt;path&gt;/my-webapp&lt;/path&gt;
+                    &lt;/configuration&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+        </pre>
+        <p>Now, start the application using the following command:</p>
+        <pre>mvn tomcat7:run</pre>
+        <h2>Step 9: Access the Application</h2>
+        <p>Open your web browser and navigate to <b>http://localhost:8080/my-webapp.</b> You should see the "Hello,
+            World!" message from your <b>index.jsp</b> page.</p>
+        <h2>Conclusion</h2>
+        <p>Congratulations! You have successfully created a simple Maven web application using the command line. This
+            guide covered the essential steps, from generating the project to running it on an embedded Tomcat server.
+            Maven simplifies the process of managing dependencies and building Java web applications, making it an
+            invaluable tool for Java developers.</p>
+
+    </div>
+</body>
+
+</html>
