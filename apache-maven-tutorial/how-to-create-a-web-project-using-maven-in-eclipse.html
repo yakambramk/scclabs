@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Create a Web Project Using Maven in Eclipse</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>How to Create a Web Project Using Maven in Eclipse</h1>
+        <p>In a previous article, we have discussed how to create a simple maven project in eclipse. In this article, we
+            will show you how to create a web project or application using maven in Eclipse IDE.</p>
+        <p> Let me list out what are tools and technologies that I have used to create a web project or application
+            using maven in Eclipse IDE.</p>
+        <h2>Tools and technologies used</h2>
+        <ul>
+            <li> IDE - Eclipse Neon </li>
+            <li> JDK - 1.8</li>
+            <li> Maven - 3.5.3</li>
+            <li>Apache Tomcat - 8.5</li>
+            <li> Servlet API - 3.1.0</li>
+        </ul>
+        <p>Let’s start step by step to create a web project using Maven in Eclipse IDE.</p>
+        <h2>Step-1</h2>
+        <ul>
+            <li> Open Eclipse </li>
+            <li> Click on File -> New -> Maven Project
+            </li>
+        </ul>
+        <img src="/assets/spring-mvc-image/step1 (1).png" alt="" class="image-fluid">
+        <h2>Step-2</h2>
+        <ul>
+            <li>Don't select a simple project as shown in below diagram </li>
+            <li>Select default Workspace location </li>
+            <li> Click on Next </li>
+        </ul>
+        <img src="/assets/spring-mvc-image/step2 (1).PNG" alt="" class="image-fluid">
+        <h2>Step-3</h2>
+        <p>Select the Maven archetype as <b> maven-archetype-webapp</b> and click on next.</p>
+        <img src="/assets/spring-mvc-image/step3 (1).PNG" alt="" class="image-fluid">
+        <h2>Step-4</h2>
+        <p>Provide <b> GroupId, ArtifactId, package </b> and click on finish.</p>
+        <ul>
+            <li><b> GroupId: </b>net.javaguides.maven-web-project </li>
+            <li><b> Artifact Id:</b> MavenWebApp </li>
+            <li><b> package:</b> net.javaguides.maven_web_project
+            </li>
+        </ul>
+        <img src="/assets/spring-mvc-image/step4 (1).PNG" alt="" class="image-fluid">
+        <h2>Step-5</h2>
+        <p>And you are all set. You should see a new Project in Eclipse with below structure.</p>
+        <img src="/assets/spring-mvc-image/step5.PNG" alt="" class="image-fluid">
+        <p>Now, let's test this web project by adding simple Servlet and deploy on tomcat server.</p>
+        <h2>Step-6</h2>
+        <p>Open <b>pom.xml</b> file and add servlet API dependency and maven compiler plugin as:</p>
+        <pre>
+    &lt;project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+        &lt;groupId&gt;net.javaguides.maven-web-project&lt;/groupId&gt;
+        &lt;artifactId&gt;MavenWebApp&lt;/artifactId&gt;
+        &lt;packaging&gt;war&lt;/packaging&gt;
+        &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;name&gt;MavenWebApp Maven Webapp&lt;/name&gt;
+        &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;junit&lt;/groupId&gt;
+                &lt;artifactId&gt;junit&lt;/artifactId&gt;
+                &lt;version&gt;3.8.1&lt;/version&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api --&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+                &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+                &lt;version&gt;3.1.0&lt;/version&gt;
+                &lt;scope&gt;provided&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;!-- https://mvnrepository.com/artifact/javax.servlet/jsp-api --&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+                &lt;artifactId&gt;jsp-api&lt;/artifactId&gt;
+                &lt;version&gt;2.0&lt;/version&gt;
+                &lt;scope&gt;provided&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+        &lt;build&gt;
+            &lt;finalName&gt;MavenWebApp&lt;/finalName&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.5.1&lt;/version&gt;
+                    &lt;configuration&gt;
+                        &lt;source&gt;1.8&lt;/source&gt;
+                        &lt;target&gt;1.8&lt;/target&gt;
+                    &lt;/configuration&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <h2>Step-7</h2>
+        <p>Now create a <b>SimpleServlet</b> class under <b>net.javaguides.mavenwebapp</b> package and write the
+            following code in it.</p>
+        <pre>package net.javaguides.mavenwebapp;
+
+    import java.io.IOException;
+    import javax.servlet.ServletException;
+    import javax.servlet.annotation.WebServlet;
+    import javax.servlet.http.HttpServlet;
+    import javax.servlet.http.HttpServletRequest;
+    import javax.servlet.http.HttpServletResponse;
+    
+    /**
+     * Servlet implementation class SimpleServlet
+     */
+    @WebServlet("/hello")
+    public class SimpleServlet extends HttpServlet {
+    
+       private static final long serialVersionUID = 1L;
+    
+       @Override
+       protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
+             throws ServletException, IOException {
+          resp.setContentType("text/plain");
+          resp.getWriter().write("Hello World! Maven Web Project Example.");
+       }
+    }</pre>
+        <h2>Step-8</h2>
+        <p>Let's Build the project using the following maven command.- <b>mvn clean install</b></p>
+        <p>To execute the about maven command in Eclipse IDE, Click on Run menu → Run Configuration.. to create a new
+            configuration.</p>
+        <p>In Run Configuration Wizard, double-click on Maven Build and provide the configuration information (Name,
+            Base directory and Goals) as shown in the below image.</p>
+            <img src="/assets/spring-mvc-image/step10.PNG" alt="" class="image-fluid">
+            <p>Now click on the Run and monitor the output in console.</p>
+            <img src="/assets/spring-mvc-image/output.PNG" alt="" class="image-fluid">
+            <h2>Step-9</h2>
+            <p>Let's deploy our web project into tomcat. Let's first configure tomcat server in Eclipse IDE via server section. Once deployment is a success then Open a browser and type <a href="">http://localhost:8080/hello</a> URL in address bar.</p>
+            <img src="/assets/spring-mvc-image/step9.PNG" alt="" class="image-fluid">
+            <p>That's all. I hope you understood the flow of creating a web project using Maven in Eclipse. Do comment if you need any help or issues.</p>
+    </div>
+</body>
+
+</html>

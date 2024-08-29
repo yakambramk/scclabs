@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        How to Convert Java Project to Maven Project in Eclipse</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>
+            How to Convert Java Project to Maven Project in Eclipse</h1>
+        <p>In a previous couple of articles, we have seen how to create simple Maven project in Eclipse and how to
+            create maven web project in Eclipse. Now in this article, we will show you how to create a java project and
+            convert it into the maven project.</p>
+        <h2>Tools and technologies used</h2>
+        <ul>
+            <li> IDE - Eclipse Neon </li>
+            <li> JDK - 1.8</li>
+            <li> Maven - 3.5.3</li>
+        </ul>
+        <p>Let's first create plain Java Project in Eclipse IDE.</p>
+
+        <h2>Step 1</h2>
+        <h2>Create a Java project</h2>
+        <p>Go to <b>File → Other → Java → Java Project</b>. Click on Next.</p>
+        <img src="/assets/spring-mvc-image/step1 (2).PNG" alt="" class="image-fluid">
+        <h2>Step -2</h2>
+        <p>In New Java Project dialog, provide the project name as "JavaDemoProject" and click on Finish as shown in the
+            diagram:</p>
+        <img src="/assets/spring-mvc-image/step2 (2).PNG" alt="" class="image-fluid">
+        <p>So now we have created plain Java Project, next step is to convert to maven project.</p>
+        <p><b>Convert this Java Project to Maven Project</b></p>
+        <h2>Step-3</h2>
+        <p>Right, click on <b>JavaDemoProject</b>.</p>
+        <p>Go to <b>Configure</b> → Convert to <b>Maven Project.</b></p>
+        <img src="/assets/spring-mvc-image/step3 (2).png" alt="" class="image-fluid">
+        <p>You will see the below dialog. Now you can add Name and Description and click on Finish.</p>
+        <img src="/assets/spring-mvc-image/step4 (2).PNG" alt="" class="image-fluid">
+        <h2>Step-4</h2>
+        <p>Review the new folder structure of maven project and also pom.xml file:</p>
+        <img src="/assets/spring-mvc-image/maven-project.PNG" alt="" class="image-fluid">
+        <h2>Pom.xml</h2>
+        <pre>
+    &lt;project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+        &lt;groupId&gt;JavaDemoProject&lt;/groupId&gt;
+        &lt;artifactId&gt;JavaDemoProject&lt;/artifactId&gt;
+        &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;build&gt;
+            &lt;sourceDirectory&gt;src&lt;/sourceDirectory&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.5.1&lt;/version&gt;
+                    &lt;configuration&gt;
+                        &lt;source&gt;1.8&lt;/source&gt;
+                        &lt;target&gt;1.8&lt;/target&gt;
+                    &lt;/configuration&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+<p>That's all. Now you can add dependencies you pom.xml and start developing your project.</p>
+
+    </div>
+</body>
+
+</html>

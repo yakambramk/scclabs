@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> How to Create Maven Multi Module using Command Line </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>How to Create Maven Multi Module using Command Line</h1>
+        <p>In this tutorial, we will create a simple Maven multi-module project using the command line. We will use a
+            blogger web application as an example, which will consist of a parent project and three sub-modules:</p>
+        <ul>
+            <li>blogger-core</li>
+            <li> blogger-common</li>
+            <li> blogger-web</li>
+        </ul>
+        <p>We'll use the latest versions of Java and dependencies throughout the process.</p>
+        <h2>Prerequisites</h2>
+        <ul>
+            <li>JDK 21 installed </li>
+            <li> Maven installed </li>
+            <li> A text editor or an IDE like Eclipse</li>
+        </ul>
+        <h2>Step 1: Create the Parent Project - Blogger</h2>
+        <p>First, open your command line terminal and run the following command to create the parent Maven project: </p>
+        <pre>mvn archetype:generate -DgroupId=com.companyname.blogger -DartifactId=blogger -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</pre>
+        <p>This command creates a basic Maven project. Note that the whole command should be a single line.</p>
+        <p>After the build is successful, you will see output similar to the following:</p>
+        <pre>[INFO] ------------------------------------------------------------------------
+            [INFO] BUILD SUCCESS
+            [INFO] ------------------------------------------------------------------------
+            [INFO] Total time: 01:09 min
+            [INFO] Finished at: 2023-07-09T13:40:40+05:30
+            [INFO] ------------------------------------------------------------------------</pre>
+        <h2>Step 2: Update the pom.xml to Declare It as a Parent Project</h2>
+        <p>Open the pom.xml file of the newly created parent Maven project (blogger) and change the packaging to pom.
+            This is necessary to declare it as a parent project.</p>
+        <p>Here's the complete pom.xml:</p>
+        <pre>
+                &lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+                    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+                
+                    &lt;groupId&gt;com.companyname.blogger&lt;/groupId&gt;
+                    &lt;artifactId&gt;blogger&lt;/artifactId&gt;
+                    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+                    &lt;packaging&gt;pom&lt;/packaging&gt;
+                
+                    &lt;name&gt;blogger&lt;/name&gt;
+                    &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+                
+                    &lt;properties&gt;
+                        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+                        &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+                        &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+                    &lt;/properties&gt;
+                
+                    &lt;modules&gt;
+                        &lt;module&gt;blogger-core&lt;/module&gt;
+                        &lt;module&gt;blogger-common&lt;/module&gt;
+                        &lt;module&gt;blogger-web&lt;/module&gt;
+                    &lt;/modules&gt;
+                &lt;/project&gt;
+                </pre>
+        <h2>Step 3: Create Sub-Modules</h2>
+        <p>Change the directory to the parent project directory:</p>
+        <pre>cd blogger</pre>
+        <h2>Create blogger-core Module</h2>
+        <p>Run the following command to create the blogger-core module:</p>
+        <pre>mvn archetype:generate -DgroupId=com.companyname.blogger -DartifactId=blogger-core -DinteractiveMode=false</pre>
+        <p><b>Create blogger-common Module</b></p>
+        <p>Run the following command to create the blogger-common module:</p>
+        <pre>mvn archetype:generate -DgroupId=com.companyname.blogger -DartifactId=blogger-common -DinteractiveMode=false</pre>
+        <p><b>Create blogger-web Module</b></p>
+        <p>Run the following command to create the blogger-web module. Note that this module will be a web application
+            packaged as a WAR file:</p>
+        <pre>mvn archetype:generate -DgroupId=com.companyname.blogger -DartifactId=blogger-web -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false</pre>
+        <h2>Step 4: Update Sub-Modules pom.xml</h2>
+        <p><b>blogger-core Module pom.xml</b></p>
+        <p>Update the pom.xml of the blogger-core module to set the packaging type to jar:</p>
+        <pre>
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+        &lt;parent&gt;
+            &lt;artifactId&gt;blogger&lt;/artifactId&gt;
+            &lt;groupId&gt;com.companyname.blogger&lt;/groupId&gt;
+            &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+        &lt;/parent&gt;
+    
+        &lt;groupId&gt;com.companyname.blogger&lt;/groupId&gt;
+        &lt;artifactId&gt;blogger-core&lt;/artifactId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+        &lt;packaging&gt;jar&lt;/packaging&gt;
+    
+        &lt;name&gt;blogger-core&lt;/name&gt;
+    
+        &lt;properties&gt;
+            &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+            &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+            &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+        &lt;/properties&gt;
+    
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+                &lt;artifactId&gt;junit-jupiter-api&lt;/artifactId&gt;
+                &lt;version&gt;5.9.3&lt;/version&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    &lt;/project&gt;
+    </pre>
+        <p><b>blogger-common Module pom.xml</b></p>
+        <p>Update the pom.xml of the blogger-common module to set the packaging type to jar:</p>
+        <pre>
+        &lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+            &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+            &lt;parent&gt;
+                &lt;artifactId&gt;blogger&lt;/artifactId&gt;
+                &lt;groupId&gt;com.companyname.blogger&lt;/groupId&gt;
+                &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+            &lt;/parent&gt;
+        
+            &lt;groupId&gt;com.companyname.blogger&lt;/groupId&gt;
+            &lt;artifactId&gt;blogger-common&lt;/artifactId&gt;
+            &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+            &lt;packaging&gt;jar&lt;/packaging&gt;
+        
+            &lt;name&gt;blogger-common&lt;/name&gt;
+        
+            &lt;properties&gt;
+                &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+                &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+                &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+            &lt;/properties&gt;
+        
+            &lt;dependencies&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+                    &lt;artifactId&gt;junit-jupiter-api&lt;/artifactId&gt;
+                    &lt;version&gt;5.9.3&lt;/version&gt;
+                    &lt;scope&gt;test&lt;/scope&gt;
+                &lt;/dependency&gt;
+            &lt;/dependencies&gt;
+        &lt;/project&gt;
+        </pre>
+        <p><b>blogger-web Module pom.xml</b></p>
+        <p>Update the pom.xml of the blogger-web module to set the packaging type to war:</p>
+        <pre>
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+        &lt;parent&gt;
+            &lt;artifactId&gt;blogger&lt;/artifactId&gt;
+            &lt;groupId&gt;com.companyname.blogger&lt;/groupId&gt;
+            &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+        &lt;/parent&gt;
+    
+        &lt;groupId&gt;com.companyname.blogger&lt;/groupId&gt;
+        &lt;artifactId&gt;blogger-web&lt;/artifactId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+        &lt;packaging&gt;war&lt;/packaging&gt;
+    
+        &lt;name&gt;blogger-web&lt;/name&gt;
+    
+        &lt;properties&gt;
+            &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+            &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+            &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+        &lt;/properties&gt;
+    
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+                &lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+                &lt;version&gt;6.0.0&lt;/version&gt;
+                &lt;scope&gt;provided&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+                &lt;artifactId&gt;junit-jupiter-api&lt;/artifactId&gt;
+                &lt;version&gt;5.9.3&lt;/version&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    
+        &lt;build&gt;
+            &lt;finalName&gt;blogger-web&lt;/finalName&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <h2>Step 5: Build the Multi-Module Project</h2>
+        <p>Navigate back to the parent project directory (blogger) and run the following command to build the entire
+            multi-module project:</p>
+        <pre>mvn clean install</pre>
+        <p>The output will be similar to the following:</p>
+        <pre>[INFO] Reactor Summary:
+    [INFO]
+    [INFO] blogger ................................ SUCCESS [  0.746 s]
+    [INFO
+    
+    ] blogger-core ........................... SUCCESS [  5.727 s]
+    [INFO] blogger-common ......................... SUCCESS [  1.775 s]
+    [INFO] blogger-web ............................ SUCCESS [  0.809 s]
+    [INFO] ------------------------------------------------------------------------
+    [INFO] BUILD SUCCESS
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Total time: 9.289 s
+    [INFO] Finished at: 2023-07-09T14:20:05+05:30
+    [INFO] ------------------------------------------------------------------------</pre>
+        <h2>Step 6: Import the Project into Eclipse</h2>
+        <p>To import the project into Eclipse:</p>
+        <ol>
+            <li> Open Eclipse.</li>
+            <li> Go to File -> Import.</li>
+            <li> Select Maven -> Existing Maven Projects.</li>
+            <li> Browse to the parent project directory (blogger).</li>
+            <li> Click Finish.</li>
+        </ol>
+        <h2>Conclusion</h2>
+        <p>In this tutorial, we learned how to create a Maven multi-module project using the command line, using a
+            blogger project as an example. We created a parent project and three sub-modules, updated the pom.xml files
+            accordingly, and built the entire project. Maven's multi-module capability helps in managing complex
+            projects efficiently by allowing a logical separation of concerns and dependencies.</p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Source Code Quality Checks using PMD Plugin</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Setting the Java Version in Maven</h1>
+        <p><b>1. Overview</b></p>
+        <p>In this quick tutorial, we’ll show how to <b>set the Java version in Maven</b>.
+
+            Before moving on, we can <b>check the default JDK version of Maven</b>. Running the mvn -v command will show
+            the Java version in which Maven runs.</p>
+        <p>2. <b>Use the Compiler Plugin</b></p>
+        <p>We can specify the desired Java version in the compiler plugin.</p>
+        <p>2.1. <b> Compiler Plugin</b></p>
+        <p>The first option is setting the version in compiler plugin properties:</p>
+        <pre>
+                &lt;properties&gt;
+                    &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;
+                    &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;
+                &lt;/properties&gt;
+                </pre>
+        <p>The Maven compiler accepts this command with –target and –source versions. If we want to use the Java 8
+            language features, the –source should be set to 1.8.</p>
+        <p>Also, for the compiled classes to be compatible with JVM 1.8, the –target value should be 1.8.</p>
+
+        <p> The default value for both of them is the 1.6 version.</p>
+
+        <p> Alternatively, we can configure the compiler plugin directly:</p>
+        <pre>
+            &lt;plugins&gt;
+                &lt;plugin&gt;    
+                    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                    &lt;configuration&gt;
+                        &lt;source&gt;1.8&lt;/source&gt;
+                        &lt;target&gt;1.8&lt;/target&gt;
+                    &lt;/configuration&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+            </pre>
+        <p>The maven-compiler-plugin also has additional configuration properties that allow us to have more control
+            over the compilation process beyond -source and -target versions</p>
+        <p>2.2. <b>Java 9 and Beyond</b></p>
+        <p>Furthermore, <b>starting from the JDK 9 version, we can use a new -release command-line option</b>. This new
+            argument will automatically configure the compiler to produce class files that will link against the
+            implementation of the given platform version.</p>
+        <p><b>By default, the -source and -target options don’t guarantee a cross-compilation.</b></p>
+        <p>This means that we cannot run our application on older versions of the platform. Additionally, to compile and
+            run the programs for older Java versions, we also need to specify -bootclasspath option.</p>
+        <p><b>To cross-compile correctly, the new -release option replaces three flags: -source, -target and
+                -bootclasspath.</b></p>
+        <p>After transforming our examples, we can declare the following for the plugin properties:</p>
+        <pre>
+            &lt;properties&gt;
+                &lt;maven.compiler.release&gt;17&lt;/maven.compiler.release&gt;
+            &lt;/properties&gt;
+            </pre>
+        <p>And for the maven-compiler-plugin starting from the 3.6 version, this is what we can write:</p>
+        <pre>
+    &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+        &lt;version&gt;3.12.1&lt;/version&gt;
+        &lt;configuration&gt;
+            &lt;release&gt;7&lt;/release&gt;
+        &lt;/configuration&gt;
+    &lt;/plugin&gt;
+    </pre>
+        <p>Notice that <b>we can add the Java version in a new &lt;release> attribute</b>. In this example, we compile
+            our application for Java 7.</p>
+
+        <p> What’s more, we don’t need a JDK 7 installed in our machine. Java 17 already contains all the information
+            for linking the new language features with JDK 7.</p>
+        <h2>3.Spring Boot Specification</h2>
+        <p>Spring Boot applications specify the JDK version inside of the properties tags in the pom.xml file.</p>
+
+        <p>First, we need to add spring-boot-starter-parent as a parent to our project:</p>
+        <pre>
+            &lt;parent&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+            &lt;/parent&gt;
+            </pre>
+        <p>This parent POM allows us to configure default plugins and multiple properties including the Java version —
+            by default, the Java version is 1.8.</p>
+
+        <p> However, we can override the default version of the parent by specifying the java.version property:</p>
+        <pre>
+            &lt;properties&gt;
+                &lt;java.version&gt;17&lt;/java.version&gt;
+            &lt;/properties&gt;
+            </pre>
+        <p><b>By setting the java.version property, we declare that the source and the target Java versions are both
+                equal to 1.9.</b></p>
+
+        <p> Above all, we should keep in mind that this property is a Spring Boot Specification. Additionally,
+            <b>starting from Spring Boot 2.0, Java 8 is the minimum version.</b>
+        </p>
+        <p>This means we can’t use or configure Spring Boot for the older JDK versions.</p>
+        <h2>4. Conclusion</h2>
+        <p>This quick tutorial demonstrated the possible ways of setting Java version in our Maven project.
+
+            Here’s a summary of the main takeaways:</p>
+        <ul>
+            <li><b>Using &lt;java.version> is possible only with the Spring Boot application.</b></li>
+            <li> For simple cases, maven.compiler.source and maven.compiler.target properties should be the best fit.
+            </li>
+            <li><b> Finally, to have more control over the compilation process, use the maven-compiler-plugin
+                    configuration settings.</b></li>
+        </ul>
+
+    </div>
+</body>
+
+</html>

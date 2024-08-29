@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide to maven Repository</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Maven Repository: 3 Types of Maven Repositories</h1>
+        <p> Maven repositories are essential for managing the dependencies and plugins required for building Java
+            projects. There are three main types of Maven repositories: Local Repository, Central Repository, and Remote
+            Repository. In this blog post, we'll explore each type, their purpose, and how to use them effectively.</p>
+        <h2>Types of Maven Repositories</h2>
+        <p><b>1. Local Repository</b></p>
+        <p>The local repository is a directory on your local machine where Maven stores all the project artifacts
+            (libraries, plugins, etc.) that you download. This helps in reusing the artifacts and avoids downloading
+            them every time you build your project. By default, Maven creates a local repository in the .m2 directory
+            under your home directory.</p>
+        <p><b>Location</b></p>
+        <p>The default location of the local repository is:</p>
+        <pre>~/.m2/repository</pre>
+        <p>However, you can change this location by configuring the <b>settings.xml</b> file located in the Maven
+            installation
+            directory or the .m2 directory.</p>
+        <p><b>Example</b></p>
+        <p>When you build a Maven project, dependencies specified in the pom.xml file are downloaded to the local
+            repository if they are not already present. For example, if you add the following dependency to your
+            pom.xml:</p>
+        <pre>
+                &lt;dependencies&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+                        &lt;artifactId&gt;commons-lang3&lt;/artifactId&gt;
+                        &lt;version&gt;3.12.0&lt;/version&gt;
+                    &lt;/dependency&gt;
+                &lt;/dependencies&gt;
+                </pre>
+        <p>Maven will download <b>commons-lang3-3.12.0.jar</b> from the Central Repository (or any other remote
+            repository) to your local repository.</p>
+        <p><b>2. Central Repository</b></p>
+        <p>The Central Repository is a default remote repository provided by the Maven community. It is a vast
+            collection of commonly used libraries and plugins. When Maven cannot find a dependency in the local
+            repository, it fetches the dependency from the Central Repository.</p>
+        <p><b>URL</b></p>
+        <p>The Central Repository's URL is:</p>
+        <pre>https://repo.maven.apache.org/maven2</pre>
+        <p><b>Example</b></p>
+        <p>When you add a dependency to your pom.xml and it's not available in your local repository, Maven
+            automatically downloads it from the Central Repository. For example:</p>
+        <pre>
+                &lt;dependencies&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;junit&lt;/groupId&gt;
+                        &lt;artifactId&gt;junit&lt;/artifactId&gt;
+                        &lt;version&gt;4.13.2&lt;/version&gt;
+                        &lt;scope&gt;test&lt;/scope&gt;
+                    &lt;/dependency&gt;
+                &lt;/dependencies&gt;
+                </pre>
+        <p>If <b>junit-4.13.2.jar</b> is not present in the local repository, Maven will fetch it from the Central
+            Repository.</p>
+        <p><b>3. Remote Repository</b></p>
+        <p>Remote repositories are custom repositories hosted on remote servers. They can be used to host your own
+            libraries, third-party libraries, or internal company artifacts that are not available in the Central
+            Repository. You can configure Maven to use remote repositories in addition to the Central Repository.</p>
+        <p><b>Configuration
+            </b></p>
+        <p>You can configure remote repositories in the <b>pom.xml or settings.xml </b>file. Here’s an example of how to
+            add a remote repository in the <b>pom.xml</b>:</p>
+        <pre>
+                &lt;repositories&gt;
+                    &lt;repository&gt;
+                        &lt;id&gt;my-remote-repo&lt;/id&gt;
+                        &lt;url&gt;https://my-company-repo.com/maven2&lt;/url&gt;
+                    &lt;/repository&gt;
+                &lt;/repositories&gt;
+                </pre>
+        <p><b>Example</b></p>
+        <p>Suppose you have a custom library that is not available in the Central Repository. You can host it in a
+            remote repository and configure your project to use this repository. Maven will then download the library
+            from the specified remote repository.</p>
+        <h2>Maven Dependency Search Order</h2>
+        <p>When Maven searches for dependencies, it follows a specific order:</p>
+        <ol>
+            <li><b> Local Repository: </b>Maven first checks the local repository for the required dependencies.</li>
+            <li><b> Central Repository: </b>If the dependency is not found locally, Maven then searches the Central
+                Repository.</li>
+            <li><b> Remote Repository: </b>Finally, if the dependency is not found in the local or Central Repository,
+                Maven will search any configured remote repositories.</li>
+        </ol>
+        <p>This search order ensures that the build process is efficient and avoids unnecessary downloads by utilizing
+            locally cached artifacts first.</p>
+        <h2>Using Maven Repositories</h2>
+        <p><b>Local Repository Usage</b></p>
+        <p>Maven automatically uses the local repository for all builds. You don't need to configure anything special
+            for it. When you run Maven commands like mvn install, Maven installs the built artifacts into the local
+            repository.</p>
+        <p><b>Accessing Central Repository</b></p>
+        <p>The Central Repository is used by default for all Maven projects. You don't need to configure it explicitly.
+            Maven will always check the local repository first and then the Central Repository for any dependencies.</p>
+        <p><b>Configuring Remote Repositories</b></p>
+        <p>To use a remote repository, you need to add its configuration to your <b>pom.xml or settings.xml.</b> Here's
+            an
+            example configuration in the <b>settings.xml</b> file:</p>
+        <pre>
+                &lt;settings&gt;
+                    &lt;profiles&gt;
+                        &lt;profile&gt;
+                            &lt;id&gt;my-profile&lt;/id&gt;
+                            &lt;repositories&gt;
+                                &lt;repository&gt;
+                                    &lt;id&gt;my-remote-repo&lt;/id&gt;
+                                    &lt;url&gt;https://my-company-repo.com/maven2&lt;/url&gt;
+                                &lt;/repository&gt;
+                            &lt;/repositories&gt;
+                        &lt;/profile&gt;
+                    &lt;/profiles&gt;
+                
+                    &lt;activeProfiles&gt;
+                        &lt;activeProfile&gt;my-profile&lt;/activeProfile&gt;
+                    &lt;/activeProfiles&gt;
+                &lt;/settings&gt;
+                </pre>
+        <p>This configuration tells Maven to use the remote repository specified when resolving dependencies.</p>
+        <h2>Summary</h2>
+        <p>Maven repositories play a crucial role in managing dependencies for Java projects. Understanding the
+            different types of repositories—Local Repository, Central Repository, and Remote Repository—helps in
+            efficiently managing and using project dependencies. The local repository caches dependencies locally, the
+            Central Repository provides a vast collection of commonly used libraries, and remote repositories allow
+            hosting and accessing custom or internal artifacts.</p>
+
+       <p> By properly configuring and using these repositories, you can streamline your build process and ensure that all
+        required dependencies are readily available for your projects. Understanding the dependency search order (Local
+        Repository -> Central Repository -> Remote Repository) further optimizes your build process by leveraging
+        existing cached artifacts before making remote requests.</p>
+    </div>
+</body>
+
+</html>
