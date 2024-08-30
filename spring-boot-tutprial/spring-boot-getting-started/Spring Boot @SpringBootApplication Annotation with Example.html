@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .container-fluid {
+            width: 100%;
+            background-color: rgb(55, 189, 18);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 50%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+    </style>
+</head>
+    <body>
+        <div class="container-fluid">
+            <div class="topImage mt-2 mb-4">
+                <img src="../../assets/springboot images/Most-Used-Spring-Boot-Annotations.png" alt="logo" />
+            </div>
+        </div>
+    
+        <div class="container">
+            <div class="heading">
+                <h3>@SpringBootApplication Spring Boot Example</h3>
+                <h6>Author: Sai K</h6>
+            </div><br>
+            <p>In this article, we will discuss one very important  Spring Boot annotation that is @SpringBootApplication with an example.</p>
+
+            <h3>YouTube Video</h3>
+
+
+            <h3>@SpringBootApplication Annotation Overview</h3>
+            <p><span>@SpringBootApplication</span> annotation indicates a configuration class that declares one or more @Bean methods and also triggers auto-configuration and component scanning. <br><br>
+
+                This<span> @SpringBootApplication</span> annotation is a convenience annotation that is equivalent to declaring<span> @Configuration</span>,<span> @EnableAutoConfiguration</span>, and<span> @ComponentScan</span>.<br><br>
+                 
+                The below diagram shows an internal implementation of @SpringBootApplication Annotation:</p>
+                <div class=" mt-2 mb-4">
+                    <img src="../../assets/springboot images/SpringBootApplication_1.PNG" alt="logo" class="img-fluid"  />
+                </div>
+                <p>Note that the above @SpringBootApplication annotation code internally uses @Configuration,<br>
+                     @EnableAutoConfiguration, and @ComponentScan annotations with their default attributes.</p>
+                    <h3>@SpringBootApplication Annotation Example</h3>
+                    <p>We use this annotation to mark the main class of a Spring Boot  application:</p>
+                    <code><pre>
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication // same as @Configuration @EnableAutoConfiguration @ComponentScan
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+} </pre></code><br>
+                <p>Spring Boot @SpringBootApplication annotation is used to mark a configuration class that declares one or more @Bean methods and also triggers auto-configuration and component scanning.<br><br>
+
+                    The @SpringBootApplication annotation is a combination of the following three Spring annotations:</p>
+                    <div class=" mt-2 mb-4">
+                        <img src="../../assets/springboot images/springbootapplication_2.png" alt="logo" class="img-fluid"/>
+                    </div><br>
+
+                    <h3>@Configuration</h3>
+                    <p>This annotation indicates that a configuration class declares one or more @Bean methods. These classes are processed by the Spring container to generate bean definitions and service requests for those beans at runtime.</p><br>
+                    <h3>@ComponentScan</h3>
+                    <p>This annotation is used to specify the base packages to scan for spring beans/components.</p><br>
+                    <h3>@EnableAutoConfiguration</h3>
+                    <P>This annotation enables the magical auto-configuration feature of Spring Boot, which can automatically configure a lot of stuff for you.</P><br>
+                    <h3>SpringBootApplication Annotation Optional Elements</h3>
+                    <p>The following are the parameters accepted in the @SpringBootApplication annotation:</p>
+                    <ul>
+                        <li><b> Class< ?>[] exclude</b> - Exclude specific auto-configuration classes such that they will never be applied.</li>
+                        <li><b>String[] excludeName</b> - Exclude specific auto-configuration class names such that they will never be applied.</li>
+                        <Li><b>Class<?>[] scanBasePackageClass</b> - A type-safe alternative to scanBasePackages() for specifying the packages to scan for annotated components.</Li>
+                        <li><b>String[] scanBasePackages</b> - Base packages to scan for annotated components.</li>
+                    </ul>
+                    <h3>@SpringBootApplication Annotation Features not Mandatory</h3>
+                    <p>So far we have seen that @SpringBootApplication annotation is equivalent to using<a href=""> @Configuration</a>,<a href=""> @EnableAutoConfiguration</a>, and @ComponentScan but none of these features are mandatory and you may choose to replace this single annotation with any of the features that it enables. For instance, you may not want to use a component scan in your application:</p><br>
+                    <code><pre>
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
+@Configuration
+@EnableAutoConfiguration
+@Import({ MyConfig.class, MyAnotherConfig.class })
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}</pre></code><br>
+                <p>In this example, the Application is just like any other Spring Boot application except that @Component annotated classes are not detected automatically and the user-defined beans are imported explicitly (see @Import).</p>
+                <ul>Learn complete Spring boot on<a href="http://127.0.0.1:5500/spring_boot_tutorial.html"> Spring Boot Tutorial</a></ul>
+                <h3>Related Spring and Spring Boot Annotations</h3>
+                <ul>
+                    <li>Spring Boot @Bean Annotation Example</li>
+                    <li>Spring @Qualifier Annotation Example</li>
+                    <li>Spring @Autowired Annotation with Example</li>
+                    <li>Spring @Bean Annotation with Example</li>
+                    <li>Spring @Configuration Annotation with Example</li> 
+                    <li>Spring @PropertySource Annotation with Example</li>
+                    <li>Spring @Import Annotation with Example</li>
+                    <li>Spring @ImportResource Annotation Example</li>
+                    <li>Spring - @Lazy Annotation Example</li>
+                    <li>Spring - @Primary Annotation Example</li>
+                    <li>Spring @PostConstruct and @PreDestroy Example</li>
+                    <li>Spring @Repository Annotation</li>
+                    <li>Spring @Service Annotation </li>
+                    <li>The Spring @Controller and @RestController Annotations</li>
+                    <li>Spring Boot @Component, @Controller, @Repository and @Service</li>
+                    <li>Spring @Scope annotation with Prototype Scope Example</li>
+                    <li>Spring @Scope annotation with Singleton Scope Example</li>
+                    <li>Spring Boot @PathVariable</li>
+                    <li>Spring Boot @ResponseBody</li>
+                    <li>Spring @RequestBody - Binding Method Parameters to Request Body</li>
+                    <li>Spring Boot @ResponseStatus Annotation</li>
+                    <li>Spring Boot - Creating Asynchronous Methods using @Async Annotation</li>
+                    <li>@SpringBootTest Spring Boot Example</li>
+                    <li>@SpringBootTest vs @WebMvcTest</li>
+                    <li>@DataJpaTest Spring Boot Example</li>
+                    <li>Spring @PostConstruct and @PreDestroy Example</li>
+                    <li>Spring @GetMapping, @PostMapping, @PutMapping, @DeleteMapping and @PatchMapping</li>
+                    <li>Spring Boot @EnableAutoConfiguration Annotation with Example</li>
+                    <li>Spring Boot @SpringBootApplication Annotation with Example</li>
+                </ul>
+                <h3>Related Spring and Spring Boot Tutorials/Guides:</h3>
+                <p>
+                    <button type="button" class="btn btn-outline-primary">Spring Boot Tutorials [500+]s</button>
+                    <button type="button" class="btn btn-outline-secondary">Spring Boot Testing Tutorial</button>
+                    <button type="button" class="btn btn-outline-success">Spring Boot Microservice Tutorial</button>
+                    <button type="button" class="btn btn-outline-danger">Spring Boot Kafka Microservices </button>
+                    <button type="button" class="btn btn-outline-warning">Spring Boot + Apache Kafka Tutorial</button>
+                    <button type="button" class="btn btn-outline-info">Spring Core Tutorial</button>
+                    <button type="button" class="btn btn-outline-primary">Spring MVC Tutorial </button>
+                    <button type="button" class="btn btn-outline-secondary">Spring Data JPA Tutorial</button>
+                    <button type="button" class="btn btn-outline-success">Spring Framework for Beginners</button>
+                    <button type="button" class="btn btn-outline-danger">Spring AOP Tutorial</button>
+                    <button type="button" class="btn btn-outline-warning">Spring Security Tutorial</button>
+                    <button type="button" class="btn btn-outline-info">Spring Exceptions Tutorial</button>
+                    <button type="button" class="btn btn-outline-primary">Spring Boot Interview Questions</button>
+                    <button type="button" class="btn btn-outline-dark">Spring Boot Microservices Interview Questions</button>
+                    <button type="button" class="btn btn-outline-primary">Apache Kafka Tutorials </button>
+                    <button type="button" class="btn btn-outline-secondary">Docker Tutorials and Guides</button>
+                    <button type="button" class="btn btn-outline-success">Spring Boot RabbitMQ Tutorials</button>
+                    <button type="button" class="btn btn-outline-danger">Angular CRUD Example with Spring Boot </button>
+                    <button type="button" class="btn btn-outline-warning">Spring Boot + Angular 12 CRUD Full Stack</button>
+                    <button type="button" class="btn btn-outline-info">Spring Boot + Angular 8 CRUD Full Stack</button>
+                    <button type="button" class="btn btn-outline-danger">Spring Boot + Angular 10 CRUD Full Stack </button>
+                    <button type="button" class="btn btn-outline-primary">React JS ( React Hooks) + Spring Boot</button>
+                    <button type="button" class="btn btn-outline-secondary">Spring Boot + React JS CRUD Full Stack</button>
+                    <button type="button" class="btn btn-outline-success">Spring Boot Thymeleaf CRUD Full Stack </button>
+                    <button type="button" class="btn btn-outline-danger">Spring Boot User Registration and Login</button>
+                    <button type="button" class="btn btn-outline-warning">Node Js + Express + MongoDB CRUDVue</button>
+                    <button type="button" class="btn btn-outline-info">JS + Spring Boot REST API Tutorial</button>
+                </p>
+
+        </div>
+    </body>
+</html>

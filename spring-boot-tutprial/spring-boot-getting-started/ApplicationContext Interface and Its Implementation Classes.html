@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .container-fluid {
+            width: 100%;
+            background-color: rgb(255, 255, 255);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/java-implementing-interface.png" alt="logo" />
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="heading">
+            <h3>ApplicationContext Interface and Its Implementation Classes</h3>
+            <h6>Author: Shiva Krishna G</h6>
+        </div><br>
+        <p>The ApplicationContext is a central interface to provide configuration for a Spring application. It is part
+            of the Spring IoC container and is responsible for instantiating, configuring, and assembling the beans. The
+            ApplicationContext interface extends the BeanFactory interface, adding more enterprise-specific
+            functionalities.</p>
+        <he>Features of ApplicationContext</he>
+        <p>Here are some key features provided by the ApplicationContext:</p>
+        <ol>
+            <li> Bean Instantiation/Wiring: Automatically handles the instantiation and wiring of beans.</li>
+            <li>Automatic BeanPostProcessor Registration: Registers BeanPostProcessor implementations, allowing custom
+                modification of new bean instances.</li>
+            <li>Automatic BeanFactoryPostProcessor Registration: Registers BeanFactoryPostProcessor implementations,
+                allowing custom modification of the application context's internal bean factory.</li>
+            <li>Convenient MessageSource Access: Provides access to message sources, allowing easy internationalization.
+            </li>
+            <li>Application Event Publication: Supports event propagation, allowing beans to publish and listen to
+                application events.</li>
+            <li>Resource Loading: Provides a generic way to load file resources, such as classpath, file system, and
+                URLs.</li>
+        </ol>
+        <h3>ApplicationContext Interface</h3>
+        <p>The ApplicationContext interface is defined as follows:</p>
+        <code><pre>
+public interface ApplicationContext extends EnvironmentCapable, ListableBeanFactory, HierarchicalBeanFactory,
+                                             MessageSource, ApplicationEventPublisher, ResourcePatternResolver {
+    // Various methods to provide configuration, resource loading, and bean management
+} </pre></code>
+        <h3>Common ApplicationContext Implementations</h3>
+        <p>Spring provides several implementations of the ApplicationContext interface, each serving different use
+            cases:</p>
+        <h4>1. AnnotationConfigApplicationContext</h4>
+        <P>AnnotationConfigApplicationContext is used for standalone Java applications that use annotations for
+            configuration.</P>
+        <h5>Example:</h5>
+        <code><pre>
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        MyBean myBean = context.getBean(MyBean.class);
+        myBean.doSomething();
+    }
+}</pre></code><br>
+        <h4>2. ClassPathXmlApplicationContext</h4>
+        <p>ClassPathXmlApplicationContext loads the bean configuration XML file from the classpath.</p>
+        <h5>Example:</h5>
+        <code><pre>
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        MyBean myBean = context.getBean(MyBean.class);
+        myBean.doSomething();
+    }
+}</pre></code><br>
+        <h4>3. FileSystemXmlApplicationContext</h4>
+        <p>FileSystemXmlApplicationContext loads the bean configuration XML file from anywhere in the file system.</p>
+        <h5>Example:</h5>
+        <code><pre>
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext context = new FileSystemXmlApplicationContext("C:/path/to/applicationContext.xml");
+        MyBean myBean = context.getBean(MyBean.class);
+        myBean.doSomething();
+    }
+} </pre></code><br>
+        <h4>4. AnnotationConfigWebApplicationContext and XmlWebApplicationContext</h4>
+        <p>These are used for web applications, providing context configuration for Spring MVC applications using
+            annotations and XML, respectively.</p>
+        <h5>Example for AnnotationConfigWebApplicationContext:</h5>
+        <code><pre>
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+
+public class WebAppInitializer implements WebApplicationInitializer {
+    @Override
+    public void onStartup(ServletContext servletContext) {
+        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+        context.register(WebConfig.class);
+        servletContext.addListener(new ContextLoaderListener(context));
+    }
+}</pre></code><br>
+        <h4>Example for XmlWebApplicationContext:</h4>
+        <code><pre>
+&lt;!-- web.xml --&gt;
+&lt;listener&gt;
+    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+&lt;/listener&gt;
+&lt;context-param&gt;
+    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+    &lt;param-value&gt;/WEB-INF/applicationContext.xml&lt;/param-value&gt;
+&lt;/context-param&gt;</pre></code><br>
+
+        <h3>Conclusion</h3>
+        <p>The ApplicationContext interface is a powerful and flexible part of the Spring IoC container. It extends the
+            basic functionalities of the BeanFactory and provides advanced features such as internationalization, event
+            propagation, and resource management. Understanding the different implementations of ApplicationContext and
+            their use cases is crucial for effectively managing and configuring your Spring applications.</p>
+
+
+
+
+
+    </div>
+</body>
+
+</html>
