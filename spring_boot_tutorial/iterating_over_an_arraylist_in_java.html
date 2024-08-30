@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iterating over an ArrayList in Java</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Iterating over an ArrayList in Java</h1>
+                <h4>author : Sai K</h4>
+                <p>An ArrayList is a resizable array implementation of the List interface. This guide will provide
+                    examples of how to<br><br> iterate over an ArrayList using different methods, including detailed
+                    explanations and outputs. Additionally, it will <br><br>cover how to iterate over an ArrayList containing
+                    custom objects.</p>
+                <h2>Table of Contents</h2>
+                <li>Introduction</li><br>
+                <li>Using For-Loop</li><br>
+                <li>Using Enhanced For-Loop</li><br>
+                <li>Using Iterator</li><br>
+                <li>Using ListIterator</li><br>
+                <li>Using forEach Method (Java 8)</li><br>
+                <li>Using Stream API (Java 8)</li><br>
+                <li>Iterating Over an ArrayList with Custom Objects</li><br>
+                <li>Conclusion</li>
+                <h2>1. Introduction</h2>
+                <p>An ArrayList is a part of the Java Collections Framework and is an implementation of the List
+                    interface that<br><br> provides resizable array functionality. It is useful for scenarios where you need a
+                    dynamic array</p>
+                <h2>2. Using For-Loop</h2>
+                <p>The traditional for-loop is a basic and flexible way to iterate over an ArrayList.</p>
+                <h3>Example: Using For-Loop</h3>
+                <pre><code>
+import java.util.ArrayList;
+import java.util.List;
+
+public class ForLoopExample {
+    public static void main(String[] args) {
+        List<String> fruits = new ArrayList<>();
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Orange");
+
+        for (int i = 0; i < fruits.size(); i++) {
+            System.out.println(fruits.get(i));
+        }
+    }
+}</code></pre>
+                <h2>Output:</h2>
+                <pre><code>
+                    Apple
+                    Banana
+                    Orange
+                </code></pre>
+                <h2>3. Using Enhanced For-Loop</h2>
+                <p>The enhanced for-loop (or for-each loop) provides a simpler and more readable way to iterate over an
+                    ArrayList.</p>
+                <h3>Example: Using Enhanced For-Loop</h3>
+                <pre><code>
+import java.util.ArrayList;
+import java.util.List;
+
+public class EnhancedForLoopExample {
+    public static void main(String[] args) {
+        List<String> fruits = new ArrayList<>();
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Orange");
+
+        for (String fruit : fruits) {
+            System.out.println(fruit);
+        }
+    }
+}
+                </code></pre>
+                <h2>Output:</h2>
+                <pre><code>
+                    Apple
+                    Banana
+                    Orange
+                </code></pre>
+                <h2>4. Using Iterator</h2>
+                <p>The Iterator provides a way to iterate over the elements and allows element removal during iteration
+                    if needed.</p>
+                <h3>Example: Using Iterator</h3>
+                <pre><code>
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class IteratorExample {
+    public static void main(String[] args) {
+        List<String> fruits = new ArrayList<>();
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Orange");
+
+        Iterator<String> iterator = fruits.iterator();
+        while (iterator.hasNext()) {
+            String fruit = iterator.next();
+            System.out.println(fruit);
+        }
+    }
+}
+               </code></pre>
+                <h2>Output:</h2>
+                <pre><code>
+                Apple
+               Banana
+               Orange
+               </code></pre>
+                <h2>5. Using ListIterator</h2>
+                <p>The ListIterator provides additional functionality compared to the Iterator, such as bidirectional
+                    traversal and <br><br>modification of elements.</p>
+                <h3>Example: Using ListIterator</h3>
+                <pre><code>
+    import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+
+public class ListIteratorExample {
+    public static void main(String[] args) {
+        List<String> fruits = new ArrayList<>();
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Orange");
+
+        ListIterator<String> listIterator = fruits.listIterator();
+        while (listIterator.hasNext()) {
+            String fruit = listIterator.next();
+            System.out.println(fruit);
+        }
+
+        System.out.println("Reverse Iteration:");
+        while (listIterator.hasPrevious()) {
+            String fruit = listIterator.previous();
+            System.out.println(fruit);
+        }
+    }
+}
+</code></pre>
+                <h2>Output:</h2>
+                <pre><code>
+Apple
+Banana
+Orange
+Reverse Iteration:
+Orange
+Banana
+Apple
+</code></pre>
+                <h2>6. Using forEach Method (Java 8)</h2>
+                <p>The forEach method is part of the Java 8 Stream API and provides a functional approach to iteration.
+                </p>
+                <h3>Example: Using forEach Method</h3>
+                <pre><code>
+    import java.util.ArrayList;
+import java.util.List;
+
+public class ForEachMethodExample {
+    public static void main(String[] args) {
+        List<String> fruits = new ArrayList<>();
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Orange");
+
+        // Using forEach with lambda expression
+        fruits.forEach(fruit -> System.out.println(fruit));
+
+        // Using forEach with method reference
+        fruits.forEach(System.out::println);
+    }
+}
+</code></pre>
+                <h2>Output:</h2>
+                <pre><code>
+Apple
+Banana
+Orange
+</code></pre>
+                <h2>7. Using Stream API (Java 8)</h2>
+                <p>The Stream API provides a powerful way to process sequences of elements, including iteration.</p>
+                <h3>Example: Using Stream API</h3>
+                <pre><code>
+    import java.util.ArrayList;
+import java.util.List;
+
+public class StreamAPIExample {
+    public static void main(String[] args) {
+        List<String> fruits = new ArrayList<>();
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Orange");
+
+        // Using stream and forEach
+        fruits.stream().forEach(fruit -> System.out.println(fruit));
+
+        // Using parallel stream and forEach
+        fruits.parallelStream().forEach(fruit -> System.out.println("Parallel: " + fruit));
+    }
+}
+</code></pre>
+                <h2>Output:</h2>
+                <pre><code>
+Apple
+Banana
+Orange
+Parallel: Apple
+Parallel: Banana
+Parallel: Orange
+</code></pre>
+                <h2>8. Iterating Over an ArrayList with Custom Objects</h2>
+                <p>When dealing with custom objects in an ArrayList, you can iterate over the list similarly to how you
+                    would with<br><br> built-in types. Here is an example using a custom Person class.</p>
+                <h3>Custom Object Example: Using Enhanced For-Loop</h3>
+                <pre><code>
+    import java.util.ArrayList;
+import java.util.List;
+
+class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{name='" + name + "', age=" + age + '}';
+    }
+}
+
+public class CustomObjectExample {
+    public static void main(String[] args) {
+        List<Person> persons = new ArrayList<>();
+        persons.add(new Person("Alice", 30));
+        persons.add(new Person("Bob", 25));
+        persons.add(new Person("Charlie", 35));
+
+        // Using Enhanced For-Loop
+        System.out.println("Using Enhanced For-Loop:");
+        for (Person person : persons) {
+            System.out.println(person);
+        }
+
+        // Using Iterator
+        System.out.println("\nUsing Iterator:");
+        Iterator<Person> iterator = persons.iterator();
+        while (iterator.hasNext()) {
+            Person person = iterator.next();
+            System.out.println(person);
+        }
+
+        // Using forEach Method (Java 8)
+        System.out.println("\nUsing forEach Method (Java 8):");
+        persons.forEach(person -> System.out.println(person));
+
+        // Using Stream API (Java 8)
+        System.out.println("\nUsing Stream API (Java 8):");
+        persons.stream().forEach(person -> System.out.println(person));
+    }
+}
+</code></pre>
+                <h2>Output:</h2>
+                <pre><code>
+    Using Enhanced For-Loop:
+Person{name='Alice', age=30}
+Person{name='Bob', age=25}
+Person{name='Charlie', age=35}
+
+```java
+Using Iterator:
+Person{name='Alice', age=30}
+Person{name='Bob', age=25}
+Person{name='Charlie', age=35}
+
+Using forEach Method (Java 8):
+Person{name='Alice', age=30}
+Person{name='Bob', age=25}
+Person{name='Charlie', age=35}
+
+Using Stream API (Java 8):
+Person{name='Alice', age=30}
+Person{name='Bob', age=25}
+Person{name='Charlie', age=35}
+</code></pre>
+                <h2>9. Conclusion</h2>
+                <p>In this guide, we covered various methods to iterate over an ArrayList in Java:</p>
+                <ul>
+                    <li>Using For-Loop: Basic and flexible method.</li><br>
+                    <li>Using Enhanced For-Loop: Simplifies code and improves readability.</li><br>
+                    <li>Using Iterator: Allows element removal during iteration.</li><br>
+                    <li>Using ListIterator: Supports bidirectional traversal and modification of elements.</li><br>
+                    <li>Using forEach Method (Java 8): Provides a functional programming approach.</li><br>
+                    <li>Using Stream API (Java 8): Offers powerful operations for processing sequences of elements,
+                        including parallel processing.</li>
+                </ul>
+                <p>Additionally, we demonstrated how to iterate over an ArrayList containing custom objects, ensuring
+                    proper<br><br> handling and display of object attributes.</p>
+                <p>By following the steps and examples provided, you should now be able to efficiently iterate over
+                    ArrayLists in <br><br>your Java applications and choose the iteration method that best fits your needs.</p>
+                <h2>Related Java and Advanced Java Tutorials/Guides</h2>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
