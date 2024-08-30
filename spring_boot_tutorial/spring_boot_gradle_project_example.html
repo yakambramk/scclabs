@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Gradle Project Example</title>
+
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Boot Gradle Project Example</h1>
+                <h4>author : Sai K</h4>
+                <p>Gradle is a powerful build automation tool that is widely used in the Java ecosystem. In this
+                    tutorial, we'll create a <br><br> simple Spring Boot application using Gradle. We will cover the
+                    basic setup and structure of a Spring Boot <br><br> project with Gradle.</p>
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li>JDK 17 or later</li><br>
+                    <li>Gradle</li><br>
+                    <li>Spring Boot (version 3.2+ recommended)</li><br>
+                    <li>IDE (IntelliJ IDEA, Eclipse, etc.)</li><br>
+                </ul>
+                <h2>Step 1: Set Up a Spring Boot Project Using Spring Initializr</h2>
+                <p>Use <a href="https://start.spring.io/">Spring Initializr</a> to generate a new Spring Boot project
+                    with the following configuration:</p>
+                <ul>
+                    <li>Project: Gradle Project</li><br>
+                    <li>Language: Java</li><br>
+                    <li>Spring Boot: 3.2.x</li><br>
+                    <li>Dependencies: Spring Web</li><br>
+                </ul>
+                <p>Download the generated project, unzip it, and open it in your IDE.</p>
+                <h2>Project Structure</h2>
+                <p>The basic structure of a Spring Boot project with Gradle looks like this:</p>
+                <pre><code>
+                <span class="directory">my-spring-boot-app/</span>
+                ├── <span class="directory">build</span><span class="java-file">.gradle</span>
+                ├── <span class="directory">settings</span><span class="java-file">.gradle</span>
+                ├── <span class="directory">src/</span>
+                │   ├── <span class="directory">main/</span>
+                │   │   ├── <span class="directory">java/</span>
+                │   │   │   └── <span class="directory">com/example/demo/</span>
+                │   │   │       └── <span class="directory">DemoApplication</span><span class="java-file">.java</span>
+                │   │   └── <span class="directory">resources/</span>
+                │   │       ├── <span class="directory">application</span><span class="properties-file">.properties</span>
+                │   └── <span class="directory">test/</span>
+                │       └── <span class="directory">java/</span>
+                │           └── <span class="directory">com/example/demo/</span>
+                │               └── <span class="directory">DemoApplicationTests</span><span class="java-file">.java</span>
+                └── <span class="directory">gradlew</span>
+                └── <span class="directory">gradlew</span><span class="bat-file">.bat</span>
+                └── <span class="directory">gradle/</span>
+                    └── <span class="directory">wrapper/</span>
+                        └── <span class="directory">gradle-wrapper</span><span class="properties-file">.properties</span>
+                        </code></pre>
+                <h2>Step 2: Configuring build.gradle</h2>
+                <p>Open the build.gradle file and review its content. This file contains the configuration needed to
+                    build your project.</p>
+                <pre><code>
+plugins {
+ id 'org.springframework.boot' version '3.2.0'
+id 'io.spring.dependency-management' version '1.1.0'
+id 'java'
+ }
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+ sourceCompatibility = '17'
+repositories {
+ mavenCentral()
+}
+                            
+ dependencies {
+ implementation 'org.springframework.boot:spring-boot-starter-web'
+testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+                            
+test {
+useJUnitPlatform()
+}
+</code></pre>
+<h2>Explanation:</h2>
+<ul>
+    <li><strong>plugins:</strong> Defines the Gradle plugins required for the project.</li><br>
+    <ul>
+        <li><strong>org.springframework.boot:</strong> Spring Boot plugin.</li><br>
+        <li><strong>io.spring.dependency-management:</strong> Plugin for managing dependencies.</li><br>
+        <li><strong>java:</strong> Java plugin.</li><br>
+    </ul>
+    <li><strong>group and version:</strong> Define the group ID and version of the project.</li><br>
+    <li><strong>sourceCompatibility:</strong> Sets the Java version compatibility.</li><br>
+    <li><strong>repositories:</strong> Specifies the repositories for dependencies.</li><br>
+    <ul>
+        <li><strong>mavenCentral:</strong> Maven Central repository.</li><br>
+    </ul>
+    <li><strong>dependencies:</strong> Lists the project dependencies.</li><br>
+    <ul>
+        <li><strong>implementation 'org.springframework.boot:spring-boot-starter-web':</strong> Spring Boot Starter for building web applications.</li><br>
+        <li><strong>testImplementation 'org.springframework.boot:spring-boot-starter-test':</strong> Spring Boot Starter for testing.</li><br>
+    </ul>
+    <li><strong>test:</strong> Configures the test task to use the JUnit Platform.</li><br>
+</ul>
+<h2>Step 3: Create the Application Class</h2>
+<p>Create a Java class named DemoApplication in the src/main/java/com/example/demo directory.</p>
+<pre><code>
+    package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+</code></pre>
+<h2>Explanation:</h2>
+<ul>
+    <li><strong>@SpringBootApplication:</strong> Marks this class as the main entry point for the Spring Boot application.</li><br>
+    <li><strong>main method:</strong> Starts the Spring Boot application.</li><br>
+</ul>
+<h2>Step 4: Create a REST Controller</h2>
+<p>Create a Java class named HelloController in the src/main/java/com/example/demo directory.</p>
+<pre><code>
+    package com.example.demo;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello, World!";
+    }
+}
+</code></pre>
+<h2>Explanation:</h2>
+<ul>
+    <li><strong>@RestController:</strong> Marks this class as a REST controller.</li><br>
+    <li><strong>@GetMapping("/hello"):</strong> Maps HTTP GET requests to the /hello endpoint to the sayHello method.</li><br>
+    <li><strong>sayHello method:</strong> Returns a "Hello, World!" message.</li><br>
+</ul>
+<h2>Step 5: Create a Test Class</h2>
+<p>Create a Java class named DemoApplicationTests in the src/test/java/com/example/demo directory.</p>
+<pre><code>package com.example.demo;
+
+    import org.junit.jupiter.api.Test;
+    import org.springframework.boot.test.context.SpringBootTest;
+    
+    @SpringBootTest
+    class DemoApplicationTests {
+    
+        @Test
+        void contextLoads() {
+        }
+    }</code></pre>
+<h2>Explanation:</h2>
+<ul>
+    <li><strong>@SpringBootTest:</strong> Indicates that this is a Spring Boot test.</li><br>
+    <li><strong>contextLoads method:</strong> Tests if the Spring application context loads successfully.</li><br>
+</ul>
+<h2>Step 6: Running the Application</h2>
+<h3>Using IDE</h3>
+<p>You can run the application directly from your IDE. Look for a "Run" or "Debug" option for the DemoApplication class.</p>
+<h2>Using Gradle</h2>
+<p>Alternatively, you can run the application using the Gradle wrapper. Open a terminal in the project root directory and run the following command:</p>
+      <pre><code>
+        ./gradlew bootRun
+      </code></pre>     
+      <h2>Explanation:</h2> 
+      <ul>
+        <li><strong>./gradlew:</strong> The Gradle wrapper script.</li><br>
+        <li><strong>bootRun:</strong> A task provided by the Spring Boot Gradle plugin to run the application.</li><br>
+    </ul>
+    
+      <h2>Step 7: Verify the Application</h2>
+      <p>Open a web browser or a tool like Postman and navigate to the following URL to verify the application:</p>
+      <ul>
+        <li><strong>Hello Endpoint:</strong></li><br>
+        <ul>
+            <li><strong>URL:</strong> http://localhost:8080/hello</li><br>
+            <li><strong>Method:</strong> GET</li><br>
+            <li><strong>Response:</strong> Hello, World!</li><br>
+        </ul>
+    </ul>
+    
+
+<p>You should see the "Hello, World!" message returned by the HelloController.</p>
+<h2>Conclusion</h2>
+<p>In this tutorial, you have learned how to create a simple Spring Boot application using Gradle. We covered:</p>
+
+<ul>
+    <li>Setting up a Spring Boot project using Spring Initializr with Gradle.</li><br>
+    <li>Configuring the <code>build.gradle</code> file.</li><br>
+    <li>Creating the main application class.</li><br>
+    <li>Creating a REST controller.</li><br>
+    <li>Creating a test class.</li><br>
+    <li>Running the application using an IDE and the Gradle wrapper.</li><br>
+    <li>Verifying the application by accessing a REST endpoint.</li><br>
+</ul>
+<p>By following these steps, you can easily set up and manage Spring Boot projects using Gradle.</p>
+<h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+</div>
+        </div>
+    </div>
+</body>
+
+</html>

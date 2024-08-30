@@ -79,8 +79,8 @@
                 <h1>Spring Boot REST API Tutorial</h1>
                 <h4>author : Sai K</h4>
                 <p>This tutorial will guide you through building a REST API using Java 21, Spring Boot 3+ and MySQL
-                    database. We will use Java Records to transfer data between the client and server. This tutorial is
-                    designed for beginners and covers the following topics: </p>
+                    database.,<br><br> We will use Java Records to transfer data between the client and server. This tutorial is
+                    designed for beginners <br><br> and covers the following topics: </p><br>
                 <p>1.Introduction to Spring Boot</p>
                 <p>2. Introduction to REST API</p>
                 <p>3.Creating a Spring Boot Project</p>
@@ -94,26 +94,26 @@
                 <img src="../assets/springboot images/spring_boot_rest_api_tutorial.PNG" width="1000px" height="400px">
                 <h2>Introduction to Spring Boot</h2>
                 <p><a href="http://127.0.0.1:5500/spring_boot_tutorial.html">Spring Boot</a> is an open-source
-                    Java-based framework for creating stand-alone, production-grade Spring applications. It simplifies
-                    the development process by providing defaults for code and annotation configuration, enabling you to
+                    Java-based framework for creating stand-alone, production-grade Spring <br><br> applications. It simplifies
+                    the development process by providing defaults for code and annotation configuration,<br><br> enabling you to
                     start coding quickly without worrying about setup details.</p>
                 <h3>Key Features of Spring Boot</h3>
                 <ul>
                     <li><b>Auto-Configuration: </b>Automatically configures your Spring application based on the
-                        dependencies you have added to the project.</li>
-                    <li><b>Standalone:</b> Creates stand-alone Spring applications with embedded servers.</li>
+                        dependencies you <br><br>have added to the project.</li><br>
+                    <li><b>Standalone:</b> Creates stand-alone Spring applications with embedded servers.</li><br>
                     <li><b>Production-ready Features: </b>Includes production-ready features such as metrics, health
-                        checks, and externalized configuration.</li>
+                        checks, and <br><br>externalized configuration.</li><br>
                     <li><b>Convention over Configuration:</b> Reduces the need for explicit configuration by following
-                        conventions.</li>
+                        conventions.</li><br>
                     <li><b>Spring Boot Starters:</b> Provides a set of pre-configured dependencies for various
-                        functionalities, making it easy to get started.</li>
+                        functionalities, making it <br><br> easy to get started.</li><br>
                 </ul>
                 <h3>Introduction to REST API</h3>
                 <p>A <a href="">REST API</a> (Representational State Transfer Application Programming Interface) is an
-                    architectural style for building web services that interact over HTTP. REST APIs allow different
-                    software systems to communicate and exchange data efficiently. The key principles of REST include
-                    statelessness, resource-based interactions, and standardized HTTP methods like GET, POST, PUT, and
+                    architectural style for <br><br> building web services that interact over HTTP. REST APIs allow different
+                    software systems to communicate and <br><br> exchange data efficiently. The key principles of REST include
+                    statelessness, resource-based interactions, and <br><br> standardized HTTP methods like GET, POST, PUT, and
                     DELETE.</p>
                 <h3>Key Principles of REST</h3>
                 <h2>Step 1: Creating a Spring Boot Project</h2>
@@ -176,7 +176,7 @@
                         <h3>Step 1: Creating a "Hello World" REST API</h3>
                         <h2>Step-by-Step Guide</h2>
                         <p>1.Create a Java class named HelloWorldController in the
-                            src/main/java/com/example/demo/controller package.</p>
+                            src/main/java/com/example/demo/controller <br><br> package.</p>
                         <pre><code>
  package com.example.demo.controller;
 
@@ -195,13 +195,13 @@ public class HelloWorldController {
                         <h2>Explanation</h2>
                         <ul>
                             <li>@RestController: Indicates that the class is a REST controller, handling web requests
-                                and returning responses directly.</li>
+                                and returning <br><br> responses directly.</li>
                             <li>@GetMapping("/hello"): Maps HTTP GET requests to the /hello endpoint to the helloWorld
-                                method.</li>
-                            <li>helloWorld Method: Returns a simple "Hello, World!" message when accessed.</li>
+                                method.</li><br>
+                            <li>helloWorld Method: Returns a simple "Hello, World!" message when accessed.</li><br>
                         </ul>
                         <p>By running the Spring Boot application and navigating to http://localhost:8080/hello, you
-                            will see the message "Hello, World!" in your browser or Postman.</p>
+                            will see the , <br><br> message "Hello, World!" in your browser or Postman.</p><br>
                         <h2>Step 2: Creating a REST API that Returns a Java Bean</h2>
                         <h3>Step-by-Step Guide</h3>
                         <p>1.Create a Java Record named Person in the src/main/java/com/example/demo/model package.</p>
@@ -210,10 +210,12 @@ public class HelloWorldController {
 
 public record Person(String name, int age) {}
 </code></pre>
-<h2>Explanation</h2>
-<p>1.Person Record: Defines a Java Record named Person with two fields: name (a String) and age (an int). Java Records are a compact syntax for immutable data classes.</p>
-<p>2.Create a controller named PersonController in the src/main/java/com/example/demo/controller package.</p>
-<pre><code>
+                        <h2>Explanation</h2>
+                        <p>1.Person Record: Defines a Java Record named Person with two fields: name (a String) and age
+                            (an int).<br><br> Java Records are a compact syntax for immutable data classes.</p>
+                        <p>2.Create a controller named PersonController in the src/main/java/com/example/demo/controller
+                            package.</p>
+                        <pre><code>
 package com.example.demo.controller;
 
 import com.example.demo.model.Person;
@@ -229,14 +231,17 @@ public class PersonController {
     }
 }
 </code></pre>
-<h2>Explanation</h2>
-<p>1.@GetMapping("/person"): Maps HTTP GET requests to the /person endpoint to the getPerson method.</p>
-<p>2.getPerson Method: Returns a new Person object with the name "John Doe" and age 30 when accessed.</p>
-<p>By running the Spring Boot application and navigating to http://localhost:8080/person, you will see the JSON representation of the Person object: {"name":"John Doe","age":30}.</p>
-       <h2>Step 3: Creating a REST API that Returns a List as JSON</h2>   
-       <h3>Step-by-Step Guide</h3>
-       <p>1.Modify the PersonController to include a method that returns a list of Person objects.</p>
-<pre><code>
+                        <h2>Explanation</h2>
+                        <p>1.@GetMapping("/person"): Maps HTTP GET requests to the /person endpoint to the getPerson
+                            method.</p>
+                        <p>2.getPerson Method: Returns a new Person object with the name "John Doe" and age 30 when
+                            accessed.</p>
+                        <p>By running the Spring Boot application and navigating to http://localhost:8080/person, you
+                            will see <br><br> the JSON representation of the Person object: {"name":"John Doe","age":30}.</p>
+                        <h2>Step 3: Creating a REST API that Returns a List as JSON</h2>
+                        <h3>Step-by-Step Guide</h3>
+                        <p>1.Modify the PersonController to include a method that returns a list of Person objects.</p>
+                        <pre><code>
     package com.example.demo.controller;
 
 import com.example.demo.model.Person;
@@ -262,14 +267,17 @@ public class PersonController {
     }
 }
 </code></pre>
-<h2>Explanation</h2>
-<p>1.@GetMapping("/persons"): Maps HTTP GET requests to the /persons endpoint to the getPersons method.</p>
-<p>2.getPersons Method: Returns a list of Person objects.</p>
-<p>By running the Spring Boot application and navigating to http://localhost:8080/persons, you will see the JSON representation of the list of Person objects: [{"name":"John Doe","age":30},{"name":"Jane Doe","age":25}].</p>
-<h2>Step 4: Creating a REST API that Handles Path Parameters</h2>
-<h3>Step-by-Step Guide</h3>
-<p>1.Modify the PersonController to include a method that handles path parameters.</p>
-<pre><code>
+                        <h2>Explanation</h2>
+                        <p>1.@GetMapping("/persons"): Maps HTTP GET requests to the /persons endpoint to the getPersons <br><br>
+                            method.</p>
+                        <p>2.getPersons Method: Returns a list of Person objects.</p>
+                        <p>By running the Spring Boot application and navigating to http://localhost:8080/persons, you
+                            will see <br><br>the JSON representation of the list of Person objects: [{"name":"John <br><br>
+                            Doe","age":30},{"name":"Jane Doe","age":25}].</p>
+                        <h2>Step 4: Creating a REST API that Handles Path Parameters</h2>
+                        <h3>Step-by-Step Guide</h3>
+                        <p>1.Modify the PersonController to include a method that handles path parameters.</p>
+                        <pre><code>
     package com.example.demo.controller;
 
 import com.example.demo.model.Person;
@@ -301,14 +309,17 @@ public class PersonController {
     }
 }
 </code></pre>
-<h2>Explanation</h2>
-<p>1.@GetMapping("/person/{name}"): Maps HTTP GET requests to the /person/{name} endpoint to the getPersonByName method.</p>
-<p>2.getPersonByName Method: Returns a new Person object with the name provided in the path parameter and a static age of 30.</p>
-<p>By running the Spring Boot application and navigating to http://localhost:8080/person/John, you will see the JSON representation of the Person object: {"name":"John","age":30}.</p>
-<h2>Step 5: Creating a REST API that Handles Query Parameters</h2>
-<p> Modify the PersonController to include a method that handles query parameters.</p>
-<p>Step-by-Step Guide</p>
-<pre><code>
+                        <h2>Explanation</h2>
+                        <p>1.@GetMapping("/person/{name}"): Maps HTTP GET requests to the /person/{name} endpoint to the <br><br>
+                            getPersonByName method.</p>
+                        <p>2.getPersonByName Method: Returns a new Person object with the name provided in the path
+                            parameter <br><br>and a static age of 30.</p>
+                        <p>By running the Spring Boot application and navigating to http://localhost:8080/person/John,
+                            you will see <br><br>the JSON representation of the Person object: {"name":"John","age":30}.</p>
+                        <h2>Step 5: Creating a REST API that Handles Query Parameters</h2>
+                        <p> Modify the PersonController to include a method that handles query parameters.</p><br>
+                        <p>Step-by-Step Guide</p>
+                        <pre><code>
     package com.example.demo.controller;
 
 import com.example.demo.model.Person;
@@ -346,28 +357,34 @@ public class PersonController {
     }
 }
 </code></pre>
-<h2>Explanation</h2>
-<p>1.@GetMapping("/person"): Maps HTTP GET requests to the /person endpoint to the getPersonByNameAndAge method.</p>
-<p>2.getPersonByNameAndAge Method: Returns a new Person object with the name and age provided in the query parameters.</p>
-<p>By running the Spring Boot application and navigating to http://localhost:8080/person?name=John&age=30, you will see the JSON representation of the Person object: {"name":"John","age":30}.</p>
-<h2>Step 6: Creating CRUD REST APIs with MySQL Database</h2>
-<h3>Introductions</h3>
-<p>In this section, we will create a CRUD (Create, Read, Update, Delete) REST API using Spring Boot and MySQL. We will use Java Records for data transfer objects (DTOs) and demonstrate how to test the APIs using Postman.</p>
-<h2>Step-by-Step Guide</h2>
-<h3>Setting Up the Database</h3>
-<p>1.Create a MySQL database named spring_boot_db.</p>
-<h3>Configure Database Connection</h3>
-<p>1.Update the application.properties file to configure the MySQL database connection.</p>
-<pre><code>
+                        <h2>Explanation</h2>
+                        <p>1.@GetMapping("/person"): Maps HTTP GET requests to the /person endpoint to the <br><br>
+                            getPersonByNameAndAge method.</p>
+                        <p>2.getPersonByNameAndAge Method: Returns a new Person object with the name and age provided in
+                            the <br><br>query parameters.</p>
+                        <p>By running the Spring Boot application and navigating to
+                            http://localhost:8080/person? <br><br>name=John&age=30, you will see the JSON representation of the
+                            Person object: {"name":"John","age":30}.</p>
+                        <h2>Step 6: Creating CRUD REST APIs with MySQL Database</h2>
+                        <h3>Introductions</h3>
+                        <p>In this section, we will create a CRUD (Create, Read, Update, Delete) REST API using Spring
+                            Boot and <br><br>MySQL. We will use Java Records for data transfer objects (DTOs) and demonstrate
+                            how to test the APIs <br><br>using Postman.</p>
+                        <h2>Step-by-Step Guide</h2>
+                        <h3>Setting Up the Database</h3>
+                        <p>1.Create a MySQL database named spring_boot_db.</p>
+                        <h3>Configure Database Connection</h3>
+                        <p>1.Update the application.properties file to configure the MySQL database connection.</p>
+                        <pre><code>
     spring.datasource.url=jdbc:mysql://localhost:3306/spring_boot_db
 spring.datasource.username=root
 spring.datasource.password=root
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 </code></pre>
-<h2>Create Entity Class</h2>
-<p>1.Create a new package named model and add the Person entity class.</p>
-<pre><code>
+                        <h2>Create Entity Class</h2>
+                        <p>1.Create a new package named model and add the Person entity class.</p>
+                        <pre><code>
     package com.example.demo.model;
 
 import jakarta.persistence.Entity;
@@ -417,14 +434,16 @@ public class Person {
     }
 }
 </code></pre>
-<h2>Explanation</h2>
-<ul><li>@Entity: Specifies that the class is an entity and is mapped to a database table.</li>
-<li>@Id: Specifies the primary key of an entity.</li>
-<li>@GeneratedValue(strategy = GenerationType.IDENTITY): Provides the specification of generation strategies for the primary key values.</li>
-</ul>
-<h3>Create Repository Interface</h3>
-<p>1.Create a new package named repository and add the PersonRepository interface.</p>
-<pre><code>
+                        <h2>Explanation</h2>
+                        <ul>
+                            <li>@Entity: Specifies that the class is an entity and is mapped to a database table.</li><br>
+                            <li>@Id: Specifies the primary key of an entity.</li><br>
+                            <li>@GeneratedValue(strategy = GenerationType.IDENTITY): Provides the specification of
+                                generation <br><br>strategies for the primary key values.</li><br>
+                        </ul>
+                        <h3>Create Repository Interface</h3>
+                        <p>1.Create a new package named repository and add the PersonRepository interface.</p>
+                        <pre><code>
     package com.example.demo.repository;
 
 import com.example.demo.model.Person;
@@ -433,11 +452,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PersonRepository extends JpaRepository<Person, Long> {
 }
 </code></pre>
-<h2>Explanation</h2>
-<ul><li>extends JpaRepository<Person, Long>: Indicates that the PersonRepository interface extends JpaRepository, providing CRUD operations for the Person entity.</li></ul>
-<h3>Create Service Class</h3>
-<p>1.Create a new package named service and add the PersonService class.</p>
-<pre><code>
+                        <h2>Explanation</h2>
+                        <ul>
+                            <li>extends JpaRepository<Person, Long>: Indicates that the PersonRepository interface
+                                    extends JpaRepository, <br><br>providing CRUD operations for the Person entity.</li>
+                        </ul>
+                        <h3>Create Service Class</h3>
+                        <p>1.Create a new package named service and add the PersonService class.</p>
+                        <pre><code>
     package com.example.demo.service;
 
 import com.example.demo.model.Person;
@@ -483,14 +505,15 @@ public class PersonService {
     }
 }
 </code></pre>
-<h2>Explanation</h2>
-<p>1.@Service: Indicates that the class is a service component in the Spring context.</p>
-<p>2.public PersonService(PersonRepository personRepository): Uses constructor-based dependency injection to inject the PersonRepository bean.</p>
-<h3>Create Controller Class</h3>
-<p>
-    Create a new package named controller and add the PersonController class.
-</p>
-<pre><code>
+                        <h2>Explanation</h2>
+                        <p>1.@Service: Indicates that the class is a service component in the Spring context.</p>
+                        <p>2.public PersonService(PersonRepository personRepository): Uses constructor-based dependency <br><br>
+                            injection to inject the PersonRepository bean.</p>
+                        <h3>Create Controller Class</h3>
+                        <p>
+                            Create a new package named controller and add the PersonController class.
+                        </p>
+                        <pre><code>
     package com.example.demo.controller;
 
 import com.example.demo.model.Person;
@@ -538,14 +561,162 @@ public class PersonController {
     }
 }
 </code></pre>
-<h2>Explanation</h2>
-<ul>
-    <li>@RestController: Indicates that the class is a REST controller.</li>
-    <li>@RequestMapping("/api/persons"): Maps HTTP requests to the /api/persons URL.</li>
-    <li>CRUD Methods: Implements CRUD operations for the Person entity.</li>
-</ul>
-<h2>Step 7: Creating Pagination and Sorting REST APIs</h2>
-</div>
+                        <h2>Explanation</h2>
+                        <ul>
+                            <li>@RestController: Indicates that the class is a REST controller.</li><br>
+                            <li>@RequestMapping("/api/persons"): Maps HTTP requests to the /api/persons URL.</li><br>
+                            <li>CRUD Methods: Implements CRUD operations for the Person entity.</li><br>
+                        </ul>
+                        <h2>Step 7: Creating Pagination and Sorting REST APIs</h2>
+                        <h3>Introduction</h3>
+                        <p>In this section, we will extend the CRUD REST API project to include pagination and sorting
+                            features. This <br><br>will allow us to fetch a subset of data and sort it based on specified
+                            criteria.</p>
+
+                        <h3>Step-by-Step Guide</h3>
+                        <h3>Add Pagination and Sorting to the Service Class</h3>
+                        <p>1.Modify the PersonService class to include pagination and sorting.</p>
+                        <pre><code>
+ package com.example.demo.service;
+
+import com.example.demo.model.Person;
+import com.example.demo.repository.PersonRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class PersonService {
+
+    private final PersonRepository personRepository;
+
+    @Autowired
+    public PersonService(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
+
+    public List<Person> getAllPersons() {
+        return personRepository.findAll();
+    }
+
+    public Optional<Person> getPersonById(Long id) {
+        return personRepository.findById(id);
+    }
+
+    public Person createPerson(Person person) {
+        return personRepository.save(person);
+    }
+
+    public Optional<Person> updatePerson(Long id, Person personDetails) {
+        return personRepository.findById(id).map(person -> {
+            person.setName(personDetails.getName());
+            person.setAge(personDetails.getAge());
+            return personRepository.save(person);
+        });
+    }
+
+    public void deletePerson(Long id) {
+        personRepository.deleteById(id);
+    }
+
+    public Page<Person> getPersonsPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return personRepository.findAll(pageable);
+    }
+
+    public Page<Person> getPersonsPageSorted(int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return personRepository.findAll(pageable);
+    }
+}
+                            </code></pre>
+                        <h3>Explanation</h3>
+                        <ul>
+                            <li>getPersonsPage Method: Fetches a page of Person data.</li><br>
+                            <li>getPersonsPageSorted Method: Fetches a page of Person data sorted by the specified
+                                field.</li>
+                        </ul>
+                        <h3>Add Pagination and Sorting Endpoints to the Controller Class</h3>
+                        <p>1.Modify the PersonController class to include endpoints for pagination and sorting.</p>
+                        <pre><code>
+                                package com.example.demo.controller;
+
+import com.example.demo.model.Person;
+import com.example.demo.service.PersonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/persons")
+public class PersonController {
+
+    private final PersonService personService;
+
+    @Autowired
+    public PersonController(PersonService personService) {
+        this.personService = personService;
+    }
+
+    @GetMapping
+    public List<Person> getAllPersons() {
+        return personService.getAllPersons();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Person> getPersonById(@PathVariable Long id) {
+        return personService.getPersonById(id);
+    }
+
+    @PostMapping
+    public Person createPerson(@RequestBody Person person) {
+        return personService.createPerson(person);
+    }
+
+    @PutMapping("/{id}")
+    public Optional<Person> updatePerson(@PathVariable Long id, @RequestBody Person personDetails) {
+        return personService.updatePerson(id, personDetails);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletePerson(@PathVariable Long id) {
+        personService.deletePerson(id);
+    }
+
+    @GetMapping("/page")
+    public Page<Person> getPersonsPage(@RequestParam int page, @RequestParam int size) {
+        return personService.getPersonsPage(page, size);
+    }
+
+    @GetMapping("/page/sorted")
+    public Page<Person> getPersonsPageSorted(@RequestParam int page, @RequestParam int size, @RequestParam String sortBy) {
+        return personService.getPersonsPageSorted(page, size, sortBy);
+    }
+}
+                            </code></pre>
+                            <h2>Explanation</h2>
+                            <ul>
+                                <li>@GetMapping("/page"): Maps HTTP GET requests to the /page endpoint to the getPersonsPage <br><br>method.
+                                </li><br>
+                                <li>@GetMapping("/page/sorted"): Maps HTTP GET requests to the /page/sorted endpoint to the <br><br>getPersonsPageSorted method.</li><br>
+                                <li>getPersonsPage and getPersonsPageSorted Methods: Fetch pages of Person data, optionally sorted  <br><br> by the specified field.</li><br>
+                            </ul>
+                            <p>By running the Spring Boot application and navigating to http://localhost:8080/api/persons/page? <br><br>page=0&size=5, you can fetch the first page of Person data with 5 records per page. Similarly, by <br><br>navigating to http://localhost:8080/api/persons/page/sorted?page=0&size=5&sortBy=name, you can fetch <br><br> the first page of Person data sorted by name with 5 records per page.</p>
+
+                            <h2>Conclusion</h2>
+                            <p>This tutorial covered the basics of creating REST APIs using Spring Boot 3.3.0 and Java 21. We started <br><br>with a "Hello World" REST API and gradually built more complex APIs, including handling path and query <br><br> parameters, and implementing CRUD operations with MySQL. We also covered how to implement <br><br>pagination and sorting in REST APIs.</p>
+                            <p>By following these steps, you can build robust and scalable REST APIs with Spring Boot and Java Records <br><br> for data transfer.</p>
+                        <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+                        </div>
         </div>
     </div>
 

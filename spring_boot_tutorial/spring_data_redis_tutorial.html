@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Data Redis Tutorial</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Data Redis Tutorial</h1>
+                <h4>author : Sai K</h4>
+                <p>Spring Data Redis provides easy configuration and access to Redis from Spring applications. Redis is
+                    an in <br><br> -memory data store often used as a database, cache, and message broker. In this tutorial, we
+                    will cover how to<br><br> set up and use Spring Data Redis in a Spring Boot application.</p>
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li>JDK 17 or later</li><br>
+                    <li>Maven or Gradle </li><br>
+                    <li>Docker (optional, for running Redis locally)</li><br>
+                    <li>Spring Boot (version 3.2+ recommended)</li><br>
+                    <li>IDE (IntelliJ IDEA, Eclipse, etc.)</li>
+                </ul>
+                <h2>Step 1: Set Up a Spring Boot Project</h2>
+                <ul class="steps">
+                    <li class="">Go to <a href="https://start.spring.io/"> Spring Initializr</a>to create a new project
+                        with the following configuration:</li><br>
+                    <li>Select</li><br>
+                    <ul class="circle-list">
+                        <li><b>Project:</b> Maven Project</li><br>
+                        <li><b>Language:</b> Java</li><br>
+                        <li><b>Spring Boot: </b>3.2.x</li><br>
+                        <li> <b>Dependencies:</b>Spring Web, Spring Data Redis.</li>
+                        <br>
+                    </ul>
+                    <li>
+                        <p>Download and unzip the project, then open it in your IDE.</p>
+                        <h2>Example Spring Boot Application</h2>
+                        <p>We will create a simple Spring Boot application that interacts with Redis to store and
+                            retrieve data.</p>
+                        <h2>1.1 Application Class</h2>
+                        <pre><code> 
+package com.example.redis;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class RedisApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(RedisApplication.class, args);
+    }
+}
+ </code></pre>
+ <h2>Step 2: Running Redis Locally</h2>
+ <p>If you have Docker installed, you can run Redis using the following command:</p>
+ <pre><code>docker run --name redis -d -p 6379:6379 redis</code></pre>
+ <p>Alternatively, you can install Redis on your  local machine by following the installation instructions for your<br><br>operating system from the <a href="https://redis.io/downloads/">Redis website.</a></p>
+ 
+<h2>Step 3: Configure Redis in Spring Boot</h2>
+<h3>3.1 Add Redis Configuration</h3>
+<p>Add the following configuration to your src/main/resources/application.properties file:</p>
+<pre><code>
+# src/main/resources/application.properties
+
+spring.redis.host=localhost
+spring.redis.port=6379
+</code></pre>
+<h2>3.2 Create a Redis Configuration Class</h2>
+<p>Create a configuration class named RedisConfig in the com.example.redis.config package.</p>
+<pre><code>
+    package com.example.redis.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+@Configuration
+public class RedisConfig {
+
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(connectionFactory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        return template;
+    }
+}
+</code></pre>
+<h2>Explanation:</h2>
+<ul><li>RedisTemplate<String, Object>: Provides high-level abstractions for Redis interactions.</li><br>
+<li>StringRedisSerializer: Serializes keys as strings.</li><br>
+<li>GenericJackson2JsonRedisSerializer: Serializes values as JSON using Jackson.</li></ul>
+<h2>Step 4: Create a Redis Repository</h2>
+<p>Create a repository interface named UserRepository in the com.example.redis.repository package. This <br><br>interface will define methods for interacting with Redis.</p>
+<pre><code>package com.example.redis.repository;
+
+    import com.example.redis.model.User;
+    import org.springframework.data.repository.CrudRepository;
+    import org.springframework.stereotype.Repository;
+    
+    @Repository
+    public interface UserRepository extends CrudRepository<User, String> {
+    }</code></pre>
+    <h2>Step 5: Create a User Model</h2>
+    <p>Create a model class named User in the com.example.redis.model package.</p>
+    <pre><code>
+        package com.example.redis.model;
+
+import java.io.Serializable;
+
+public class User implements Serializable {
+
+    private String id;
+    private String name;
+    private int age;
+
+    public User() {
+    }
+
+    public User(String id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+
+    // Getters and setters
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+    </code></pre>
+    <h2>Step 6: Create a Service Classs</h2>
+    <p>Create a service class named UserService in the com.example.redis.service package.</p>
+    <pre><code>
+        package com.example.redis.service;
+
+import com.example.redis.model.User;
+import com.example.redis.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+public class UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public Optional<User> getUserById(String id) {
+        return userRepository.findById(id);
+    }
+
+    public Iterable<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public void deleteUserById(String id) {
+        userRepository.deleteById(id);
+    }
+}
+    </code></pre>
+    <h2>Step 7: Create a REST Controller</h2>
+    <p>Create a controller class named UserController in the com.example.redis.controller package.</p>
+  <pre><code>
+    package com.example.redis.controller;
+
+import com.example.redis.model.User;
+import com.example.redis.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping
+    public User saveUser(@RequestBody User user) {
+        return userService.saveUser(user);
+    }
+
+    @GetMapping("/{id}")
+    public Optional<User> getUserById(@PathVariable String id) {
+        return userService.getUserById(id);
+    }
+
+    @GetMapping
+    public Iterable<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUserById(@PathVariable String id) {
+        userService.deleteUserById(id);
+    }
+}
+
+  </code></pre>
+<h2>Step 8: Test the Application</h2>
+<h3>8.1 Run the Application</h3>
+<p>Run the Spring Boot application using your IDE or the command line:</p>
+<pre><code>
+    ./mvnw spring-boot:run
+</code></pre>
+<h3>8.2 Verify Redis Operations</h3>
+<p>Use a tool like Postman or curl to test the endpoints.</p>
+<h2>1.Create a User:</h2>
+<ul>
+    <li>URL: http://localhost:8080/users</li><br>
+    <li>Method: POST</li><br>
+    <li>Body:</li>
+</ul>
+<pre><code>
+    {
+        "id": "1",
+        "name": "Ramesh Fadatare",
+        "age": 30
+      }
+</code></pre>
+<h3>2.Get a User by ID:</h3>
+<ul>
+    <li>URL: http://localhost:8080/users/1</li><br>
+    <li>Method: GET</li><br>
+</ul>
+<h3>3.Get All Users:</h3>
+<ul>
+    <li>URL: http://localhost:8080/users</li><br>
+    <li>Method: GET</li><br>
+</ul>
+<h3>4.Delete a User by ID:</h3>
+<ul>
+<li>URL: http://localhost:8080/users/1</li><br>
+<li>Method: DELETE</li><br>
+</ul>
+<p>You should see the correct responses and verify that the data is stored and retrieved from Redis.</p>
+
+<h2>Conclusion</h2>
+<p>In this tutorial, you have learned how to set up and use Spring Data Redis in a Spring Boot application. We <br><br> covered:</p>
+<ul>
+    <li>Setting up a Spring Boot project with Redis dependencies.</li><br>
+    <li>Running Redis locally using Docker.</li><br>
+    <li>Configuring Redis in Spring Boot.</li><br>
+    <li>Creating a Redis repository and a model.</li><br>
+    <li>Creating a service and a REST controller to interact with Redis.</li><br>
+    <li>Testing the application to verify Redis operations.</li><br>
+</ul>
+<p>By following these steps, you can leverage Redis to improve the performance and scalability of your Spring <br><br>Boot applications.</p>
+</div>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

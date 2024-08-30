@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Spring Boot Maven Project in Eclipse</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Run Spring Boot Maven Project in Eclipse</h1>
+                <h4>author : Sai K</h4>
+                <p>Eclipse is a popular IDE for Java development, and it provides excellent support for Spring Boot
+                    projects. In this <br><br> tutorial, we will walk you through the steps to create, import, and run a
+                    Spring Boot Maven project in Eclipse.</p><br>
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li>JDK 17 or later</li><br>
+                    <li>Maven</li><br>
+                    <li>Eclipse IDE installed on your machine (Eclipse IDE for Enterprise Java and Web Developers
+                        recommended)</li><br>
+                    <li>Spring Boot (version 3.2+ recommended)</li><br>
+                </ul>
+                <h2>Step 1: Set Up a Spring Boot Project Using Spring Initializr</h2>
+                <p>Use <a href="https://start.spring.io/">Spring Initializr</a> to generate a new Spring Boot project
+                    with the following configuration:</p><br>
+
+                <ul>
+                    <li><strong>Project:</strong> Maven Project</li><br>
+                    <li><strong>Language:</strong> Java</li><br>
+                    <li><strong>Spring Boot:</strong> 3.2.x</li><br>
+                    <li><strong>Dependencies:</strong> Spring Web</li><br>
+                </ul>
+
+                <p>Download the generated project, unzip it, and open it in Eclipse.</p>
+                <h2>Example Project Structure </h2>
+                <p>The basic structure of a Spring Boot project with Maven looks like this:</p>
+                <pre><code>
+    <span class="directory">my-spring-boot-app/</span><br>
+
+<span class="directory">├── src/</span><br>
+<span class="directory">│   ├── main/</span><br>
+<span class="directory">│   │   ├── java/</span><br>
+<span class="directory">│   │   │   └── com/example/demo/</span><br>
+<span class="directory">│   │   │       └── <span class="java-file">DemoApplication.java</span></span><br>
+<span class="directory">│   └── resources/</span><br>
+<span class="directory">│   │       ├── <span class="java-file">application.properties</span></span><br>
+<span class="directory">│   └── test/</span><br>
+<span class="directory">│       └── java/</span><br>
+<span class="directory">│           └── com/example/demo/</span><br>
+<span class="directory">│               └── <span class="java-file">DemoApplicationTests.java</span></span><br>
+
+<span class="directory">├── <span class="java-file">mvnw</span></span><br>
+<span class="directory">├── <span class="java-file">mvnw.cmd</span></span><br>
+<span class="directory">├── <span class="java-file">pom.xml</span></span><br>
+<span class="directory">└── .mvn/</span><br>
+<span class="directory">    └── wrapper/</span><br>
+<span class="directory">        └── <span class="java-file">maven-wrapper.properties</span></span><br>
+
+</code></pre>
+                <h2>Step 2: Import the Maven Project into Eclipse</h2>
+                <p><strong>Open Eclipse:</strong> Launch Eclipse on your machine.</p><br>
+
+                <p><strong>Import Project:</strong></p><br>
+
+                <ul>
+                    <li>Click on <strong>File</strong> -> <strong>Import...</strong></li><br>
+                    <li>In the Import dialog, select <strong>Existing Maven Projects</strong> under the Maven folder and
+                        click <strong>Next</strong>.</li><br>
+                    <li>Click <strong>Browse</strong> and navigate to the root directory of your Spring Boot project.
+                        Select the <span class="java-file">pom.xml</span> file.</li><br>
+                    <li>Ensure that your project is selected in the <strong>Projects</strong> list and click
+                        <strong>Finish</strong>.
+                    </li><br>
+                </ul>
+
+                <p>Eclipse will import the project and resolve all dependencies specified in the <span
+                        class="java-file">pom.xml</span> file.</p>
+                <h2>Step 3: Explore the Project Structure</h2>
+                <p>After the project is imported, you can explore the project structure in the Project Explorer panel on
+                    the left side of <br><br> the Eclipse window. You should see the standard Maven project layout with
+                    src/main/java, src/main/resources,<br><br> src/test/java, and src/test/resources directories.</p>
+                <h2>Step 4: Create the Application Class</h2>
+                <p>Create a Java class named DemoApplication in the src/main/java/com/example/demo directory.</p>
+                <pre><code>
+    package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+</code></pre>
+                <h2>Explanation:</h2>
+
+                <ul>
+                    <li><strong>@SpringBootApplication:</strong> Marks this class as the main entry point for the Spring
+                        Boot application.</li><br>
+                    <li><strong>main method:</strong> Starts the Spring Boot application.</li><br>
+                </ul>
+                <h2>Step 5: Create a Simple REST Controller</h2>
+                <p>To verify the application works as expected, let's create a simple REST controller.</p>
+                <p>Create a Java class named HelloController in the src/main/java/com/example/demo directory:</p>
+                <pre><code>package com.example.demo;
+
+    import org.springframework.web.bind.annotation.GetMapping;
+    import org.springframework.web.bind.annotation.RestController;
+    
+    @RestController
+    public class HelloController {
+    
+        @GetMapping("/hello")
+        public String sayHello() {
+            return "Hello, World!";
+        }
+    }</code></pre>
+                <h2>Explanation:</h2>
+                <ul>
+                    <li><strong>@RestController:</strong> Marks this class as a REST controller.</li><br>
+                    <li><strong>@GetMapping("/hello"):</strong> Maps HTTP GET requests to the <code>/hello</code>
+                        endpoint to the <code>sayHello</code> method.</li><br>
+                    <li><strong>sayHello method:</strong> Returns a "Hello, World!" message.</li><br>
+                </ul>
+                <h2>Step 6: Run the Application</h2>
+                <h3>Using Eclipse </h3>
+                <p><strong>1.Run the Application:</strong></p><br>
+
+                <ul>
+                    <li>Right-click on the <code>DemoApplication</code> class in the Project Explorer.</li><br>
+                    <li>Select <strong>Run As</strong> -> <strong>Spring Boot App</strong>.</li><br>
+                    <li>Eclipse will build the project and start the Spring Boot application.</li><br>
+                </ul>
+
+                <p><strong>2.View the Output:</strong></p>
+                <ul>
+                    <li>The Console window will open at the bottom of the Eclipse window.</li><br>
+                    <li>You should see logs indicating that the application has started successfully.</li><br>
+                </ul>
+
+                <p><strong>Verifying the Application:</strong></p>
+
+                <p>Open a web browser or a tool like Postman and navigate to the following URL to verify the
+                    application:</p>
+
+                <p>
+                    <li><strong>Hello Endpoint:</strong></li>
+                </p>
+                <ul>
+                    <li><strong>URL:</strong> <code>http://localhost:8080/hello</code></li><br>
+                    <li><strong>Method:</strong> GET</li><br>
+                    <li><strong>Response:</strong> Hello, World!</li><br>
+                </ul>
+
+                <p>You should see the "Hello, World!" message returned by the <code>HelloController</code>.</p>
+                <h2>Step 7: Creating a Test Class</h2>
+                <p>Create a Java class named DemoApplicationTests in the src/test/java/com/example/demo directory. </p>
+                <pre><code>
+    package com.example.demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class DemoApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+}
+  </code></pre>
+                <h2>Explanation:</h2>
+                <ul>
+                    <li><strong>@SpringBootTest:</strong> Indicates that this is a Spring Boot test.</li><br>
+                    <li><strong>contextLoads method:</strong> Tests if the Spring application context loads
+                        successfully.</li><br>
+                </ul>
+
+                <p><strong>Running Tests</strong></p>
+
+                <p><strong>1.Run Tests:</strong></p>
+
+                <ul>
+                    <li>Right-click on the <code>DemoApplicationTests</code> class in the Project Explorer.</li><br>
+                    <li>Select <strong>Run As</strong> -> <strong>JUnit Test</strong>.</li><br>
+                </ul>
+
+                <p><strong>2.View Test Results:</strong></p>
+
+                <ul>
+                    <li>The Console window will open at the bottom of the Eclipse window.</li><br>
+                    <li>You should see the test results indicating that the tests passed successfully.</li><br>
+                </ul>
+                <h2>Conclusion</h2>
+                <p>In this tutorial, you have learned how to create, import, and run a Spring Boot Maven project in
+                    Eclipse. We <br><br> covered:</p><br>
+
+                <ul>
+                    <li>Setting up a Spring Boot project using Spring Initializr with Maven.</li><br>
+                    <li>Importing the Maven project into Eclipse.</li><br>
+                    <li>Creating the main application class.</li><br>
+                    <li>Creating a simple REST controller to verify the application works as expected.</li><br>
+                    <li>Running the application using Eclipse.</li><br>
+                    <li>Creating and running tests.</li><br>
+                </ul>
+
+                <p>By following these steps, you can easily set up and manage Spring Boot projects using Maven in
+                    Eclipse, <br><br>leveraging its powerful development and debugging features.</p>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

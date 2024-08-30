@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Run Spring Boot Maven Project in IntelliJ</h1>
+                <h4>author : Sai K</h4>
+                <p>IntelliJ IDEA is a popular IDE for Java development, and it provides excellent support for Spring
+                    Boot projects. In <br><br> this tutorial, we will walk you through the steps to create, import, and run a
+                    Spring Boot Maven project in IntelliJ <br><br>IDEA. <br>
+                </p>
+                <p><strong>Prerequisites</strong></p>
+                <ul>
+                    <li>JDK 17 or later</li><br>
+                    <li>Maven</li><br>
+                    <li>IntelliJ IDEA installed on your machine (Community or Ultimate edition)</li><br>
+                    <li>Spring Boot (version 3.2+ recommended)</li><br>
+                </ul>
+
+                <p><strong>Step 1: Set Up a Spring Boot Project Using Spring Initializr</strong></p>
+                <p>Use Spring Initializr to generate a new Spring Boot project with the following configuration:</p>
+
+                <ul>
+                    <li><strong>Project:</strong> Maven Project</li><br>
+                    <li><strong>Language:</strong> Java</li><br>
+                    <li><strong>Spring Boot:</strong> 3.2.x</li><br>
+                    <li><strong>Dependencies:</strong> Spring Web</li><br>
+                </ul>
+
+                <p>Download the generated project, unzip it, and open it in IntelliJ IDEA.</p>
+
+                <p><strong>Example Project Structure</strong></p>
+                <p>The basic structure of a Spring Boot project with Maven looks like this:</p>
+                <pre><code>
+                <span class="directory">my-spring-boot-app/</span><br>
+
+                <span class="directory">├── src/</span><br>
+                <span class="directory">│   ├── main/</span><br>
+                <span class="directory">│   │   ├── java/</span><br>
+                <span class="directory">│   │   │   └── com/example/demo/</span><br>
+                <span class="directory">│   │   │       └── <span class="java-file">DemoApplication.java</span></span><br>
+                <span class="directory">│   │   └── resources/</span><br>
+                <span class="directory">│   │       └── <span class="java-file">application.properties</span></span><br>
+                <span class="directory">│   └── test/</span><br>
+                <span class="directory">│       └── java/</span><br>
+                <span class="directory">│           └── com/example/demo/</span><br>
+                <span class="directory">│               └── <span class="java-file">DemoApplicationTests.java</span></span><br>
+                
+                <span class="directory">├── <span class="java-file">mvnw</span></span><br>
+                <span class="directory">├── <span class="java-file">mvnw.cmd</span></span><br>
+                <span class="directory">├── <span class="java-file">pom.xml</span></span><br>
+                <span class="directory">└── .mvn/</span><br>
+                <span class="directory">    └── wrapper/</span><br>
+                <span class="directory">        └── <span class="java-file">maven-wrapper.properties</span></span><br>
+            </code></pre>
+                <h2>Step 2: Import the Maven Project into IntelliJ IDEA</h2>
+                <p>1.<b>Open IntelliJ IDEA: </b>Launch IntelliJ IDEA on your machine.</p>
+                <p>2.Import Project:</p>
+                <p>To import an existing Spring Boot project into IntelliJ IDEA, follow these steps:</p><br>
+
+                <ul>
+                    <li>Click on <strong>File</strong> -> <strong>New</strong> -> <strong>Project from Existing
+                            Sources</strong>.</li><br>
+                    <li>Navigate to the root directory of your Spring Boot project and select the <span
+                            class="java-file">pom.xml</span> file.</li><br>
+                    <li>Click <strong>OK</strong>.</li><br>
+                </ul>
+                <h2>3.Import Maven Projects:</h2>
+
+                <p>IntelliJ IDEA will detect that it is a Maven project and open the "Import Project from Maven" dialog.
+                </p><br>
+                <ul>
+                    <li>Ensure that the <strong>Import Maven projects automatically</strong> option is checked.</li><br>
+                    <li>Click <strong>Next</strong> and then <strong>Finish</strong>.</li><br>
+                </ul>
+                <p>IntelliJ IDEA will import the project and resolve all dependencies specified in the pom.xml file.</p>
+            <h2>Step 3: Explore the Project Structure</h2>
+            <p>After the project is imported, you can explore the project structure in the Project Explorer panel on the left side of <br><br>the IntelliJ IDEA window. You should see the standard Maven project layout with src/main/java,<br><br> src/main/resources, src/test/java, and src/test/resources directories.</p><br>
+            <h2>Step 4: Application Class  </h2>
+            <p>Let's understand the Spring boot Main Java class named DemoApplication in the <br><br> src/main/java/com/example/demo directory.</p><br>
+            <pre><code>
+                package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+            </code></pre>
+            <h2>Explanation:</h2>
+            <ul>
+                <li>@SpringBootApplication: Marks this class as the main entry point for the Spring Boot application. </li><br>
+                <li>  main method: Starts the Spring Boot application.</li><br>
+            </ul>
+            <h2>Step 5: Create a Simple REST Controller</h2>
+            <p>To verify the application works as expected, let's create a simple REST controller.</p>
+            <p>Create a Java class named HelloController in the src/main/java/com/example/demo directory:
+
+            </p>
+            <pre><code>
+ package com.example.demo;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello, World!";
+    }
+}
+            </code></pre>
+            <h2>Explanation:</h2>
+            <ul>
+                <li>@RestController: Marks this class as a REST controller.</li><br>
+                <li> @GetMapping("/hello"): Maps HTTP GET requests to the /hello endpoint to the sayHello method.
+                </li><br>
+                <li>  sayHello method: Returns a "Hello, World!" message.</li><br>
+            </ul>
+            <h2>Step 6: Run the Application</h2>
+            <h3>Using IntelliJ IDEA  </h3>
+            <p>1.<b>Run the Application:</b></p>
+            <ul>
+                <li>Right-click on the DemoApplication class in the Project Explorer.</li><br>
+                <li>Select Run 'DemoApplication.main()'.</li><br>
+            </ul>
+            <p>IntelliJ IDEA will build the project and start the Spring Boot application.</p>
+            <h3>View the Output:</h3>
+            <ul>
+                <li>The Run window will open at the bottom of the IntelliJ IDEA window.</li><br>
+                <li>You should see logs indicating that the application has started successfully.</li><br>
+            </ul>
+            <h2>Verifying the Application</h2>
+            <p>Open a web browser or a tool like Postman and navigate to the following URL to verify the application:</p>
+          <strong>1. Hello Endpoint:</strong> 
+          <ul>
+            <li>URL: http://localhost:8080/hello</li><br>
+            <li>Method: GET</li><br>
+            <li>Response: Hello, World!</li><br>
+            <li>You should see the "Hello, World!" message returned by the HelloController.</li><br>
+          </ul>
+<p>You should see the "Hello, World!" message returned by the HelloController.</p>
+<h2>Step 7: Creating a Test Class</h2>
+<p>Create a Java class named DemoApplicationTests in the src/test/java/com/example/demo directory.</p>
+<pre><code>
+ package com.example.demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class DemoApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+}
+</code></pre>
+<h2>Explanation:</h2>
+<ul>
+    <li>@SpringBootTest: Indicates that this is a Spring Boot test.</li><br>
+    <li>contextLoads method: Tests if the Spring application context loads successfully.</li><br>
+</ul>
+<h2>Running Tests</h2>
+<p>1. <b>Run Tests:</b></p>
+<ul>
+    <li>Right-click on the DemoApplicationTests class in the Project Explorer.</li><br>
+    <li>Select Run 'DemoApplicationTests'.</li><br>
+</ul>
+        <p>2. <b>View Test Results:</b></p>
+        <ul>
+            <li>The Run window will open at the bottom of the IntelliJ IDEA window.</li><br>
+            <li>  You should see the test results indicating that the tests passed successfully.</li><br>
+        </ul>
+        <h2>Conclusion</h2>
+        <p>In this tutorial, you have learned how to create, import, and run a Spring Boot Maven project in IntelliJ IDEA. We <br><br> covered:</p><br>
+
+<ul>
+    <li>Setting up a Spring Boot project using Spring Initializr with Maven.</li><br>
+    <li>Importing the Maven project into IntelliJ IDEA.</li><br>
+    <li>Creating the main application class.</li><br>
+    <li>Creating a simple REST controller to verify the application works as expected.</li><br>
+    <li>Running the application using IntelliJ IDEA.</li><br>
+    <li>Creating and running tests.</li><br>
+</ul>
+
+        <p>By following these steps, you can easily set up and manage Spring Boot projects using Maven in IntelliJ IDEA, <br><br>leveraging its powerful development and debugging features.</p>
+        </div>
+        </div>
+    </div>
+</body>
+
+</html>
