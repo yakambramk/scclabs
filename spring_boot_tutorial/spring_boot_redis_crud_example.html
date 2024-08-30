@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Redis CRUD Example</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    
+
+</style>
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Boot Redis CRUD Example</h1>
+                <h4>author : Sai K</h4>
+                <p>Redis is an in-memory data structure store often used as a database, cache, and message broker. It is known for <br><br> its high performance and flexibility. Integrating Redis with Spring Boot can enhance your application's <br><br> performance by leveraging Redis' fast data access capabilities. In this tutorial, we will cover how to set up and <br><br> use Redis with Spring Boot, focusing on CRUD (Create, Read, Update, Delete) operations using a Student <br><br> entity.</p>
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li>JDK 17 or later</li><br>
+                    <li>Maven or Gradle</li><br>
+                    <li>Docker (optional, for running Redis locally)</li><br>
+                    <li>Spring Boot (version 3.2+ recommended)</li><br>
+                    <li>IDE (IntelliJ IDEA, Eclipse, etc.)</li><br>
+                </ul>
+                <h2>Step 1: Set Up a Spring Boot Project</h2>
+                <p>Use <a href="https://start.spring.io/ ">Spring Initializr </a>to create a new project with the following configuration:</p>
+             <ul>
+                <li>Project: Maven Project</li><br>
+                <li>Language: Java </li><br>
+                <li>Spring Boot: 3.2.x</li><br>
+                <li>Dependencies: Spring Web, Spring Data Redis</li><br>
+             </ul>
+           <p>Download and unzip the project, then open it in your IDE.   </p>
+           <h3>Example Spring Boot Application</h3>
+           <p>We will create a simple Spring Boot application that interacts with Redis to perform CRUD operations on a ,<br><br> Student entity.</p><br>
+           <h2>1.1 Application Class</h2>
+           <pre><code>
+ package com.example.redis;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class RedisApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(RedisApplication.class, args);
+    }
+}
+           </code></pre>
+           <h2>Step 2: Running Redis Locally  </h2>
+           <h3>Using Docker</h3>
+           <p>If you have Docker installed, you can run Redis using the following command:    </p>
+           <pre><code>
+            docker run --name redis -d -p 6379:6379 redis
+           </code></pre>
+           <h2>Installing Redis Locally</h2>
+           <p>Alternatively, you can install Redis on your local machine by following the installation instructions for your <br><br> operating system from the <a href="https://redis.io/downloads/">Redis website.</a></p><br>
+<h2>Step 3: Configure Redis in Spring Boot</h2>
+<h3>3.1 Add Redis Configuration</h3>
+<p>Add the following configuration to your src/main/resources/application.properties file:</p>
+<pre><code>
+    # src/main/resources/application.properties
+
+spring.redis.host=localhost
+spring.redis.port=6379
+</code></pre>
+<h2>3.2 Create a Redis Configuration Class</h2>
+<p>Create a configuration class named RedisConfig in the com.example.redis.config package.</p>
+<pre><code>
+    package com.example.redis.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+@Configuration
+public class RedisConfig {
+
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(connectionFactory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        return template;
+    }
+}
+</code></pre>
+<h2>Explanation:</h2>
+<ul>
+    <li>RedisTemplate<String, Object>: Provides high-level abstractions for Redis interactions.</li><br>
+    <li>StringRedisSerializer: Serializes keys as strings.</li><br>
+    <li>GenericJackson2JsonRedisSerializer: Serializes values as JSON using Jackson.</li><br>
+</ul>
+        <h2>Step 4: Create a Student Entity</h2>   
+        <p>Create a model class named Student in the com.example.redis.model package.</p>
+        <pre><code>
+            package com.example.redis.model;
+
+import java.io.Serializable;
+
+public class Student implements Serializable {
+
+    private String id;
+    private String name;
+    private int age;
+
+    public Student() {
+    }
+
+    public Student(String id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+
+    // Getters and setters
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}</code></pre>
+<h2>Step 5: Create a Student Repository</h2>
+<p>Create a repository interface named StudentRepository in the com.example.redis.repository package. This  <br><br>interface will define methods for interacting with Redis.</p><br>
+        
+
+        <pre><code>
+            package com.example.redis.repository;
+
+import com.example.redis.model.Student;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface StudentRepository extends CrudRepository<Student, String> {
+}
+        </code></pre>
+        <h2>Step 6: Create a Student Service</h2>
+        <p>Create a service class named StudentService in the com.example.redis.service package.</p>
+
+<pre><code>
+    package com.example.redis.service;
+
+import com.example.redis.model.Student;
+import com.example.redis.repository.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+public class StudentService {
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    public Iterable<Student> getAllStudents() {
+        return studentRepository.findAll();
+    }
+
+    public Optional<Student> getStudentById(String id) {
+        return studentRepository.findById(id);
+    }
+
+    public Student createStudent(Student student) {
+        return studentRepository.save(student);
+    }
+
+    public Optional<Student> updateStudent(String id, Student student) {
+        return studentRepository.findById(id).map(existingStudent -> {
+            existingStudent.setName(student.getName());
+            existingStudent.setAge(student.getAge());
+            return studentRepository.save(existingStudent);
+        });
+    }
+
+    public void deleteStudent(String id) {
+        studentRepository.deleteById(id);
+    }
+}
+</code></pre>
+<h2>Step 7: Create a REST Controller</h2>
+<p>Create a controller class named StudentController in the com.example.redis.controller package.</p>
+<pre><code>
+    package com.example.redis.controller;
+
+import com.example.redis.model.Student;
+import com.example.redis.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/students")
+public class StudentController {
+
+    @Autowired
+    private StudentService studentService;
+
+    @GetMapping
+    public Iterable<Student> getAllStudents() {
+        return studentService.getAllStudents();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Student> getStudentById(@PathVariable String id) {
+        return studentService.getStudentById(id);
+    }
+
+    @PostMapping
+    public Student createStudent(@RequestBody Student student) {
+        return studentService.createStudent(student);
+    }
+
+    @PutMapping("/{id}")
+    public Optional<Student> updateStudent(@PathVariable String id, @RequestBody Student student) {
+        return studentService.updateStudent(id, student);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteStudent(@PathVariable String id) {
+        studentService.deleteStudent(id);
+    }
+}
+</code></pre>
+<h2>Step 8: Test the Application</h2>
+<h3>8.1 Run the Application</h3>
+<p>Run the Spring Boot application using your IDE or the command line:</p>
+<pre><code>./mvnw spring-boot:run</code></pre>
+<h3>8.2 Verify CRUD Operations</h3>
+<p>Use a tool like Postman or curl to test the endpoints.</p>
+<p>1.<b>Create a Student:</b></p>
+<ul>
+    <li>URL: http://localhost:8080/students</li><br>
+    <li>Method: POST</li><br>
+    <li>Body:</li><br>
+    <pre><code>
+        {
+            "id": "1",
+            "name": "John Doe",
+            "age": 20
+          }
+    </code></pre>
+</ul>
+<p>2.<b>Get All Students:</b></p>
+<ul>
+    <li>URL: http://localhost:8080/students</li><br>
+    <li>Method: GET</li><br>
+    
+</ul>
+<p>3.<b>Get a Student by ID:</b></p>
+<ul>
+    <li>URL: http://localhost:8080/students/1</li><br>
+    <li>Method: GET</li><br>
+    
+</ul>
+<p>4.<b>Get a Student by ID:</b></p>
+<ul>
+    <li>URL: http://localhost:8080/students/1</li><br>
+    <li>Method: PUT</li><br>
+    <li>Body: </li><br>
+    
+</ul>
+<pre><code>
+    {
+        "name": "Jane Doe",
+        "age": 21
+      }
+</code></pre>
+<ul>
+    <li>URL: http://localhost:8080/students/1</li><br>
+    <li>Method: DELETE</li><br>
+    
+    
+</ul>
+<p>You should see the correct responses and verify that the data is stored, retrieved, updated, and deleted from Redis.</p>
+<h2>Conclusion</h2>
+<p>In this tutorial, you have learned how to integrate Redis with Spring Boot to perform CRUD operations using a <br><br> Student entity. We covered:</p><br>
+<ul>
+    <li>Setting up a Spring Boot project with Redis dependencies.</li><br>
+    <li>Running Redis locally using Docker or installing it on your machine.</li><br>
+    <li>Configuring Redis in Spring Boot.</li><br>
+    <li>Creating a Student entity, repository, service, and REST controller.</li><br>
+    <li>Testing the CRUD operations using Postman or curl.</li><br>
+</ul>
+<p>By following these steps, you can leverage Redis to build robust and scalable Spring Boot applications.</p>
+<h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+       
+            </div>
+        </div>
+    </div>
+</body>
+</html>

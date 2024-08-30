@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Gradle CRUD Example - CRUD REST APIs</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1> Spring Boot Gradle CRUD Example - CRUD REST APIs</h1>
+                <h4>author : Sai K</h4>
+                <p>In this tutorial, we will create a simple Spring Boot application using Gradle that performs CRUD
+                    (Create, Read,<br><br> Update, Delete) operations on a Student entity. We will use Spring Data JPA to
+                    interact with a relational <br><br>database.</p><br>
+                <h2>Prerequisites </h2>
+                <ul>
+                    <li><strong>JDK 17 or later</strong></li><br>
+                    <li><strong>Gradle</strong></li><br>
+                    <li><strong>Spring Boot (version 3.2+ recommended)</strong></li><br>
+                    <li><strong>IDE (IntelliJ IDEA, Eclipse, etc.)</strong></li><br>
+                    <li><strong>A relational database (e.g., H2, MySQL, PostgreSQL)</strong></li><br>
+                </ul>
+
+                <h2>Step 1: Set Up a Spring Boot Project Using Spring Initializr</h2>
+                <p>Use Spring Initializr to generate a new Spring Boot project with the following configuration:</p>
+
+                <ul>
+                    <li><strong>Project:</strong> Gradle Project</li><br>
+                    <li><strong>Language:</strong> Java</li><br>
+                    <li><strong>Spring Boot:</strong> 3.2.x</li><br>
+                    <li><strong>Dependencies:</strong> Spring Web, Spring Data JPA, H2 Database (or your preferred
+                        database)</li><br>
+                </ul>
+                <p>Download the generated project, unzip it, and open it in your IDE.</p>
+                <h2>Project Structure </h2>
+                <p>The basic structure of a Spring Boot project with Gradle looks like this: </p>
+                <pre><code>
+                <span class="directory">my-spring-boot-app/</span>
+├── <span class="directory">build</span><span class="java-file">.gradle</span>
+├── <span class="directory">settings</span><span class="java-file">.gradle</span>
+├── <span class="directory">src/</span>
+│   ├── <span class="directory">main/</span>
+│   │   ├── <span class="directory">java/</span>
+│   │   │   └── <span class="directory">com/example/demo/</span>
+│   │   │       └── <span class="directory">DemoApplication</span><span class="java-file">.java</span>
+│   │   │       └── <span class="directory">model/</span>
+│   │   │           └── <span class="directory">Student</span><span class="java-file">.java</span>
+│   │   │       └── <span class="directory">repository/</span>
+│   │   │           └── <span class="directory">StudentRepository</span><span class="java-file">.java</span>
+│   │   │       └── <span class="directory">service/</span>
+│   │   │           └── <span class="directory">StudentService</span><span class="java-file">.java</span>
+│   │   │       └── <span class="directory">controller/</span>
+│   │   │           └── <span class="directory">StudentController</span><span class="java-file">.java</span>
+│   │   └── <span class="directory">resources/</span>
+│   │       ├── <span class="directory">application</span><span class="properties-file">.properties</span>
+│   └── <span class="directory">test/</span>
+│       └── <span class="directory">java/</span>
+│           └── <span class="directory">com/example/demo/</span>
+│               └── <span class="directory">DemoApplicationTests</span><span class="java-file">.java</span>
+└── <span class="directory">gradlew</span>
+└── <span class="directory">gradlew</span><span class="bat-file">.bat</span>
+└── <span class="directory">gradle/</span>
+    └── <span class="directory">wrapper/</span>
+        └── <span class="directory">gradle-wrapper</span><span class="properties-file">.properties</span>
+
+            </code></pre>
+                <h2>Step 2: Configuring build.gradle</h2>
+                <p>Open the build.gradle file and configure it as follows: </p>
+                <pre><code>
+                plugins {
+                    id 'org.springframework.boot' version '3.2.0'
+                    id 'io.spring.dependency-management' version '1.1.0'
+                    id 'java'
+                }
+                
+                group = 'com.example'
+                version = '0.0.1-SNAPSHOT'
+                sourceCompatibility = '17'
+                
+                repositories {
+                    mavenCentral()
+                }
+                
+                dependencies {
+                    implementation 'org.springframework.boot:spring-boot-starter-web'
+                    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+                    runtimeOnly 'com.h2database:h2' // Use H2 database for simplicity
+                    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+                }
+                
+                test {
+                    useJUnitPlatform()
+                }
+                
+            </code></pre>
+                <h2>Step 3: Create the Student Entity </h2>
+                <p>Create a Java class named Student in the src/main/java/com/example/demo/model directory.</p>
+                <pre><code>
+                package com.example.demo.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private int age;
+
+    // Constructors, getters, and setters
+
+    public Student() {
+    }
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+            </code></pre>
+                <h2>Step 4: Create the Student Repository</h2>
+                <p>Create a repository interface named StudentRepository in the
+                    src/main/java/com/example/demo/repository <br><br> directory.</p><br>
+                <pre><code>
+                package com.example.demo.repository;
+
+import com.example.demo.model.Student;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface StudentRepository extends JpaRepository<Student, Long> {
+}
+            </code></pre>
+                <h2>Step 5: Create the Student Service</h2>
+                <p>Create a service class named StudentService in the src/main/java/com/example/demo/service directory.
+                </p>
+                <pre><code>
+                package com.example.demo.service;
+
+import com.example.demo.model.Student;
+import com.example.demo.repository.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class StudentService {
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
+    }
+
+    public Optional<Student> getStudentById(Long id) {
+        return studentRepository.findById(id);
+    }
+
+    public Student createStudent(Student student) {
+        return studentRepository.save(student);
+    }
+
+    public Optional<Student> updateStudent(Long id, Student student) {
+        return studentRepository.findById(id).map(existingStudent -> {
+            existingStudent.setName(student.getName());
+            existingStudent.setAge(student.getAge());
+            return studentRepository.save(existingStudent);
+        });
+    }
+
+    public void deleteStudent(Long id) {
+        studentRepository.deleteById(id);
+    }
+}
+            </code></pre>
+                <h2>Step 6: Create the REST Controller</h2>
+                <p>Create a controller class named StudentController in the src/main/java/com/example/demo/controller
+                    directory.</p>
+                <pre><code>
+                package com.example.demo.controller;
+
+import com.example.demo.model.Student;
+import com.example.demo.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/students")
+public class StudentController {
+
+    @Autowired
+    private StudentService studentService;
+
+    @GetMapping
+    public List<Student> getAllStudents() {
+        return studentService.getAllStudents();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Student> getStudentById(@PathVariable Long id) {
+        return studentService.getStudentById(id);
+    }
+
+    @PostMapping
+    public Student createStudent(@RequestBody Student student) {
+        return studentService.createStudent(student);
+    }
+
+    @PutMapping("/{id}")
+    public Optional<Student> updateStudent(@PathVariable Long id, @RequestBody Student student) {
+        return studentService.updateStudent(id, student);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteStudent(@PathVariable Long id) {
+        studentService.deleteStudent(id);
+    }
+}
+            </code></pre>
+                <h2>Step 7: Configure the Database</h2>
+                <p>Open the src/main/resources/application.properties file and configure the H2 database.</p>
+                <pre><code>
+ # src/main/resources/application.properties
+
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+            </code></pre>
+                <h2>Step 8: Running the Application</h2>
+                <h3>Using IDE</h3>
+                <p>You can run the application directly from your IDE. Look for a "Run" or "Debug" option for the
+                    DemoApplication <br><br> class.</p><br>
+                <h2>Using Gradle</h2>
+                <p>Alternatively, you can run the application using the Gradle wrapper. Open a terminal in the project
+                    root directory <br><br> and run the following command: </p><br>
+                <p>For Unix/Linux/macOS:</p>
+                <pre><code>
+                ./gradlew bootRun
+                
+            </code></pre>
+                <p>For Windows:</p>
+
+                <pre><code>
+                gradlew.bat bootRun
+                
+            </code></pre>
+                <h2>Step 9: Verify CRUD Operations</h2>
+                <p>Use a tool like Postman or curl to test the endpoints.</p>
+                <ul>
+                    <li><strong>Create a Student:</strong></li><br>
+                    <ul>
+                        <li><strong>URL:</strong> http://localhost:8080/students</li><br>
+                        <li><strong>Method:</strong> POST</li><br>
+                        <li><strong>Body:</strong></li><br>
+                        <pre><code>{
+              "name": "John Doe",
+              "age": 20
+            }</code></pre>
+                    </ul><br>
+
+                    <li><strong>Get All Students:</strong></li><br>
+                    <ul>
+                        <li><strong>URL:</strong> http://localhost:8080/students</li><br>
+                        <li><strong>Method:</strong> GET</li><br>
+                    </ul><br>
+
+                    <li><strong>Get a Student by ID:</strong></li><br>
+                    <ul>
+                        <li><strong>URL:</strong> http://localhost:8080/students/1</li><br>
+                        <li><strong>Method:</strong> GET</li><br>
+                    </ul><br>
+
+                    <li><strong>Update a Student:</strong></li><br>
+                    <ul>
+                        <li><strong>URL:</strong> http://localhost:8080/students/1</li><br>
+                        <li><strong>Method:</strong> PUT</li><br>
+                        <li><strong>Body:</strong></li><br>
+                        <pre><code>{
+              "name": "Jane Doe",
+              "age": 21
+            }</code></pre>
+                    </ul><br>
+
+                    <li><strong>Delete a Student:</strong></li><br>
+                    <ul>
+                        <li><strong>URL:</strong> http://localhost:8080/students/1</li><br>
+                        <li><strong>Method:</strong> DELETE</li><br>
+                    </ul><br>
+
+                    <p>You should see the correct responses and verify that the data is stored, retrieved, updated, and
+                        deleted <br><br> from the H2 database.</p><br>
+
+                </ul>
+                <h2>Conclusion</h2>
+
+                <p>In this tutorial, you have learned how to create a Spring Boot application using Gradle that performs
+                    CRUD <br><br> operations on a Student entity. We covered:</p><br>
+
+                <ul>
+                    <li>Setting up a Spring Boot project with Gradle.</li><br>
+                    <li>Configuring the <code>build.gradle</code> file.</li><br>
+                    <li>Creating a Student entity, repository, service, and REST controller.</li><br>
+                    <li>Configuring the H2 database.</li><br>
+                    <li>Running the application and verifying CRUD operations using Postman or curl.</li><br>
+                </ul>
+
+                <p>By following these steps, you can easily set up and manage Spring Boot projects using Gradle and
+                    perform <br><br> CRUD operations on a relational database.</p><br>
+
+                <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
