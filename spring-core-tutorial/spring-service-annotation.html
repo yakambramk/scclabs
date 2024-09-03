@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring @Service Annotation</h1>
+        <p>In this quick article, we will discuss how to use <code style="color: red;">@Service</code> annotation in
+            Spring ( Spring Boot) based applications.</p>
+        <h2>Spring @Service Annotation Overview</h2>
+        <p>The business logic of an application usually resides within the service layer – so we’ll use the @Service
+            annotation to indicate that a class belongs to the service layer.</p>
+        <p>Well, <code style="color: red;">@Service</code> annotation serves as a specialization of <a
+                href="/spring-core-tutorial/spring-component-annotation-example.html" target="_blank">@Component</a>, allowing for
+            implementation classes to be
+            autodetected through classpath scanning.</p>
+        <p>The below diagram shows a source code definition of <code style="color: red;">@Service</code> annotation.
+            Spring context will autodetect these
+            classes when annotation-based configuration and classpath scanning is used because it is a specialization of
+            <a href="/spring-core-tutorial/spring-component-annotation-example.html" target="_blank">@Component</a> as shown below
+            diagram.
+        </p>
+        <img src="../assets/spring-core-tutorial-images/service-annotation-impl.PNG">
+        <p><b>Whenever we annotated a class with @Service annotation then Spring Container will automatically create a
+                Spring bean for that class.</b></p>
+        <h2>Spring @Service Annotation Example</h2>
+        <p>Let's create a simple Spring boot application to bootstrap quickly. Add the below dependencies to your
+            <code style="color: red;">pom.xml</code> file.
+        </p>
+        <pre><code>
+&ltdependency>
+    &ltgroupId>org.springframework.boot</groupId>
+    &ltartifactId>spring-boot-starter-web</artifactId>
+&lt/dependency>
+                
+&ltdependency>
+    &ltgroupId>org.springframework.boot</groupId>
+    &ltartifactId>spring-boot-starter-data-jpa</artifactId>
+&lt/dependency>
+            </code></pre>
+        <h3>Create User JPA Entity</h3>
+        <p>Let's create a simple <code style="color: red;">User</code> JPA entity that maps with the <code
+                style="color: red;">users</code> table in the database:</p>
+        <pre><code>
+@Entity
+@Table(name = "users")
+class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    private String name;
+
+    public User(int id, String name) {
+        super();
+        this.id = id;
+        this.name = name;
+    }
+
+    public User() {}
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+</code></pre>
+        <h3>Create UserRepository</h3>
+        <p>Next, create a <code style="color: red;">UserRepository</code>. interface and annotate with <code
+                style="color: red;">@Repository</code> annotation:</p>
+        <pre><code>
+@Repository
+interface UserRepository extends JpaRepository < User, Integer > {
+
+}
+
+</code></pre>
+        <p>Note Spring Data JPA automatically provides an implementation for the above interface.</p>
+        <h3>Create UserService and UserServiceImpl</h3>
+        <pre><code>
+    interface UserService {
+        public void saveUser(User user);
+    }
+    
+    @Service
+    class UserServiceImpl implements UserService {
+    
+        @Autowired
+        private UserRepository userRepository;
+    
+        @Override
+        public void saveUser(User user) {
+            userRepository.save(user);
+        }
+    }
+
+</code></pre>
+        <h3>Testing</h3>
+        <p>Let's write a code to test UserRepository to save user objects into the database table:</p>
+        <pre><code>
+@SpringBootApplication
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(DemoApplication.class, args);
+        UserService userService = (UserService) applicationContext.getBean("userServiceImpl");
+        userService.saveUser(new User(10, "Ramesh"));
+    }
+}
+
+</code></pre>
+        <h2>Complete Code</h2>
+        <p>Here is the complete code for your reference:</p>
+        <pre><code>
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
+@SpringBootApplication
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(DemoApplication.class, args);
+        UserService userService = (UserService) applicationContext.getBean("userServiceImpl");
+        userService.saveUser(new User(10, "Ramesh"));
+    }
+}
+
+@Entity
+@Table
+class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    private String name;
+
+    public User(int id, String name) {
+        super();
+        this.id = id;
+        this.name = name;
+    }
+
+    public User() {}
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+@Repository
+interface UserRepository extends JpaRepository < User, Integer > {
+
+}
+
+interface UserService {
+    public void saveUser(User user);
+}
+
+@Service
+class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+}
+
+</code></pre>
+        <p>Note that we have created ApplicationContext and retrieved bean using the <code
+                style="color: red;">getBean()</code> method:</p>
+        <pre><code>
+ConfigurableApplicationContext  applicationContext =  SpringApplication.run(DemoApplication.class, args);
+UserService userService = (UserService) applicationContext.getBean("userServiceImpl");
+userService.saveUser(new User(10, "Ramesh"));
+
+</code></pre>
+        <h3>Usage of @Service annotation</h3>
+        <pre><code>
+    interface UserService {
+        public void saveUser(User user);
+    }
+    
+    @Service
+    class UserServiceImpl implements UserService {
+    
+        @Autowired
+        private UserRepository userRepository;
+    
+        @Override
+        public void saveUser(User user) {
+            userRepository.save(user);
+        }
+    }
+
+</code></pre>
+
+    </div>
+</body>
+
+</html>

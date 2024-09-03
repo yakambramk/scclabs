@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring @Lazy Annotation Example</h1>
+        <p>In this short article, we’ll discuss Spring’s <code style="color: red;">@Lazy</code> annotation with an
+            example.</p>
+        <p>By default, the Spring IoC container creates and initializes all singleton beans at application startup.
+            However, we can prevent this pre-initialization by using the @Lazy annotation.</p>
+        <p>The @Lazy annotation may be used in any class directly or indirectly annotated with @Component or in methods
+            annotated with <a href="/spring-mvc/spring-bean-annotation-with-example.html" target="_blank">@Bean</a>.</p>
+        <p>In this example, we will use a Java-based configuration(using <a
+                href="/spring-mvc/spring-configuration-annotation.html" target="_blank">@Configuration</a> and
+            <a href="/spring-mvc/spring-bean-annotation-with-example.html" target="_blank">@Bean</a>). </p>
+        <h2>Spring @Lazy Annotation Example</h2>
+        <p>Let's create an example to demonstrate using <code style="color: red;">@Lazy</code> annotation in a spring
+            application.
+        </p>
+        <h3>Create a Simple Maven Project</h3>
+        <p>Create a simple Maven project using your favourite IDE. Refer to the section below for the packaging
+            structure. If you are new to Maven, read the article <a href="/spring-core-tutorial/simple_maven_project.html" target="_blank">How to Create a Simple Maven Project</a>.
+        </p>
+        <h3>Project Structure</h3>
+        <p>The below diagram shows a project structure for your reference -</p>
+        <img src="../assets/spring-core-tutorial-images/spring-lazy-annotation.PNG">
+        <h3>Maven Dependency</h3>
+        <p>Note that Spring Framework 6 requires Java 17 or later version:</p>
+        <pre><code>        
+    &lt!-- https://mvnrepository.com/artifact/org.springframework/spring-core --&gt
+    &ltdependency>
+        &ltgroupId>org.springframework</groupId>
+        &ltartifactId>spring-core</artifactId>
+        &ltversion>6.1.8</version>
+    &lt/dependency>
+    &lt!-- https://mvnrepository.com/artifact/org.springframework/spring-context --&gt
+    &ltdependency>
+        &ltgroupId>org.springframework</groupId>
+        &ltartifactId>spring-context</artifactId>
+        &ltversion>6.1.8</version>
+    &lt/dependency>
+
+</code></pre>
+        <h3>Create Spring Beans - FirstBean and SecondBean</h3>
+        <h4>FirstBean.java</h4>
+        <pre><code>
+package net.javaguides.spring.lazy;
+
+public class FirstBean {
+
+    public FirstBean() {
+        System.out.println("Inside FirstBean Constuctor");
+    }
+
+    public void test() {
+        System.out.println("Method of FirstBean Class");
+    }
+}
+
+</code></pre>
+        <h4>SecondBean.java</h4>
+        <pre><code>
+package net.javaguides.spring.lazy;
+
+public class SecondBean {
+
+    public SecondBean() {
+        System.out.println("Inside SecondBean Constuctor");
+    }
+
+    public void test() {
+        System.out.println("Method of SecondBean Class");
+    }
+}
+
+</code></pre>
+        <h3>Java-Based Configuration - AppConfig.java</h3>
+        <p>Declare the above beans in the Java-based configuration class.</p>
+        <pre><code>
+    package net.javaguides.spring.lazy;
+
+    import org.springframework.context.annotation.Bean;
+    import org.springframework.context.annotation.Configuration;
+    import org.springframework.context.annotation.Lazy;
+    
+    @Configuration
+    public class AppConfig {
+    
+        @Lazy(value = true)
+        @Bean
+        public FirstBean firstBean() {
+            return new FirstBean();
+        }
+    
+        @Bean
+        public SecondBean secondBean() {
+            return new SecondBean();
+        }
+    }
+
+</code></pre>
+        <h3>Running Spring Application - Application.java</h3>
+        <p>Let's create a main class and run an application.</p>
+        <pre><code>
+    package net.javaguides.spring.lazy;
+
+    import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+    
+    public class Application {
+        public static void main(String[] args) {
+            AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+            FirstBean firstBean = context.getBean(FirstBean.class);
+            firstBean.test();
+            context.close();
+        }
+    }
+
+</code></pre>
+        <h4>Output:</h4>
+        <pre><code>
+Inside SecondBean Constuctor
+Inside FirstBean Constuctor
+Method of FirstBean Class
+
+</code></pre>
+        <p>As we can see, bean <code style="color: red;">secondBean</code> is initialized by the Spring container while
+            bean <code style="color: red;">firstBean</code> is initialized explicitly.</p>
+
+    </div>
+</body>
+
+</html>
