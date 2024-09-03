@@ -245,18 +245,18 @@
         </ul>
         <p><b>Step 3: Create Main Class</b></p>
         <p>Open <b>src/main/java/com/example/App.java</b> and update the App class to print "Hello, World!":</p>
-<pre>package com.example;
+        <pre>package com.example;
 
     public class App {
         public static void main(String[] args) {
             System.out.println("Hello, World!");
         }
     }</pre>
-    <p><b>Step 4: Build the Project</b></p>
-    <p>To build the project and create the assembly, use the following command:</p>
-<pre>mvn clean package</pre>
-<p>After the build completes, you will find the assembled JAR file in the target directory:</p>
-<pre>target/
+        <p><b>Step 4: Build the Project</b></p>
+        <p>To build the project and create the assembly, use the following command:</p>
+        <pre>mvn clean package</pre>
+        <p>After the build completes, you will find the assembled JAR file in the target directory:</p>
+        <pre>target/
     |-- assembly-plugin-demo-1.0-SNAPSHOT.jar
     |-- assembly-plugin-demo-1.0-SNAPSHOT-jar-with-dependencies.jar
     |-- classes
@@ -266,15 +266,20 @@
     |-- surefire-reports
     |-- test-classes
     `-- ...</pre>
-    <p>The <b>assembly-plugin-demo-1.0-SNAPSHOT-jar-with-dependencies.jar</b> file contains your project's classes and all its dependencies.</p>
-<p><b>Step 5: Run the Packaged JAR
-</b></p>
-<p>To run the assembled JAR file, use the following command:</p>
-<pre>java -jar target/assembly-plugin-demo-1.0-SNAPSHOT-jar-with-dependencies.jar</pre>
-<p>This command will output:</p>
-<pre>Hello, World!</pre>
-<h2>Conclusion</h2>
-<p>The Maven Assembly Plugin is used to create distributions for your project. By integrating it into your Maven build process, you can easily package your project with all its dependencies and other necessary resources. This guide provided a complete overview of setting up and using the Maven Assembly Plugin, along with practical examples to help you get started. With this knowledge, you can efficiently create and distribute your Java applications.</p>
+        <p>The <b>assembly-plugin-demo-1.0-SNAPSHOT-jar-with-dependencies.jar</b> file contains your project's classes
+            and all its dependencies.</p>
+        <p><b>Step 5: Run the Packaged JAR
+            </b></p>
+        <p>To run the assembled JAR file, use the following command:</p>
+        <pre>java -jar target/assembly-plugin-demo-1.0-SNAPSHOT-jar-with-dependencies.jar</pre>
+        <p>This command will output:</p>
+        <pre>Hello, World!</pre>
+        <h2>Conclusion</h2>
+        <p>The Maven Assembly Plugin is used to create distributions for your project. By integrating it into your Maven
+            build process, you can easily package your project with all its dependencies and other necessary resources.
+            This guide provided a complete overview of setting up and using the Maven Assembly Plugin, along with
+            practical examples to help you get started. With this knowledge, you can efficiently create and distribute
+            your Java applications.</p>
 
 
 

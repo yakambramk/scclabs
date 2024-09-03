@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oracle JDBC Driver Maven Dependency</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Oracle JDBC Driver Maven Dependency</h1>
+        <p>The Oracle JDBC driver enables Java applications to connect and interact with Oracle databases. This guide
+            explains how to add the Oracle JDBC driver as a Maven dependency, download the JAR file manually, and ensure
+            you are using the latest version. Additionally, an example Java application that connects to an Oracle
+            database is provided.</p>
+        <h2>Adding Oracle JDBC Driver as a Maven Dependency</h2>
+        <p>Oracle's JDBC driver is available in the Maven Central Repository, making it easy to include in your Maven
+            projects.</p>
+        <p><b>Step 1: Add Dependency to pom.xml</b></p>
+        <p>To add the Oracle JDBC driver dependency, include the following in your pom.xml file:</p>
+        <pre>
+    &lt;!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc11 --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.database.jdbc&lt;/groupId&gt;
+        &lt;artifactId&gt;ojdbc11&lt;/artifactId&gt;
+        &lt;version&gt;23.4.0.24.05&lt;/version&gt;
+    &lt;/dependency&gt;
+</pre>
+        <p><b>Example pom.xml</b></p>
+        <p>Here's a complete example of a pom.xml file that includes the Oracle JDBC driver dependency:</p>
+        <pre>
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+        &lt;groupId&gt;com.example&lt;/groupId&gt;
+        &lt;artifactId&gt;myapp&lt;/artifactId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+        
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;com.oracle.database.jdbc&lt;/groupId&gt;
+                &lt;artifactId&gt;ojdbc11&lt;/artifactId&gt;
+                &lt;version&gt;23.4.0.24.05&lt;/version&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.8.1&lt;/version&gt;
+                    &lt;configuration&gt;
+                        &lt;source&gt;21&lt;/source&gt;
+                        &lt;target&gt;21&lt;/target&gt;
+                    &lt;/configuration&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+</pre>
+        <h2>Downloading the Oracle JDBC Driver JAR File Manually</h2>
+        <p><b>Step 1: Visit the Oracle JDBC Driver Website</b></p>
+        <p>Go to the <b>Oracle JDBC Driver Downloads page.</b></p>
+        <p><b>Step 2: Download the JAR File</b></p>
+        <ol>
+            <li>On the Oracle JDBC Driver Downloads page, select the appropriate version for your Oracle database.</li>
+            <li> Download the JAR file to your local machine.</li>
+        </ol>
+        <p><b>Step 3: Add the JAR to Your Project</b></p>
+        <ol>
+            <li>Copy the downloaded JAR file to your project's lib directory (create this directory if it doesn't
+                exist).</li>
+            <li> Add the JAR file to your project's classpath.</li>
+        </ol>
+        <h2>Ensuring You Have the Latest Version</h2>
+        <p>To ensure you are using the latest version of the Oracle JDBC driver:</p>
+        <ol>
+            <li>Visit the Maven Central Repository.</li>
+            <li> Check for the latest version number.</li>
+            <li> Update your pom.xml dependency with the latest version:</li>
+        </ol>
+        <pre>
+            &lt;dependency&gt;
+                &lt;groupId&gt;com.oracle.database.jdbc&lt;/groupId&gt;
+                &lt;artifactId&gt;ojdbc11&lt;/artifactId&gt;
+                &lt;version&gt;LATEST_VERSION&lt;/version&gt;
+            &lt;/dependency&gt;
+        </pre>
+        <p>Replace LATEST_VERSION with the version number you found on the Maven repository page.</p>
+        <h2>Example: Connecting a Java Application to an Oracle Database</h2>
+        <p>Here is an example of a simple Java application that connects to an Oracle database using the JDBC driver.
+        </p>
+        <p><b>Step 1: Create a Java Class</b></p>
+        <p>Create a Java class named OracleDBConnection.java in your project.</p>
+        <pre>package com.example;
+
+            import java.sql.Connection;
+            import java.sql.DriverManager;
+            import java.sql.ResultSet;
+            import java.sql.Statement;
+            
+            public class OracleDBConnection {
+            
+                public static void main(String[] args) {
+                    String jdbcUrl = "jdbc:oracle:thin:@your_oracle_db_host:1521:your_db_service";
+                    String username = "your_db_username";
+                    String password = "your_db_password";
+            
+                    try {
+                        // Load Oracle JDBC Driver
+                        Class.forName("oracle.jdbc.driver.OracleDriver");
+            
+                        // Establish the connection
+                        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+            
+                        // Create a statement
+                        Statement statement = connection.createStatement();
+            
+                        // Execute a query
+                        ResultSet resultSet = statement.executeQuery("SELECT * FROM your_table_name");
+            
+                        // Process the result set
+                        while (resultSet.next()) {
+                            System.out.println("Column1: " + resultSet.getString("column1"));
+                            System.out.println("Column2: " + resultSet.getString("column2"));
+                        }
+            
+                        // Close the resources
+                        resultSet.close();
+                        statement.close();
+                        connection.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }</pre>
+        <p><b>Step 2: Run the Application</b></p>
+        <p>Compile and run the <b>OracleDBConnection.java </b>class to connect to your Oracle database and execute the
+            query.</p>
+
+        <h2>Conclusion</h2>
+        <p>By following these steps, you can easily integrate the Oracle JDBC driver into your Maven projects, ensuring
+            you are using the latest versions and understanding how to manage dependencies effectively. This example
+            demonstrates a basic connection to an Oracle database, enabling you to build more complex applications.</p>
+
+    </div>
+</body>
+
+</html>

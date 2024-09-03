@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maven Skipping Tests</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Maven Skipping Tests</h1>
+        <p>When working with Maven, you may encounter situations where you want to skip running tests. This can be
+            useful for speeding up the build process when you are certain that your code changes do not affect the tests
+            or when you need to build a project quickly for deployment. Maven provides several options for skipping
+            tests during the build process.</p>
+        <h2>Why Skip Tests?</h2>
+        <ol>
+            <li><b>Speed Up Builds:</b> Skipping tests can significantly reduce the build time, especially for large
+                projects with extensive test suites.</li>
+            <li><b>Focus on Build: </b> Sometimes, you just need to check if the project builds successfully without
+                running tests.</li>
+            <li><b> Deployment:</b> When deploying a snapshot or a quick fix, you might skip tests to expedite the
+                process.</li>
+        </ol>
+        <h2>Skipping Tests Using Maven</h2>
+        <p><b>1. Using Command Line Options</b></p>
+        <p>Maven provides command line options to skip tests:</p>
+        <p><b>-DskipTests</b></p>
+        <p>This option skips compiling and running the tests:</p>
+        <pre>mvn install -DskipTests</pre>
+        <p><b>-Dmaven.test.skip=true</b></p>
+        <p>This option skips compiling and running the tests, and also skips test-related plugins that depend on the
+            test classes:</p>
+        <pre>mvn install -Dmaven.test.skip=true</pre>
+        <h2>2. Configuring the pom.xml File</h2>
+        <p>You can also configure your pom.xml file to skip tests by default:</p>
+        <p><b>Using skipTests Property</b></p>
+        <p>Add the following property to your pom.xml file:</p>
+        <pre>
+            &lt;properties&gt;
+                &lt;skipTests&gt;true&lt;/skipTests&gt;
+            &lt;/properties&gt;
+        </pre>
+        <p><b>Using maven.test.skip Property</b></p>
+        <p>Add the following property to your pom.xml file:</p>
+        <pre>
+    &lt;properties&gt;
+        &lt;maven.test.skip&gt;true&lt;/maven.test.skip&gt;
+    &lt;/properties&gt;
+</pre>
+        <h2>3. Skipping Tests for Specific Phases</h2>
+        <p>You can configure the <b>maven-surefire-plugin</b> or <b>maven-failsafe-plugin</b> to skip tests for specific
+            phases in your <b> pom.xml </b>file</p>
+        <p><b>maven-surefire-plugin Configuration</b></p>
+        <pre>
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.0.0-M9&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;skipTests&gt;true&lt;/skipTests&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+</pre>
+        <p><b>maven-failsafe-plugin Configuration</b></p>
+        <pre>
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-failsafe-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.0.0-M9&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;skipITs&gt;true&lt;/skipITs&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+</pre>
+        <h2>Example Project with Skipped Tests</h2>
+        <p>Here's a complete example <b>pom.xml</b> file with configuration to skip tests:</p>
+        <pre>
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+        &lt;groupId&gt;com.example&lt;/groupId&gt;
+        &lt;artifactId&gt;myapp&lt;/artifactId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+
+        &lt;properties&gt;
+            &lt;skipTests&gt;true&lt;/skipTests&gt;
+        &lt;/properties&gt;
+
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+                &lt;artifactId&gt;junit-jupiter-api&lt;/artifactId&gt;
+                &lt;version&gt;5.9.3&lt;/version&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+                &lt;artifactId&gt;junit-jupiter-engine&lt;/artifactId&gt;
+                &lt;version&gt;5.9.3&lt;/version&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                    &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.0.0-M9&lt;/version&gt;
+                    &lt;configuration&gt;
+                        &lt;skipTests&gt;true&lt;/skipTests&gt;
+                    &lt;/configuration&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+</pre>
+        <h2>Conclusion</h2>
+        <p>Skipping tests in Maven can be achieved using various methods depending on your requirements. You can use
+            command line options for ad-hoc builds or configure your pom.xml file for more permanent settings. Remember,
+            skipping tests should be used judiciously to ensure that the quality of your code remains high.</p>
+
+    </div>
+</body>
+
+</html>
