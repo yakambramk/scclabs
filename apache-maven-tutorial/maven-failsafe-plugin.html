@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maven Failsafe Plugin</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Maven Failsafe Plugin</h1>
+        <p>The Maven Failsafe Plugin is designed to run integration tests in a Maven build lifecycle. It is particularly
+            useful for tests that require the application to be packaged and deployed before they are run. This plugin
+            is typically used for larger integration tests or end-to-end tests that validate the functionality of the
+            application as a whole. This guide will walk you through the setup and usage of the Maven Failsafe Plugin,
+            complete with a practical example.</p>
+        <h2>Introduction to the Maven Failsafe Plugin</h2>
+        <p>The Maven Failsafe Plugin allows you to separate unit tests from integration tests. Unit tests are typically
+            run during the test phase of the build lifecycle, while integration tests are run during the
+            integration-test
+            phase. This separation ensures that integration tests do not interfere with the regular unit test execution
+            and
+            can be run after the application is packaged and deployed.</p>
+        <p><b>Latest Version</b></p>
+        <p>As of this writing, the latest version of the Maven Failsafe Plugin is 3.0.0-M8. Using the latest version
+            ensures access to the newest features and improvements.</p>
+        <h2>Setting Up the Maven Failsafe Plugin</h2>
+        <p>To use the Maven Failsafe Plugin, you need to configure it in your project's pom.xml file. Let's go through
+            the steps to set up a Maven project with the Failsafe Plugin.</p>
+        <p><b>Step 1: Create a Maven Project</b></p>
+        <p>Run the following command to create a new Maven project:</p>
+        <pre>mvn archetype:generate -DgroupId=com.example -DartifactId=failsafe-plugin-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</pre>
+        <p>This command will generate a simple Maven project with the following structure:</p>
+        <pre>failsafe-plugin-demo
+    |-- src
+    |   |-- main
+    |   |   `-- java
+    |   |       `-- com
+    |   |           `-- example
+    |   |               `-- App.java
+    |   `-- test
+    |       `-- java
+    |           `-- com
+    |               `-- example
+    |                   `-- AppTest.java
+    |-- pom.xml
+    `-- target</pre>
+        <p><b>Step 2: Add Maven Failsafe Plugin Configuration</b></p>
+        <p>Navigate to the project directory and open the pom.xml file. Add the Maven Failsafe Plugin configuration
+            inside the &lt;build> section:</p>
+        <pre>
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    
+        &lt;groupId&gt;com.example&lt;/groupId&gt;
+        &lt;artifactId&gt;failsafe-plugin-demo&lt;/artifactId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+                &lt;artifactId&gt;junit-jupiter-api&lt;/artifactId&gt;
+                &lt;version&gt;5.8.2&lt;/version&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+                &lt;artifactId&gt;junit-jupiter-engine&lt;/artifactId&gt;
+                &lt;version&gt;5.8.2&lt;/version&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                    &lt;artifactId&gt;maven-failsafe-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.0.0-M8&lt;/version&gt;
+                    &lt;executions&gt;
+                        &lt;execution&gt;
+                            &lt;goals&gt;
+                                &lt;goal&gt;integration-test&lt;/goal&gt;
+                                &lt;goal&gt;verify&lt;/goal&gt;
+                            &lt;/goals&gt;
+                        &lt;/execution&gt;
+                    &lt;/executions&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <p><b>Explanation</b></p>
+        <ul>
+            <li><b> &lt;groupId>:</b> Specifies the group ID for the Maven Failsafe Plugin.</li>
+            <li><b> &lt;artifactId>:</b> Specifies the Maven Failsafe Plugin.</li>
+            <li><b> &lt;version>: </b> version of the plugin you are using. Ensure you use the latest version.</li>
+            <li><b> &lt;executions>:</b> Defines the execution of the plugin, specifying when to run the integration
+                tests and verification.</li>
+        </ul>
+        <p><b>Step 3: Create an Integration Test</b></p>
+        <p>Create an integration test in the src/test/java directory. This test will be run by the Failsafe Plugin. For
+            example, create a file named AppIT.java (the convention is to use IT as a suffix for integration tests):</p>
+        <pre>package com.example;
+
+    import org.junit.jupiter.api.Test;
+    import static org.junit.jupiter.api.Assertions.assertTrue;
+    
+    public class AppIT {
+    
+        @Test
+        void integrationTest() {
+            System.out.println("Running integration test...");
+            assertTrue(true);
+        }
+    }</pre>
+<p><b>Step 4: Build and Run Integration Tests</b></p>
+<p>To build the project and run the integration tests, use the following command:</p>
+<pre>mvn clean verify</pre>
+<p>After the build completes, the integration tests will be run during the integration-test phase, and their results will be verified during the verify phase.</p>
+<p><b>Step 5: Check Results</b></p>
+<p>The output will include the results of the integration tests:</p>
+<pre>-------------------------------------------------------
+    T E S T S
+   -------------------------------------------------------
+   Running com.example.AppIT
+   Running integration test...
+   Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec
+   Results :
+   
+   Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+   [INFO] ------------------------------------------------------------------------
+   [INFO] BUILD SUCCESS
+   [INFO] ------------------------------------------------------------------------</pre>
+   <h2>Conclusion</h2>
+   <p>The Maven Failsafe Plugin is used to run integration tests in a Maven build lifecycle. By using this plugin, you can ensure that your integration tests are run separately from your unit tests, allowing for better test organization and execution. This guide provided a complete overview of setting up and using the Maven Failsafe Plugin, along with a practical example to help you get started. With this knowledge, you can effectively run and manage your integration tests in a Maven project.</p>
+
+    </div>
+</body>
+
+</html>

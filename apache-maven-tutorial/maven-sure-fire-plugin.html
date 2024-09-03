@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maven Surefire Plugin</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Maven Surefire Plugin</h1>
+        <p>The Maven Surefire Plugin is one of the most important plugins in the Maven ecosystem. It is used primarily
+            for running unit tests in a Maven project. This guide will cover the setup and usage of the Maven Surefire
+            Plugin, along with a practical example to help you get started.</p>
+        <h2>Introduction to Maven Surefire Plugin</h2>
+        <p>The Maven Surefire Plugin is designed to execute unit tests during the build lifecycle. It is typically bound
+            to the test phase of the Maven build lifecycle, ensuring that tests are run after the compilation and before
+            the packaging of the project.</p>
+        <p><b>Latest Version</b></p>
+        <p>As of this writing, the latest version of the Maven Surefire Plugin is 3.0.0-M8. Using the latest version
+            ensures access to the newest features and improvements.</p>
+        <h2>Setting Up the Maven Surefire Plugin</h2>
+        <p>To use the Maven Surefire Plugin, you need to configure it in your project's pom.xml file. Let's go through
+            the steps to set up a Maven project with the Surefire Plugin.</p>
+        <p><b>Step 1: Create a Maven Project</b></p>
+        <p>Run the following command to create a new Maven project:</p>
+        <pre>mvn archetype:generate -DgroupId=com.example -DartifactId=surefire-plugin-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</pre>
+        <p>This command will generate a simple Maven project with the following structure:</p>
+        <pre>surefire-plugin-demo
+                |-- src
+                |   |-- main
+                |   |   `-- java
+                |   |       `-- com
+                |   |           `-- example
+                |   |               `-- App.java
+                |   `-- test
+                |       `-- java
+                |           `-- com
+                |               `-- example
+                |                   `-- AppTest.java
+                |-- pom.xml
+                `-- target</pre>
+                <p><b>Step 2: Add Maven Surefire Plugin Configuration</b></p>
+                <p>Navigate to the project directory and open the <b>pom.xml </b>file. Add the Maven Surefire Plugin configuration inside the &lt;build> section:</p>
+                <pre>
+                    &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+                        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+                    
+                        &lt;groupId&gt;com.example&lt;/groupId&gt;
+                        &lt;artifactId&gt;surefire-plugin-demo&lt;/artifactId&gt;
+                        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+                    
+                        &lt;dependencies&gt;
+                            &lt;dependency&gt;
+                                &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+                                &lt;artifactId&gt;junit-jupiter-api&lt;/artifactId&gt;
+                                &lt;version&gt;5.8.2&lt;/version&gt;
+                                &lt;scope&gt;test&lt;/scope&gt;
+                            &lt;/dependency&gt;
+                            &lt;dependency&gt;
+                                &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+                                &lt;artifactId&gt;junit-jupiter-engine&lt;/artifactId&gt;
+                                &lt;version&gt;5.8.2&lt;/version&gt;
+                                &lt;scope&gt;test&lt;/scope&gt;
+                            &lt;/dependency&gt;
+                        &lt;/dependencies&gt;
+                    
+                        &lt;build&gt;
+                            &lt;plugins&gt;
+                                &lt;plugin&gt;
+                                    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                                    &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+                                    &lt;version&gt;3.0.0-M8&lt;/version&gt;
+                                &lt;/plugin&gt;
+                            &lt;/plugins&gt;
+                        &lt;/build&gt;
+                    &lt;/project&gt;
+                    </pre>
+<p><b>Explanation
+</b></p>  
+<ul>
+    <li><b>&lt;groupId></b> : Specifies the group ID for the Maven Surefire Plugin.</li>
+    <li><b>&lt;artifactId></b> : Specifies the Maven Surefire Plugin.</li>
+        <li><b>&lt;version></b> : The version of the plugin you are using. Ensure you use the latest version.</li>
+</ul> 
+<p><b>Step 3: Create Unit Test</b></p>  
+<p>Create a unit test in the <b>src/test/java</b> directory. For example, create a file named <b>AppTest.java</b>:</p>
+<pre>package com.example;
+
+    import org.junit.jupiter.api.Test;
+    import static org.junit.jupiter.api.Assertions.assertTrue;
+    
+    public class AppTest {
+    
+        @Test
+        void sampleTest() {
+            System.out.println("Running unit test...");
+            assertTrue(true);
+        }
+    }</pre>  
+    <p><b>Step 4: Build and Run Unit Tests
+    </b></p>  
+    <p>To build the project and run the unit tests, use the following command:</p>   
+    <pre>mvn clean test</pre>  
+    <p>After the build completes, the unit tests will be run during the test phase.</p>
+    <p><b>Step 5: Check Results</b></p> 
+    <p>The output will include the results of the unit tests:</p> 
+    <pre>-------------------------------------------------------
+        T E S T S
+       -------------------------------------------------------
+       Running com.example.AppTest
+       Running unit test...
+       Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec
+       Results :
+       
+       Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+       [INFO] ------------------------------------------------------------------------
+       [INFO] BUILD SUCCESS
+       [INFO] ------------------------------------------------------------------------</pre>
+       <h2>Advanced Configuration</h2> 
+       <p>The Maven Surefire Plugin provides various configuration options to customize the behavior of your tests. Here are some commonly used configurations:</p>   
+       <p><b>Specifying Test Includes/Excludes</b></p>
+       <p>You can specify which tests to include or exclude by adding the following configuration inside the &lt;plugin> section:   </p>
+       <pre>
+        &lt;configuration&gt;
+            &lt;includes&gt;
+                &lt;include&gt;**/*Test.java&lt;/include&gt;
+                &lt;include&gt;**/*Tests.java&lt;/include&gt;
+                &lt;include&gt;**/*TestCase.java&lt;/include&gt;
+            &lt;/includes&gt;
+            &lt;excludes&gt;
+                &lt;exclude&gt;**/*IntegrationTest.java&lt;/exclude&gt;
+            &lt;/excludes&gt;
+        &lt;/configuration&gt;
+        </pre>
+        <p><b>Setting System Properties</b></p>
+        <p>You can set system properties that will be available to your tests:</p>
+        <pre>
+            &lt;configuration&gt;
+                &lt;systemPropertyVariables&gt;
+                    &lt;propertyName&gt;propertyValue&lt;/propertyName&gt;
+                &lt;systemPropertyVariables&gt;
+            &lt;/configuration&gt;
+            </pre>
+<p><b>Running Tests in Parallel</b></p>            
+        <p>You can run tests in parallel to speed up the testing process:</p>
+        <pre>
+            &lt;configuration&gt;
+                &lt;parallel&gt;methods&lt;/parallel&gt;
+                &lt;threadCount&gt;4&lt;/threadCount&gt;
+            &lt;/configuration&gt;
+            </pre>
+            <h2>Conclusion</h2>
+            <p>The Maven Surefire Plugin is an essential tool for running unit tests in a Maven project. By using this plugin, you can ensure that your unit tests are run during the build process, helping to maintain code quality and catch issues early. This guide provided a comprehensive overview of setting up and using the Maven Surefire Plugin, along with a practical example to help you get started. With this knowledge, you can effectively manage and run your unit tests in a Maven project.</p>
+            
+    </div>
+</body>
+
+</html>

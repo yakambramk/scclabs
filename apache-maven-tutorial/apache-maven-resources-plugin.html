@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache Maven Resources Plugin</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Apache Maven Resources Plugin</h1>
+        <p>The Apache Maven Resources Plugin is essential for copying resources from one directory to another during the
+            build process of your Maven project. This guide will walk you through configuring and using the Maven
+            Resources Plugin with a complete example.</p>
+        <h2>Introduction to Maven Resources Plugin
+        </h2>
+        <p>The Maven Resources Plugin handles the copying of project resources (e.g., configuration files, images, etc.)
+            from the <b>src/main/resources</b> and src/test/resources directories to the <b>target/classes</b> and
+            <b>target/test-classes</b> directories, respectively.
+        </p>
+        <p><b>Latest Version</b></p>
+        <p>As of this writing, the latest version of the Maven Resources Plugin is 3.2.0. Using the latest version
+            ensures access to the newest features and bug fixes.</p>
+        <h2>Setting Up the Maven Resources Plugin</h2>
+        <p>To use the Maven Resources Plugin, you need to configure it in your project's pom.xml file. Let's go through
+            the steps to set up a complete Maven project with the Resources Plugin.</p>
+        <p><b>Step 1: Create a Maven Project</b></p>
+        <p>Run the following command to create a new Maven project:</p>
+        <pre>mvn archetype:generate -DgroupId=com.example -DartifactId=resources-plugin-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</pre>
+        <p>This command will generate a simple Maven project with the following structure:</p>
+        <pre>resources-plugin-demo
+    |-- src
+    |   |-- main
+    |   |   |-- java
+    |   |   |   `-- com
+    |   |   |       `-- example
+    |   |   |           `-- App.java
+    |   |   `-- resources
+    |   |       `-- config.properties
+    |   `-- test
+    |       |-- java
+    |       |   `-- com
+    |       |       `-- example
+    |       |           `-- AppTest.java
+    |       `-- resources
+    |           `-- test-config.properties
+    |-- pom.xml
+    `-- target</pre>
+        <p><b>Step 2: Add Maven Resources Plugin Configuration</b></p>
+
+        <p>Navigate to the project directory and open the pom.xml file. Add the Maven Resources Plugin configuration
+            inside the &lt;build> section:</p>
+        <pre>
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    
+        &lt;groupId&gt;com.example&lt;/groupId&gt;
+        &lt;artifactId&gt;resources-plugin-demo&lt;/artifactId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                    &lt;artifactId&gt;maven-resources-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.2.0&lt;/version&gt;
+                    &lt;executions&gt;
+                        &lt;execution&gt;
+                            &lt;id&gt;default-resources&lt;/id&gt;
+                            &lt;phase&gt;process-resources&lt;/phase&gt;
+                            &lt;goals&gt;
+                                &lt;goal&gt;resources&lt;/goal&gt;
+                            &lt;/goals&gt;
+                        &lt;/execution&gt;
+                        &lt;execution&gt;
+                            &lt;id&gt;default-testResources&lt;/id&gt;
+                            &lt;phase&gt;process-test-resources&lt;/phase&gt;
+                            &lt;goals&gt;
+                                &lt;goal&gt;testResources&lt;/goal&gt;
+                            &lt;/goals&gt;
+                        &lt;/execution&gt;
+                    &lt;/executions&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <p><b>Explanation</b></p>
+        <ul>
+            <li><b>&lt;groupId>:</b> Specifies the group ID for the Maven Resources Plugin.</li>
+            <li><b>&lt;artifactId>:</b> Specifies the Maven Resources Plugin.</li>
+            <li><b>&lt;version>: </b> version of the plugin you are using. Ensure you use the latest version.</li>
+            <li><b>&lt;executions>:</b> Defines the plugin executions.</li>
+            <li><b>&lt;execution>: </b> an execution of the plugin.</li>
+            <li><b>&lt;id>: </b> unique identifier for the execution.</li>
+            <li><b>&lt;phase>:</b> The build lifecycle phase during which this execution should be run.</li>
+            <li><b>&lt;goals>:</b> The goals to be executed during this phase.</li>
+        </ul>
+        <p><b>Step 3: Add Resources to src/main/resources</b></p>
+
+        <p>Create a file named <b>config.properties</b> in the <b>src/main/resources</b> directory with the following
+            content:</p>
+        <pre>app.name=Resources Plugin Demo
+    app.version=1.0-SNAPSHOT</pre>
+        <p><b>Step 4: Add Resources to src/test/resources</b></p>
+        <p>Create a file named <b>test-config.properties</b> in the <b>src/test/resources </b>directory with the
+            following content:</p>
+        <pre>test.name=Resources Plugin Test
+    test.version=1.0-SNAPSHOT</pre>
+        <p><b>Step 5: Modify the App.java to Load Resources</b></p>
+        <p>Open <b>src/main/java/com/example/App.java</b> and modify it to load and print the properties from
+            <b>config.properties:</b></p>
+        <pre>package com.example;
+
+    import java.io.IOException;
+    import java.io.InputStream;
+    import java.util.Properties;
+    
+    public class App {
+        public static void main(String[] args) {
+            Properties properties = new Properties();
+            try (InputStream input = App.class.getClassLoader().getResourceAsStream("config.properties")) {
+                if (input == null) {
+                    System.out.println("Sorry, unable to find config.properties");
+                    return;
+                }
+                properties.load(input);
+                System.out.println("App Name: " + properties.getProperty("app.name"));
+                System.out.println("App Version: " + properties.getProperty("app.version"));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }</pre>
+        <p><b>Step 6: Build and Run the Project</b></p>
+        <p>Run the following command to build the project and process the resources:</p>
+        <pre>mvn clean package</pre>
+        <p>Execute the packaged JAR file to see the output from <b>config.properties:</b></p>
+        <pre>java -jar target/resources-plugin-demo-1.0-SNAPSHOT.jar</pre>
+        <p>You should see the following output:</p>
+        <pre>App Name: Resources Plugin Demo
+    App Version: 1.0-SNAPSHOT</pre>
+        <h2>Complete Example</h2>
+        <p>Here is the complete <b>pom.xml</b> file for the example project:</p>
+        <pre>
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    
+        &lt;groupId&gt;com.example&lt;/groupId&gt;
+        &lt;artifactId&gt;resources-plugin-demo&lt;/artifactId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                    &lt;artifactId&gt;maven-resources-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.2.0&lt;/version&gt;
+                    &lt;executions&gt;
+                        &lt;execution&gt;
+                            &lt;id&gt;default-resources&lt;/id&gt;
+                            &lt;phase&gt;process-resources&lt;/phase&gt;
+                            &lt;goals&gt;
+                                &lt;goal&gt;resources&lt;/goal&gt;
+                            &lt;/goals&gt;
+                        &lt;/execution&gt;
+                        &lt;execution&gt;
+                            &lt;id&gt;default-testResources&lt;/id&gt;
+                            &lt;phase&gt;process-test-resources&lt;/phase&gt;
+                            &lt;goals&gt;
+                                &lt;goal&gt;testResources&lt;/goal&gt;
+                            &lt;/goals&gt;
+                        &lt;/execution&gt;
+                    &lt;/executions&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <h2>Conclusion</h2>
+        <p>The Maven Resources Plugin is a crucial tool for managing resources in your Maven projects. This guide
+            provided a complete example of setting up and using the Maven Resources Plugin, helping you efficiently
+            handle resource copying during the build process. By following these steps, you can easily manage resources
+            for your Maven projects.</p>
+
+    </div>
+</body>
+
+</html>
