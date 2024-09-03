@@ -217,30 +217,34 @@
             <li><b>&lt; artifactId>:</b> Specifies the Maven Help Plugin.</li>
             <li><b>&lt;version>:</b> The version of the plugin you are using. Ensure you use the latest version.</li>
         </ul>
-<p><b>Step 3: Using the Maven Help Plugin   </b></p>
-<p>The Maven Help Plugin provides several goals that you can execute to get detailed information about your Maven project.</p>
-<p><b>3.1 Display Help Information</b></p>
-<p>Run the following command to display the help information for the Maven Help Plugin:</p>
-<pre>mvn help:help</pre>
-<p><b>3.2 Display Effective POM</b></p>
-<p>The effective POM is the result of applying inheritance and interpolation to the POM. This command is useful to understand what dependencies and configurations are actually being used.</p>
-<pre>mvn help:effective-pom</pre>
-<p><b>3.3 Display Active Profiles</b></p>
-<p>To see the active profiles in your project, run the following command:</p>
-<pre>mvn help:active-profiles</pre>
-<p><b>3.4 Describe Plugin</b></p>
+        <p><b>Step 3: Using the Maven Help Plugin </b></p>
+        <p>The Maven Help Plugin provides several goals that you can execute to get detailed information about your
+            Maven project.</p>
+        <p><b>3.1 Display Help Information</b></p>
+        <p>Run the following command to display the help information for the Maven Help Plugin:</p>
+        <pre>mvn help:help</pre>
+        <p><b>3.2 Display Effective POM</b></p>
+        <p>The effective POM is the result of applying inheritance and interpolation to the POM. This command is useful
+            to understand what dependencies and configurations are actually being used.</p>
+        <pre>mvn help:effective-pom</pre>
+        <p><b>3.3 Display Active Profiles</b></p>
+        <p>To see the active profiles in your project, run the following command:</p>
+        <pre>mvn help:active-profiles</pre>
+        <p><b>3.4 Describe Plugin</b></p>
 
-<p>To get detailed information about a specific plugin, including its goals and parameters, use the describe goal. For example, to describe the <b>maven-compiler-plugin:</b></p>
-<pre>mvn help:describe -Dplugin=org.apache.maven.plugins:maven-compiler-plugin</pre>
-<p><b>3.5 Describe Active Profiles</b></p>
-<p>To describe all active profiles in your current build, use the following command:</p>
-<pre>mvn help:describe -DactiveProfiles</pre>
-<p><b>Step 4: Running the Commands</b></p>
-<p>Let's run the commands we discussed to see how they work. Navigate to the project directory and execute each command to get the respective outputs.</p>
-<p><b>Running mvn help:help</b></p>
-<pre>mvn help:help</pre>
-<p><b>Output:</b></p>
-<pre>[INFO] Scanning for projects...
+        <p>To get detailed information about a specific plugin, including its goals and parameters, use the describe
+            goal. For example, to describe the <b>maven-compiler-plugin:</b></p>
+        <pre>mvn help:describe -Dplugin=org.apache.maven.plugins:maven-compiler-plugin</pre>
+        <p><b>3.5 Describe Active Profiles</b></p>
+        <p>To describe all active profiles in your current build, use the following command:</p>
+        <pre>mvn help:describe -DactiveProfiles</pre>
+        <p><b>Step 4: Running the Commands</b></p>
+        <p>Let's run the commands we discussed to see how they work. Navigate to the project directory and execute each
+            command to get the respective outputs.</p>
+        <p><b>Running mvn help:help</b></p>
+        <pre>mvn help:help</pre>
+        <p><b>Output:</b></p>
+        <pre>[INFO] Scanning for projects...
     [INFO] 
     [INFO] ----------------< com.example:help-plugin-demo >----------------
     [INFO] Building help-plugin-demo 1.0-SNAPSHOT
@@ -250,23 +254,23 @@
     [INFO] Maven Help Plugin 3.3.0
     [INFO] Goal that displays help information on Maven plugins.
     ...</pre>
-<p><b>Running mvn help:effective-pom</b></p>
-<pre>mvn help:effective-pom</pre>
-<p><b>Output:</b></p>
-[INFO] Scanning for projects...
-[INFO] 
-[INFO] ----------------< com.example:help-plugin-demo >----------------
-[INFO] Building help-plugin-demo 1.0-SNAPSHOT
-[INFO] --------------------------------[ jar ]---------------------------------
-[INFO] 
-[INFO] --- maven-help-plugin:3.3.0:effective-pom (default-cli) @ help-plugin-demo ---
-&lt;project>
-  ...
-&lt;/project>
-<p><b>Running mvn help:active-profiles</b></p>
-<pre>mvn help:active-profiles</pre>
-<p><b>Output:</b></p>
-<pre>[INFO] Scanning for projects...
+        <p><b>Running mvn help:effective-pom</b></p>
+        <pre>mvn help:effective-pom</pre>
+        <p><b>Output:</b></p>
+        [INFO] Scanning for projects...
+        [INFO]
+        [INFO] ----------------< com.example:help-plugin-demo>----------------
+            [INFO] Building help-plugin-demo 1.0-SNAPSHOT
+            [INFO] --------------------------------[ jar ]---------------------------------
+            [INFO]
+            [INFO] --- maven-help-plugin:3.3.0:effective-pom (default-cli) @ help-plugin-demo ---
+            &lt;project>
+            ...
+            &lt;/project>
+            <p><b>Running mvn help:active-profiles</b></p>
+            <pre>mvn help:active-profiles</pre>
+            <p><b>Output:</b></p>
+            <pre>[INFO] Scanning for projects...
     [INFO] 
     [INFO] ----------------< com.example:help-plugin-demo >----------------
     [INFO] Building help-plugin-demo 1.0-SNAPSHOT
@@ -275,10 +279,10 @@
     [INFO] --- maven-help-plugin:3.3.0:active-profiles (default-cli) @ help-plugin-demo ---
     [INFO] 
     [INFO] ---< No profiles are currently active >---</pre>
-    <h2>Complete Example
-    </h2>
-    <p>Here is the complete pom.xml file for the example project with the Maven Help Plugin configured:</p>
-    <pre>
+            <h2>Complete Example
+            </h2>
+            <p>Here is the complete pom.xml file for the example project with the Maven Help Plugin configured:</p>
+            <pre>
         &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
             &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
         
@@ -297,9 +301,12 @@
             &lt;/build&gt;
         &lt;/project&gt;
         </pre>
-        <h2>Conclusion</h2>
-        <p>The Maven Help Plugin is an invaluable tool for understanding and troubleshooting your Maven projects. This guide provided a complete overview of setting up and using the Maven Help Plugin, along with practical examples. By integrating this plugin into your Maven workflow, you can gain deeper insights into your project configuration and resolve issues more efficiently.</p>
-        
+            <h2>Conclusion</h2>
+            <p>The Maven Help Plugin is an invaluable tool for understanding and troubleshooting your Maven projects.
+                This guide provided a complete overview of setting up and using the Maven Help Plugin, along with
+                practical examples. By integrating this plugin into your Maven workflow, you can gain deeper insights
+                into your project configuration and resolve issues more efficiently.</p>
+
     </div>
 </body>
 

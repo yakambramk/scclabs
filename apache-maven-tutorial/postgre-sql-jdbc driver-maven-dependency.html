@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostgreSQL JDBC Driver Maven Dependency</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>PostgreSQL JDBC Driver Maven Dependency</h1>
+        <p> PostgreSQL is a powerful, open-source object-relational database system. Java applications often need to
+            interact with PostgreSQL databases, and the JDBC (Java Database Connectivity) driver allows them to do so.
+            In this tutorial, we will cover how to include the PostgreSQL JDBC driver as a Maven dependency, how to
+            download the JAR file manually, and how to find the latest version of the Maven dependency.</p>
+        <h2>Adding PostgreSQL JDBC Driver as a Maven Dependency</h2>
+        <p>If you are using Maven to manage your project's dependencies, you can easily include the PostgreSQL JDBC
+            driver in your pom.xml file. Here’s how you can do it:</p>
+        <p><b>Step 1: Add Dependency to pom.xml</b></p>
+        <p>To add the PostgreSQL JDBC driver to your Maven project, include the following dependency in your pom.xml
+            file:</p>
+        <pre>
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+                    &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+                    &lt;version&gt;42.6.0&lt;/version&gt; &lt;!-- Use the latest version available --&gt;
+                &lt;/dependency&gt;
+            </pre>
+        <p><b>Example pom.xml</b></p>
+        <p>Below is an example of a complete pom.xml file with the PostgreSQL JDBC driver dependency:</p>
+        <pre>
+                &lt;project xmlns="http://maven.apache.org/POM/4.0.0" 
+                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+                    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+                    &lt;groupId&gt;com.example&lt;/groupId&gt;
+                    &lt;artifactId&gt;myapp&lt;/artifactId&gt;
+                    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+                    
+                    &lt;dependencies&gt;
+                        &lt;dependency&gt;
+                            &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+                            &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+                            &lt;version&gt;42.6.0&lt;/version&gt;
+                        &lt;/dependency&gt;
+                    &lt;/dependencies&gt;
+            
+                    &lt;build&gt;
+                        &lt;plugins&gt;
+                            &lt;plugin&gt;
+                                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                                &lt;version&gt;3.8.1&lt;/version&gt;
+                                &lt;configuration&gt;
+                                    &lt;source&gt;17&lt;/source&gt;
+                                    &lt;target&gt;17&lt;/target&gt;
+                                &lt;/configuration&gt;
+                            &lt;/plugin&gt;
+                        &lt;/plugins&gt;
+                    &lt;/build&gt;
+                &lt;/project&gt;
+            </pre>
+        <h2>Finding the Latest Version of the PostgreSQL JDBC Driver</h2>
+        <p>To ensure you are using the latest version of the PostgreSQL JDBC driver, you can check the <b>Maven Central
+                Repository</b> or the <b>official PostgreSQL JDBC driver page.</b> Here's how to find the latest
+            version:</p>
+        <p><b>Step 1: Visit the Maven Central Repository</b></p>
+        <ol>
+            <li>Go to Maven Central Repository.</li>
+            <li> In the search bar, type org.postgresql postgresql and press Enter.</li>
+            <li> You will see a list of available versions. The latest version will be at the top of the list.</li>
+        </ol>
+        <p><b>Step 2: Visit PostgreSQL JDBC Driver Page</b></p>
+        <ol>
+            <li>Go to the <b>official PostgreSQL JDBC driver page.</b></li>
+            <li> Click on the "Download" link to see the latest versions available for download.</li>
+        </ol>
+        <h2>Downloading the PostgreSQL JDBC Driver JAR File Manually</h2>
+        <p>If you are not using Maven or want to download the JAR file manually, follow these steps:</p>
+
+        <p><b>Step 1: Visit the PostgreSQL JDBC Driver Website</b></p>
+        <p>Go to the official PostgreSQL JDBC driver page: <b>https://jdbc.postgresql.org/</b></p>
+        <p><b>Step 2: Download the JAR File</b></p>
+        <ol>
+            <li>On the PostgreSQL JDBC driver page, click on the "Download" link.</li>
+            <li> Choose the version of the driver you want to download (preferably the latest one).</li>
+            <li> Download the JAR file to your local machine.</li>
+        </ol>
+        <p><b>Step 3: Add the JAR to Your Project</b></p>
+        <ol>
+            <li>Copy the downloaded JAR file to your project's lib directory.</li>
+            <li>Add the JAR file to your project's classpath. This can usually be done in your IDE (like IntelliJ IDEA
+                or Eclipse) by right-clicking the JAR file and selecting the option to add it to the project's
+                classpath.</li>
+        </ol>
+        <h2>Example Usage</h2>
+        <p>Here's a simple Java program that demonstrates how to connect to a PostgreSQL database using the JDBC driver:
+        </p>
+        <pre>import java.sql.Connection;
+    import java.sql.DriverManager;
+    import java.sql.ResultSet;
+    import java.sql.Statement;
+    
+    public class PostgresExample {
+        public static void main(String[] args) {
+            String url = "jdbc:postgresql://localhost:5432/mydatabase";
+            String user = "myuser";
+            String password = "mypassword";
+    
+            try {
+                Connection conn = DriverManager.getConnection(url, user, password);
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT version()");
+    
+                if (rs.next()) {
+                    System.out.println(rs.getString(1));
+                }
+    
+                rs.close();
+                stmt.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }</pre>
+        <p>In this example, replace <b>mydatabase, myuser,</b> and <b>mypassword</b> with your actual database name,
+            username, and password.</p>
+        <h2>Conclusion</h2>
+        <p>Adding the PostgreSQL JDBC driver to your project is straightforward, whether you are using Maven or
+            downloading the JAR file manually. By following the steps outlined above, you can easily set up the
+            PostgreSQL JDBC driver and start interacting with your PostgreSQL database from your Java applications.</p>
+
+    </div>
+</body>
+
+</html>

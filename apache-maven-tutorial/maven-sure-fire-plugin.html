@@ -189,9 +189,10 @@
                 |                   `-- AppTest.java
                 |-- pom.xml
                 `-- target</pre>
-                <p><b>Step 2: Add Maven Surefire Plugin Configuration</b></p>
-                <p>Navigate to the project directory and open the <b>pom.xml </b>file. Add the Maven Surefire Plugin configuration inside the &lt;build> section:</p>
-                <pre>
+        <p><b>Step 2: Add Maven Surefire Plugin Configuration</b></p>
+        <p>Navigate to the project directory and open the <b>pom.xml </b>file. Add the Maven Surefire Plugin
+            configuration inside the &lt;build> section:</p>
+        <pre>
                     &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
                         &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
                     
@@ -225,16 +226,17 @@
                         &lt;/build&gt;
                     &lt;/project&gt;
                     </pre>
-<p><b>Explanation
-</b></p>  
-<ul>
-    <li><b>&lt;groupId></b> : Specifies the group ID for the Maven Surefire Plugin.</li>
-    <li><b>&lt;artifactId></b> : Specifies the Maven Surefire Plugin.</li>
-        <li><b>&lt;version></b> : The version of the plugin you are using. Ensure you use the latest version.</li>
-</ul> 
-<p><b>Step 3: Create Unit Test</b></p>  
-<p>Create a unit test in the <b>src/test/java</b> directory. For example, create a file named <b>AppTest.java</b>:</p>
-<pre>package com.example;
+        <p><b>Explanation
+            </b></p>
+        <ul>
+            <li><b>&lt;groupId></b> : Specifies the group ID for the Maven Surefire Plugin.</li>
+            <li><b>&lt;artifactId></b> : Specifies the Maven Surefire Plugin.</li>
+            <li><b>&lt;version></b> : The version of the plugin you are using. Ensure you use the latest version.</li>
+        </ul>
+        <p><b>Step 3: Create Unit Test</b></p>
+        <p>Create a unit test in the <b>src/test/java</b> directory. For example, create a file named
+            <b>AppTest.java</b>:</p>
+        <pre>package com.example;
 
     import org.junit.jupiter.api.Test;
     import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -246,15 +248,15 @@
             System.out.println("Running unit test...");
             assertTrue(true);
         }
-    }</pre>  
-    <p><b>Step 4: Build and Run Unit Tests
-    </b></p>  
-    <p>To build the project and run the unit tests, use the following command:</p>   
-    <pre>mvn clean test</pre>  
-    <p>After the build completes, the unit tests will be run during the test phase.</p>
-    <p><b>Step 5: Check Results</b></p> 
-    <p>The output will include the results of the unit tests:</p> 
-    <pre>-------------------------------------------------------
+    }</pre>
+        <p><b>Step 4: Build and Run Unit Tests
+            </b></p>
+        <p>To build the project and run the unit tests, use the following command:</p>
+        <pre>mvn clean test</pre>
+        <p>After the build completes, the unit tests will be run during the test phase.</p>
+        <p><b>Step 5: Check Results</b></p>
+        <p>The output will include the results of the unit tests:</p>
+        <pre>-------------------------------------------------------
         T E S T S
        -------------------------------------------------------
        Running com.example.AppTest
@@ -266,11 +268,13 @@
        [INFO] ------------------------------------------------------------------------
        [INFO] BUILD SUCCESS
        [INFO] ------------------------------------------------------------------------</pre>
-       <h2>Advanced Configuration</h2> 
-       <p>The Maven Surefire Plugin provides various configuration options to customize the behavior of your tests. Here are some commonly used configurations:</p>   
-       <p><b>Specifying Test Includes/Excludes</b></p>
-       <p>You can specify which tests to include or exclude by adding the following configuration inside the &lt;plugin> section:   </p>
-       <pre>
+        <h2>Advanced Configuration</h2>
+        <p>The Maven Surefire Plugin provides various configuration options to customize the behavior of your tests.
+            Here are some commonly used configurations:</p>
+        <p><b>Specifying Test Includes/Excludes</b></p>
+        <p>You can specify which tests to include or exclude by adding the following configuration inside the
+            &lt;plugin> section: </p>
+        <pre>
         &lt;configuration&gt;
             &lt;includes&gt;
                 &lt;include&gt;**/*Test.java&lt;/include&gt;
@@ -291,7 +295,7 @@
                 &lt;systemPropertyVariables&gt;
             &lt;/configuration&gt;
             </pre>
-<p><b>Running Tests in Parallel</b></p>            
+        <p><b>Running Tests in Parallel</b></p>
         <p>You can run tests in parallel to speed up the testing process:</p>
         <pre>
             &lt;configuration&gt;
@@ -299,9 +303,13 @@
                 &lt;threadCount&gt;4&lt;/threadCount&gt;
             &lt;/configuration&gt;
             </pre>
-            <h2>Conclusion</h2>
-            <p>The Maven Surefire Plugin is an essential tool for running unit tests in a Maven project. By using this plugin, you can ensure that your unit tests are run during the build process, helping to maintain code quality and catch issues early. This guide provided a comprehensive overview of setting up and using the Maven Surefire Plugin, along with a practical example to help you get started. With this knowledge, you can effectively manage and run your unit tests in a Maven project.</p>
-            
+        <h2>Conclusion</h2>
+        <p>The Maven Surefire Plugin is an essential tool for running unit tests in a Maven project. By using this
+            plugin, you can ensure that your unit tests are run during the build process, helping to maintain code
+            quality and catch issues early. This guide provided a comprehensive overview of setting up and using the
+            Maven Surefire Plugin, along with a practical example to help you get started. With this knowledge, you can
+            effectively manage and run your unit tests in a Maven project.</p>
+
     </div>
 </body>
 
