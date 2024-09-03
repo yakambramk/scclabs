@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Java Based Configuration Example</h1>
+        <p>In this article, we will quickly discuss how to develop a simple Spring application using Java-based
+            configuration.</p>
+        <p>We use <a href="/spring-mvc/spring-configuration-annotation.html" target="_blank">@Configuration</a> and <a
+                href="/spring-mvc/spring-bean-annotation-with-example.html" target="_blank">@Bean</a> annotations to
+            develop spring application. Note
+            that we haven't used <code style="color: red;">@Service</code>
+            or <code style="color: red;">@Component</code> annotation in this example. (annotation based configuration)
+        </p>
+        <p>In this article, we will use <a href="/spring-mvc/spring-configuration-annotation.html"
+                target="_blank">@Configuration</a>, <a href="/spring-mvc/spring-bean-annotation-with-example.html"
+                target="_blank">@Bean</a> and <a href="/spring-mvc/spring-import-annotations-with-example.html"
+                target="_blank">@Import</a>
+            annotations to demonstrate Spring Java-based configuration example.</p>
+        <p>Let's create <code style="color: red;">AppConfiguration</code> and <code
+                style="color: red;">AppConfiguration2</code> Java classes and annotated with <a
+                href="/spring-mvc/spring-configuration-annotation.html" target="_blank">@Configuration</a>
+            annotation. In Java-based configuration auto component scanning not required because Spring beans are
+            created by using factory methods annotated with <a
+                href="/spring-mvc/spring-bean-annotation-with-example.html" target="_blank">@Bean</a> annotation.</p>
+        <p><a href="/spring-mvc/spring-import-annotations-with-example.html" target="_blank">@Import</a> - much as the
+            element is used within Spring XML files to aid in modularizing
+            configurations, the
+            <a href="/spring-mvc/spring-import-annotations-with-example.html" target="_blank">@Import</a> annotation
+            allows for loading <a href="/spring-mvc/spring-bean-annotation-with-example.html" target="_blank">@Bean</a>
+            definitions from another
+            configuration class.
+        </p>
+        <p>We have created two configuration files and now we will use <a
+                href="/spring-mvc/spring-import-annotations-with-example.html" target="_blank">@Import</a> annotation to
+            import an
+            AppConfiguration2
+            file into a main AppConfiguration config file.</p>
+        <pre><code>
+@Configuration
+public class AppConfiguration2 {
+ 
+    @Bean(name="twitterService")
+    public MessageService twitterService(){
+        return new TwitterService();
+    }
+  
+    @Bean
+    public MessageProcessor messageProcessor(){
+        return new MessageProcessorImpl(twitterService());
+    }
+}
+
+</code></pre>
+        <p>Let's create main app Java-based configuration class.</p>
+        <pre><code>
+@Configuration
+@ComponentScan("com.javadevsguide.springframework.di")
+@Import(AppConfiguration2.class)
+public class AppConfiguration {
+
+    @Bean(name="emailService")
+    public MessageService emailService(){
+        return new EmailService();
+    }
+ 
+    @Bean(name="smsService")
+    public MessageService smsService(){
+        return new SMSService();
+    }
+}
+
+</code></pre>
+        <p>Create <code style="color: red;">MessageService</code> interface and it's multiple implementations.</p>
+        <pre><code>
+public interface MessageService {
+    public void sendMsg(String message);
+}
+
+</code></pre>
+        <pre><code>
+public class SMSService implements MessageService{
+    public void sendMsg(String message) {
+        System.out.println(message);
+    }
+}
+
+</code></pre>
+        <pre><code>
+public class EmailService implements MessageService{
+    public void sendMsg(String message) {
+        System.out.println(message);
+    }
+}
+
+</code></pre>
+        <pre><code>
+public class TwitterService implements MessageService{
+    public void sendMsg(String message) {
+        System.out.println(message);
+    }
+}
+
+</code></pre>
+        <pre><code>
+public interface MessageProcessor {
+    public void processMsg(String message);
+}
+
+</code></pre>
+        <pre><code>
+public class MessageProcessorImpl implements MessageProcessor {
+    private MessageService messageService;
+    
+    @Autowired
+    public MessageProcessorImpl(@Qualifier("TwitterService") MessageService messageService) {
+        this.messageService = messageService;
+    }
+    
+    public void processMsg(String message) {
+        messageService.sendMsg(message);
+    }
+}
+
+</code></pre>
+        <p>Let's test this application :</p>
+        <pre><code>
+public class TestApplication {
+    public static void main(String[] args) {
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
+        MessageProcessor  userService = applicationContext.getBean(MessageProcessor.class);
+    }
+}
+
+</code></pre>
+        <p>Output:</p>
+        <pre><code>twitter message sending </code></pre>
+        <h3>Articles Related to Java-based Container Configuration -</h3>
+        >><a href="/spring-core-tutorial/spring-java-based-configuration-basics.html" target="_blank"> Spring Java Based
+            Configuration Basics</a>
+        <p>In this article, we will briefly look into basics of Spring Java-based container configuration.</p>
+        >><a href="/spring-core-tutorial/spring-java-based-configuration-example.html" target="_blank"> Spring Java
+            Based Configuration Example</a>
+        <p>In this post, we will demonstrate the usage of Spring Java-based container configuration.</p>
+        >><a href="/spring-mvc/spring-bean-annotation-with-example.html" target="_blank"> Spring @Bean Annotation with
+            Example</a>
+        <p>In this article, we will discuss Spring Java configuration based @Bean annotation with examples. We will also
+            discuss different scenarios of how and when to use @Bean annotation.</p>
+        >><a href="/spring-mvc/spring-configuration-annotation.html" target="_blank"> Spring @Configuration Annotation
+            with Example</a>
+        <p>In this article, we will discuss a very important Spring Java based configuration annotation that is a
+            <code style="color: red;">@Configuration</code> annotation with examples.
+        </p>
+        >><a href="/spring-core-tutorial/spring-propertysource-annotation-with-example.html" target="_blank"> Spring
+            @PropertySource Annotation with Example</a>
+        <p>In Spring, you can use @PropertySource annotation to externalize your configuration to a properties file. In
+            this article, we will discuss how to use @PropertySource to read a properties file and display the values
+            with @Value and Environment.</p>
+        >><a href="/spring-mvc/spring-import-annotations-with-example.html" target="_blank"> Spring @Import Annotation
+            with Example</a>
+        <p>In this article, we will discuss how to use Spring @Import annotation with examples.</p>
+        >><a href=""> Spring @ImportResource Annotation Example</a>
+        <p>In this article, we will quickly discuss how to use @ImportResource annotation with a simple Spring boot
+            application.</p>
+    </div>
+</body>
+
+</html>

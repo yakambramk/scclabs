@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring @Scope annotation with Singleton Scope Example</h1>
+        <p>In this article, we will discuss how to create a bean scoped as a singleton using the @Scope annotation.</p>
+        <p>We use <code style="color: red;">@Scope</code> to define the scope of a <a
+                href="/spring-core-tutorial/spring-component-annotation-example.html" target="_blank">@Component</a>
+            class or a
+            <a href="/spring-mvc/spring-bean-annotation-with-example.html" target="_blank">@Bean</a>
+            definition.
+        </p>
+        <p>When a Spring bean is scoped as a singleton, the Spring IoC container creates exactly one instance of the
+            object defined by that bean definition.</p>
+        <p>By default, the Spring IoC container creates and initializes all beans as singletons. However, we can define
+            a bean's scope as a singleton using the scope="singleton" attribute of the element or the @Scope(value =
+            ConfigurableBeanFactory.SCOPE_SINGLETON) annotation.</p>
+        <p>We will demonstrate this example using Annotation based (@Component) as well as Java-based
+            configuration(@Bean). </p>
+        <h2>Spring @Scope Annotation + Singleton Scope + @Component Example</h2>
+        <p>Let's create an example to demonstrate the use of <code style="color: red;">@Scope</code> annotation with a
+            singleton scope in a spring application.</p>
+        <h3>Create a Simple Maven Project</h3>
+        <p>Create a simple Maven project using your favourite IDE. Refer to the section below for the packaging
+            structure. If you are new to Maven, read this article: <a
+                href="/spring-core-tutorial/simple_maven_project.html" target="_blank">How to Create a Simple Maven
+                Project</a>.</p>
+        <h3>Project Structure</h3>
+        <p>The below diagram shows a project structure for your reference - </p>
+        <img src="../assets/spring-core-tutorial-images/spring-scope-annotation.PNG">
+        <h3>The pom.xml File</h3>
+        <p>Note that Spring Framework 6 required Java 17 or later version:</p>
+        <pre><code>
+            <?xml version="1.0" encoding="UTF-8"?>
+&ltproject xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    &ltmodelVersion>4.0.0</modelVersion>
+
+    &ltgroupId>org.example</groupId>
+    &ltartifactId>learn-spring-framework</artifactId>
+    &ltversion>1.0-SNAPSHOT</version>
+
+    &ltproperties>
+        &ltmaven.compiler.source>17</maven.compiler.source>
+        &ltmaven.compiler.target>17</maven.compiler.target>
+    &lt/properties>
+
+    &ltdependencies>
+        &lt!-- https://mvnrepository.com/artifact/org.springframework/spring-core --&gt
+        &ltdependency>
+            &ltgroupId>org.springframework</groupId>
+            &ltartifactId>spring-core</artifactId>
+            &ltversion>6.0.4</version>
+        &lt/dependency>
+        &lt!-- https://mvnrepository.com/artifact/org.springframework/spring-context --&lt
+        &ltdependency>
+            &ltgroupId>org.springframework</groupId>
+            &ltartifactId>spring-context</artifactId>
+            &ltversion>6.0.4</version>
+        &lt/dependency>
+
+    &lt/dependencies>
+&lt/project>
+
+        </code></pre>
+        <h3>MessageService.java</h3>
+        <p>Next, let's create a <code style="color: red;"></code>MessageService interface as follows.</p>
+        <pre><code>
+package net.javaguides.spring.scope;
+
+public interface MessageService {
+
+    String getMessage();
+
+    void setMessage(String message);
+}
+        </code></pre>
+        <p>Let's create the <code style="color: red;">TwitterMessageService</code> class, which implements the <code
+                style="color: red;">MessageService</code> interface.</p>
+        <h3>TwitterMessageService.java</h3>
+        <pre><code>
+package net.javaguides.spring.scope;
+
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
+public class TwitterMessageService implements MessageService {
+
+    private String message;
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    @Override
+    public void setMessage(String message) {
+        this.message = message;
+    }
+}
+
+</code></pre>
+        <h3>Annotation-Based Configuration - AppConfig.java</h3>
+        <pre><code>
+package net.javaguides.spring.scope;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan(basePackages = "net.javaguides.spring")
+public class AppConfig {
+ 
+}
+
+</code></pre>
+        <p><code style="color: red;">@ComponentScan</code> annotation scans all beans whose class is annotated by the
+            <code style="color: red;">@Component</code> annotation in a package
+            specified by the <code style="color: red;">basePackages</code> attribute.
+        </p>
+        <h3>Running Spring Application - Application.java</h3>
+        <p>Let's create a main class and run an application.</p>
+        <pre><code>
+package net.javaguides.spring.scope;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class Application {
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext  context = new AnnotationConfigApplicationContext(AppConfig.class);
+        MessageService messageService = context.getBean(MessageService.class);
+        messageService.setMessage("TwitterMessageService Implementation");
+        System.out.println(messageService.getMessage());
+  
+        MessageService messageService1 = context.getBean(MessageService.class);
+        System.out.println(messageService1.getMessage());
+        context.close();
+    }
+}
+        </code></pre>
+        <h3>Output</h3>
+        <pre><code>
+TwitterMessageService Implementation
+TwitterMessageService Implementation
+
+</code></pre>
+        <p>Let's develop the same example using Java-based configuration with <a
+                href="/spring-mvc/spring-bean-annotation-with-example.html" target="_blank">@Bean</a> annotation. </p>
+        <h2>Spring @Scope Annotation + Singleton Scope + @Bean Example</h2>
+        <h3>MessageService.java</h3>
+        <pre><code>
+package net.javaguides.spring.scope;
+
+public interface MessageService {
+
+    String getMessage();
+
+    void setMessage(String message);
+}
+
+</code></pre>
+        <p>Let's create the <code style="color: red;">TwitterMessageService</code> class, which implements the <code
+                style="color: red;">MessageService</code> interface. </p>
+        <h3>TwitterMessageService.java</h3>
+        <pre><code>
+package net.javaguides.spring.scope;
+
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+public class TwitterMessageService implements MessageService {
+
+    private String message;
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    @Override
+    public void setMessage(String message) {
+        this.message = message;
+    }
+}
+                </code></pre>
+        <h3>Java-based Configuration - AppConfig.java</h3>
+        <p>Declare the above beans in the Java-based configuration class.</p>
+        <pre><code>
+package net.javaguides.spring.scope;
+
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
+    public MessageService messageService() {
+        return new TwitterMessageService();
+    }
+}
+                </code></pre>
+        <h3>Running Spring Application - Application.java</h3>
+        <p>Let's create a main class and run an application.</p>
+        <pre><code>
+package net.javaguides.spring.scope;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class Application {
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext  context = new AnnotationConfigApplicationContext(AppConfig.class);
+        MessageService messageService = context.getBean(MessageService.class);
+        messageService.setMessage("TwitterMessageService Implementation");
+        System.out.println(messageService.getMessage());
+  
+        MessageService messageService1 = context.getBean(MessageService.class);
+        System.out.println(messageService1.getMessage());
+        context.close();
+    }
+}
+
+</code></pre>
+        <h3>Output</h3>
+        <pre><code>
+TwitterMessageService Implementation
+TwitterMessageService Implementation
+
+</code></pre>
+    </div>
+</body>
+
+</html>

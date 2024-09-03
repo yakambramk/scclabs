@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Core Annotations with Examples</h1>
+        <p>In this quick article, we will discuss Spring core annotations that are used in Spring Dependency Injection,
+            Java-based configuration, Annotation-based configuration, and Spring IOC. </p>
+        <h2>15 Important Spring Core Annotations</h2>
+        <p>Let's list all known Spring core annotations.</p>
+        <img src="../assets/spring-core-tutorial-images/spring-core-annotations.PNG">
+        <h2>Spring Core Annotations for Dependency Injection and Configuration</h2>
+        <h3>1. @Autowired Annotation</h3>
+        <p>The <code>@Autowired</code> annotation is used for automatic dependency injection in Spring. It can be
+            applied to
+            constructors, fields, and setter methods.</p>
+        <h4>Constructor Injection</h4>
+        <pre><code>
+@RestController
+public class CustomerController {
+    private final CustomerService customerService;
+    
+    @Autowired
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+}
+
+</code></pre>
+        <h4>Setter Injection</h4>
+        <pre><code>
+@RestController
+public class CustomerController {
+    private CustomerService customerService;
+
+    @Autowired
+    public void setCustomerService(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+}
+
+</code></pre>
+        <h4>Field Injection</h4>
+        <pre><code>
+@RestController
+public class CustomerController {
+    @Autowired
+    private CustomerService customerService;
+}
+
+</code></pre>
+        <p>For more details, visit our articles on <a
+                href="/spring-core-tutorial/spring-autowired-annotation-with-example.html">Spring
+                @Autowired Annotation</a> and <a
+                href="/spring-core-tutorial/guide-to-dependency-injection-in-spring.html">Guide
+                to Dependency Injection in Spring</a>.</p>
+        <h3>2. @Bean Annotation</h3>
+        <p>The <code>@Bean</code> annotation indicates that a method produces a bean managed by the Spring container. It
+            is typically
+            declared in the configuration class.</p>
+        <pre><code>
+@Configuration
+public class AppConfig {
+                
+    @Bean
+    public CustomerService customerService() {
+        return new CustomerService();
+    }
+                
+    @Bean
+    public OrderService orderService() {
+        return new OrderService();
+    }
+}
+
+</code></pre>
+        <p>This configuration is equivalent to the following Spring XML:</p>
+        <pre><code>
+&ltbeans>
+    &ltbean id="customerService" class="com.companyname.projectname.CustomerService"/>
+    &ltbean id="orderService" class="com.companyname.projectname.OrderService"/>
+&lt/beans>
+
+</code></pre>
+        <p>Read more about the <code>@Bean</code> annotation on <a
+                href="/spring-mvc/spring-bean-annotation-with-example.html">Spring @Bean Annotation with Example</a>.
+        </p>
+        <h3>3. @Qualifier Annotation</h3>
+        <p>The <code>@Qualifier</code> annotation is used in conjunction with <code>@Autowired</code> to avoid confusion
+            when multiple beans of
+            the same type are configured.</p>
+        <h4>Example</h4>
+        <p>Consider <code>EmailService</code> and <code>SMSService</code> implementing a single
+            <code>MessageService</code> interface.
+        </p>
+        <pre><code>
+public interface MessageService {
+    void sendMsg(String message);
+}
+
+@Component
+public class EmailService implements MessageService {
+    public void sendMsg(String message) {
+        System.out.println("Email message: " + message);
+    }
+}
+
+@Component
+public class SMSService implements MessageService {
+    public void sendMsg(String message) {
+        System.out.println("SMS message: " + message);
+    }
+}
+
+</code></pre>
+        <p>Using <code>@Qualifier</code> to inject specific implementations:</p>
+        <pre><code>
+    @Component
+    public class MessageProcessor {
+        private final MessageService messageService;
+    
+        @Autowired
+        @Qualifier("emailService")
+        public MessageProcessor(MessageService messageService) {
+            this.messageService = messageService;
+        }
+    
+        public void processMsg(String message) {
+            messageService.sendMsg(message);
+        }
+    }
+
+</code></pre>
+        <p>Read more on <a href="/spring-core-tutorial/spring-qualifier-annotation-example.html">Spring @Qualifier
+                Annotation Example</a>.</p>
+        <h3>4. @Required Annotation</h3>
+        <p>The <code>@Required</code> annotation is a method-level annotation applied to the setter method of a bean. It
+            indicates
+            that the setter method must be configured with a value at configuration time.</p>
+        <h4>Example</h4>
+        <pre><code>
+    @Required
+    void setColor(String color) {
+        this.color = color;
+    }
+
+</code></pre>
+        <p>XML Configuration:</p>
+        <pre><code>
+&ltbean class="com.javaguides.spring.Car">
+    &ltproperty name="color" value="green"/>
+&lt/bean>
+
+</code></pre>
+        <h3>5. @Value Annotation</h3>
+        <p>The <code>@Value</code> annotation is used to assign default values to variables and method arguments. It
+            supports Spring
+            Expression Language (SpEL) for complex expressions.</p>
+        <h4>Example</h4>
+        <pre><code>
+    @Value("Default DBConfiguration")
+    private String defaultName;
+    
+    @Value("${java.home}")
+    private String javaHome;
+    
+    @Value("#{systemProperties['java.home']}")
+    private String javaHomeSpel;
+
+</code></pre>
+        <!-- <p>Read more on <a href="">Spring @Value Annotation</a>.</p> -->
+        <h3>6. @DependsOn Annotation</h3>
+        <p>The <code>@DependsOn</code> annotation forces the Spring IoC container to initialize one or more beans before
+            the bean
+            annotated with <code>@DependsOn</code>.</p>
+        <h4>Example</h4>
+        <pre><code>
+    public class FirstBean {
+        @Autowired
+        private SecondBean secondBean;
+    }
+    
+    public class SecondBean {
+        public SecondBean() {
+            System.out.println("SecondBean Initialized via Constructor");
+        }
+    }
+    
+    @Configuration
+    public class AppConfig {
+    
+        @Bean("firstBean")
+        @DependsOn("secondBean")
+        public FirstBean firstBean() {
+            return new FirstBean();
+        }
+    
+        @Bean("secondBean")
+        public SecondBean secondBean() {
+            return new SecondBean();
+        }
+    }
+
+</code></pre>
+        <p>Read more on <a href="/spring-core-tutorial/spring-dependson-annotation-example.html">Spring @DependsOn
+                Annotation Example</a>.</p>
+        <h3>7. @Lazy Annotation</h3>
+        <p>The <code>@Lazy</code> annotation delays the initialization of a singleton bean until it is first requested.
+        </p>
+        <h4>Example</h4>
+        <pre><code>
+public class FirstBean {
+    public void test() {
+        System.out.println("Method of FirstBean Class");
+    }
+}
+        
+@Configuration
+public class AppConfig {
+        
+    @Lazy
+    @Bean
+    public FirstBean firstBean() {
+        return new FirstBean();
+    }
+        
+    @Bean
+    public SecondBean secondBean() {
+        return new SecondBean();
+    }
+}
+
+</code></pre>
+        <p>Read more on <a href="/spring-core-tutorial/spring-lazy-annotation-example.html">Spring @Lazy Annotation
+                Example</a>.</p>
+        <h3>8. @Lookup Annotation</h3>
+        <p>A method annotated with <code>@Lookup</code> tells Spring to return an instance of the method’s return type
+            when it is invoked.</p>
+        <p>Read more about the annotation in <a href="https://www.baeldung.com/spring-lookup">Spring @LookUp
+                Annotation</a>.</p>
+        <h3>9. @Primary Annotation</h3>
+        <p>The <code>@Primary</code> annotation gives higher preference to a bean when multiple beans of the same type
+            exist.</p>
+        <h4>Example</h4>
+        <pre><code>
+    @Component
+    @Primary
+    public class Car implements Vehicle {}
+    
+    @Component
+    public class Bike implements Vehicle {}
+    
+    @Component
+    public class Driver {
+        @Autowired
+        private Vehicle vehicle;
+    }
+
+</code></pre>
+        <p>Read more on <a href="/spring-core-tutorial/spring-primary-annotation-example.html">Spring @Primary
+                Annotation Example</a>.</p>
+        <h3>10. @Scope Annotation</h3>
+        <p>The <code>@Scope</code> annotation defines the scope of a <code>@Component</code> class or a
+            <code>@Bean</code> definition.
+        </p>
+        <h4>Example</h4>
+        <pre><code>
+    @Component
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+    public class SingletonService implements MessageService {}
+    
+    @Component
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public class PrototypeService implements MessageService {}
+
+</code></pre>
+        <p>Read more on <a href="/spring-core-tutorial/spring-scope-annotation-with-singleton-scope-example.html">Spring
+                @Scope Annotation with Singleton Scope Example</a> and <a
+                href="/spring-core-tutorial/spring-scope-annotation-with-prototype.html">Spring
+                @Scope Annotation with
+                Prototype Scope Example</a>.</p>
+        <h3>11. @Profile Annotation</h3>
+        <p>The <code>@Profile</code> annotation is used to conditionally include <code>@Component</code> classes or
+            <code>@Bean</code> methods
+            based on the active profile.
+        </p>
+        <h4>Example</h4>
+        <pre><code>
+@Component
+@Profile("sportDay")
+public class Bike implements Vehicle {}
+
+</code></pre>
+        <p>Read more on <a href="https://www.baeldung.com/spring-profiles">Spring Profiles</a>.</p>
+        <h3>12. @Import Annotation</h3>
+        <p>The <code>@Import</code> annotation allows loading <code>@Bean</code> definitions from another configuration
+            class.</p>
+        <h4>Example</h4>
+        <pre><code>
+@Configuration
+public class ConfigA {
+    @Bean
+    public A a() {
+        return new A();
+    }
+}
+                
+@Configuration
+@Import(ConfigA.class)
+public class ConfigB {
+    @Bean
+    public B b() {
+        return new B();
+    }
+}       
+            </code></pre>
+        <p>Read more on <a href="/spring-mvc/spring-import-annotations-with-example.html">Spring @Import Annotation</a>.</p>
+        <h3>13. @ImportResource Annotation</h3>
+        <p>The <code>@ImportResource</code> annotation loads beans from an <code>applicationContext.xml</code> file into
+            the <code>ApplicationContext</code>.</p>
+        <h4>Example</h4>
+        <pre><code>
+@Configuration
+@ImportResource({"classpath*:applicationContext.xml"})
+public class XmlConfiguration {}
+
+</code></pre>
+        <p>Read more on <a href="/spring-core-tutorial/spring-importresource-annotation-example.html">Spring @ImportResource Annotation</a>.</p>
+        <h3>14. @PropertySource Annotation</h3>
+        <p>The <code>@PropertySource</code> annotation adds a <code>PropertySource</code> to Spring’s Environment.</p>
+        <h4>Example</h4>
+        <pre><code>
+    @Configuration
+    @PropertySource("classpath:config.properties")
+    public class PropertySourceDemo implements InitializingBean {
+    
+        @Autowired
+        private Environment env;
+    
+        @Override
+        public void afterPropertiesSet() throws Exception {
+            setDatabaseConfig();
+        }
+    
+        private void setDatabaseConfig() {
+            DataSourceConfig config = new DataSourceConfig();
+            config.setDriver(env.getProperty("jdbc.driver"));
+            config.setUrl(env.getProperty("jdbc.url"));
+            config.setUsername(env.getProperty("jdbc.username"));
+            config.setPassword(env.getProperty("jdbc.password"));
+            System.out.println(config.to
+    
+    String());
+        }
+    }
+
+</code></pre>
+        <p>Read more on <a href="/spring-core-tutorial/spring-propertysource-annotation-with-example.html">Spring @PropertySource Annotation Example</a>.</p>
+        <h3>15. @ComponentScan Annotation</h3>
+        <p>The <code>@ComponentScan</code> annotation configures component scanning directives for Spring to locate and
+            register beans within the specified packages.</p>
+        <h4>Example</h4>
+        <pre><code>
+    @Configuration
+    @ComponentScan(basePackages = "com.example")
+    public class AppConfig {}
+
+</code></pre>
+        <!-- <p>Read more on <a href="">Spring @ComponentScan Annotation</a>.</p> -->
+        <h3>16. @SpringBootApplication Annotation</h3>
+        <p>The <code>@SpringBootApplication</code> annotation marks the main class of a Spring Boot application. It
+            combines the
+            functionality of <code>@Configuration</code>, <code>@EnableAutoConfiguration</code>, and
+            <code>@ComponentScan</code>.
+        </p>
+        <p>Example</p>
+        <pre><code>
+@SpringBootApplication
+public class MySpringBootApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(MySpringBootApplication.class, args);
+    }
+}
+
+</code></pre>
+        <!-- <p>Read more on <a href="">Spring @SpringBootApplication Annotation</a>.</p> -->
+        <h4>Conclusion</h4>
+        <p>In this guide, we covered the fundamental Spring core annotations used for dependency injection,
+            configuration, and managing the Spring IoC container. Understanding these annotations is crucial for
+            effectively developing and configuring Spring applications. For further reading and deeper insights, follow
+            the linked resources within each annotation section.</p>
+
+    </div>
+</body>
+
+</html>

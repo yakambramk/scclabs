@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring @Scope Annotation with Prototype Scope Example</h1>
+        <p>In this article, we will discuss how to use the @Scope annotation with Prototype scope in a Spring Boot
+            application.</p>
+        <h2>Overview</h2>
+        <p>The <code>@Scope</code> annotation is used to define the scope of a <code>@Component</code> class or a
+            <code>@Bean</code> definition. The <code>@Scope</code>
+            annotation can be used with all Spring bean scopes:
+        </p>
+        <ul>
+            <li><b>Singleton: </b>Only one instance of the bean is created and shared across the entire application.
+                This is the default scope.</li>
+            <li><b>Prototype: </b> A new instance of the bean is created every time it is requested.</li>
+            <li><b>Request: </b>A new instance of the bean is created for each HTTP request. It is only applicable to
+                web applications.</li>
+            <li><b>Session: </b>A new instance of the bean is created for each HTTP session. It is only applicable to
+                web applications.</li>
+            <li><b>Application: </b> A single instance of the bean is created and shared across the entire application
+                context. It is only applicable to web applications.</li>
+        </ul>
+        <p>In this article, we will discuss how to use the <code>@Scope</code> annotation with Prototype scope with an
+            example.</p>
+        <p>When a Spring bean is scoped as a prototype, the Spring IoC container creates a new bean instance every time
+            a request is made for that bean. We can define the scope of a bean as a prototype using the <code>@Scope(value =
+            ConfigurableBeanFactory.SCOPE_PROTOTYPE)</code> annotation.</p>
+        <p>We will demonstrate this example using annotation-based (<code>@Component</code>) as well as Java-based
+            configuration
+            (<code>@Bean</code>).</p>
+        <h2>Spring @Scope Annotation + Prototype Scope + @Component Example</h2>
+        <p>Let's create an example to demonstrate the usage of <code>@Scope</code> annotation with a prototype scope in
+            a Spring application.</p>
+        <h3>1. Create a Simple Maven Project</h3>
+        <p>Create a simple Maven project using your favourite IDE. Below is the project structure for your reference:
+        </p>
+        <img src="../assets/spring-core-tutorial-images/spring-scope-annotation.PNG">
+        <h3>2. The pom.xml File</h3>
+        <p>Make sure to use Java 17 or later for Spring Framework 6:</p>
+        <pre><code>
+&ltproject xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    &ltmodelVersion>4.0.0</modelVersion>
+    &ltgroupId>org.example</groupId>
+    &ltartifactId>learn-spring-framework</artifactId>
+    &ltversion>1.0-SNAPSHOT</version>
+    &ltproperties>
+        &ltmaven.compiler.source>17</maven.compiler.source>
+        &ltmaven.compiler.target>17</maven.compiler.target>
+    &lt/properties>
+    &ltdependencies>
+        &ltdependency>
+            &ltgroupId>org.springframework</groupId>
+            &ltartifactId>spring-core</artifactId>
+            &ltversion>6.0.6</version>
+        &lt/dependency>
+        &ltdependency>
+            &ltgroupId>org.springframework</groupId>
+            &ltartifactId>spring-context</artifactId>
+            &ltversion>6.0.6</version>
+        &lt/dependency>
+    &lt/dependencies>
+&lt/project>
+
+</code></pre>
+        <h3>3. Create Spring Beans</h3>
+        <p><b>MessageService Interface</b></p>
+        <pre><code>
+package net.javaguides.spring.scope;
+
+public interface MessageService {
+    String getMessage();
+    void setMessage(String message);
+}
+
+</code></pre>
+        <p>This interface defines two methods: <code>getMessage()</code> and <code>setMessage(String message)</code>.
+            Any class that implements
+            this interface will need to provide implementations for these methods.</p>
+        <p><b>TwitterMessageService Class</b></p>
+        <pre><code>
+package net.javaguides.spring.scope;
+
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class TwitterMessageService implements MessageService {
+
+    private String message;
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    @Override
+    public void setMessage(String message) {
+        this.message = message;
+    }
+}
+
+</code></pre>
+        <p>In this class:</p>
+        <ul>
+            <li><code>@Component </code>annotation tells Spring that this class is a Spring component.</li>
+            <li><code>@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)</code>annotation specifies that this bean
+                should be scoped as a prototype.</li>
+            <li><code>getMessage() </code>returns the current message.</li>
+            <li><code>setMessage(String message) </code>sets the current message.</li>
+        </ul>
+        <h3>4. Annotation-Based Configuration</h3>
+        <p><b>AppConfig Class</b></p>
+        <pre><code>
+package net.javaguides.spring.scope;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan(basePackages = "net.javaguides.spring")
+public class AppConfig {
+}
+
+</code></pre>
+        <p>In this class:</p>
+        <ul>
+            <li><code>@Configuration </code>indicates that this class contains Spring bean definitions.</li>
+            <li><code>@ComponentScan(basePackages = "net.javaguides.spring") </code>tells Spring to scan the specified
+                package for components (i.e., classes annotated with @Component).</li>
+        </ul>
+        <h3>5. Running Spring Application</h3>
+        <p><b>Application Class</b></p>
+        <pre><code>
+package net.javaguides.spring.scope;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class Application {
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        MessageService messageService = context.getBean(MessageService.class);
+        messageService.setMessage("TwitterMessageService Implementation");
+        System.out.println(messageService.getMessage());
+
+        MessageService messageService1 = context.getBean(MessageService.class);
+        System.out.println(messageService1.getMessage());
+        context.close();
+    }
+}
+        </code></pre>
+        <p>In this class:</p>
+        <ul>
+            <li><code>AnnotationConfigApplicationContext</code> is used to create and manage the Spring application
+                context.</li>
+            <li><code>context.getBean(MessageService.class)</code> retrieves a bean of type <code>MessageService</code>
+                from the Spring context.</li>
+            <li>The first bean (<code>messageService</code>) sets and prints a message.</li>
+            <li>The second bean (<code>messageService1</code>) retrieves and prints the message.</li>
+        </ul>
+        <h3>Output</h3>
+        <pre><code>
+TwitterMessageService Implementation
+null
+        </code></pre>
+        <p>Explanation:</p>
+        <ul>
+            <li>The first bean (<code>messageService</code>) sets the message to "TwitterMessageService Implementation"
+                and prints it.</li>
+            <li>The second bean (<code>messageService1</code>) is a new instance (because of the prototype scope) and
+                has no message set, so it prints <code>null</code>.</li>
+        </ul>
+        <h2>Spring @Scope Annotation + Prototype Scope + @Bean Example</h2>
+        <h3>Create MessageService Interface</h3>
+        <p><b>MessageService Interface</b></p>
+        <pre><code>
+package net.javaguides.spring.scope;
+
+public interface MessageService {
+    String getMessage();
+    void setMessage(String message);
+}
+        </code></pre>
+        <p>This interface remains the same as in the previous example.</p>
+        <h3>Create TwitterMessageService Class</h3>
+        <p><b>TwitterMessageService Class</b></p>
+        <pre><code>
+package net.javaguides.spring.scope;
+
+public class TwitterMessageService implements MessageService {
+
+    private String message;
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    @Override
+    public void setMessage(String message) {
+        this.message = message;
+    }
+}
+        </code></pre>
+        <p>This class remains the same, but without <code>@Component</code> and <code>@Scope</code> annotations since we
+            will configure it using Java-based configuration.</p>
+        <h3>Java-based Configuration</h3>
+        <p><b>AppConfig Class</b></p>
+        <pre><code>
+package net.javaguides.spring.scope;
+
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public MessageService messageService() {
+        return new TwitterMessageService();
+    }
+}
+
+</code></pre>
+        <p>In this class:</p>
+        <ul>
+            <li><code>@Bean </code>annotation tells Spring that this method returns a Spring bean.</li>
+            <li><code>@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)</code> specifies that this bean should be
+                scoped as a prototype.</li>
+        </ul>
+        <h3>Running Spring Application</h3>
+        <p><b>Application Class</b></p>
+        <pre><code>
+package net.javaguides.spring.scope;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class Application {
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        MessageService messageService = context.getBean(MessageService.class);
+        messageService.setMessage("TwitterMessageService Implementation");
+        System.out.println(messageService.getMessage());
+
+        MessageService messageService1 = context.getBean(MessageService.class);
+        System.out.println(messageService1.getMessage());
+        context.close();
+    }
+}
+        </code></pre>
+        <p>This class remains the same as in the previous example.</p>
+        <h3>Output</h3>
+        <pre><code>
+TwitterMessageService Implementation
+null
+        </code></pre>
+        <p>Explanation:</p>
+        <ul>
+            <li>The first bean (<code>messageService</code>) sets the message to "TwitterMessageService Implementation"
+                and prints it.</li>
+            <li>The second bean (<code>messageService1</code>) is a new instance (because of the prototype scope) and
+                has no message set, so it prints null.</li>
+        </ul>
+        <h2>Conclusion</h2>
+        <p>In this article, we demonstrated how to use the <code>@Scope</code> annotation with Prototype scope in</p>
+        <p>Spring Boot applications. Using the prototype scope, we ensure that a new instance of the bean is created
+            each time it is requested. This is particularly useful for beans that are stateful and need to be
+            re-instantiated with every use.</p>
+
+    </div>
+</body>
+
+</html>

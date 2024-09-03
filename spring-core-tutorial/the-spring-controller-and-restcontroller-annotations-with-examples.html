@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>The Spring @Controller and @RestController Annotations</h1>
+        <p>In this quick article, we’ll discuss the difference between <code style="color: red;">@Controller</code> and
+            <code style="color: red;">@RestController</code> annotations in Spring MVC.
+        </p>
+        <p>The first annotation is used for traditional Spring controllers and has been part of the framework for a very
+            long time. The <code style="color: red;">@RestController</code> annotation was introduced in Spring 4.0 to
+            simplify the creation of RESTful
+            web services. It’s a convenience annotation that combines <code style="color: red;">@Controller</code> and
+            <code style="color: red;">@ResponseBody</code> – which eliminates
+            the need to annotate every request handling method of the controller class with the <code
+                style="color: red;">@ResponseBody</code>
+            annotation.
+        </p>
+        <p>The key difference between a traditional Spring MVC controller and the RESTful web service controller is the
+            way the HTTP response body is created. While the traditional MVC controller relies on the View technology,
+            the RESTful web service controller simply returns the object, and the object data is written directly to the
+            HTTP response as JSON/XML.</p>
+        <h2>@Controller Annotation</h2>
+        <p>Classic controllers can be annotated with the <code style="color: red;">@Controller</code> annotation. This
+            is simply a specialization of the
+            <code style="color: red;">@Component</code> class and allows implementation classes to be autodetected
+            through classpath scanning.
+        </p>
+        <p>In order to develop REST web services using Spring MVC @Controller, we need to add a @ResponseBody annotation
+            to each of the @RequestMapping methods in the return value as shown in the below diagram. </p>
+        <img src="../assets/spring-core-tutorial-images/springmvc-controller.png">
+        <h3>@Controller Annotation Example</h3>
+        <p><code style="color: red;">@Controller</code> is typically used in combination with a <code
+                style="color: red;">@RequestMapping</code> annotation used on request handling methods.</p>
+        <p>Notice that in the below example, we added <code style="color: red;">@ResponseBody</code> annotation to each
+            of the <code style="color: red;">@RequestMapping</code> methods in the return value. </p>
+        <pre><code>
+@Controller
+@RequestMapping("/api/v1")
+public class EmployeeController {
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @GetMapping("/employees")
+    public @ResponseBody List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
+    }
+
+    @GetMapping("/employees/{id}")
+    public @ResponseBody ResponseEntity<Employee> getEmployeeById(@PathVariable(value = "id") Long employeeId)
+        throws ResourceNotFoundException {
+        Employee employee = employeeRepository.findById(employeeId)
+          .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+        return ResponseEntity.ok().body(employee);
+    }
+    
+    @PostMapping("/employees")
+    public @ResponseBody Employee createEmployee(@Valid @RequestBody Employee employee) {
+        return employeeRepository.save(employee);
+    }
+
+    @PutMapping("/employees/{id}")
+    public @ResponseBody ResponseEntity<Employee> updateEmployee(@PathVariable(value = "id") Long employeeId,
+         @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
+        Employee employee = employeeRepository.findById(employeeId)
+        .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+
+        employee.setEmailId(employeeDetails.getEmailId());
+        employee.setLastName(employeeDetails.getLastName());
+        employee.setFirstName(employeeDetails.getFirstName());
+        final Employee updatedEmployee = employeeRepository.save(employee);
+        return ResponseEntity.ok(updatedEmployee);
+    }
+
+    @DeleteMapping("/employees/{id}")
+    public @ResponseBody Map<String, Boolean> deleteEmployee(@PathVariable(value = "id") Long employeeId)
+         throws ResourceNotFoundException {
+        Employee employee = employeeRepository.findById(employeeId)
+       .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+
+        employeeRepository.delete(employee);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return response;
+    }
+}
+
+</code></pre>
+        <h2>@RestController Annotation</h2>
+        <p>Spring 4.0 introduced @RestController, a specialized version of the controller which is a convenience
+            annotation that does nothing more than add the <code style="color: red;">@Controller</code> and <code
+                style="color: red;">@ResponseBody</code> annotations.
+        </p>
+        <pre><code>
+@Controller
+@RequestMapping("/api/v1")
+public class EmployeeController {
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @GetMapping("/employees")
+    public @ResponseBody List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
+    }
+
+    @GetMapping("/employees/{id}")
+    public @ResponseBody ResponseEntity<Employee> getEmployeeById(@PathVariable(value = "id") Long employeeId)
+        throws ResourceNotFoundException {
+        Employee employee = employeeRepository.findById(employeeId)
+          .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+        return ResponseEntity.ok().body(employee);
+    }
+    
+    @PostMapping("/employees")
+    public @ResponseBody Employee createEmployee(@Valid @RequestBody Employee employee) {
+        return employeeRepository.save(employee);
+    }
+
+    @PutMapping("/employees/{id}")
+    public @ResponseBody ResponseEntity<Employee> updateEmployee(@PathVariable(value = "id") Long employeeId,
+         @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
+        Employee employee = employeeRepository.findById(employeeId)
+        .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+
+        employee.setEmailId(employeeDetails.getEmailId());
+        employee.setLastName(employeeDetails.getLastName());
+        employee.setFirstName(employeeDetails.getFirstName());
+        final Employee updatedEmployee = employeeRepository.save(employee);
+        return ResponseEntity.ok(updatedEmployee);
+    }
+
+    @DeleteMapping("/employees/{id}")
+    public @ResponseBody Map<String, Boolean> deleteEmployee(@PathVariable(value = "id") Long employeeId)
+         throws ResourceNotFoundException {
+        Employee employee = employeeRepository.findById(employeeId)
+       .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+
+        employeeRepository.delete(employee);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return response;
+    }
+}
+
+</code></pre>
+        <h2>@RestController Annotation</h2>
+        <p>Spring 4.0 introduced @RestController, a specialized version of the controller which is a convenience
+            annotation that does nothing more than add the <code style="color:red;">@Controller</code> and <code
+                style="color: red;">@ResponseBody</code> annotations. </p>
+        <p>By annotating the controller class with <code style="color: red;">@RestController</code> annotation, you no
+            longer need to add <code style="color: red;">@ResponseBody</code>
+            to all the request mapping methods. The @ResponseBody annotation is active by default.</p>
+        <img src="../assets/spring-core-tutorial-images/springmvc-controller.png">
+        <h3>@RestController Annotation Example</h3>
+        <p>To use @RestController in our example, all we need to do is modify the <code></code>@Controller to
+            @RestController and
+            remove the @ResponseBody from each method. The resultant class should look like the following:</p>
+        <pre><code>
+@RestController
+@RequestMapping("/api/v1")
+public class EmployeeController {
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @GetMapping("/employees")
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
+    }
+
+    @GetMapping("/employees/{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable(value = "id") Long employeeId)
+        throws ResourceNotFoundException {
+        Employee employee = employeeRepository.findById(employeeId)
+          .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+        return ResponseEntity.ok().body(employee);
+    }
+    
+    @PostMapping("/employees")
+    public Employee createEmployee(@Valid @RequestBody Employee employee) {
+        return employeeRepository.save(employee);
+    }
+
+    @PutMapping("/employees/{id}")
+    public ResponseEntity<Employee> updateEmployee(@PathVariable(value = "id") Long employeeId,
+         @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
+        Employee employee = employeeRepository.findById(employeeId)
+        .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+
+        employee.setEmailId(employeeDetails.getEmailId());
+        employee.setLastName(employeeDetails.getLastName());
+        employee.setFirstName(employeeDetails.getFirstName());
+        final Employee updatedEmployee = employeeRepository.save(employee);
+        return ResponseEntity.ok(updatedEmployee);
+    }
+
+    @DeleteMapping("/employees/{id}")
+    public Map<String, Boolean> deleteEmployee(@PathVariable(value = "id") Long employeeId)
+         throws ResourceNotFoundException {
+        Employee employee = employeeRepository.findById(employeeId)
+       .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+
+        employeeRepository.delete(employee);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return response;
+    }
+}
+
+</code></pre>
+        <p>You can find a complete example using Spring MVC @RestController
+            annotation at <a href="/spring-core-tutorial/spring-boot-2-jpa-mysql-crud-example.html"
+                target="_blank">Spring Boot 2 JPA MySQL CRUD
+                Example</a></p>
+        <p><b>The controller is annotated with the @RestController annotation, therefore the @ResponseBody isn’t
+                required.</b></p>
+        <p>Every request handling method of the controller class automatically serializes return objects into
+            HttpResponse.</p>
+    </div>
+</body>
+
+</html>

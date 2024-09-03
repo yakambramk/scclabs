@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring @Bean initMethod and destroyMethod Attributes</h1>
+        <p>In this tutorial, we will explore how to use the <code>initMethod</code> and <code>destroyMethod</code>
+            attributes of the <code>@Bean</code>
+            annotation in Spring to specify initialization and destruction methods. These attributes allow us to define
+            methods that will be called after bean properties have been set and before the bean is destroyed, without
+            implementing the <code>InitializingBean</code> or <code>DisposableBean</code> interfaces.</p>
+        <h2>Introduction</h2>
+        <p>The <code>@Bean</code> annotation in Spring provides a way to declare a bean along with its initialization
+            and destruction
+            methods. This is useful for performing custom logic during bean initialization and cleanup.</p>
+        <h3>Why Use initMethod and destroyMethod?</h3>
+        <ul>
+            <li><b>initMethod: </b>Allows you to specify a method to be called after the bean has been instantiated and
+                its properties have been set.</li>
+            <li><b>destroyMethod: </b>Allows you to specify a method to be called before the bean is destroyed,
+                providing a way to release resources or perform other cleanup tasks.</li>
+        </ul>
+        <h2>Project Setup</h2>
+        <h3>Step 1: Create a Spring Boot Project</h3>
+        <ol>
+            <li>Using Spring Initializr:
+                <ul>
+                    <li>Go to <a href="https://start.spring.io/">Spring Initializr</a>.</li>
+                    <li>Select the following options:
+                        <ul>
+                            <li><b>Project: </b>Maven Project</li>
+                            <li><b>Language: </b>Java</li>
+                            <li><b>Spring Boot: </b>3.3.0</li>
+                        </ul>
+                    </li>
+                    <li>Add dependencies:
+                        <ul>
+                            <li>Spring Web</li>
+                        </ul>
+                    </li>
+                    <li>Click on <b>Generate</b> to download the project.</li>
+                </ul>
+
+            </li>
+            <li><b>Import the project</b>into your favorite IDE (Eclipse, IntelliJ, etc.).</li>
+        </ol>
+        <h2>Step 2: Create Bean Class with Initialization and Destruction Methods</h2>
+        <p>Create a class <code>MyBean</code> with custom initialization and destruction methods.</p>
+        <h3>MyBean.java</h3>
+        <pre><code>
+package net.javaguides.spring.lifecycle;
+
+public class MyBean {
+
+    public void customInit() {
+        // Custom initialization logic
+        System.out.println("MyBean: customInit method called");
+    }
+
+    public void customDestroy() {
+        // Custom cleanup logic
+        System.out.println("MyBean: customDestroy method called");
+    }
+}
+
+</code></pre>
+        <h2>Step 3: Create Configuration Class with @Bean Annotation</h2>
+        <p>Create a configuration class to define the bean using the <code>@Bean</code> annotation with
+            <code>initMethod</code> and <code>destroyMethod</code> attributes.
+        </p>
+        <h3>AppConfig.java</h3>
+        <pre><code>
+package net.javaguides.spring.lifecycle;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AppConfig {
+
+    @Bean(initMethod = "customInit", destroyMethod = "customDestroy")
+    public MyBean myBean() {
+        return new MyBean();
+    }
+}
+            </code></pre>
+        <h2>Step 4: Create the Main Application Class</h2>
+        <p>Create a main class to run your Spring Boot application.</p>
+        <h3>SpringLifecycleApplication.java</h3>
+        <pre><code>
+package net.javaguides.spring.lifecycle;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+@SpringBootApplication
+public class SpringLifecycleApplication {
+
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext(AppConfig.class);
+
+        context.close();
+    }
+}
+        </code></pre>
+        <h2>Step 5: Run the Application</h2>
+        <p>Run the <code>SpringLifecycleApplication</code> class as a Java application. You should see the following
+            output in the console:</p>
+        <pre><code>MyBean: customInit method called</code></pre>
+        <h2>Step 6: Shut Down the Application</h2>
+        <p>When you shut down the application (e.g., by stopping the Spring Boot application in your IDE), you should
+            see the following output in the console:</p>
+        <pre><code>MyBean: customDestroy method called</code></pre>
+        <h2>Explanation</h2>
+        <ul>
+            <li><b>MyBean: </b>Contains custom initialization and destruction methods <code>customInit</code> and
+                <code>customDestroy</code>.
+            </li>
+            <li><b>AppConfig: </b>Defines a bean using the <code>@Bean</code> annotation with <code>initMethod</code>
+                and <code>destroyMethod</code> attributes
+                to specify the initialization and destruction methods.</li>
+            <li><b>SpringLifecycleApplication: </b>Runs the Spring Boot application and closes the context to trigger
+                the destruction of the bean.</li>
+        </ul>
+        <h2>Best Practices</h2>
+        <ul>
+            <li><b>Method Naming: </b>Use meaningful names for initialization and destruction methods to make the code
+                more readable and maintainable.</li>
+            <li><b>Annotations: </b>While <code>initMethod</code> and <code>destroyMethod</code> attributes are useful,
+                consider using
+                <code>@PostConstruct</code> and <code>@PreDestroy</code> annotations for a more concise and modern
+                approach.
+            </li>
+        </ul>
+        <h2>Conclusion</h2>
+        <p>In this tutorial, we have learned how to use the <code>initMethod</code> and <code>destroyMethod</code>
+            attributes of the <code>@Bean</code>
+            annotation in Spring for managing bean lifecycle events. We have seen how to create a simple Spring Boot
+            application to demonstrate their usage and discussed best practices for their use.</p>
+        <p>This approach ensures that your beans are properly initialized and cleaned up, making your application more
+            robust and maintainable.</p>
+        <h2>Additional Resources</h2>
+        <ul>
+            <li><a href="https://docs.spring.io/spring-framework/reference/core/beans/factory-nature.html">Spring
+                    Documentation: Bean Lifecycle</a></li>
+            <li><a href="/spring-core-tutorial/spring-postconstruct-and-predestroy-example.html" target="_blank">Using
+                    @PostConstruct and @PreDestroy</a></li>
+        </ul>
+    </div>
+</body>
+
+</html>
