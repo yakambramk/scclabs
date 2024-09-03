@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache Maven Dependency Plugin</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Apache Maven Dependency Plugin</h1>
+        <p>The Apache Maven Dependency Plugin is a powerful tool that helps manage and analyze project dependencies. It
+            provides various goals to analyze, list, copy, unpack, and resolve dependencies. This guide will cover the
+            essential features of the Maven Dependency Plugin, along with practical examples to help you get started.
+        </p>
+        <h2>Introduction to the Maven Dependency Plugin</h2>
+        <p>The Maven Dependency Plugin offers several goals for managing project dependencies, including:</p>
+        <ul>
+            <li><b>analyze: </b> project dependencies and identifies unused declared and used undeclared dependencies.
+            </li>
+            <li><b> list:</b> Lists the dependencies of a project.</li>
+            <li><b> copy: </b> project dependencies to a specific location.</li>
+            <li><b> unpack:</b> Unpacks project dependencies. </li>
+            <li><b>resolve:</b> Resolves project dependencies and displays the version used.</li>
+        </ul>
+        <p><b>Latest Version</b></p>
+        <p>As of this writing, the latest version of the Maven Dependency Plugin is 3.6.0. Using the latest version
+            ensures access to the newest features and improvements.</p>
+        <h2>Setting Up the Maven Dependency Plugin</h2>
+        <p>To use the Maven Dependency Plugin, you need to configure it in your project's pom.xml file. Let's go through
+            the steps to set up a Maven project with the Dependency Plugin.</p>
+        <p><b>Step 1: Create a Maven Project</b></p>
+        <p>Run the following command to create a new Maven project:</p>
+        <pre>mvn archetype:generate -DgroupId=com.example -DartifactId=dependency-plugin-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</pre>
+        <p>This command will generate a simple Maven project with the following structure:</p>
+        <pre>dependency-plugin-demo
+    |-- src
+    |   |-- main
+    |   |   `-- java
+    |   |       `-- com
+    |   |           `-- example
+    |   |               `-- App.java
+    |   `-- test
+    |       `-- java
+    |           `-- com
+    |               `-- example
+    |                   `-- AppTest.java
+    |-- pom.xml
+    `-- target</pre>
+        <p><b>Step 2: Add Maven Dependency Plugin Configuration</b></p>
+        <p>Navigate to the project directory and open the pom.xml file. Add the Maven Dependency Plugin configuration
+            inside the &lt;build> section:</p>
+        <pre>
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    
+        &lt;groupId&gt;com.example&lt;/groupId&gt;
+        &lt;artifactId&gt;dependency-plugin-demo&lt;/artifactId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                    &lt;artifactId&gt;maven-dependency-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.6.0&lt;/version&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <p><b>Explanation</b></p>
+        <ul>
+            <li><b>&lt;groupId>:</b> Specifies the group ID for the Maven Dependency Plugin.</li>
+            <li><b>&lt;artifactId>:</b> Specifies the Maven Dependency Plugin.</li>
+            <li><b>&lt;version>:</b> The version of the plugin you are using. Ensure you use the latest version.</li>
+        </ul>
+        <p><b>Step 3: Using the Maven Dependency Plugin</b></p>
+        <p>The Maven Dependency Plugin provides several goals that you can execute to manage and analyze your project
+            dependencies.</p>
+        <p><b>3.1 Analyze Dependencies</b></p>
+        <p>Run the following command to analyze your project dependencies and identify unused declared and used
+            undeclared dependencies:</p>
+        <pre>mvn dependency:analyze
+</pre>
+        <p><b>3.2 List Dependencies</b></p>
+        <p>To list all dependencies of your project, run the following command:</p>
+        <pre>mvn dependency:list</pre>
+        <p><b>3.3 Copy Dependencies</b></p>
+        <p>To copy project dependencies to a specific directory, use the following command:</p>
+        <pre>mvn dependency:copy-dependencies -DoutputDirectory=target/dependencies</pre>
+        <p><b>3.4 Unpack Dependencies</b></p>
+        <p>To unpack project dependencies, use the following command:</p>
+        <pre>mvn dependency:unpack -DoutputDirectory=target/dependencies-unpacked</pre>
+        <p><b>3.5 Resolve Dependencies</b></p>
+        <p>To resolve project dependencies and display the version used, run the following command:</p>
+        <pre>mvn dependency:resolve</pre>
+        <p><b>Step 4: Running the Commands</b></p>
+        <p>Let's run the commands we discussed to see how they work. Navigate to the project directory and execute each
+            command to get the respective outputs.</p>
+        <p><b>Running mvn dependency:analyze</b></p>
+        <pre>mvn dependency:analyze</pre>
+        <p><b>Output:</b></p>
+        <pre>[INFO] Scanning for projects...
+    [INFO] 
+    [INFO] ----------------< com.example:dependency-plugin-demo >----------------
+    [INFO] Building dependency-plugin-demo 1.0-SNAPSHOT
+    [INFO] --------------------------------[ jar ]---------------------------------
+    [INFO] 
+    [INFO] --- maven-dependency-plugin:3.6.0:analyze (default-cli) @ dependency-plugin-demo ---
+    [INFO] Used undeclared dependencies found:
+    [INFO]    none
+    [INFO] Unused declared dependencies found:
+    [INFO]    none</pre>
+        <p><b>Running mvn dependency:list</b></p>
+        <pre>mvn dependency:list</pre>
+        <p><b>Output:</b></p>
+        <pre>[INFO] Scanning for projects...
+        [INFO] 
+        [INFO] ----------------< com.example:dependency-plugin-demo >----------------
+        [INFO] Building dependency-plugin-demo 1.0-SNAPSHOT
+        [INFO] --------------------------------[ jar ]---------------------------------
+        [INFO] 
+        [INFO] --- maven-dependency-plugin:3.6.0:list (default-cli) @ dependency-plugin-demo ---
+        [INFO] The following files have been resolved:
+        [INFO]    none</pre>
+        <p><b>Running mvn dependency:copy-dependencies</b></p>
+        <pre>mvn dependency:copy-dependencies -DoutputDirectory=target/dependencies</pre>
+        <p><b>Output:</b></p>
+        <pre>[INFO] Scanning for projects...
+    [INFO] 
+    [INFO] ----------------< com.example:dependency-plugin-demo >----------------
+    [INFO] Building dependency-plugin-demo 1.0-SNAPSHOT
+    [INFO] --------------------------------[ jar ]---------------------------------
+    [INFO] 
+    [INFO] --- maven-dependency-plugin:3.6.0:copy-dependencies (default-cli) @ dependency-plugin-demo ---
+    [INFO] Copying dependencies to target/dependencies
+    ...</pre>
+        <p><b>Running mvn dependency:unpack</b></p>
+        <pre>mvn dependency:unpack -DoutputDirectory=target/dependencies-unpacked</pre>
+        <p><b>Output:</b></p>
+        <pre>[INFO] Scanning for projects...
+    [INFO] 
+    [INFO] ----------------< com.example:dependency-plugin-demo >----------------
+    [INFO] Building dependency-plugin-demo 1.0-SNAPSHOT
+    [INFO] --------------------------------[ jar ]---------------------------------
+    [INFO] 
+    [INFO] --- maven-dependency-plugin:3.6.0:unpack (default-cli) @ dependency-plugin-demo ---
+    [INFO] Unpacking dependencies to target/dependencies-unpacked
+    ...</pre>
+        <p><b>Running mvn dependency:resolve</b></p>
+        <pre>mvn dependency:resolve</pre>
+        <p><b>Output:</b></p>
+        <pre>[INFO] Scanning for projects...
+    [INFO] 
+    [INFO] ----------------< com.example:dependency-plugin-demo >----------------
+    [INFO] Building dependency-plugin-demo 1.0-SNAPSHOT
+    [INFO] --------------------------------[ jar ]---------------------------------
+    [INFO] 
+    [INFO] --- maven-dependency-plugin:3.6.0:resolve (default-cli) @ dependency-plugin-demo ---
+    [INFO] Resolving dependencies...
+    ...</pre>
+        <h2>Complete Example</h2>
+        <p>Here is the complete pom.xml file for the example project with the Maven Dependency Plugin configured:</p>
+        <pre>
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    
+        &lt;groupId&gt;com.example&lt;/groupId&gt;
+        &lt;artifactId&gt;dependency-plugin-demo&lt;/artifactId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                    &lt;artifactId&gt;maven-dependency-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.6.0&lt;/version&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <h2>Conclusion</h2>
+
+        <p>The Maven Dependency Plugin is an invaluable tool for managing and analyzing project dependencies. This guide
+            provided a complete overview of setting up and using the Maven Dependency Plugin, along with practical
+            examples. By integrating this plugin into your Maven workflow, you can efficiently manage your project's
+            dependencies and resolve any issues that may arise.
+
+        </p>
+    </div>
+</body>
+
+</html>

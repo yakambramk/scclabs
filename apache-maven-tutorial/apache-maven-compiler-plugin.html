@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache Maven Compiler Plugin</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Apache Maven Compiler Plugin</h1>
+        <p> Apache Maven is a powerful build automation tool used primarily for Java projects. One of the essential
+            aspects of Maven is its plugin system, which extends its functionality. Among these plugins, the Maven
+            Compiler Plugin is crucial as it compiles the source code of a Maven project. This blog post will provide an
+            in-depth look at the Maven Compiler Plugin, including how to use it with the latest version.</p>
+        <h2>Introduction to Maven Compiler Plugin</h2>
+        <p>The Maven Compiler Plugin is used to compile Java source files. It leverages the javac compiler to convert
+            .java files into .class files, which can be executed by the Java Virtual Machine (JVM). By configuring this
+            plugin, you can specify the JDK version, additional compiler options, and even perform annotation
+            processing.</p>
+        <p><b>Latest Version</b></p>
+        <h2>Setting Up the Maven Compiler Plugin</h2>
+        <p>To use the Maven Compiler Plugin, you need to configure it in your project's pom.xml file. Here is a
+            step-by-step guide on how to do it.</p>
+        <p><b>Step 1: Basic Configuration</b></p>
+        <p>First, open your pom.xml file and add the following configuration inside the &lt;build> section:</p>
+        <pre>
+                &lt;build&gt;
+                    &lt;plugins&gt;
+                        &lt;plugin&gt;
+                            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                            &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                            &lt;version&gt;3.10.1&lt;/version&gt;
+                            &lt;configuration&gt;
+                                &lt;source&gt;21&lt;/source&gt;
+                                &lt;target&gt;21&lt;/target&gt;
+                            &lt;/configuration&gt;
+                        &lt;/plugin&gt;
+                    &lt;/plugins&gt;
+                &lt;/build&gt;
+                </pre>
+        <p><b>Explanation</b></p>
+        <ul>
+            <li><b>&lt;groupId>:</b> This is the group ID for the Maven Compiler Plugin. </li>
+            <li><b> &lt;artifactId>: </b> This specifies the Maven Compiler Plugin. </li>
+            <li><b> &lt;version>:</b> The version of the plugin you are using. Ensure you use the latest version.</li>
+            <li><b> &lt;configuration>:</b> This section allows you to specify various options for the compiler.</li>
+            <li><b> &lt;source>:</b> Specifies the version of the source code.</li>
+            <li><b> &lt;target>:</b> Specifies the version of the generated .class files.</li>
+        </ul>
+        <p><b>Step 2: Additional Configuration Options</b></p>
+        <p>The Maven Compiler Plugin provides several additional configuration options. Here are some common ones:</p>
+        <p><b>Specify Encoding</b></p>
+        <pre>
+    &lt;configuration>
+        &lt;encoding>UTF-8 &lt;/encoding>
+        &lt;/configuration>
+</pre>
+        <p><b>Enable Debug Information</b></p>
+        <pre>
+    &lt;configuration>
+    &lt;debug>true &lt;/debug>
+    &lt;/configuration>
+</pre>
+        <p><b>Compiler Arguments</b></p>
+        <pre>
+    &lt;configuration&gt;
+        &lt;compilerArgs&gt;
+            &lt;arg&gt;-Xlint:unchecked&lt;/arg&gt;
+            &lt;arg&gt;-Xlint:deprecation&lt;/arg&gt;
+        &lt;/compilerArgs&gt;
+    &lt;/configuration&gt;
+    </pre>
+        <h2>Complete Example: Simple Java Project</h2>
+        <p>Let's create a simple Java project to demonstrate the Maven Compiler Plugin.</p>
+        <p><b>Step 1: Create a Maven Project</b></p>
+        <p>Run the following command to create a new Maven project:</p>
+        <pre>mvn archetype:generate -DgroupId=com.example -DartifactId=compiler-plugin-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</pre>
+        <p><b>Step 2: Update pom.xml</b></p>
+        <p>Navigate to the project directory and open the pom.xml file. Add the Maven Compiler Plugin configuration as
+            shown earlier:</p>
+        <pre>
+            &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+                &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+            
+                &lt;groupId&gt;com.example&lt;/groupId&gt;
+                &lt;artifactId&gt;compiler-plugin-demo&lt;/artifactId&gt;
+                &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+            
+                &lt;properties&gt;
+                    &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+                    &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+                    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+                &lt;/properties&gt;
+            
+                &lt;build&gt;
+                    &lt;plugins&gt;
+                        &lt;plugin&gt;
+                            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                            &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                            &lt;version&gt;3.10.1&lt;/version&gt;
+                            &lt;configuration&gt;
+                                &lt;source&gt;21&lt;/source&gt;
+                                &lt;target&gt;21&lt;/target&gt;
+                                &lt;encoding&gt;UTF-8&lt;/encoding&gt;
+                                &lt;compilerArgs&gt;
+                                    &lt;arg&gt;-Xlint:unchecked&lt;/arg&gt;
+                                    &lt;arg&gt;-Xlint:deprecation&lt;/arg&gt;
+                                &lt;/compilerArgs&gt;
+                            &lt;/configuration&gt;
+                        &lt;/plugin&gt;
+                    &lt;/plugins&gt;
+                &lt;/build&gt;
+            &lt;/project&gt;
+            </pre>
+        <p><b>Step 3: Create a Simple Java Class</b></p>
+        Navigate to the <b>src/main/java/com/example</b> directory and create a file named <b>App.java</b> with the
+        following content:
+        <pre>package com.example;
+
+    /**
+     * Hello world!
+     *
+     */
+    public class App 
+    {
+        public static void main( String[] args )
+        {
+            System.out.println( "Hello World!" );
+        }
+    }</pre>
+        <p><b>Step 4: Compile and Run the Project</b></p>
+        <p>Use the following Maven commands to compile and run your project:</p>
+        <pre>mvn clean install
+        mvn exec:java -Dexec.mainClass="com.example.App"</pre>
+        <p>You should see the following output:</p>
+        <pre>Hello World!</pre>
+        <h2>Conclusion</h2>
+        <p>The Maven Compiler Plugin is power tool for any Java developer using Maven. By configuring this plugin, you
+            can control the Java version, encoding, and compiler options, ensuring that your project is built correctly.
+            Always remember to use the latest version of the plugin to take advantage of new features and improvements.
+            This guide should help you get started with the Maven Compiler Plugin and configure it according to your
+            project's needs.</p>
+    </div>
+</body>
+
+</html>

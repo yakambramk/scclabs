@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache Maven Source Plugin</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Apache Maven Source Plugin</h1>
+        <p>The Apache Maven Source Plugin is a tool used to create a JAR containing the source code of your project.
+            This is particularly useful for making your source code available to others who use your library, or for
+            debugging purposes. In this guide, we will explore how to configure and use the Maven Source Plugin,
+            including a complete example.</p>
+        <h2>Introduction to Maven Source Plugin</h2>
+        <p>The Maven Source Plugin helps generate a JAR file that contains the source code of your Maven project. This
+            source JAR can be deployed along with the main JAR to a repository, making it easier for others to view and
+            understand your code.</p>
+        <p><b>Latest Version</b></p>
+        <p>As of this writing, the latest version of the Maven Source Plugin is 3.2.1. It is recommended to use the
+            latest version to ensure you have access to all the latest features and bug fixes.</p>
+        <h2>Setting Up the Maven Source Plugin</h2>
+        <p>To use the Maven Source Plugin, you need to configure it in your project's pom.xml file. Let's go through the
+            steps to set up a complete Maven project with the Source Plugin.</p>
+        <p><b>Step 1: Create a Maven Project</b></p>
+        <p>Run the following command to create a new Maven project:</p>
+        <pre>mvn archetype:generate -DgroupId=com.example -DartifactId=source-plugin-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</pre>
+        <p>This command will generate a simple Maven project with the following structure:</p>
+        <pre>source-plugin-demo
+    |-- src
+    |   |-- main
+    |   |   `-- java
+    |   |       `-- com
+    |   |           `-- example
+    |   |               `-- App.java
+    |   `-- test
+    |       `-- java
+    |           `-- com
+    |               `-- example
+    |                   `-- AppTest.java
+    |-- pom.xml
+    `-- target</pre>
+        <p><b>Step 2: Add Maven Source Plugin Configuration</b></p>
+        <p>Navigate to the project directory and open the pom.xml file. Add the Maven Source Plugin configuration inside
+            the &lt;build> section:</p>
+        <pre>
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    
+        &lt;groupId&gt;com.example&lt;/groupId&gt;
+        &lt;artifactId&gt;source-plugin-demo&lt;/artifactId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                    &lt;artifactId&gt;maven-source-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.2.1&lt;/version&gt;
+                    &lt;executions&gt;
+                        &lt;execution&gt;
+                            &lt;id&gt;attach-sources&lt;/id&gt;
+                            &lt;goals&gt;
+                                &lt;goal&gt;jar&lt;/goal&gt;
+                            &lt;/goals&gt;
+                        &lt;/execution&gt;
+                    &lt;/executions&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <p><b>Explanation</b></p>
+        <ul>
+            <li><b>&lt;groupId>:</b> Specifies the group ID for the Maven Source Plugin.</li>
+            <li><b>&lt;artifactId>:</b> Specifies the Maven Source Plugin.</li>
+            <li><b>&lt;version>:</b> The version of the plugin you are using. Ensure you use the latest version.</li>
+            <li><b>&lt;executions>: </b> the executions for this plugin.</li>
+            <li><b>&lt;execution>: </b> a specific execution of the plugin.</li>
+            <li><b>&lt;id>: </b> unique identifier for this execution.</li>
+            <li><b>&lt;goals>:</b> Specifies the goals to be executed.</li>
+            <li><b>&lt;goal>: </b> goal to generate the source JAR.</li>
+        </ul>
+        <p><b>Step 3: Add Hello World to App.java</b></p>
+        <p>Open <b>src/main/java/com/example/App.java</b> and add a simple Hello World program:</p>
+        <pre>package com.example;
+
+    public class App {
+        public static void main(String[] args) {
+            System.out.println("Hello, World!");
+        }
+    }</pre>
+        <p><b>Step 4: Build the Project</b></p>
+        <p>Run the following command to compile and package the project, including generating the source JAR:</p>
+        <pre>mvn clean package</pre>
+        <p>This command will compile your project, package it into a JAR file, and generate an additional JAR file
+            containing the source code in the target directory.</p>
+        <p><b>Step 5: Verify the Generated Source JAR</b></p>
+        <p>After the build is complete, navigate to the target directory. You should see two JAR files:</p>
+        <ul>
+            <li><b>source-plugin-demo-1.0-SNAPSHOT.jar: The main JAR file.</b></li>
+            <li><b> source-plugin-demo-1.0-SNAPSHOT-sources.jar: The source JAR file.</b></li>
+        </ul>
+        <p><b>Step 6: Running the Application</b></p>
+        <p>Run the following command to execute the main JAR and see the "Hello, World!" output:</p>
+        <pre>java -jar target/source-plugin-demo-1.0-SNAPSHOT.jar</pre>
+        <p>You should see the following output:</p>
+        <pre>Hello, World!</pre>
+        <h2>Deploying the Source JAR</h2>
+        <p>Deploying the source JAR along with the main JAR is a good practice, especially when sharing your project
+            with others or using a repository manager like Nexus or Artifactory. The Maven Source Plugin ensures that
+            your source code is easily accessible, making debugging and understanding the codebase simpler.</p>
+        <p><b>Step 1: Add Distribution Management to pom.xml</b></p>
+        <p>To deploy the JARs, add the distribution management section to your pom.xml:</p>
+        <pre>
+    &lt;distributionManagement&gt;
+        &lt;repository&gt;
+            &lt;id&gt;releases&lt;/id&gt;
+            &lt;url&gt;http://your.repository.url/repo&lt;/url&gt;
+        &lt;/repository&gt;
+        &lt;snapshotRepository&gt;
+            &lt;id&gt;snapshots&lt;/id&gt;
+            &lt;url&gt;http://your.repository.url/snapshots&lt;/url&gt;
+        &lt;/snapshotRepository&gt;
+    &lt;/distributionManagement&gt;
+    </pre>
+        <p><b>Step 2: Deploy the Artifacts</b></p>
+        <p>Run the following command to deploy your artifacts to the repository:</p>
+        <pre>mvn clean deploy</pre>
+        <p>This will deploy both the main JAR and the source JAR to the specified repository.</p>
+        <h2>Conclusion</h2>
+        <p>The Maven Source Plugin is a valuable tool for generating and deploying source JARs along with your main
+            artifacts. This guide provided a complete example of setting up and using the Maven Source Plugin in a
+            simple Maven project, helping you get started with generating and managing source JARs in your Maven builds.
+
+        </p>
+
+    </div>
+</body>
+
+</html>
