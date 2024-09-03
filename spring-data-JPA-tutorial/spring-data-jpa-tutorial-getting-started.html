@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+
+        code {
+            background: #f6f8fa;
+        }
+
+        img {
+            margin: 2% 10%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>What is Spring Data JPA ?</h1>
+        <p>In this tutorial, we will discuss what is Spring Data JPA and we will understand how can we use Spring Data
+            JPA to reduce the boilerplate code required to implement the data access object (DAO) layer.</p>
+        <h2>What Spring Data JPA?</h2>
+        <p>Let's first understand what is the problem and how Spring Data JPA provides a solution to solve the problem.
+        </p>
+        <h3>Problem</h3>
+        <p>In typical three-layer Spring application architecture, we create three layers - <b>Controller</b>,
+            <b>Service</b>, and
+            <b>DAO/Repository</b> layer.
+        </p>
+        <p>If we use <b>JPA/Hibernate</b> then write a lot of code while implementing DAO layer:</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/Application Architecture.png">
+        <p>For example, we typically write the below code to implement DAO for a single <code
+                style="color: red;;">Employee</code> entity:</p>
+        <h3>CustomerDAO</h3>
+        <img src="../assets/spring-data-jpa-tutorial-images/customerDAO.png">
+        <h3>CustomerDAOImpl</h3>
+        <img src="../assets/spring-data-jpa-tutorial-images/customerDAOImpl.png">
+        <p>What if we create DAO for other entities like <b>Student</b>, <b>Product</b>, <b>Order</b>, <b>Employee</b>,
+            etc.</p>
+        <p>We are writing a lot of code and repeating the same code for other entities (only the difference is entity
+            type and primary key fields, the rest of the code remains the same).</p>
+        <p>What will be the solution to avoid redundant code (reduce boilerplate code)?</p>
+        <h3>Solution</h3>
+        <h4>Spring Data JPA provides a solution to reduce a lot of boilerplate code. </h4>
+        <p>Spring Data JPA provides an out-of-the-box implementation for all the required CRUD operations for the JPA
+            entity so we don't have to write the same boilerplate code again and again.</p>
+        <p>Spring Data JPA provides repositories so we just need to extend them to get full the out-of-the-box
+            implementation for CRUD operations for an entity.</p>
+        <p>For example:</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/customerRepo.png" style="width: 80%;">
+        <p><b>Therefore, we can use Spring Data JPA to reduce the amount of boilerplate code required to implement the
+                data access object (DAO) layer.</b></p>
+        <p>Spring Data JPA is not a JPA provider. It is a library/framework that adds an extra layer of abstraction on
+            the top of our JPA provider (like Hibernate).</p>
+        <p><b>Spring Data JPA uses Hibernate as a default JPA provider.</b></p>
+        <h2>Spring Data Commons and Spring Data JPA Repositories/interfaces</h2>
+        <p>Let's quickly discuss important repositories or interfaces of <b>Spring Data Commons</b> and <b>Spring Data
+                JPA</b>.</p>
+        <p>The below diagram shows the main interfaces from Spring Data Commons and Spring Data JPA modules.</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/spring-data-jpa-diagram.png">
+        <p><code style="color: red;">Spring Data Commons</code> is part of the umbrella <b>Spring Data</b> project that
+            provides shared infrastructure across
+            the Spring Data projects. It contains technology-neutral repository interfaces as well as a metadata model
+            for persisting Java classes. </p>
+        <p>Spring Data Commons project provides the following interfaces:</p>
+        <ol>
+            <li>Repository<T, ID extends Serializable> interface</li>
+            <li>CrudRepository<T, ID extends Serializable> interface</li>
+            <li>PagingAndSortingRepository<T, ID extends Serializable> interface</li>
+            <li>QueryDslPredicateExecutor interface</li>
+        </ol>
+        <p>Let's discuss the above interface in detail with its source code and methods.</p>
+        <h3>The Repository<T, ID extends Serializable> interface</h3>
+        <p>The <code style="color: red;">Repository<T, ID extends Serializable></code> interface is a marker
+            interface that has two purposes:</p>
+        <ol>
+            <li>It captures the type of the managed entity and the type of the entity’s id.</li>
+            <li>It helps the Spring container to discover the “concrete” repository interfaces during classpath
+                scanning.</li>
+        </ol>
+        <p>Let's look at the source code of the Repository interface.</p>
+        <pre><code>
+    package org.springframework.data.repository;
+
+    import org.springframework.stereotype.Indexed;
+    
+    @Indexed
+    public interface Repository<T, ID> {
+    
+    }
+
+</code></pre>
+        <h3>The CrudRepository<T, ID extends Serializable> interface</h3>
+        <p>The <code style="color: red;">CrudRepository<T, ID extends Serializable></code> interface provides CRUD
+            operations for the managed entity.</p>
+        <p>Let's look at the methods/APIs that the <code style="color: red;">CrudRepository</code> interface provides:
+        </p>
+        <pre><code>
+package org.springframework.data.repository;
+
+import java.util.Optional;
+            
+@NoRepositoryBean
+public interface CrudRepository < T, ID > extends Repository < T, ID > {
+        &lt;S extends T&gt; S save(S entity);
+                
+        &lt;S extends T&gt; Iterable&lt;S&gt; saveAll(Iterable&lt;S&gt; entities);
+                
+        Optional&lt;T&gt; findById(ID id);
+                
+        boolean existsById(ID id);
+                
+        Iterable&lt;T&gt; findAll();
+                
+        Iterable&lt;T&gt; findAllById(Iterable&lt;ID&gt; ids);
+                
+        long count();
+                
+        void deleteById(ID id);
+                
+        void delete(T entity);
+                
+        void deleteAll();
+}
+
+</code></pre>
+        <p>Let's look at the usage of each method with a description.</p>
+        <ol>
+            <li><code style="color: red;">long count()</code> - Returns the number of entities available.</li>
+            <li><code style="color: red;">void delete(T entity)</code> - Deletes a given entity.</li>
+            <li><code style="color: red;">void deleteAll()</code> - Deletes all entities managed by the repository.</li>
+            <li><code style="color: red;">void deleteAll(Iterable&lt? extends T> entities)</code> - Deletes the given
+                entities.</li>
+            <li><code style="color: red;">void deleteById(ID id)</code> - Deletes the entity with the given id.</li>
+            <li><code style="color: red;">boolean existsById(ID id)</code> - Returns whether an entity with the given id
+                exists.</li>
+            <li><code style="color: red;">Iterable findAll()</code> - Returns all instances of the type.</li>
+            <li><code style="color: red;">Iterable findAllById(Iterable ids)</code> - Returns all instances of the type
+                with the given IDs.</li>
+            <li><code style="color: red;">Optional findById(ID id)</code> - Retrieves an entity by its id.</li>
+            <li><code style="color: red;">save(S entity)</code> - Saves a given entity.</li>
+            <li><code style="color: red;">Iterable saveAll(Iterable entities)</code> - Saves all given entities.</li>
+        </ol>
+        <h3>The PagingAndSortingRepository<T, ID extends Serializable> interface</h3>
+        <p>The <code style="color: red;">PagingAndSortingRepository<T, ID extends Serializable> interface</code> is an
+            extension of <code style="color: red;">CrudRepository</code> to
+            provide additional methods to retrieve entities using the pagination and sorting abstraction.</p>
+        <p>Let's look at the methods/APIs that the <code style="color: red;">PagingAndSortingRepository</code> interface
+            provides:</p>
+        <pre><code>
+package org.springframework.data.repository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+    
+@NoRepositoryBean
+public interface PagingAndSortingRepository < T, ID > extends CrudRepository < T, ID > {
+    
+    /**
+     * Returns all entities sorted by the given options.
+     * 
+     * @param sort
+     * @return all entities sorted by the given options
+     */
+    Iterable < T > findAll(Sort sort);
+    
+    /**
+     * Returns a {@link Page} of entities meeting the paging restriction provided in the {@code Pageable} object.
+     * 
+     * @param pageable
+     * @return a page of entities
+     */
+    Page < T > findAll(Pageable pageable);
+}
+
+</code></pre>
+        <h3>The QueryDslPredicateExecutor interface</h3>
+        <p>The <code style="color: red;">QueryDslPredicateExecutor</code> interface is not a “repository interface”. It
+            declares the methods that are
+            used to retrieve entities from the database by using <code style="color: red;">QueryDsl</code> Predicate
+            objects.</p>
+        <p>Let's look at the methods/APIs that the <code style="color: red;">QueryDslPredicateExecutor</code> interface
+            provides:</p>
+        <pre><code>
+    package org.springframework.data.querydsl;
+
+    import java.util.Optional;
+    
+    import org.springframework.data.domain.Page;
+    import org.springframework.data.domain.Pageable;
+    import org.springframework.data.domain.Sort;
+    
+    import com.querydsl.core.types.OrderSpecifier;
+    import com.querydsl.core.types.Predicate;
+    
+    public interface QuerydslPredicateExecutor < T > {
+    
+        Optional < T > findOne(Predicate predicate);
+    
+        Iterable < T > findAll(Predicate predicate);
+    
+        Iterable < T > findAll(Predicate predicate, Sort sort);
+    
+        Iterable < T > findAll(Predicate predicate, OrderSpecifier << ? > ...orders);
+    
+        Iterable < T > findAll(OrderSpecifier << ? > ...orders);
+    
+        Page < T > findAll(Predicate predicate, Pageable pageable);
+    
+        long count(Predicate predicate);
+    
+        boolean exists(Predicate predicate);
+    }
+
+</code></pre>
+
+        <h2>Spring Data JPA Repository Interfaces</h2>
+        <p><code style="color: red;">Spring Data JPA</code> module deals with enhanced support for JPA-based data access
+            layers.</p>
+        <p>Spring Data JPA project provides the following interfaces:</p>
+        <ul>
+            <li>JpaRepository<T, ID extends Serializable> interface</li>
+            <li>JpaSpecificationExecutor interface</li>
+        </ul>
+        <h3>JpaRepository<T, ID extends Serializable> interface</h3>
+        <p>The <code style="color: red;">JpaRepository<T, ID extends Serializable></code> interface is a JPA-specific
+            repository interface that combines
+            the methods declared by the common repository interfaces behind a single interface.</p>
+        <p>Let's look at the methods/APIs that the <code style="color: red;">JpaRepository</code> interface provides:
+        </p>
+        <pre><code>
+    package org.springframework.data.jpa.repository;
+
+    import java.util.List;
+    
+    import javax.persistence.EntityManager;
+    
+    import org.springframework.data.domain.Example;
+    import org.springframework.data.domain.Sort;
+    import org.springframework.data.repository.NoRepositoryBean;
+    import org.springframework.data.repository.PagingAndSortingRepository;
+    import org.springframework.data.repository.query.QueryByExampleExecutor;
+    
+    @NoRepositoryBean
+    public interface JpaRepository&lt;T, ID&gt; extends PagingAndSortingRepository&lt;T, ID&gt;, QueryByExampleExecutor&lt;T&gt; {
+    
+        List&lt;T&gt; findAll();
+        
+        List&lt;T&gt; findAll(Sort sort);
+        
+        List&lt;T&gt; findAllById(Iterable&lt;ID&gt; ids);
+        
+        &lt;S extends T&gt; List&lt;S&gt; saveAll(Iterable&lt;S&gt; entities);
+        
+        void flush();
+        
+        &lt;S extends T&gt; S saveAndFlush(S entity);
+        
+        void deleteInBatch(Iterable&lt;T&gt; entities);
+        
+        void deleteAllInBatch();
+        
+        T getOne(ID id);
+        
+        @Override
+        &lt;S extends T&gt; List&lt;S&gt; findAll(Example&lt;S&gt; example);
+        
+        @Override
+        &lt;S extends T&gt; List&lt;S&gt; findAll(Example&lt;S&gt; example, Sort sort);
+    }    
+
+</code></pre>
+        <h3>JpaSpecificationExecutor interface</h3>
+        <p>The <code style="color: red;">JpaSpecificationExecutor</code> interface is not a “repository interface”. It
+            declares the methods that are used
+            to retrieve entities from the database by using Specification objects that use the JPA criteria API.</p>
+        <p>Let's look at the methods/APIs that the <code style="color: red;">JpaSpecificationExecutor</code> interface
+            provides:</p>
+        <pre><code>
+    package org.springframework.data.jpa.repository;
+
+    import java.util.List;
+    import java.util.Optional;
+    
+    import org.springframework.data.domain.Page;
+    import org.springframework.data.domain.Pageable;
+    import org.springframework.data.domain.Sort;
+    import org.springframework.data.jpa.domain.Specification;
+    import org.springframework.lang.Nullable;
+    
+    public interface JpaSpecificationExecutor<T> {
+    
+     Optional<T> findOne(@Nullable Specification<T> spec);
+    
+     List<T> findAll(@Nullable Specification<T> spec);
+    
+     Page<T> findAll(@Nullable Specification<T> spec, Pageable pageable);
+    
+     List<T> findAll(@Nullable Specification<T> spec, Sort sort);
+    
+     long count(@Nullable Specification<T> spec);
+    }
+
+</code></pre>
+        <h2>Conclusion</h2>
+        <p>In this tutorial, we have seen what is Spring Data JPA and how to reduce a boilerplate code to develop a DAO
+            layer. We have also seen Spring Data and Spring Data JPA repository interfaces.</p>
+    </div>
+</body>
+
+</html>
