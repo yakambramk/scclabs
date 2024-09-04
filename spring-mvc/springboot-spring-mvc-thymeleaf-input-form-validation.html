@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot, Spring MVC, Thymeleaf Input Form Validation</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Boot, Spring MVC, Thymeleaf Input Form Validation</h1>
+        <p> In this quick article, we will discuss the process of configuring a web application form to support
+            validation. </p>
+
+        <p> We will use the Spring boot, Hibernate validator with Thymeleaf to develop a simple Spring MVC web
+            application.</p>
+        <h2>What you’ll build</h2>
+        <p>We’ll build a simple Spring MVC application that takes user input and checks the input using standard
+            validation annotations. We’ll also see how to display the error message on the screen so the user can
+            re-enter a valid input.</p>
+        <p> The below diagram shows an overall project structure, running application, etc.</p>
+        <img src="/assets/spring-mvc-image/application.PNG" alt="" class="image-fluid">
+        <h2>Add Maven Dependencies</h2>
+        <pre>&lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            </pre>
+        <h2>Create a PersonForm object</h2>
+        <p>The application involves validating a user’s name and age, so first, you need to create a class to back the
+            form to create a person.</p>
+        <pre>package net.javaguides.springboot.springbootwebappvalidateinputform;
+
+                import javax.validation.constraints.Min;
+                import javax.validation.constraints.NotNull;
+                import javax.validation.constraints.Size;
+                
+                public class PersonForm {
+                
+                    @NotNull
+                    @Size(min = 2, max = 30)
+                    private String name;
+                
+                    @NotNull
+                    @Min(18)
+                    private Integer age;
+                
+                    public String getName() {
+                        return this.name;
+                    }
+                
+                    public void setName(String name) {
+                        this.name = name;
+                    }
+                
+                    public Integer getAge() {
+                        return age;
+                    }
+                
+                    public void setAge(Integer age) {
+                        this.age = age;
+                    }
+                
+                    public String toString() {
+                        return "Person(Name: " + this.name + ", Age: " + this.age + ")";
+                    }
+                }
+                </pre>
+        <p>The <b>PersonForm</b> class has two attributes: name and age. It is flagged with several standard validation
+            annotations:</p>
+        <ul>
+            <li><b>@Size(min=2, max=30)</b> will only allow names between 2 and 30 characters long</li>
+            <li><b>@NotNull</b> won’t allow a null value, which is what Spring MVC generates if the entry is empty</li>
+            <li><b> @Min(18)</b> won’t allow if the age is less than 18</li>
+        </ul>
+        <p>In addition to that, you can also see getters/setters for name and age as well as a convenient
+            <b>toString()</b> method.
+        </p>
+        <h2>Create a Spring MVC Controller - WebController.java</h2>
+        <p>Let's create a simple <b>WebController</b> class.</p>
+        <pre>package net.javaguides.springboot.springbootwebappvalidateinputform;
+
+            import javax.validation.Valid;
+            
+            import org.springframework.stereotype.Controller;
+            import org.springframework.validation.BindingResult;
+            import org.springframework.web.bind.annotation.GetMapping;
+            import org.springframework.web.bind.annotation.PostMapping;
+            import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+            import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+            
+            @Controller
+            public class WebController implements WebMvcConfigurer {
+            
+                @Override
+                public void addViewControllers(ViewControllerRegistry registry) {
+                    registry.addViewController("/results").setViewName("results");
+                }
+            
+                @GetMapping("/")
+                public String showForm(PersonForm personForm) {
+                    return "form";
+                }
+            
+                @PostMapping("/")
+                public String checkPersonInfo(@Valid PersonForm personForm, BindingResult bindingResult) {
+            
+                    if (bindingResult.hasErrors()) {
+                        return "form";
+                    }
+            
+                    return "redirect:/results";
+                }
+            }</pre>
+        <p>This controller has a GET and a POST method, both mapped to /.</p>
+        <p> The showForm() method returns the form template. It includes a PersonForm in its method signature so the
+            template can associate form attributes with a PersonForm.</p>
+        <p> The checkPersonFormInfo() method accepts two arguments:</p>
+        <p> - A personForm object marked up with @Valid to gather the attributes filled out in the form you’re about to
+            build.</p>
+        <p> - A bindingResult object so you can test for and retrieve validation errors.</p>
+        <p> You can retrieve all the attributes from the form bound to the PersonForm object. In the code, you test for
+            errors, and if so, send the user back to the original form template. In that situation, all the error
+            attributes are displayed.</p>
+        <p> If all of the person’s attribute is valid, then it redirects the browser to the final results template.</p>
+        <h2>Thyemeleaf Templates</h2>
+        <p><b>form.html</b></p>
+        <p>Note that this is a very simple example, these web pages don’t have any sophisticated CSS or JavaScript. But
+            for any production website, it’s valuable to learn how to style your web pages.</p>
+        <p>Refer to the below articles to add CSS or JavaScript to web pages.</p>
+        <p><a href="springboot-mvc-web-application-thymeleaf-jpa-mysql-example.html">Spring Boot 2 MVC Web Application
+                Thymeleaf JPA MySQL Example</a></p>
+        <p><a href="springboot-spring-mvc-role-based-spring-security-jpa-thymeleaf-mysql-tutorial.html">Spring Boot + Spring MVC + Role Based Spring Security + JPA + Thymeleaf + MySQL Tutorial </a></p>
+        <pre>&lt;!DOCTYPE html&gt;
+                &lt;html xmlns="http://www.w3.org/1999/xhtml" 
+                   xmlns:th="http://www.thymeleaf.org"&gt;
+                &lt;head&gt;
+                &lt;meta charset="ISO-8859-1"&gt;
+                &lt;title&gt;Insert title here&lt;/title&gt;
+                &lt;/head&gt;
+                &lt;body&gt;
+                 &lt;form action="#" th:action="@{/}" th:object="${personForm}"
+                  method="post"&gt;
+                  &lt;table&gt;
+                   &lt;tr&gt;
+                    &lt;td&gt;Name:&lt;/td&gt;
+                    &lt;td&gt;&lt;input type="text" th:field="*{name}" /&gt;&lt;/td&gt;
+                    &lt;td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"&gt;Name
+                     Error&lt;/td&gt;
+                   &lt;/tr&gt;
+                   &lt;tr&gt;
+                    &lt;td&gt;Age:&lt;/td&gt;
+                    &lt;td&gt;&lt;input type="text" th:field="*{age}" /&gt;&lt;/td&gt;
+                    &lt;td th:if="${#fields.hasErrors('age')}" th:errors="*{age}"&gt;Age
+                     Error&lt;/td&gt;
+                   &lt;/tr&gt;
+                   &lt;tr&gt;
+                    &lt;td&gt;&lt;button type="submit"&gt;Submit&lt;/button&gt;&lt;/td&gt;
+                   &lt;/tr&gt;
+                  &lt;/table&gt;
+                 &lt;/form&gt;
+                &lt;/body&gt;
+                &lt;/html&gt;
+                </pre>
+        <p>The page contains a simple form with each field in a separate slot of a table. The form is geared to post
+            towards /. It is marked as being backed up by the personForm object that you saw in the GET method in the
+            web controller. This is known as a bean-backed form. There are two fields in the PersonForm bean, and you
+            can see them tagged <b> th:field="{name}" and th:field="{age}"</b>. Next to each field is a secondary
+            element used
+            to show any validation errors.</p>
+        <p> Finally, you have a button to submit. In general, if the user enters a name or age that violates the @Valid
+            constraints, it will bounce back to this page with the error message on display. If a valid name and age are
+            entered, the user is routed to the next web page.</p>
+        <p><b>results.html</b></p>
+        <pre>&lt;!DOCTYPE html&gt;
+                &lt;html&gt;
+                &lt;head&gt;
+                &lt;meta charset="ISO-8859-1"&gt;
+                &lt;title&gt;Insert title here&lt;/title&gt;
+                &lt;/head&gt;
+                   &lt;body&gt;Congratulations! You are old enough to sign up for this
+                         site.&lt;/body&gt;
+                &lt;/html&gt;
+                </pre>
+        <h2>Create an Application class</h2>
+        <p>Let's create Spring boot main entry point Application class:</p>
+
+        <pre>package net.javaguides.springboot.springbootwebappvalidateinputform;
+
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+    
+    @SpringBootApplication
+    public class Application {
+        public static void main(String[] args) {
+            SpringApplication.run(Application.class, args);
+        }
+    }</pre>
+        <p>To activate Spring MVC, you would normally add @EnableWebMvc to the Application class. But Spring Boot’s
+            @SpringBootApplication already adds this annotation when it detects spring-webmvc on your classpath. This
+            same annotation allows it to find the annotated @Controller class and its methods.</p>
+        <p> The Thymeleaf configuration is also taken care of by @SpringBootApplication: by default, templates are
+            located in the classpath under templates/ and are resolved as views by stripping the '.html' suffix of the
+            file name. Thymeleaf settings can be changed and overridden in a variety of ways depending on what you need
+            to achieve, but the details are not relevant to this guide.</p>
+        <h2>Running Spring Boot Application</h2>
+        <p>You can run an application via <b>Application.main() </b> method or using <b>./mvnw spring-boot:run</b>.
+            Or you can build the JAR file with ./mvnw clean package. Then you can run the JAR file:</p>
+        <pre>java -jar target/gs-validating-form-input-0.1.0.jar</pre>
+        <p>The application should be up and running within a few seconds.</p>
+        <h2>Demo</h2>
+        <p>Hit this link in the browser http://localhost:8080/, you should see a form like this:</p>
+        <img src="/assets/spring-mvc-image/output1.PNG" alt="" class="image-fluid">
+        <p>What happens if you enter <b>A</b> for your name and <b>15</b> for your age and click on Submit?</p>
+        <img src="/assets/spring-mvc-image/output2.PNG" alt="" class="image-fluid">
+        <p>Here you can see that because it violated the constraints in the <b>PersonForm</b> class, you get bounced
+            back to the "main" page. If you click on Submit with nothing in the entry box, you get a different error.
+        </p>
+        <img src="/assets/spring-mvc-image/output3.PNG" alt="" class="image-fluid">
+        <p>If you enter a valid name and age, you end up on the results page!</p>
+        <img src="/assets/spring-mvc-image/output4.PNG" alt="" class="image-fluid">
+
+    </div>
+</body>
+
+</html>
