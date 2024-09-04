@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA - Query Creation from Method Names</h1>
+        <p>In this article, we will learn how we can create Spring Data JPA query methods by using the <b>query
+                generation from the method name</b> strategy.</p>
+        <h2>Overview</h2>
+        <p>Spring Data JPA query methods are the most powerful methods, we can create query methods to select records
+            from the database without writing SQL queries. Behind the scenes, Spring Data JPA will create SQL queries
+            based on the query method and execute the query for us.</p>
+        <p>The query generation from the method name is a query generation strategy where the invoked query is derived
+            from the name of the query method.</p>
+        <p>We can create query methods for the repository using Entity fields and creating query methods is also called
+            finder methods ( findBy, findAll …)</p>
+        <p>For example: Consider we have UserRepository with findByEmailAddressAndLastname() is a query method:</p>
+        <pre><code>
+public interface UserRepository extends Repository&lt;User, Long> {
+    List&lt;User> findByEmailAddressAndLastname(String emailAddress, String lastname);
+}
+
+</code></pre>
+        <p>Spring Data JPA behind the scene creates a query using the JPA criteria API from the above query method
+            (findByEmailAddressAndLastname), but, essentially, this translates into the following JPQL query: <b>select
+                u
+                from User u where u.emailAddress = ?1 and u.lastname = ?2</b>. </p>
+        <h2>Supported keywords inside method names</h2>
+        <p>The following table describes the keywords supported for JPA and what a method containing that keyword
+            translates to:</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/spring-data-jpa-keywords1.PNG">
+        <p><a href="https://docs.spring.io/spring-data/jpa/reference/#jpa.query-methods.query-creation" target="_blank">Refer to official Spring Data JPA documentation</a> to know more about supported keywords.</p>
+        <h2>Rules for Creating Query Methods</h2>
+        <p>Let's take a look into the following few rules to create query methods using method names:</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/Creating Database Queries From Method Names.005.jpeg">
+        <p>Now, we know the supported keywords and rules to create query methods from method names right. </p>
+        <p>Let's create a Spring boot project from scratch to demonstrate the usage of generating Spring Data JPA query
+            methods from method names.</p>
+        <h2>1. Creating Spring Boot Project</h2>
+        <p>Spring Boot provides a web tool called <a href="https://start.spring.io/">https://start.spring.io</a> to bootstrap an application
+            quickly. Just go
+            to <a href="https://start.spring.io/">https://start.spring.io</a> and generate a new spring boot project.</p>
+        <p><b>Use the below details in the Spring boot creation:</b></p>
+        <p><b>Project Name: </b>spring-data-jpa-course</p>
+        <p><b>Project Type: </b>Maven</p>
+        <p><b>Choose dependencies: </b>Spring Data JPA, MySQL Driver, Lombok</p>
+        <p><b>Package name: </b>net.javaguides.springboot</p>
+        <h2>2. Maven Dependencies</h2>
+        <p>Here is the complete <code style="color: red;">pom.xml</code> for your reference:</p>
+        <pre><code>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;3.0.4&lt;/version&gt;
+        &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+    &lt;groupId&gt;net.javaguides&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-data-jpa-course&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;spring-data-jpa-course&lt;/name&gt;
+    &lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+    &lt;properties&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+&lt;/project&gt;
+
+</code></pre>
+        <h2>3. Configure MySQL database</h2>
+        <p>Let's use the MySQL database to store and retrieve the data in this example and we gonna use Hibernate
+            properties to create and drop tables.</p>
+        <p>Open the <code style="color: red;">application.properties</code> file and add the following configuration to
+            it:</p>
+        <pre><code>
+spring.datasource.url=jdbc:mysql://localhost:3306/demo?useSSL=false
+spring.datasource.username=root
+spring.datasource.password=Mysql@123
+
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQLDialect
+
+spring.jpa.hibernate.ddl-auto = create-drop
+
+</code></pre>
+        <p>Make sure that you will create a <b>demo</b> database before running the Spring boot application.</p>
+        <p>Also, change the MySQL username and password as per your MySQL installation on your machine.</p>
+        <h2>4. Create JPA Entity - Product.java</h2>
+        <p>Let's create an <code style="color: red;">entity</code> package inside a base package
+            "net.javaguides.springboot".</p>
+        <p>Within the <code style="color: red;">entity</code> package, create a <code style="color: red;">Product</code>
+            class with the following content:</p>
+        <pre><code>
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Table(
+        name = "products",
+        schema = "ecommerce",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "sku_unique",
+                        columnNames = "stock_keeping_unit"
+                )
+        }
+)
+public class Product {
+
+    @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "product_generator"
+    )
+
+    @SequenceGenerator(
+            name = "product_generator",
+            sequenceName = "product_sequence_name",
+            allocationSize = 1
+    )
+    private Long id;
+
+    @Column(name = "stock_keeping_unit", nullable = false)
+    private String sku;
+
+    @Column(nullable = false)
+    private String name;
+
+    private String description;
+    private BigDecimal price;
+    private boolean active;
+    private String imageUrl;
+
+    @CreationTimestamp
+    private LocalDateTime dateCreated;
+
+    @UpdateTimestamp
+    private LocalDateTime lastUpdated;
+}
+
+</code></pre>
+        <p>Note that we are using Lombok annotations to reduce the boilerplate code.</p>
+        <h2>5. Create Spring Data JPA Repository</h2>
+        <p>The next thing we’re gonna do is to create a repository to access <code style="color: red;">Product</code>
+            entity data from the database.</p>
+        <p>The <code style="color: red;">JpaRepository</code> interface defines methods for all the CRUD operations on
+            the entity, and a default
+            implementation of the <code style="color: red;">JpaRepository</code> called <code
+                style="color: red;">SimpleJpaRepository</code>.</p>
+        <p>Let's create a repository package inside a base package "net.javaguides.springdatarest".</p>
+
+        <p>Within the repository package, create a <code style="color: red;">ProductRepository</code> interface with the
+            following content:
+        </p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+public interface ProductRepository extends JpaRepository&lt;Product, Long&gt; {
+
+    /**
+     * Returns the found product entry by using its name as search
+     * criteria. If no product entry is found, this method
+     * returns null.
+     */
+    public Product findByName(String name);
+
+    /**
+     * Returns an Optional which contains the found product
+     * entry by using its id as search criteria. If no product entry
+     * is found, this method returns an empty Optional.
+     */
+    Optional&lt;Product&gt; findById(Long id);
+
+    /**
+     * Returns the found list of product entries whose name or description is given
+     * as a method parameters. If no product entries is found, this method
+     * returns an empty list.
+     */
+    List&lt;Product&gt; findByNameOrDescription(String name, String description);
+
+    /**
+     * Returns the found list of product entries whose name and description is given
+     * as a method parameters. If no product entries is found, this method
+     * returns an empty list.
+     */
+    List&lt;Product&gt; findByNameAndDescription(String name, String description);
+
+    /**
+     * Return the distinct product entry whose name is given as a method parameter
+     *  If no product entry is found, this method returns null.
+     */
+    Product findDistinctByName(String name);
+
+    /**
+     * Return the products whose price is greater than given price as method parameter
+     * @param price
+     * @return
+     */
+    List&lt;Product&gt; findByPriceGreaterThan(BigDecimal price);
+
+    /**
+     * Return the products whose price is less than given price as method parameter
+     * @param price
+     * @return
+     */
+    List&lt;Product&gt; findByPriceLessThan(BigDecimal price);
+
+    /**
+     * Return the filtered the product records that match the given text
+     * @param name
+     * @return
+     */
+    List&lt;Product&gt; findByNameContaining(String name);
+
+    /**
+     * Return products based on SQL like condition
+     * @param name
+     * @return
+     */
+    List&lt;Product&gt; findByNameLike(String name);
+
+    /**
+     * Returns a products whose price between start price and end price
+     * @param startPrice
+     * @param endPrice
+     * @return
+     */
+    List&lt;Product&gt; findByPriceBetween(BigDecimal startPrice, BigDecimal endPrice);
+
+    /**
+     * Returns a products whose dateCreated between start date and end date
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List&lt;Product&gt; findByDateCreatedBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+}
+
+        </code></pre>
+        <p>Let's understand the query methods from the above <code style="color: red;">ProductRepository</code>
+            interface.</p>
+        <p><b>Query method to find or retrieve a product by name:</b></p>
+        <pre><code>
+    /**
+     * Returns the found product entry by using its name as search
+     * criteria. If no product entry is found, this method
+     * returns null.
+     */
+    public Product findByName(String name);
+
+</code></pre>
+        <p><b>Query method to find or retrieve a product by id:</b></p>
+        <pre><code>
+    /**
+    * Returns an Optional which contains the found product
+    * entry by using its id as search criteria. If no product entry
+    * is found, this method returns an empty Optional.
+    */
+   Optional&lt;Product&gt; findById(Long id);
+
+</code></pre>
+<p><b>Query method to find or retrieve a product by name or description:</b></p>
+<pre><code>
+    /**
+    * Returns the found list of product entries whose name or description is given
+    * as a method parameters. If no product entries is found, this method
+    * returns an empty list.
+    */
+   List&lt;Product&gt; findByNameOrDescription(String name, String description);
+
+</code></pre>
+<p><b>Query method to find or retrieve a product by name and description:</b></p>
+<pre><code>
+    /**
+    * Returns the found list of product entries whose name and description is given
+    * as a method parameters. If no product entries is found, this method
+    * returns an empty list.
+    */
+    List&lt;Product&gt; findByNameAndDescription(String name, String description);
+
+</code></pre>
+<p><b>Query method to find or retrieve a unique product by name:</b></p>
+<pre><code>
+    /**
+     * Return the distinct product entry whose name is given as a method parameter
+     *  If no product entry is found, this method returns null.
+     */
+    Product findDistinctByName(String name);
+
+</code></pre>
+<p><b>Query method to find or retrieve products whose price is greater than the given price as a method parameter:</b></p>
+<pre><code>
+    /**
+    * Return the products whose price is greater than given price as method parameter
+    * @param price
+    * @return
+    */
+   List&lt;Product&gt; findByPriceGreaterThan(BigDecimal price);
+
+</code></pre>
+<p><b>Query method to find or retrieve products whose price is less than given price as a method parameter:</b></p>
+<pre><code>
+    /**
+    * Return the products whose price is less than given price as method parameter
+    * @param price
+    * @return
+    */
+   List&lt;Product&gt; findByPriceLessThan(BigDecimal price);
+
+</code></pre>
+<p><b>Query method to find or retrieve filtered products that match the given text ( contains check):</b></p>
+<pre><code>
+    /**
+    * Return the filtered the product records that match the given text
+    * @param name
+    * @return
+    */
+   List&lt;Product&gt; findByNameContaining(String name);
+
+</code></pre>
+<p><b>Query method to find or retrieve products for a specified pattern in a column ( SQL LIKE condition ):</b></p>
+<pre><code>
+    /**
+    * Return products based on SQL like condition
+    * @param name
+    * @return
+    */
+   List&lt;Product&gt; findByNameLike(String name);
+
+</code></pre>
+<p><b>Query method to find or retrieve products based on the price range ( start price and end price):</b></p>
+<pre><code>
+    /**
+    * Returns a products whose price between start price and end price
+    * @param startPrice
+    * @param endPrice
+    * @return
+    */
+   List&lt;Product&gt; findByPriceBetween(BigDecimal startPrice, BigDecimal endPrice);
+
+</code></pre>
+<h2>6. Test Spring Data JPA Query Methods</h2>
+<p>Now let's write a JUnit test case to test above all Spring Data JPA query methods:</p>
+<pre><code>
+import com.springdatajpa.springboot.entity.Product;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@SpringBootTest
+public class QueryMethodsTest {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Test
+    void findByNameMethod(){
+
+        Product product = productRepository.findByName("product 2");
+
+        System.out.println(product.getId());
+        System.out.println(product.getName());
+        System.out.println(product.getDescription());
+    }
+
+    @Test
+    void findByIdMethod(){
+        Product product = productRepository.findById(1L).get();
+
+        System.out.println(product.getId());
+        System.out.println(product.getName());
+        System.out.println(product.getDescription());
+    }
+
+    @Test
+    void findByNameOrDescriptionMethod(){
+
+        List&lt;Product&gt; products = productRepository.findByNameOrDescription("product 1",
+                "product 1 description");
+
+        products.forEach((p) -&gt; {
+            System.out.println(p.getId());
+            System.out.println(p.getName());
+        });
+    }
+
+    @Test
+    void findByNameAndDescriptionMethod(){
+
+        List&lt;Product&gt; products = productRepository.findByNameAndDescription("product 1",
+                "product 1 description");
+
+        products.forEach((p) -&gt; {
+            System.out.println(p.getId());
+            System.out.println(p.getName());
+        });
+    }
+
+    @Test
+    void findDistinctByNameMethod(){
+
+        Product product = productRepository.findDistinctByName("product 1");
+        System.out.println(product.getId());
+        System.out.println(product.getName());
+        System.out.println(product.getDescription());
+    }
+
+    @Test
+    void findByPriceGreaterThanMethod(){
+        List&lt;Product&gt; products = productRepository.findByPriceGreaterThan(new BigDecimal(100));
+        products.forEach((p) -&gt; {
+            System.out.println(p.getId());
+            System.out.println(p.getName());
+        });
+    }
+
+    @Test
+    void findByPriceLessThanMethod(){
+
+        List&lt;Product&gt; products = productRepository.findByPriceLessThan(new BigDecimal(200));
+        products.forEach((p) -&gt; {
+            System.out.println(p.getId());
+            System.out.println(p.getName());
+        });
+    }
+
+    @Test
+    void findByNameContainingMethod(){
+
+        List&lt;Product&gt; products = productRepository.findByNameContaining("product 1");
+        products.forEach((p) -&gt; {
+            System.out.println(p.getId());
+            System.out.println(p.getName());
+        });
+    }
+
+    @Test
+    void findByNameLikeMethod(){
+
+        List&lt;Product&gt; products = productRepository.findByNameLike("product 1");
+        products.forEach((p) -&gt; {
+            System.out.println(p.getId());
+            System.out.println(p.getName());
+        });
+    }
+
+    @Test
+    void findByPriceBetweenMethod(){
+        List&lt;Product&gt; products = productRepository.findByPriceBetween(
+                new BigDecimal(100), new BigDecimal(300)
+        );
+
+        products.forEach((p) -&gt;{
+            System.out.println(p.getId());
+            System.out.println(p.getName());
+        });
+
+    }
+
+    @Test
+    void findByDateCreatedBetweenMethod(){
+
+        // start date
+        LocalDateTime startDate = LocalDateTime.of(2022,02,13,17,48,33);
+        // end date
+        LocalDateTime endDate = LocalDateTime.of(2022,02,13,18,15,21);
+
+        List&lt;Product&gt; products = productRepository.findByDateCreatedBetween(startDate, endDate);
+
+        products.forEach((p) -&gt;{
+            System.out.println(p.getId());
+            System.out.println(p.getName());
+        });
+    }
+}
+
+</code></pre>
+<h2>Output:</h2>
+<img src="../assets/spring-data-jpa-tutorial-images/Spring Data JPA - Query Creation from Method Names.png">
+    </div>
+</body>
+
+</html>
