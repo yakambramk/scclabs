@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot + Spring MVC + Role Based Spring Security + JPA + Thymeleaf + MySQL Tutorial</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Boot + Spring MVC + Role Based Spring Security + JPA + Thymeleaf + MySQL Tutorial</h1>
+        <p>In this tutorial, we will learn how to use the Spring Boot Security Starter to secure Spring MVC-based web
+            applications. We will develop step by step Message Storing Spring MVC web application(securing with spring
+            security) using spring boot, spring MVC, role-based spring security, JPA, Thymeleaf, and MySQL.</p>
+        <p> Spring Security is a framework for securing Java-based applications at various layers with great flexibility
+            and customizability. Spring Security provides authentication and authorization support against database
+            authentication, LDAP, Java Authentication and Authorization Service (JAAS), and many more. Spring Security
+            provides support for dealing with common attacks like CSRF, XSS, and session fixation protection, with
+            minimal configuration.</p>
+        <ul>
+            <li>Authentication refers to the process of verifying the user, which is typically done by asking for
+                credentials.</li>
+            <li> Authorization refers to the process of verifying whether or not the user is allowed to do a certain
+                activity.</li>
+        </ul>
+        <p><b>Check out the latest Spring security tutorial</b> - <a href="">Spring Boot User Registration and Login
+                Example Tutorial</a></p>
+
+        <p>In this tutorial, we will use Java-based configuration support for security. Using Spring Security in the
+            Spring Boot application became easier with its autoconfiguration features.</p>
+        <h2>Table of Contents</h2>
+        <ol>
+            <li>Spring Security with its autoconfiguration features</li>
+            <li> What we’ll build</li>
+            <li> Tools and Technologies Used</li>
+            <li> Database Design for Role-Based Spring Security</li>
+            <li> Creating and Importing a Project</li>
+            <li> Packaging Structure</li>
+            <li> The pom.xml File</li>
+            <li> Create the JPA entities called Users, Roles, and Message</li>
+            <li> Spring Data JPA Repository Interface - UserRepository.java</li>
+            <li> Spring Data JPA Repository Interface - MessageRepository.java</li>
+            <li> UserDetailsService Implementation</li>
+            <li> Customized Spring Security Configuration Extending WebSecurityConfigurerAdapter</li>
+            <li> Spring WebMVC Configuration</li>
+            <li> Spring MVC Controller - HomeController.java</li>
+            <li> MySQL Configuration - application.properties</li>
+            <li> Implementing the Remember-Me Feature</li>
+            <li> Persistent Tokens</li>
+            <li> Thymeleaf layout View</li>
+            <li> Thymeleaf Login View</li>
+            <li> Thymeleaf Userhome View</li>
+            <li> Thymeleaf Adminhome View</li>
+            <li> Index View</li>
+            <li> Sample data for Users and Roles - src/main/resources/data.sql</li>
+            <li> Running Application</li>
+            <li> Demo</li>
+        </ol>
+        <h2>1. Spring Security with its autoconfiguration features</h2>
+        <p>Before moving to secure actual projects, let's discuss spring boot provided autoconfiguration of spring
+            security for a quick start.</p>
+        <p> Adding the Spring Security Starter (spring-boot-starter-security) to a Spring Boot application will:</p>
+        <ul>
+            <li>Enable HTTP basic security</li>
+            <li> Register the AuthenticationManager bean with an in-memory store and a single user</li>
+            <li> Ignore paths for commonly used static resource locations (such as /css/, /js/, /images/**, etc.)</li>
+            <li> Enable common low-level features such as XSS, CSRF, caching, etc.</li>
+        </ul>
+        <p>Add the below dependencies to the pom.xml file
+        </p>
+        <pre>&lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        </pre>
+
+        <p>Now if you run the application and access <b>http://localhost:8080</b>, you will be prompted to enter the
+            user
+            credentials. The default user is the user and the password is auto-generated. You can find it in the console
+            log.</p>
+        <p>Using default security password: 78fa095d-3f4c-48b1-ad50-e24c31d5cf35</p>
+
+        <p>You can change the default user credentials in application.properties as follows:</p>
+        <pre>security.user.name=admin
+    security.user.password=secret
+    security.user.role=USER,ADMIN</pre>
+        <p>Okay, this is nice for a quick demo. But in our actual projects, we may want to implement role-based access
+            control using a persistence data store such as a database. Also, you might want to fine-tune access to
+            resources (URLs, service layer methods, etc.) based on roles.</p>
+        <p> Now it's time to see how to customize the default Spring Security autoconfiguration and develop step by step
+            Spring MVC web application.</p>
+        <h2>2. What we’ll build</h2>
+        <p>We will develop step by step message storing Spring MVC web application(securing with spring security) using
+            spring boot, spring MVC, role-based spring security, JPA, Thymeleaf, and MySQL.
+        </p>
+        <h2>3. Tools and Technologies Used</h2>
+        <ul>
+            <li>Spring Boot - 2+</li>
+            <li> JDK - 1.8 or later</li>
+            <li> Spring Framework - 5+</li>
+            <li> Maven - 3.2+</li>
+            <li> IDE - Eclipse or Spring Tool Suite (STS)</li>
+            <li> MYSQL - 5.1.47</li>
+            <li> Spring Security - 5+</li>
+            <li> Thymeleaf-Spring5 - 3.0.9 RELEASE</li>
+        </ul>
+        <h2>4. Database Design for Role-Based Spring Security</h2>
+        <p>First, we’ll create the database tables below to store users and roles.</p>
+        <img src="/assets/spring-mvc-image/database-design.png" alt="" class="image-fluid">
+        <h2>5. Creating and Importing a Project</h2>
+        <p>There are many ways to create a Spring Boot application. The simplest way is to use Spring Initializr at <a
+                href="http://start.spring.io/">http://start.spring.io/</a>, which is an online Spring Boot application
+            generator.</p>
+        <img src="/assets/spring-mvc-image/Screenshot 2022-08-24 at 11.06.20 PM.png" alt="" class="image-fluid">
+        <p>Look at the above diagram, we have specified the following details:</p>
+        <ul>
+            <li>Generate: Maven Project</li>
+            <li> Java Version: 1.8 (Default)</li>
+            <li> Spring Boot:2.7.3</li>
+            <li> Group: net.javaguides.springbootsecurity</li>
+            <li> Artifact: springboot-thymeleaf-security-demo</li>
+            <li> Name: springboot-thymeleaf-security-demo</li>
+            <li> Description: springboot-thymeleaf-security-demo</li>
+            <li> Package Name : net.javaguides.springbootsecurity</li>
+            <li> Packaging: jar (This is the default value)</li>
+            <li> Dependencies: Web, JPA, MySQL, DevTools, Security</li>
+        </ul>
+        <p>Once, all the details are entered, click on Generate Project button will generate a spring boot project and
+            downloads it. Next, Unzip the downloaded zip file and import it into your favorite IDE.
+        </p>
+        <h2>6. Packaging Structure</h2>
+        <p>Following is the packing structure for your reference -</p>
+        <img src="/assets/spring-mvc-image/package-structure (1).PNG" alt="" class="image-fluid">
+        <h2>7. The pom.xml File</h2>
+        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+          http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+        &lt;groupId&gt;net.javaguides.springbootsecurity&lt;/groupId&gt;
+        &lt;artifactId&gt;springboot-thymeleaf-security-demo&lt;/artifactId&gt;
+        &lt;packaging&gt;jar&lt;/packaging&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    
+        &lt;parent&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+            &lt;version&gt;2.7.3&lt;/version&gt;
+            &lt;relativePath /&gt; &lt;!-- lookup parent from repository --&gt;
+        &lt;/parent&gt;
+    
+        &lt;properties&gt;
+            &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+            &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+            &lt;java.version&gt;1.8&lt;/java.version&gt;
+        &lt;/properties&gt;
+    
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                 &lt;groupId&gt;nz.net.ultraq.thymeleaf&lt;/groupId&gt;
+                 &lt;artifactId&gt;thymeleaf-layout-dialect&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+             &lt;dependency&gt;
+                 &lt;groupId&gt;org.thymeleaf.extras&lt;/groupId&gt;
+                 &lt;artifactId&gt;thymeleaf-extras-springsecurity4&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+                &lt;optional&gt;true&lt;/optional&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+                &lt;artifactId&gt;h2&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;mysql&lt;/groupId&gt;
+                &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                    &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <p>Note that we have used Spring Data JPA starter to talk to the MySQL database.</p>
+        <h2>8. Create the JPA entities - User, Role, and Message</h2>
+        <p><b>User JPA Entity</b></p>
+        <pre>package net.javaguides.springbootsecurity.entities;
+
+    import java.util.List;
+    
+    
+    import javax.persistence.CascadeType;
+    import javax.persistence.Column;
+    import javax.persistence.Entity;
+    import javax.persistence.GeneratedValue;
+    import javax.persistence.GenerationType;
+    import javax.persistence.Id;
+    import javax.persistence.JoinColumn;
+    import javax.persistence.JoinTable;
+    import javax.persistence.ManyToMany;
+    import javax.persistence.Table;
+    import javax.validation.constraints.Size;
+    
+    import org.hibernate.validator.constraints.Email;
+    import org.hibernate.validator.constraints.NotEmpty;
+    
+    
+    @Entity
+    @Table(name="users")
+    public class User
+    {
+        @Id @GeneratedValue(strategy=GenerationType.AUTO)
+        private Integer id;
+        @Column(nullable=false)
+        @NotEmpty()
+        private String name;
+        @Column(nullable=false, unique=true)
+        @NotEmpty
+        @Email(message="{errors.invalid_email}")
+        private String email;
+        @Column(nullable=false)
+        @NotEmpty
+        @Size(min=4)
+        private String password;
+     
+        @ManyToMany(cascade=CascadeType.MERGE)
+        @JoinTable(
+           name="user_role",
+           joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="ID")},
+           inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="ID")})
+        private List<Role> roles;
+     
+        public Integer getId()
+        {
+            return id;
+        }
+        public void setId(Integer id)
+        {
+            this.id = id;
+        }
+        public String getName()
+        {
+            return name;
+        }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
+        public String getEmail()
+        {
+            return email;
+        }
+        public void setEmail(String email)
+        {
+            this.email = email;
+        }
+        public String getPassword()
+        {
+            return password;
+        }
+        public void setPassword(String password)
+        {
+            this.password = password;
+        }
+        public List<Role> getRoles()
+        {
+            return roles;
+        }
+        public void setRoles(List<Role> roles)
+        {
+            this.roles = roles;
+        }
+    }</pre>
+        <p><b>Role JPA Entity</b></p>
+        <pre>package net.javaguides.springbootsecurity.entities;
+
+    import java.util.List;
+    
+    
+    import javax.persistence.Column;
+    import javax.persistence.Entity;
+    import javax.persistence.GeneratedValue;
+    import javax.persistence.GenerationType;
+    import javax.persistence.Id;
+    import javax.persistence.ManyToMany;
+    import javax.persistence.Table;
+    
+    import org.hibernate.validator.constraints.NotEmpty;
+    
+    @Entity
+    @Table(name = "roles")
+    public class Role {
+        @Id @GeneratedValue(strategy = GenerationType.AUTO)
+        private Integer id;
+        @Column(nullable = false, unique = true)
+        @NotEmpty
+        private String name;
+    
+        @ManyToMany(mappedBy = "roles")
+        private List < User > users;
+    
+        public Integer getId() {
+            return id;
+        }
+    
+        public void setId(Integer id) {
+            this.id = id;
+        }
+    
+        public String getName() {
+            return name;
+        }
+    
+        public void setName(String name) {
+            this.name = name;
+        }
+    
+        public List < User > getUsers() {
+            return users;
+        }
+    
+        public void setUsers(List < User > users) {
+            this.users = users;
+        }
+    }</pre>
+        <p><b>Message JPA Entity</b></p>
+        <pre>package net.javaguides.springbootsecurity.entities;
+
+        import javax.persistence.Column;
+        import javax.persistence.Entity;
+        import javax.persistence.GeneratedValue;
+        import javax.persistence.GenerationType;
+        import javax.persistence.Id;
+        import javax.persistence.Table;
+        
+        
+        @Entity
+        @Table(name = "messages")
+        public class Message {
+            @Id
+            @GeneratedValue(strategy = GenerationType.AUTO)
+            private Integer id;
+        
+            @Column(nullable = false)
+            private String content;
+        
+            public Integer getId() {
+                return id;
+            }
+        
+            public void setId(Integer id) {
+                this.id = id;
+            }
+        
+            public String getContent() {
+                return content;
+            }
+        
+            public void setContent(String content) {
+                this.content = content;
+            }
+        }</pre>
+        <p>Next, create the Spring Data JPA repository for the user entity.</p>
+        <h2>9. Spring Data JPA Repository Interface - UserRepository.java</h2>
+        <pre>package net.javaguides.springbootsecurity.repositories;
+
+            import java.util.Optional;
+            import org.springframework.data.jpa.repository.JpaRepository;
+            import net.javaguides.springbootsecurity.entities.User;
+            
+        
+            public interface UserRepository extends JpaRepository<User, Integer>
+            {
+                Optional<User> findByEmail(String email);
+            }</pre>
+        <p>Next, create the Spring Data JPA repository for the Message entity.</p>
+        <h2>10. Spring Data JPA Repository Interface - MessageRepository.java</h2>
+        <pre>package net.javaguides.springbootsecurity.repositories;
+
+                import org.springframework.data.jpa.repository.JpaRepository;
+                
+                import net.javaguides.springbootsecurity.entities.Message;
+                
+               
+                public interface MessageRepository extends JpaRepository&lt;Message, Integer>{
+                
+                }</pre>
+        <h2>11. UserDetailsService Implementation</h2>
+        <p>Spring Security uses the UserDetailsService interface, which contains the loadUserByUsername(String username)
+            method to look up UserDetails for a given username. </p>
+
+        <p>The UserDetails interface represents an authenticated user object and Spring Security provides an
+            out-of-the-box implementation of org.springframework.security.core.userdetails.User. </p>
+
+        <p> Now we implement a UserDetailsService to get UserDetails from the database.</p>
+        <pre>package net.javaguides.springbootsecurity.security;
+
+            import java.util.Collection;
+            
+            import org.springframework.beans.factory.annotation.Autowired;
+            import org.springframework.security.core.GrantedAuthority;
+            import org.springframework.security.core.authority.AuthorityUtils;
+            import org.springframework.security.core.userdetails.UserDetails;
+            import org.springframework.security.core.userdetails.UserDetailsService;
+            import org.springframework.security.core.userdetails.UsernameNotFoundException;
+            import org.springframework.stereotype.Service;
+            import org.springframework.transaction.annotation.Transactional;
+            
+            import net.javaguides.springbootsecurity.entities.User;
+            import net.javaguides.springbootsecurity.repositories.UserRepository;
+            
+            
+            @Service
+            @Transactional
+            public class CustomUserDetailsService implements UserDetailsService {
+            
+                @Autowired
+                private UserRepository userRepository;
+            
+                @Override
+                public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+                    User user = userRepository.findByEmail(userName)
+                   .orElseThrow(() -> new UsernameNotFoundException("Email " + userName + " not found"));
+                     return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
+                     getAuthorities(user));
+                }
+            
+                private static Collection<? extends GrantedAuthority> getAuthorities(User user) {
+                    String[] userRoles = user.getRoles().stream().map((role) -> role.getName()).toArray(String[]::new);
+                    Collection<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(userRoles);
+                    return authorities;
+                }
+            }</pre>
+        <p>Spring Boot implemented the default Spring Security autoconfiguration in <b>SecurityAutoConfiguration</b>. To
+            switch the default web application security configuration and provide our own customized security
+            configuration, we can create a configuration class that extends <b>WebSecurityConfigurerAdapter</b> and is
+            annotated with <b> @EnableWebSecurity</b>.</p>
+        <p> Now we’ll create a configuration class that extends <b>WebSecurityConfigurerAdapter</b> to customize the
+            default Spring Security configuration.</p>
+        <h2>12. Customized Spring Security Configuration Extending WebSecurityConfigurerAdapter</h2>
+        <pre>package net.javaguides.springbootsecurity.config;
+
+                import javax.sql.DataSource;
+                
+                import org.springframework.beans.factory.annotation.Autowired;
+                import org.springframework.context.annotation.Bean;
+                import org.springframework.context.annotation.Configuration;
+                import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+                import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+                import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+                import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+                import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+                import org.springframework.security.core.userdetails.UserDetailsService;
+                import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+                import org.springframework.security.crypto.password.PasswordEncoder;
+                import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+                import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+                import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+                
+                @Configuration
+                @EnableWebSecurity
+                @EnableGlobalMethodSecurity(securedEnabled = true, proxyTargetClass = true)
+                public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+                 
+                    @Autowired
+                    private UserDetailsService customUserDetailsService;
+                 
+                    @Autowired
+                    private DataSource dataSource;
+                 
+                    @Bean
+                    public PasswordEncoder passwordEncoder() {
+                        return new BCryptPasswordEncoder();
+                    }
+                 
+                    @Autowired
+                    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+                        auth
+                         .userDetailsService(customUserDetailsService)
+                         .passwordEncoder(passwordEncoder());
+                    }
+                 
+                    @Override
+                    protected void configure(HttpSecurity http) throws Exception {
+                        http         
+                         .headers()
+                          .frameOptions().sameOrigin()
+                          .and()
+                            .authorizeRequests()
+                             .antMatchers("/resources/**", "/webjars/**","/assets/**").permitAll()
+                                .antMatchers("/").permitAll()
+                                .antMatchers("/admin/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
+                                .and()
+                            .formLogin()
+                                .loginPage("/login")
+                                .defaultSuccessUrl("/home")
+                                .failureUrl("/login?error")
+                                .permitAll()
+                                .and()
+                            .logout()
+                             .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                             .logoutSuccessUrl("/login?logout")
+                             .deleteCookies("my-remember-me-cookie")
+                                .permitAll()
+                                .and()
+                             .rememberMe()
+                              //.key("my-secure-key")
+                              .rememberMeCookieName("my-remember-me-cookie")
+                              .tokenRepository(persistentTokenRepository())
+                              .tokenValiditySeconds(24 * 60 * 60)
+                              .and()
+                            .exceptionHandling()
+                              ;
+                    }
+                    
+                    PersistentTokenRepository persistentTokenRepository(){
+                     JdbcTokenRepositoryImpl tokenRepositoryImpl = new JdbcTokenRepositoryImpl();
+                     tokenRepositoryImpl.setDataSource(dataSource);
+                     return tokenRepositoryImpl;
+                    }
+                }</pre>
+        <p>This example configures <b>CustomUserDetailsService</b> and <b>BCryptPasswordEncoder</b> to be used by
+            <b>AuthenticationManager</b> instead of the default in-memory database with a single user with a plaintext
+            password.
+        </p>
+        <p> The <b>configure(HttpSecurity http)</b> method is configured to:</p>
+        <ul>
+            <li>Ignore the static resource paths "/resources/", "/webjars/", and "/assets/**"</li>
+            <li> Allow everyone to have access to the root URL "/"</li>
+            <li> Restrict access to URLs that start with /admin/ to only users with the ADMIN role</li>
+            <li> All other URLs should be accessible to authenticated users only</li>
+        </ul>
+        <p>We are also configuring custom form-based login parameters and making them accessible to everyone. The
+            example also configures the URL to redirect the users to the /accessDenied URL if they try to access a
+            resource they don’t have access to. We are going to use Thymeleaf view templates for rendering views. The
+            thymeleaf-extrasspringsecurity4 module provides Thymeleaf Spring Security dialect attributes
+            (sec:authentication, sec:authorize, etc.) to conditionally render parts of the view based on authentication
+            status, logged-in user roles, etc.</p>
+        <p> Add the following dependency to use the Thymeleaf Spring Security dialect.</p>
+        <pre>
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.thymeleaf.extras&lt;/groupId&gt;
+                &lt;artifactId&gt;thymeleaf-extras-springsecurity4&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            </pre>
+        <p>Now we need to create a configuration class for providing MVC configuration.</p>
+        <h2>13. Spring WebMVC Configuration</h2>
+        <pre>package net.javaguides.springbootsecurity.config;
+
+                import org.springframework.beans.factory.annotation.Autowired;
+                import org.springframework.context.MessageSource;
+                import org.springframework.context.annotation.Bean;
+                import org.springframework.context.annotation.Configuration;
+                import org.springframework.validation.Validator;
+                import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+                import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+                import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+                import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
+                
+                
+                @Configuration
+                public class WebConfig implements WebMvcConfigurer
+                {   
+                 
+                    @Autowired
+                    private MessageSource messageSource;
+                
+                    @Override
+                    public void addViewControllers(ViewControllerRegistry registry)
+                    {
+                        registry.addViewController("/").setViewName("index");
+                        registry.addViewController("/login").setViewName("login");
+                        //registry.addViewController("/home").setViewName("userhome");
+                        registry.addViewController("/admin/home").setViewName("adminhome");
+                        //registry.addViewController("/403").setViewName("403");   
+                    }
+                 
+                    @Override
+                    public Validator getValidator() {
+                        LocalValidatorFactoryBean factory = new LocalValidatorFactoryBean();
+                        factory.setValidationMessageSource(messageSource);
+                        return factory;
+                    }
+                 
+                    @Bean
+                    public SpringSecurityDialect securityDialect() {
+                         return new SpringSecurityDialect();
+                    }
+                }</pre>
+        <p>Note that we have configured view controllers to specify which view to render for which URL. Also, it
+            registers SpringSecurityDialect to enable using the Thymeleaf Spring Security dialect.</p>
+        <h2>14. Spring MVC Controller - HomeController.java</h2>
+        <p>Create a package named "net.javaguides.springbootsecurity.web" and inside this package, create our
+            HomeController which redirects appropriate views:</p>
+        <pre>package net.javaguides.springbootsecurity.web;
+
+                import org.springframework.beans.factory.annotation.Autowired;
+                import org.springframework.stereotype.Controller;
+                import org.springframework.ui.Model;
+                import org.springframework.web.bind.annotation.GetMapping;
+                import org.springframework.web.bind.annotation.PostMapping;
+                
+                import net.javaguides.springbootsecurity.entities.Message;
+                import net.javaguides.springbootsecurity.repositories.MessageRepository;
+                
+                @Controller
+                public class HomeController {
+                    @Autowired
+                    private MessageRepository messageRepository;
+                
+                    @GetMapping("/home")
+                    public String home(Model model) {
+                        model.addAttribute("msgs", messageRepository.findAll());
+                        return "userhome";
+                    }
+                
+                    @PostMapping("/messages")
+                    public String saveMessage(Message message) {
+                        messageRepository.save(message);
+                        return "redirect:/home";
+                    }
+                }</pre>
+        <h2>5. MySQL Configuration - <b>application.properties</b></h2>
+        <pre>################### DataSource Configuration ##########################
+            spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+            spring.datasource.url=jdbc:mysql://localhost:3306/test
+            spring.datasource.username=root
+            spring.datasource.password=root
+            
+            spring.datasource.initialization-mode=always
+            
+            ################### Hibernate Configuration ##########################
+            
+            spring.jpa.hibernate.ddl-auto=update
+            spring.jpa.show-sql=true
+            
+            #security.user.name=admin
+            #security.user.password=secret
+            #security.user.role=USER,ADMIN</pre>
+        <h2>16. Implementing the Remember-Me Feature</h2>
+        <p>Spring Security provides the Remember-Me feature so that applications can remember the identity of a user
+            between sessions. To use the Remember-Me functionality, you just need to send the HTTP parameter
+            remember-me.</p>
+        <pre> &lt;input type="checkbox" name="remember-me"> Remember Me</pre>
+        <p>Spring Security provides the following two implementations of the Remember-Me feature out-of-the-box:</p>
+        <ul>
+            <li>Simple hash-based token as a cookie —This approach creates a token by hashing the user identity
+                information and setting it as a cookie on the client browser.</li>
+            <li> Persistent token —This approach uses a persistent store like a relational database to store the tokens.
+            </li>
+        </ul>
+        <p> In this tutorial, we will use the <b> Persistent token</b> approach.</p>
+        <h2>17. Persistent Tokens</h2>
+        <p>We will implement Spring Security Remember-Me feature, which can be used to store the generated tokens in
+            persistent storage such as a database. The persistent tokens approach is implemented using
+            <b>org.springframework.security.web.authentication.rememberme.</b>
+        </p>
+        <p> <b> PersistentTokenBasedRememberMeServices</b>, which internally uses the <b>PersistentTokenRepository</b>
+            interface to store the tokens.</p>
+        <p> Spring provides the following two implementations of <b>PersistentTokenRepository</b> out-of-the-box.</p>
+        <ul>
+            <li>InMemoryTokenRepositoryImpl can be used to store tokens in-memory (not recommended for production use).
+            </li>
+            <li> JdbcTokenRepositoryImpl can be used to store tokens in a database.</li>
+        </ul>
+        <p>The <b>JdbcTokenRepositoryImpl</b> stores the tokens in the persistent_logins table.</p>
+        <p><b>persistent_logins table</b></p>
+        <pre>create table persistent_logins
+            (
+               username varchar(64) not null,
+               series varchar(64) primary key,
+               token varchar(64) not null,
+               last_used timestamp not null
+            );</pre>
+        <p>Now that we have all the configurations ready, it’s time to create views using Thymeleaf.</p>
+        <h2>18. Thymeleaf layout View</h2>
+        <p>The most important part of this page is <b>layout:fragment="content"</b>. This is the heart of the decorator
+            page (layout). This is the tutorial uses Standard Thymeleaf Layout System.
+            Read more about Thymeleaf layouts on <a
+                href="https://www.thymeleaf.org/doc/articles/layouts.html">https://www.thymeleaf.org/doc/articles/layouts.html</a>
+        </p>
+        <pre>&lt;!DOCTYPE html&gt;
+            &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
+             xmlns:th=&quot;http://www.thymeleaf.org&quot;
+             xmlns:layout=&quot;http://www.ultraq.net.nz/thymeleaf/layout&quot;
+             xmlns:sec=&quot;http://www.thymeleaf.org/thymeleaf-extras-springsecurity3&quot;&gt;
+            &lt;head&gt;
+            &lt;meta charset=&quot;utf-8&quot; /&gt;
+            &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot; /&gt;
+            &lt;title layout:title-pattern=&quot;$DECORATOR_TITLE - $CONTENT_TITLE&quot;&gt;SpringBoot
+             Thymeleaf&lt;/title&gt;
+            &lt;meta content=&quot;width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no&quot;
+             name=&quot;viewport&quot; /&gt;
+            &lt;link rel=&quot;stylesheet&quot;
+             th:href=&quot;@{/assets/bootstrap/css/bootstrap.min.css}&quot; /&gt;
+            &lt;link rel=&quot;stylesheet&quot;
+             th:href=&quot;@{/assets/font-awesome-4.5.0/css/font-awesome.min.css}&quot; /&gt;
+            &lt;link rel=&quot;stylesheet&quot; th:href=&quot;@{/assets/css/styles.css}&quot; /&gt;
+            &lt;style&gt;
+            .footer {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                background-color: black;
+                color: white;
+                height: 100px;
+                text-align: center;
+            }
+            &lt;/style&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+             &lt;nav class=&quot;navbar navbar-inverse navbar-fixed-top&quot;&gt;
+              &lt;div class=&quot;container&quot;&gt;
+               &lt;div class=&quot;navbar-header&quot;&gt;
+                &lt;button type=&quot;button&quot; class=&quot;navbar-toggle collapsed&quot;
+                 data-toggle=&quot;collapse&quot; data-target=&quot;#navbar&quot; aria-expanded=&quot;false&quot;
+                 aria-controls=&quot;navbar&quot;&gt;
+                 &lt;span class=&quot;sr-only&quot;&gt;Toggle navigation&lt;/span&gt; &lt;span
+                  class=&quot;icon-bar&quot;&gt;&lt;/span&gt; &lt;span class=&quot;icon-bar&quot;&gt;&lt;/span&gt; &lt;span
+                  class=&quot;icon-bar&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot; th:href=&quot;@{/}&quot;&gt;SpringBoot
+                 Thymeleaf&lt;/a&gt;
+               &lt;/div&gt;
+               &lt;div id=&quot;navbar&quot; class=&quot;collapse navbar-collapse&quot;&gt;
+                &lt;ul class=&quot;nav navbar-nav&quot;&gt;
+                 &lt;li sec:authorize=&quot;isAuthenticated()&quot;&gt;&lt;a th:href=&quot;@{/logout}&quot;&gt;Logout&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+               &lt;/div&gt;
+              &lt;/div&gt;
+             &lt;/nav&gt;
+            
+             &lt;div class=&quot;container&quot;&gt;
+              &lt;div layout:fragment=&quot;content&quot;&gt;
+               &lt;!-- Your Page Content Here --&gt;
+              &lt;/div&gt;
+             &lt;/div&gt;
+            
+             &lt;script th:src=&quot;@{'/assets/js/jquery-2.1.4.min.js'}&quot;&gt;&lt;/script&gt;
+             &lt;script th:src=&quot;@{'/assets/bootstrap/js/bootstrap.min.js'}&quot;&gt;&lt;/script&gt;
+            
+             &lt;div class=&quot;footer&quot;&gt;
+              &lt;h1&gt;
+               &lt;a href=&quot;http://www.javaguides.net/p/spring-boot-tutorial.html&quot;&gt;
+                Spring Boot Tutorial&lt;/a&gt;
+              &lt;/h1&gt;
+             &lt;/div&gt;
+            
+            &lt;/body&gt;
+            &lt;/html&gt;
+            </pre>
+        <h2>19. Thymeleaf Login View</h2>
+        <p>This code creates the login form with the <b>username</b> and <b>password</b> fields and renders a login
+            error if there is
+            an error request parameter. The code configures the login form failureUrl to <b>"/login?error"</b>, so if
+            the users
+            provide incorrect credentials, they will be redirected to the <b>/login?error</b> URL.</p>
+        <pre>&lt;!DOCTYPE html&gt;
+                &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
+                 xmlns:th=&quot;http://www.thymeleaf.org&quot; 
+                 xmlns:layout=&quot;http://www.ultraq.net.nz/thymeleaf/layout&quot;
+                 xmlns:sec=&quot;http://www.thymeleaf.org/thymeleaf-extras-springsecurity3&quot;
+                 layout:decorator=&quot;layout&quot;&gt;
+                &lt;head&gt;
+                &lt;title&gt;Log in&lt;/title&gt;
+                &lt;/head&gt;
+                &lt;body&gt;
+                 &lt;div layout:fragment=&quot;content&quot;&gt;
+                  &lt;div class=&quot;panel col-md-5&quot;&gt;
+                   &lt;div class=&quot;panel panel-primary&quot;&gt;
+                    &lt;div class=&quot;panel-heading&quot;&gt;Login Form&lt;/div&gt;
+                    &lt;div class=&quot;panel-body&quot;&gt;
+                     &lt;form action=&quot;home&quot; th:action=&quot;@{/login}&quot; method=&quot;post&quot;&gt;
+                      &lt;div class=&quot;form-group has-feedback&quot;&gt;
+                       &lt;input type=&quot;email&quot; class=&quot;form-control&quot; name=&quot;username&quot;
+                        placeholder=&quot;Email&quot; /&gt; &lt;span
+                        class=&quot;glyphicon glyphicon-envelope form-control-feedback&quot;&gt;&lt;/span&gt;
+                      &lt;/div&gt;
+                      &lt;div class=&quot;form-group has-feedback&quot;&gt;
+                       &lt;input type=&quot;password&quot; class=&quot;form-control&quot; name=&quot;password&quot;
+                        placeholder=&quot;Password&quot; /&gt; &lt;span
+                        class=&quot;glyphicon glyphicon-lock form-control-feedback&quot;&gt;&lt;/span&gt;
+                      &lt;/div&gt;
+                      &lt;div class=&quot;form-group&quot;&gt;
+                       &lt;label&gt;
+                            &lt;input type=&quot;checkbox&quot; name=&quot;remember-me&quot;&gt; Remember Me
+                          &lt;/label&gt;
+                      &lt;/div&gt;
+                      &lt;div class=&quot;row&quot;&gt;
+                       &lt;div class=&quot;form-group col-xs-offset-8 col-xs-4&quot;&gt;
+                        &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary btn-block btn-flat&quot;
+                         th:text=&quot;#{label.login}&quot;&gt;LogIn&lt;/button&gt;
+                       &lt;/div&gt;
+                      &lt;/div&gt;
+                      &lt;div class=&quot;row&quot;&gt;
+                       &lt;div class=&quot;col-xs-12&quot;&gt;
+                        &lt;div th:if=&quot;${param.error}&quot;
+                         class=&quot;alert alert-danger alert-dismissable&quot;&gt;
+                         &lt;p&gt;
+                          &lt;i class=&quot;icon fa fa-ban&quot;&gt;&lt;/i&gt; &lt;span
+                           th:text=&quot;#{error.login_failed}&quot;&gt;Invalid Email and
+                           Password.&lt;/span&gt;
+                         &lt;/p&gt;
+                        &lt;/div&gt;
+                        &lt;div th:if=&quot;${param.logout}&quot;
+                         class=&quot;alert alert-info alert-dismissable&quot;&gt;
+                         &lt;p&gt;
+                          &lt;i class=&quot;icon fa fa-info&quot;&gt;&lt;/i&gt; &lt;span
+                           th:text=&quot;#{info.logout_success}&quot;&gt;You have been logged
+                           out.&lt;/span&gt;
+                         &lt;/p&gt;
+                        &lt;/div&gt;
+                        &lt;div th:if=&quot;${msg!=null}&quot;
+                         class=&quot;alert alert-warning alert-dismissable&quot;&gt;
+                         &lt;p&gt;
+                          &lt;i class=&quot;icon fa fa-warning&quot;&gt;&lt;/i&gt; &lt;span th:text=&quot;${msg}&quot;&gt;&lt;/span&gt;
+                         &lt;/p&gt;
+                        &lt;/div&gt;
+                       &lt;/div&gt;
+                      &lt;/div&gt;
+                     &lt;/form&gt;
+                    &lt;/div&gt;
+                   &lt;/div&gt;
+                  &lt;/div&gt;
+                 &lt;/div&gt;
+                &lt;/body&gt;
+                &lt;/html&gt;
+                </pre>
+        <h2>20. Thymeleaf Userhome View</h2>
+        <p>The code configures "/home" as defaultSuccessUrl, so after successful authentication, users will be
+            redirected to the /home URL, which will render the userhome.html view.</p>
+        <pre>&lt;!DOCTYPE html&gt;
+                &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
+                 xmlns:th=&quot;http://www.thymeleaf.org&quot;
+                 xmlns:layout=&quot;http://www.ultraq.net.nz/thymeleaf/layout&quot;
+                 xmlns:sec=&quot;http://www.thymeleaf.org/thymeleaf-extras-springsecurity3&quot;
+                 layout:decorator=&quot;layout&quot;&gt;
+                &lt;head&gt;
+                   &lt;title&gt;User Home&lt;/title&gt;
+                &lt;/head&gt;
+                &lt;body&gt;
+                 &lt;div layout:fragment=&quot;content&quot;&gt;
+                  &lt;p&gt;
+                   Welcome &lt;span sec:authentication=&quot;principal.username&quot;&gt;User&lt;/span&gt;
+                  &lt;/p&gt;
+                  &lt;p&gt;
+                   &lt;a th:href=&quot;@{/logout}&quot;&gt;Logout&lt;/a&gt;
+                  &lt;/p&gt;
+                  &lt;div sec:authorize=&quot;hasRole('ROLE_ADMIN')&quot;&gt;
+                   &lt;h3&gt;You will see this only if you are ADMIN&lt;/h3&gt;
+                   &lt;p&gt;
+                    &lt;a th:href=&quot;@{/admin/home}&quot;&gt;Admin Home&lt;/a&gt;
+                   &lt;/p&gt;
+                  &lt;/div&gt;
+                  &lt;h3&gt;Form with CSRF Token&lt;/h3&gt;
+                  &lt;form th:action=&quot;@{/messages}&quot; method=&quot;post&quot;&gt;
+                   &lt;textarea name=&quot;content&quot; cols=&quot;50&quot; rows=&quot;5&quot;&gt;&lt;/textarea&gt;
+                   &lt;br&gt;
+                   &lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;
+                  &lt;/form&gt;
+                  &lt;div&gt;
+                  &lt;br&gt;
+                   &lt;div class=&quot;panel panel-default&quot;&gt;
+                    &lt;div class=&quot;panel-heading&quot;&gt;
+                     Messages
+                    &lt;/div&gt;
+                    &lt;p th:each=&quot;msg: ${msgs}&quot; th:text=&quot;${msg.content}&quot;&gt;&lt;/p&gt;
+                   &lt;/div&gt;
+                  &lt;/div&gt;
+                 &lt;/div&gt;
+                &lt;/body&gt;
+                &lt;/html&gt;
+                </pre>
+        <p>In the userhome.html view, you are using <b>sec:authentication="principal.username </b>to display the
+            authenticated
+            username. This example also conditionally renders the link to the admin’s home page only if the
+            authenticated user has the role <b>ROLE_ADMIN</b>. This is done by using <b>sec:authorize="hasRole
+                ('ROLE_ADMIN')</b>.</p>
+        <p> The above file is our decorator for the content pages we will be creating in the application. The most
+            important thing about the above example is <b>layout:fragment="content</b>. This is the heart of the
+            decorator page
+            (layout). You can also notice, that header and footer are included using Standard Thymeleaf Layout System.
+        </p>
+        <p> Read more about thymeleaf layouts on <a href=" https://www.thymeleaf.org/doc/articles/layouts.html">
+                https://www.thymeleaf.org/doc/articles/layouts.html</a></p>
+        <h2>21. Thymeleaf Adminhome View</h2>
+        &lt;!DOCTYPE html&gt;
+        &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
+        xmlns:th=&quot;http://www.thymeleaf.org&quot;
+        xmlns:layout=&quot;http://www.ultraq.net.nz/thymeleaf/layout&quot;
+        xmlns:sec=&quot;http://www.thymeleaf.org/thymeleaf-extras-springsecurity3&quot;
+        layout:decorator=&quot;layout&quot;&gt;
+        &lt;head&gt;
+        &lt;title&gt;Admin Home&lt;/title&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+        &lt;div layout:fragment=&quot;content&quot;&gt;
+        &lt;p&gt;Welcome Administrator(&lt;span
+        sec:authentication=&quot;principal.username&quot;&gt;Admin&lt;/span&gt;)&lt;/p&gt;
+        &lt;p sec:authorize=&quot;isAuthenticated()&quot;&gt;&lt;a
+        th:href=&quot;@{/logout}&quot;&gt;Logout&lt;/a&gt;&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;h1&gt;This is admin home page&lt;/h1&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+        <h2>22. Index View</h2>
+        <pre>
+    &lt;!DOCTYPE html&gt;
+    &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; 
+       xmlns:th=&quot;http://www.thymeleaf.org&quot;
+       xmlns:layout=&quot;http://www.ultraq.net.nz/thymeleaf/layout&quot;
+       xmlns:sec=&quot;http://www.thymeleaf.org/thymeleaf-extras-springsecurity3&quot;
+       layout:decorator=&quot;layout&quot;&gt;
+          
+        &lt;head&gt;
+            &lt;title&gt;Home&lt;/title&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+         &lt;div layout:fragment=&quot;content&quot;&gt;
+         
+           &lt;p sec:authorize=&quot;isAnonymous()&quot;&gt;&lt;a th:href=&quot;@{/login}&quot;&gt;Login&lt;/a&gt;&lt;/p&gt;
+              &lt;p&gt;&lt;a th:href=&quot;@{/home}&quot;&gt;User Home&lt;/a&gt;&lt;/p&gt;
+           &lt;p&gt;&lt;a th:href=&quot;@{/admin/home}&quot;&gt;Admin Home&lt;/a&gt;&lt;/p&gt;
+           &lt;p sec:authorize=&quot;isAuthenticated()&quot;&gt;&lt;a th:href=&quot;@{/logout}&quot;&gt;Logout&lt;/a&gt;&lt;/p&gt;
+         &lt;/div&gt;
+        &lt;/body&gt;
+    &lt;/html&gt;
+            </pre>
+        <p>Before running this application, we need to initialize the database with some sample data for users and
+            roles.</p>
+        <h2>23. Sample data for Users and Roles - src/main/resources/data.sql</h2>
+        <pre>create table if not exists persistent_logins ( 
+                username varchar(100) not null, 
+                series varchar(64) primary key, 
+                token varchar(64) not null, 
+                last_used timestamp not null
+           );
+           
+           delete from  user_role;
+           delete from  roles;
+           delete from  users;
+           
+           INSERT INTO roles (id, name) VALUES 
+           (1, 'ROLE_ADMIN'),
+           (2, 'ROLE_ACTUATOR'),
+           (3, 'ROLE_USER');
+           
+           INSERT INTO users (id, email, password, name) VALUES 
+           (1, 'admin@gmail.com', '$2a$10$hKDVYxLefVHV/vtuPhWD3OigtRyOykRLDdUAp80Z1crSoS1lFqaFS', 'Admin'),
+           (3, 'user@gmail.com', '$2a$10$ByIUiNaRfBKSV6urZoBBxe4UbJ/sS6u1ZaPORHF9AtNWAuVPVz1by', 'User');
+           
+           insert into user_role(user_id, role_id) values
+           (1,1),
+           (1,2),
+           (1,3),
+           (3,2);</pre>
+        <p>The passwords are encrypted using the BCryptPasswordEncoder.encode(plan_tx_password) method.</p>
+        <h2>24. Running Application</h2>
+        <p>Two ways we can start the standalone Spring boot application.</p>
+        <p>1.From the root directory of the application and type the following command to run it -</p>
+        <pre>$ mvn spring-boot:run</pre>
+        <p>2.From your IDE, run the <b>SpringbootThymeleafSecurityDemoApplication.main()</b> method as a standalone Java
+            class that will start the embedded Tomcat server on port 8080 and point the browser to
+            <b>http://localhost:8080/</b>.
+        </p>
+        <pre>package net.javaguides.springbootsecurity;
+
+            import org.springframework.boot.SpringApplication;
+            import org.springframework.boot.autoconfigure.SpringBootApplication;
+            
+            @SpringBootApplication
+            public class SpringbootThymeleafSecurityDemoApplication
+            {
+                 public static void main(String[] args)
+                 {
+                      SpringApplication.run(SpringbootThymeleafSecurityDemoApplication.class, args);
+                 }
+            }</pre>
+        <h2>25. Demo</h2>
+        <p>After running this application, go to <b>http://localhost:8080</b>. You will be redirected to the index page:
+        </p>
+        <img src="/assets/spring-mvc-image/index-page.PNG" alt="" class="image-fluid">
+        <p>Click on any link will redirect to the login page:</p>
+        <img src="/assets/spring-mvc-image/login-page.PNG" alt="" class="image-fluid">
+        <p>After submitting the valid credentials (such as admin@gmail.com/admin), you will be redirected to the home
+            page. If you have logged in as a user with the ADMIN role, you should be able to see the text You will see
+            this only if you are ADMIN and a link to Admin Home.</p>
+        <img src="/assets/spring-mvc-image/home-page.PNG" alt="" class="image-fluid">
+        <p>If you click on the Admin Home link, you should be able to see the Admin Homepage:</p>
+        <img src="/assets/spring-mvc-image/admin-page.PNG" alt="" class="image-fluid">
+        <p>If you have logged in as a normal user (user@gmail.com/user), you will not be able to see You will see this
+            only if you are ADMIN and a link to Admin Home. We create and list messages to and from the database.</p>
+            <img src="/assets/spring-mvc-image/user-page.PNG" alt="" class="image-fluid">
+            <p><b>Click on the logout link will redirect to the login page with the proper message:</b></p>
+            <img src="/assets/spring-mvc-image/logout-success.PNG" alt="" class="image-fluid">
+            <p>This is the end of the application flow and tutorial.</p>
+
+    </div>
+</body>
+
+</html>

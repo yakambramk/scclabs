@@ -208,43 +208,47 @@
         <h2>10. Building a WAR File</h2>
         <p>To package your web application as a WAR file, use the package command along with the WAR plugin
             configuration in your pom.xml.</p>
-            <pre>mvn package</pre>
-            <h2>11. Creating a Multi-Module Project</h2>
-            <p>To create a multi-module project, start by creating a parent project:</p>
-            <pre>mvn archetype:generate -DgroupId=com.example -DartifactId=my-multi-module -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</pre>
-<p>Then, add modules to the parent project:</p>
-<pre>cd my-multi-module
+        <pre>mvn package</pre>
+        <h2>11. Creating a Multi-Module Project</h2>
+        <p>To create a multi-module project, start by creating a parent project:</p>
+        <pre>mvn archetype:generate -DgroupId=com.example -DartifactId=my-multi-module -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</pre>
+        <p>Then, add modules to the parent project:</p>
+        <pre>cd my-multi-module
     mvn archetype:generate -DgroupId=com.example -DartifactId=module1 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
     mvn archetype:generate -DgroupId=com.example -DartifactId=module2 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</pre>
-<p>Update the parent project's pom.xml to include the modules:</p>
-<pre>
+        <p>Update the parent project's pom.xml to include the modules:</p>
+        <pre>
     &lt;modules&gt;
         &lt;module&gt;module1&lt;/module&gt;
         &lt;module&gt;module2&lt;/module&gt;
     &lt;/modules&gt;
     </pre>
-<h2>12. Running Maven in Batch Mode</h2>   
-<p>To run Maven without any interactive input (useful in CI environments), use the -B or --batch-mode option:</p> 
-<pre>mvn -B install</pre>
-<h2>13. Debugging Maven Builds</h2>
-<p>To debug Maven builds and get more detailed output, use the <b>-X or --debug</b> option:</p>
-<pre>mvn clean install -X</pre>
-<h2>14. Updating Dependencies</h2>
-<p>To force Maven to update snapshots and releases, use the <b>-U or --update-snapshots</b> option:</p>
-<pre>mvn clean install -U</pre>
-<h2>15. Checking Effective POM</h2>
-<p>To see the effective POM configuration after inheritance and interpolation, use the <b>help:effective-pom</b> command:</p>
-<pre>mvn help:effective-pom</pre>
-<h2>16. Generating Source JAR</h2>
-<p>To generate a source JAR file for your project, use the <b>source:jar</b> goal:</p>
-<pre>mvn source:jar</pre>
-<p>Ensure the <b>maven-source-plugin</b> is configured in your <b>pom.xml.</b></p>
-<h2>17. Creating an Assembly</h2>
-<p>To create a distributable assembly (like a ZIP or TAR file), use the <b>assembly:single</b> goal:</p>
-<pre>mvn assembly:single</pre>
-<p>Ensure the <b>maven-assembly-plugin</b> is configured in your <b>pom.xml.</b></p>
-<h2>Conclusion</h2>
-<p>These are some of the essential  Maven commands that can help you efficiently manage your Java projects. Mastering these commands will enhance your productivity and streamline your development workflow. Maven’s powerful plugin system and comprehensive command set make it an indispensable tool for Java developers.</p>
+        <h2>12. Running Maven in Batch Mode</h2>
+        <p>To run Maven without any interactive input (useful in CI environments), use the -B or --batch-mode option:
+        </p>
+        <pre>mvn -B install</pre>
+        <h2>13. Debugging Maven Builds</h2>
+        <p>To debug Maven builds and get more detailed output, use the <b>-X or --debug</b> option:</p>
+        <pre>mvn clean install -X</pre>
+        <h2>14. Updating Dependencies</h2>
+        <p>To force Maven to update snapshots and releases, use the <b>-U or --update-snapshots</b> option:</p>
+        <pre>mvn clean install -U</pre>
+        <h2>15. Checking Effective POM</h2>
+        <p>To see the effective POM configuration after inheritance and interpolation, use the <b>help:effective-pom</b>
+            command:</p>
+        <pre>mvn help:effective-pom</pre>
+        <h2>16. Generating Source JAR</h2>
+        <p>To generate a source JAR file for your project, use the <b>source:jar</b> goal:</p>
+        <pre>mvn source:jar</pre>
+        <p>Ensure the <b>maven-source-plugin</b> is configured in your <b>pom.xml.</b></p>
+        <h2>17. Creating an Assembly</h2>
+        <p>To create a distributable assembly (like a ZIP or TAR file), use the <b>assembly:single</b> goal:</p>
+        <pre>mvn assembly:single</pre>
+        <p>Ensure the <b>maven-assembly-plugin</b> is configured in your <b>pom.xml.</b></p>
+        <h2>Conclusion</h2>
+        <p>These are some of the essential Maven commands that can help you efficiently manage your Java projects.
+            Mastering these commands will enhance your productivity and streamline your development workflow. Maven’s
+            powerful plugin system and comprehensive command set make it an indispensable tool for Java developers.</p>
 
     </div>
 </body>

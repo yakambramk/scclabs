@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Spring Boot Project in Spring Tool Suite</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Create Spring Boot Project in Spring Tool Suite</h1>
+        <p>In this article, we will see step by step, how to create a Spring Boot project in STS ( Spring Tool Suite).
+        </p>
+        <p>Download the latest Spring tool suite at <a href="https://spring.io/tools">https://spring.io/tools</a>.</p>
+        <p>Download STS for Windows 64-bit at Spring Tool Suite for Windows 64-Bit.</p>
+        <p> Download STS for Linux 64-bit at Spring Tool Suite for Linux 64-Bit.</p>
+        <p> Download STS for Mic OS 64-bit at Spring Tool Suite for Mac OS 64-Bit.</p>
+        <p>Once you download STS as a Jar file then double click on it ( make sure you have installed JDK in your system
+            and set up JAVA_HOME for the same)</p>
+
+        <p> Click on the STS icon in the Spring Tool Suite (STS) explorer and choose the workspace.</p>
+        <h2>Create Spring Boot Project in Spring Tool Suite [STS]</h2>
+        <p>The below gif image shows step by step process to create a Spring boot project in STS:</p>
+        <img src="/assets/spring-mvc-image/create-springboot-using-sts2.gif" alt="" class="image-fluid">
+        <p>Follow the below steps:</p>
+        <p><b> 1. Right-click in the package explorer and select New -> Spring Starter Project</b></p>
+        <p><b> 2. Specify project details</b></p>
+        <p>Look at the above diagram, we have specified the following details:</p>
+        <ul>
+            <li>Generate: Maven Project</li>
+            <li> Language: Java</li>
+            <li> Java Version: 1.8 (Default)</li>
+            <li> Spring Boot: 2.1.4</li>
+            <li> Group: com.springboot.tutorial</li>
+            <li> Artifact: springboot-helloworld-tutorial</li>
+            <li> Name: com.springboot.tutorial</li>
+            <li> Description: Demo project for Spring Boot</li>
+            <li> Package Name : com.springboot.tutorial</li>
+            <li> Packaging: jar (This is the default value)</li>
+            <li> Dependencies: Web, JPA, MySQL, Dev Tools</li>
+        </ul>
+        <p>Once you click Finish, Maven would take some time to download all the dependencies and initialize the project.</p>
+<p><b>3. Project Structure</b></p>
+<img src="/assets/spring-mvc-image/package-structure.PNG" alt="">
+
+
+
+
+
+
+
+    </div>
+</body>
+
+</html>
