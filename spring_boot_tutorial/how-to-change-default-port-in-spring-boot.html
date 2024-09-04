@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Change the Default Port in Spring Boot</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>How to Change the Default Port in Spring Boot</h1>
+                <h4>author : Sai K</h4>
+                <p>By default, Spring Boot applications run on port 8080. However, you may need to change this port for
+                    various <br><br> reasons, such as avoiding conflicts with other applications. This tutorial will guide you
+                    through different methods <br><br> to change the default port in a Spring Boot application. </p>
+                <h2>Method 1: Using application.properties </h2>
+                <p>The simplest way to change the default port is by setting the server.port property in the
+                    application.properties file. </p>
+                <h2>Step 1: Set Up a Spring Boot Project </h2>
+                <p>Use <a href="https://start.spring.io/">Spring Initializr</a> to create a new project with the
+                    following dependencies: </p>
+                <li>Spring Web </li>
+                <p>Download and unzip the project, then open it in your IDE. </p>
+                <h2>Step 2: Configure application.properties </h2>
+                <p>Set up the application properties to change the default port. This file is located in the
+                    src/main/resources <br><br> directory. </p>
+                <pre><code>
+                        # src/main/resources/application.properties
+
+                        # Server port configuration
+                        server.port=9090
+                        </code></pre>
+                <h3>Explanation: </h3>
+                <ul>
+                    <li>server.port=9090: Changes the server port from the default 8080 to 9090. </li>
+                </ul>
+                <h2>Method 2: Using application.yml </h2>
+                <p>You can also change the default port using the application.yml file. </p>
+                <h2>Step 1: Set Up a Spring Boot Project </h2>
+                <p>Use <a href="https://start.spring.io/">Spring Initializr</a> to create a new project with the
+                    following dependencies: </p>
+                <li>Spring Web </li>
+                <p>Download and unzip the project, then open it in your IDE. </p>
+                <h3>Step 2: Configure application.yml                </h3>
+<p>Set up the application YAML configuration to change the default port. This file is located in the <br><br> src/main/resources directory.</p>
+<pre><code>
+# src/main/resources/application.yml
+server:
+  port: 9090
+</code></pre>
+<h3>Explanation:</h3>
+<p>server.port: 9090: Changes the server port from the default 8080 to 9090.</p>
+<h2>Method 3: Using Command Line Arguments</h2>
+<p>You can override the default port by passing a command line argument when starting the application.</p>
+<h2>Step 1: Run the Application with a Command Line Argument</h2>
+<p>Use the following command to run the Spring Boot application with a different port:</p>
+<pre><code>./mvnw spring-boot:run -Dspring-boot.run.arguments=--server.port=9090
+</code></pre>
+<h3>Explanation:</h3>
+<ul>
+    <li>-Dspring-boot.run.arguments=--server.port=9090: Specifies the port as a command line argument.    </li>
+</ul>
+<h2>Method 4: Programmatically Setting the Port</h2>
+<p>You can programmatically set the port by configuring a ConfigurableServletWebServerFactory bean.</p>
+
+<h3>Step 1: Create a Configuration Class.</h3>
+<p>Create a new configuration class to set the port programmatically.</p>
+<pre><code>
+    package com.example.demo.config;
+
+import org.springframework.boot.web.server.ConfigurableWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class WebServerConfig {
+
+    @Bean
+    public WebServerFactoryCustomizer<ConfigurableWebServerFactory> webServerFactoryCustomizer() {
+        return factory -> factory.setPort(9090);
+    }
+}
+</code></pre>
+<h3>Explanation:</h3>
+<ul>
+    <li>WebServerFactoryCustomizer<ConfigurableWebServerFactory>: Customizes the web server factory to set the port.</li><br>
+       <li> factory.setPort(9090): Sets the server port to 9090.</li><br>
+
+</ul>
+<h2>Method 5: Using Environment Variables</h2>
+<p>You can use environment variables to set the port.</p>
+<h3>Step 1: Set the Environment Variable</h3>
+<p>Set the SERVER_PORT environment variable before running the application.</p>
+<p>For Unix-based systems (Linux, macOS):</p>
+<pre><code>
+    export SERVER_PORT=9090
+    ./mvnw spring-boot:run</code></pre>
+<p>For Windows:</p>
+<pre><code>
+set SERVER_PORT=9090
+./mvnw spring-boot:run
+</code></pre>
+<h3>Explanation:</h3>
+<p>SERVER_PORT=9090: Sets the environment variable for the server port to 9090.</p>
+<h2>Conclusion</h2>
+<p>In this tutorial, you have learned different methods to change the default port in a Spring Boot application. The <br><br> methods include:</p><br>
+<ul>
+    <li>Using application.properties</li><br>
+    <li> Using application.yml</li><br>
+    <li> Using command line arguments</li><br>
+    <li> Programmatically setting the port</li><br>
+    <li>Using environment variables</li><br>
+</ul>
+<p>By following these steps, you can effectively change the default port of your Spring Boot application to suit your <br><br> needs.</p>
+
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

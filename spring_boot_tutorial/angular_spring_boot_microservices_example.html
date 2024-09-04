@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Spring Boot Microservices Example</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Angular Spring Boot Microservices Example</h1>
+                <h4>author : Sai K</h4>
+                <p>In this tutorial, we will create a microservices architecture using Spring Boot and Angular. We will
+                    build two <br><br> microservices, an API Gateway, a Service Registry, and an Angular client that
+                    calls the
+                    API Gateway. We will use <br><br> the latest versions of Spring Boo, Angular, and Spring Cloud.</p>
+                <h3>Prerequisites</h3>
+                <p>Before we start, ensure you have the following:</p>
+                <ul>
+                    <li>Java Development Kit (JDK) installed</li><br>
+                    <li>Apache Maven installed</li><br>
+                    <li>Node.js and npm installed</li><br>
+                    <li>Angular CLI installed (<code>npm install -g @angular/cli</code>)</li><br>
+                    <li>An IDE (such as IntelliJ IDEA, Eclipse, or VS Code) installed</li><br>
+                </ul>
+                <h2>Overview of the Architecture</h2>
+                <ol>
+                    <li><b>Service Registry:</b> Manages service discovery.</li><br>
+                    <li><b>API Gateway:</b> Routes client requests to appropriate microservices.</li><br>
+                    <li><b>Employee Service:</b> Manages employee data.</li><br>
+                    <li><b>Department Service:</b> Manages department data.</li><br>
+                    <li><b>Angular Client:</b> Provides a user interface to interact with the services via the API
+                        Gateway.</li><br>
+                </ol>
+                <h2>Step 1: Create the Service Registry</h2>
+                <h3>1.1 Create a Spring Boot Project </h3>
+                <p>1.<b>Open Spring Initializr: </b></p>
+                <ul>
+                    <li>
+                        Go to Spring Initializr in your web browser.
+                    </li>
+                </ul>
+
+                <h3>2.Configure Project Metadata: </h3>
+                <ul>
+                    <li><b>Project:</b> Maven Project</li><br>
+                    <li><b>Language:</b> Java</li><br>
+                    <li><b>Spring Boot:</b> Select the latest version of Spring Boot 3.2</li><br>
+                    <li><b>Group:</b> com.example</li><br>
+                    <li><b>Artifact:</b> service-registry</li><br>
+                    <li><b>Name:</b> service-registry</li><br>
+                    <li><b>Package Name:</b> com.example.serviceregistry</li><br>
+                    <li><b>Packaging:</b> Jar</li><br>
+                    <li><b>Java Version:</b> 17 (or your preferred version)</li><br>
+                    <li><b>Click Next.</b></li><br>
+                </ul>
+                <h3>3.ect Dependencies:</h3>
+                <li>On the Dependencies screen, select:</li>
+                <ul>
+                    <li>Spring Cloud Discovery
+                    </li>
+                </ul>
+                <li>Click Next.
+                </li>
+                <h3>4.Generate the Project:</h3>
+                <ul>
+                    <li>Click Generate to download the project zip file.</li><br>
+                    <li> Extract the zip file to your desired location</li><br>
+                </ul>
+                <h3>5.Open the Project in Your IDE:</h3>
+                <li>Open your IDE and import the project as a Maven project. </li><br>
+                <h2>1.2 Update application.yml </h2>
+                <p>Create an application.yml file in the src/main/resources directory and add the following
+                    configuration: </p>
+                <pre><code>
+    server:
+  port: 8761
+
+spring:
+  application:
+    name: service-registry
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  instance:
+    hostname: localhost
+  server:
+    enable-self-preservation: false
+
+</code></pre>
+                <h3>1.3 Enable Eureka Server</h3>
+                <p>Create a class ServiceRegistryApplication and annotate it with @EnableEurekaServer:</p>
+                <pre><code>
+    package com.example.serviceregistry;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+
+@SpringBootApplication
+@EnableEurekaServer
+public class ServiceRegistryApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ServiceRegistryApplication.class, args);
+    }
+}
+
+</code></pre>
+                <h3>1.4 Run the Service Registry</h3>
+                <p>Run the application by executing the ServiceRegistryApplication class. The Eureka Dashboard should be
+                    <br><br>
+                    accessible at http://localhost:8761.
+                </p><br>
+                <h2>Step 2: Create the Employee Service</h2>
+                <h3>2.1 Create a Spring Boot Project</h3>
+                <p>1. <b>Open Spring Initializr </b>and configure a new project with the following metadata:</p>
+                <ul>
+                    <li><b>Group:</b> com.example </li><br>
+                    <li> <b>Artifact:</b> employee-service </li><br>
+                    <li><b>Name:</b> employee-service </li><br>
+                    <li><b>Package Name:</b> com.example.employeeservice</li><br>
+                    <li><b>Dependencies:</b> Spring Web, Spring Data JPA, H2 Database, Spring Cloud Discovery, Spring
+                        <br><br> Boot
+                        DevTools
+                    </li><br>
+                </ul>
+                <p>2.<b>Generate the Project</b> and open it in your IDE. </p>
+                <h3>2.2 Update application.yml </h3>
+                <p>Create an application.yml file in the src/main/resources directory: </p>
+                <pre><code>
+                    server:
+  port: 8081
+
+spring:
+  application:
+    name: employee-service
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+                </code></pre>
+                <h3>2.3 Create Employee Entity </h3>
+                <p>Create an Employee entity class in the com.example.employeeservice.model package:</p>
+                <pre><code>
+package com.example.employeeservice.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String department;
+
+    // Getters and Setters
+}
+
+           </code></pre>
+                <h3>2.4 Create Employee Repository</h3>
+                <p>Create an EmployeeRepository interface in the com.example.employeeservice.repository package: </p>
+                <pre><code>
+ package com.example.employeeservice.repository;
+
+import com.example.employeeservice.model.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+}
+           </code></pre>
+                <h3>2.5 Create Employee Controller </h3>
+                <p>Create an EmployeeController class in the com.example.employeeservice.controller package:</p>
+                <pre><code>
+
+            package com.example.employeeservice.controller;
+
+import com.example.employeeservice.model.Employee;
+import com.example.employeeservice.repository.EmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/employees")
+public class EmployeeController {
+
+    private final EmployeeRepository employeeRepository;
+
+    @Autowired
+    public EmployeeController(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
+
+    @GetMapping
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
+    }
+
+    @PostMapping
+    public Employee createEmployee(@RequestBody Employee employee) {
+        return employeeRepository.save(employee);
+    }
+}</code></pre>
+                <h3> 2.6 Enable Discovery Client</h3>
+                <p>Annotate the main application class with @EnableDiscoveryClient:</p>
+                <pre><code>
+    package com.example.employeeservice;
+
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+    import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+    
+    @SpringBootApplication
+    @EnableDiscoveryClient
+    public class EmployeeServiceApplication {
+    
+        public static void main(String[] args) {
+            SpringApplication.run(EmployeeServiceApplication.class, args);
+        }
+    }
+    
+</code></pre>
+                <h3>2.7 Run the Employee Service</h3>
+                <p>Run the application by executing the EmployeeServiceApplication class. The service should register
+                    itself with <br><br> the Eureka server.</p><br>
+                <h3>Step 3: Create the Department Service</h3>
+                <p>Repeat the same steps as for the Employee Service, but with the following changes:</p>
+                <h3>3.1 Create a Spring Boot Project</h3>
+                <p>1.<b>Open Spring Initializr</b> and configure a new project with the following metadata:</p>
+                <ul>
+                    <li><b>Group:</b> com.example</li><br>
+                    <li><b>Artifact:</b> department-service</li><br>
+                    <li><b>Name:</b> department-service</li><br>
+                    <li><b>Package Name:</b> com.example.departmentservice</li><br>
+                    <li><b>Dependencies:</b> Spring Web, Spring Data JPA, H2 Database, Spring Cloud Discovery, Spring
+                        Boot DevTools</li><br>
+                </ul>
+                <p>2.<b>Generate the Project</b> and open it in your IDE.</p>
+                <h3>3.2 Update application.yml</h3>
+                <p>Create an application.yml file in the src/main/resources directory:</p>
+                <pre><code>
+    server:
+  port: 8082
+
+spring:
+  application:
+    name: department-service
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+</code></pre>
+                <h3>3.3 Create Department Entity</h3>
+                <p>Create a Department entity class in the com.example.departmentservice.model package:</p>
+                <pre><code>
+    package com.example.departmentservice.model;
+
+    import jakarta.persistence.Entity;
+    import jakarta.persistence.GeneratedValue;
+    import jakarta.persistence.GenerationType;
+    import jakarta.persistence.Id;
+    
+    @Entity
+    public class Department {
+    
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+        private String name;
+    
+        // Getters and Setters
+    }
+</code></pre>
+                <h3>3.4 Create Department Repository</h3>
+                <p>Create a DepartmentRepository interface in the com.example.departmentservice.repository package:</p>
+                <pre><code>
+    package com.example.departmentservice.repository;
+
+import com.example.departmentservice.model.Department;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface DepartmentRepository extends JpaRepository<Department, Long> {
+}
+</code></pre>
+                <h3>3.5 Create Department Controller</h3>
+                <p>Create a DepartmentController class in the com.example.departmentservice.controller package:</p>
+                <pre><code>
+    package com.example.departmentservice.controller;
+
+import com.example.departmentservice.model.Department;
+import com.example.departmentservice.repository.DepartmentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/departments")
+public class DepartmentController {
+
+    private final DepartmentRepository departmentRepository;
+
+    @Autowired
+    public DepartmentController(DepartmentRepository departmentRepository) {
+        this.departmentRepository = departmentRepository;
+    }
+
+    @GetMapping
+
+
+    public List<Department> getAllDepartments() {
+        return departmentRepository.findAll();
+    }
+
+    @PostMapping
+    public Department createDepartment(@RequestBody Department department) {
+        return departmentRepository.save(department);
+    }
+}
+
+</code></pre>
+                <h3>3.6 Enable Discovery Client</h3>
+                <p>Annotate the main application class with @EnableDiscoveryClient:</p>
+                <pre><code>
+    package com.example.departmentservice;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class DepartmentServiceApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DepartmentServiceApplication.class, args);
+    }
+}</code></pre>
+                <h3>3.7 Run the Department Service</h3>
+                <p>Run the application by executing the DepartmentServiceApplication class. The service should register
+                    itself with <br><br>the Eureka server.</p>
+                <h2>Step 4: Create the API Gateway</h2>
+                <h3>4.1 Create a Spring Boot Project</h3>
+                <p>1. <b>Open Spring Initializr</b> and configure a new project with the following metadata:</p>
+                <ul>
+                    <li><b>Group:</b> com.example </li><br>
+                    <li><b>Artifact: </b>api-gateway </li><br>
+                    <li><b>Name:</b> api-gateway </li><br>
+                    <li><b>Package Name:</b> com.example.apigateway</li><br>
+                    <li><b>Dependencies:</b> Spring Cloud Gateway, Spring Cloud Discovery</li><br>
+                </ul>
+                <p>2.<b>Generate the Project </b>and open it in your IDE.</p>
+                <h2>4.2 Update application.yml</h2>
+                <p>Create an application.yml file in the src/main/resources directory:</p>
+                <pre><code>
+    server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: employee_service
+          uri: lb://employee-service
+          predicates:
+            - Path=/employees/**
+        - id: department_service
+          uri: lb://department-service
+          predicates:
+            - Path=/departments/**
+</code></pre>
+                <h3>4.3 Enable Discovery Client</h3>
+                <p>Annotate the main application class with @EnableDiscoveryClient:</p>
+
+                <pre><code>
+    package com.example.apigateway;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class ApiGatewayApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ApiGatewayApplication.class, args);
+    }
+}
+
+</code></pre>
+                <h3>4.4 Run the API Gateway</h3>
+                <p>Run the application by executing the ApiGatewayApplication class. The API Gateway should register
+                    itself with the Eureka server.</p>
+                <h1>Step 5: Create the Angular Client</h1>
+                <h3>5.1 Create an Angular Project</h3>
+                <p>1.Open a terminal and run the following command to create a new Angular project:</p>
+                <pre><code>
+    ng new client-app
+</code></pre>
+                <p>2.Navigate to the project directory:</p>
+                <pre><code>cd client-app
+</code></pre>
+                <h3>5.2 Install Dependencies</h3>
+                <p>Install Bootstrap for styling:</p>
+                <pre><code>npm install bootstrap</code></pre>
+                <p>Add Bootstrap to angular.json:</p>
+                <pre><code>
+    "styles": [
+    "src/styles.css",
+    "node_modules/bootstrap/dist/css/bootstrap.min.css"
+  ],
+</code></pre>
+                <h3>5.3 Create Angular Services and Components</h3>
+                <p><b>5.3.1 Create API Service</b></p>
+                <p>Generate the ApiService:</p>
+                <pre><code>ng generate service services/api</code></pre>
+                <p>Edit api.service.ts:</p>
+                <pre><code>
+    import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ApiService {
+
+  private baseUrl = 'http://localhost:8080';
+
+  constructor(private http: HttpClient) { }
+
+  getEmployees(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/employees`);
+  }
+
+  getDepartments(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/departments`);
+  }
+}
+
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li><b>@Injectable({ providedIn: 'root' })</b>: Marks the service as injectable and available
+                        throughout the app.</li><br>
+                    <li><b>HttpClient</b>: Service for making HTTP requests.</li><br>
+                    <li><b>getEmployees()</b>: Sends a GET request to the employee service via the API Gateway.</li><br>
+                    <li><b>getDepartments()</b>: Sends a GET request to the department service via the API Gateway.</li>
+                    <br>
+                </ul>
+                <h3>5.3.2 Create Components</h3>
+                <p>Generate the components for displaying employees and departments:</p>
+                <pre><code>
+ng generate component components/employees
+ng generate component components/departments
+</code></pre>
+                <p>Edit employees.component.ts:</p>
+                <pre><code>
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../services/api.service';
+
+@Component({
+  selector: 'app-employees',
+  templateUrl: './employees.component.html',
+  styleUrls: ['./employees.component.css']
+})
+export class EmployeesComponent implements OnInit {
+  employees: any[] = [];
+
+  constructor(private apiService: ApiService) { }
+
+  ngOnInit(): void {
+    this.apiService.getEmployees().subscribe(data => {
+      this.employees = data;
+    });
+  }
+}
+
+</code></pre>
+                <p>Edit employees.component.html:</p>
+                <pre><code>
+    < div class="container mt-5">
+        < div class="row">
+          < div class="col-md-12">
+            < h2>Employees< /h2>
+            < table class="table table-striped">
+              < thead>
+                < tr>
+                  < th>ID< /th>
+                  < th>Name< /th>
+                  < th>Department< /th>
+                < /tr>
+              < /thead>
+              < tbody>
+                < tr *ngFor="let employee of employees">
+                   < td>{{ employee.id }}< /td>
+                  < td>{{ employee.name }}< /td>
+                  < td>{{ employee.department }}< /td>
+                < /tr>
+              < /tbody>
+            < /table>
+          < /div>
+        < /div>
+      < /div>
+
+</code></pre>
+                <p>Edit departments.component.ts:</p>
+                <pre><code>
+
+    import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../services/api.service';
+
+@Component({
+  selector: 'app-departments',
+  templateUrl: './departments.component.html',
+  styleUrls: ['./departments.component.css']
+})
+export class DepartmentsComponent implements OnInit {
+  departments: any[] = [];
+
+  constructor(private apiService: ApiService) { }
+
+  ngOnInit(): void {
+    this.apiService.getDepartments().subscribe(data => {
+      this.departments = data;
+    });
+  }
+}
+</code></pre>
+                <h3>Edit departments.component.html:</h3>
+                <pre><code>
+    < div class="container mt-5">
+        < div class="row">
+          < div class="col-md-12">
+            < h2>Departments< /h2>
+            < table class="table table-striped">
+              < thead>
+                < tr>
+                  < th>ID</th>
+                  < th>Name</th>
+                < /tr>
+              < /thead>
+              < tbody>
+                < tr *ngFor="let department of departments">
+                  < td>{{ department.id }}< /td>
+                  < td>{{ department.name }}< /td>
+                < /tr>
+              < /tbody>
+            < /table>
+          < /div>
+        < /div>
+      < /div>
+</code></pre>
+                <h3>5.4 Update Angular Routing</h3>
+                <p>Edit app-routing.module.ts:</p>
+                <pre><code>
+    import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { EmployeesComponent } from './components/employees/employees.component';
+import { DepartmentsComponent } from './components/departments/departments.component';
+
+const routes: Routes = [
+  { path: 'employees', component: EmployeesComponent },
+  { path: 'departments', component: DepartmentsComponent },
+  { path: '', redirectTo: '/employees', pathMatch: 'full' }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>Defines routes for the employees and departments components.</li><br>
+                    <li>Redirects the root path to the employees component. </li><br>
+                </ul>
+                <h3>5.5 Update Angular App Module</h3>
+                <p>Edit app.module.ts:</p>
+                <pre><code>
+    import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { EmployeesComponent } from './components/employees/employees.component';
+import { DepartmentsComponent } from './components/departments/departments.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    EmployeesComponent,
+    DepartmentsComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+</code></pre>
+                <h3>Explanation:</h3>
+                <li>Imports necessary modules for the Angular app.</li><br>
+                <li>Declares the components used in the app.</li><br>
+                <li>Sets up the app's root module. </li><br>
+                <h3>5.6 Run the Angular Application</h3>
+                <p>Open a terminal in the Angular project directory and run the application: </p>
+                <pre><code>ng serve</code></pre>
+                <p>Visit http://localhost:4200 in your web browser to see the application. </p>
+                <h2>Handling CORS Issue</h2>
+                <p>CORS (Cross-Origin Resource Sharing) issues occur when a web application running at one origin
+                    (domain)<br><br>  tries to make requests to a resource at a different origin (domain). Browsers enforce the
+                    same-origin policy for <br><br> security reasons, which restricts how resources on one origin can interact
+                    with resources on another origin. If the<br><br>  server does not explicitly allow requests from the
+                    requesting origin by including appropriate CORS headers, the<br><br>  browser blocks the request, resulting
+                    in a CORS issue.</p><br>
+                <p>To handle CORS (Cross-Origin Resource Sharing) issues in the API Gateway, you need to configure CORS<br><br> 
+                    settings in the application.yml file and create a CORS configuration class in the API Gateway
+                    project. Here's how<br><br>  you can do it:</p><br>
+                <h2>Update application.yml to Include CORS Configuration </h2>
+                <p>Add the CORS configuration under spring.cloud.gateway in the application.yml file: </p>
+<pre><code>
+   server:
+     port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+cloud:
+  gateway:
+    routes:
+      - id: employee_service
+        uri: lb://employee-service
+        predicates:
+          - Path=/employees/**
+      - id: department_service
+        uri: lb://department-service
+        predicates:
+          - Path=/departments/**
+    globalcors:
+      corsConfigurations:
+        '[/**]':
+          allowedOrigins: "*"
+          allowedMethods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+          allowedHeaders:
+            - "*"
+           </code></pre>
+                <h3>Create a CORS Configuration Class</h3>
+                <p>Create a class CorsConfiguration in the com.example.apigateway.config package:</p>
+                <pre><code>
+            package com.example.apigateway.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+
+@Configuration
+public class CorsConfig {
+
+    @Bean
+    public CorsWebFilter corsWebFilter() {
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.addAllowedOrigin("*");
+        corsConfig.addAllowedMethod("*");
+        corsConfig.addAllowedHeader("*");
+        corsConfig.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);
+
+        return new CorsWebFilter(source);
+    }
+}
+        </code></pre>
+                <h3>Explanation</h3>
+                <ul>
+                    <li>CorsConfiguration class defines the CORS configuration.</li><br>
+                    <li>CorsWebFilter bean applies the CORS configuration to all routes. </li><br>
+                    <li>CorsWebFilter bean applies the CORS configuration to all routes.
+                    </li><br>
+                </ul>
+                <p>With this configuration, CORS is globally enabled for all routes handled by the API Gateway, allowing
+                    requests <br><br>  from any origin with any HTTP method and headers. This should resolve any CORS issues when
+                    your Angular<br><br>  client makes requests to the API Gateway. </p><br>
+                <p>Now, your API Gateway will properly handle CORS issues.</p>
+                <h2>Conclusion</h2>
+                <p>In this tutorial, we created a microservices architecture using Spring Boot and Angular. We built two<br><br> 
+                    microservices (Employee Service and Department Service), an API Gateway, a Service Registry, and an
+                    Angular<br><br>  client that interacts with the microservices through the API Gateway. This setup provides a
+                    scalable and <br><br> maintainable architecture for building enterprise-level applications.</p><br>
+                <h2>Related Spring and Spring Boot Tutorials/Guides:
+                </h2>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

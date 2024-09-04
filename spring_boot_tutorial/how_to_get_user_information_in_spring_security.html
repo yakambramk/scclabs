@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Get User Information in Spring Security </title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>How to Get User Information in Spring Security</h1>
+                <h4>author : Sai K</h4>
+                <p>Retrieving user information in a Spring Security application is essential for many functionalities
+                    such as <br><br> personalizing user experiences, auditing, and logging activities. This tutorial
+                    will guide
+                    you through setting up a <br><br>Spring Boot 3.2 application with Spring Security 6.1 and
+                    demonstrating how
+                    to retrieve authenticated user <br><br> information.</p><br>
+                <h3>Prerequisites </h3>
+                <ul>
+                    <li>JDK 17 or later </li><br>
+                    <li>Maven or Gradle </li><br>
+                    <li>IDE (IntelliJ IDEA, Eclipse, etc.)</li><br>
+                </ul>
+                <h2>Step 1: Set Up a Spring Boot Project </h2>
+                <h3>1.1 Create a New Spring Boot Project </h3>
+                <p>Use Spring Initializr to create a new project with the following dependencies: </p>
+                <ul>
+                    <li>Spring Web </li><br>
+                    <li>Spring Security </li><br>
+                    <li>Thymeleaf (optional, for the frontend) </li><br>
+                </ul>
+                <p>Download and unzip the project, then open it in your IDE. </p>
+                <h3>1.2 Configure application.properties </h3>
+                <p>Set up the application properties for your project. This file is located in the src/main/resources
+                    directory. </p>
+                <pre><code>
+# src/main/resources/application.properties
+
+# Server port
+server.port=8080
+
+# Thymeleaf configuration (optional)
+spring.thymeleaf.cache=false
+</code></pre>
+                <h2>Step 2: Configure Spring Security</h2>
+                <h3>2.1 Create a Security Configuration Class</h3>
+                <p>Create a configuration class to set up Spring Security.</p>
+                <pre>
+    <code>
+        package com.example.demo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(authorizeRequests ->
+                authorizeRequests
+                    .requestMatchers("/login", "/resources/**").permitAll()
+                    .anyRequest().authenticated()
+            )
+            .formLogin(formLogin ->
+                formLogin
+                    .loginPage("/login")
+                    .permitAll()
+            )
+            .logout(logout ->
+                logout
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/login?logout")
+                    .permitAll()
+            );
+
+        return http.build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails user = User.builder()
+            .username("user")
+            .password("{noop}password")
+            .roles("USER")
+            .build();
+
+        UserDetails admin = User.builder()
+            .username("admin")
+            .password("{noop}admin")
+            .roles("ADMIN")
+            .build();
+
+        return new InMemoryUserDetailsManager(user, admin);
+    }
+}
+    </code>
+</pre>
+                <h3>Explanation:</h3>
+
+                <ul>
+                    <li>SecurityFilterChain: Configures the security filter chain. </li><br>
+                    <li>authorizeHttpRequests: Defines URL authorization.</li><br>
+                    <li>formLogin: Configures form-based login.</li><br>
+                    <li>logout: Configures logout functionality.</li><br>
+                    <li>UserDetailsService: Provides user details for authentication. Here, an in-memory user store is
+                        used. </li><br>
+                </ul>
+
+                <h2>Step 3: Create the Login and Home Pages</h2>
+                <h3>3.1 Create the Login Page </h3>
+                <p>Create a login page using Thymeleaf. Create a file named login.html in the
+                    src/main/resources/templates <br><br>directory.</p><br>
+                <pre><code>
+                    <!DOCTYPE html>
+< html xmlns:th="http://www.thymeleaf.org">
+< head>
+    < title>Login< /title>
+< /head>
+< body>
+    < h1>Login< /h1>
+    < form th:action="@{/login}" method="post">
+        < div>
+            < label>Username:< /label>
+            < input type="text" name="username"/>
+        < /div>
+        < div>
+            < label>Password:< /label>
+            < input type="password" name="password"/>
+        < /div>
+        < div>
+            < button type="submit">Login< /button>
+        < /div>
+    < /form>
+    < div th:if="${param.logout}">
+        You have been logged out.
+    < /div>
+    < div th:if="${param.error}">
+        Invalid username or password.
+    < /div>
+< /body>
+< /html>
+</code></pre>
+                <h3>3.2 Create the Home Page</h3>
+
+                <p>Create a home page that will be accessible only to authenticated users. Create a file named home.html
+                    in the <br><br>src/main/resources/templates directory.</p>
+
+                <pre><code>
+    < !DOCTYPE html>
+< html xmlns:th="http://www.thymeleaf.org">
+< head>
+    < title>Home</title>
+< /head>
+< body>
+    < h1>Welcome, < span th:text="${userDetails.username}">User< /span>!< /h1>
+    < p>Your roles: < span th:text="${userDetails.authorities}">< /span>< /p>
+    < a th:href="@{/logout}">Logout</a>
+< /body>
+< /html>
+</code></pre>
+                <h2>Step 4: Create a Controller</h2>
+                <h3>4.1 Create the HomeController</h3>
+                <p>Create a controller to handle requests to the login and home pages and to retrieve the authenticated
+                    user's <br><br> information.</p>
+                <pre><code>
+    Create a controller to handle requests to the login and home pages and to retrieve the authenticated user's  information.
+
+package com.example.demo.controller;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class HomeController {
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/")
+    public String home(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        model.addAttribute("userDetails", userDetails);
+        return "home";
+    }
+}
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@Controller: Marks the class as a web controller.</li><br>
+                    <li>@GetMapping("/login"): Maps GET requests for the login page.</li><br>
+                    <li>@GetMapping("/"): Maps GET requests for the home page.</li><br>
+                    <li>@AuthenticationPrincipal: Injects the currently authenticated UserDetails object.</li><br>
+                    <li>Model: Used to pass attributes to the view.</li><br>
+                </ul>
+                <h2>Step 5: Running and Testing the Application</h2>
+                <h3>5.1 Run the Application</h3>
+                <p>Run the Spring Boot application using your IDE or the command line:</p>
+                <pre><code>
+    Run the Spring Boot application using your IDE or the command line:
+</code></pre>
+                <h3>5.2 Test the Login and User Information Retrieval</h3>
+                <ul>
+                    <li>Open a web browser and navigate to http://localhost:8080.</li><br>
+                    <li>You will be redirected to the login page.</li><br>
+                    <li>Enter the username user and password password, and click the "Login" button.</li><br>
+                    <li>You should be redirected to the home page and see a welcome message with the username and roles <br><br>
+                        displayed. </li><br>
+                </ul>
+                <h2>Conclusion</h2>
+                <p>In this tutorial, you have learned how to retrieve user information using Spring Security 6.1 in a
+                    Spring Boot 3.2 <br><br> application. We covered:</p><br>
+
+                <ul>
+                    <li>Setting up a Spring Boot project with Spring Security.</li><br>
+                    <li>Configuring Spring Security to handle login and user information retrieval.</li><br>
+                    <li>Creating login and home pages using Thymeleaf.</li><br>
+                    <li>Creating a controller to handle requests and retrieve authenticated user information.</li><br>
+                </ul>
+                <p>By following these steps, you can effectively manage and retrieve user information in your Spring
+                    Boot <br><br> applications using Spring Security.</p>
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

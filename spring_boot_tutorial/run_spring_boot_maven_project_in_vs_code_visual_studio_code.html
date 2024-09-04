@@ -1,20 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Run Spring Boot Maven Project in VS Code (Visual Studio Code) </title>
 </head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
 <body>
     <div class="content">
         <div class="overlap-container">
             <div class="container">
                 <h1>Run Spring Boot Maven Project in VS Code (Visual Studio Code)</h1>
                 <h4>author :SaI k</h4>
-                <p>Visual Studio Code (VS Code) is a lightweight but powerful source code editor that supports various development tasks, including running Spring Boot applications. In this tutorial, we will walk you through the steps to create, import, and run a Spring Boot Maven project in VS Code.</p>
+                <p>Visual Studio Code (VS Code) is a lightweight but powerful source code editor that supports
+                    various<br><br>
+                    development tasks, including running Spring Boot applications. In this tutorial, we will walk you
+                    through the steps <br><br> to create, import, and run a Spring Boot Maven project in VS Code.</p>
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li>JDK 17 or later</li><br>
+                    <li>Maven</li><br>
+                    <li>VS Code installed on your machine</li><br>
+                    <li>Spring Boot (version 3.2+ recommended)</li><br>
+                    <li>Java Extension Pack installed in VS Code</li><br>
+                </ul>
+                <h2>Step 1: Set Up a Spring Boot Project Using Spring Initializr</h2>
+                <p>Use<a href="https://start.spring.io/"> Spring Initializr</a> to generate a new Spring Boot project
+                    with the following configuration:</p>
+                <ul>
+                    <li>Project: Maven Project</li><br>
+                    <li>Language: Java</li><br>
+                    <li> Spring Boot: 3.2.x</li><br>
+                    <li>Dependencies: Spring Web</li><br>
+                </ul>
+                <p>Download the generated project, unzip it, and open it in VS Code.</p>
+                <h3>Example Project Structure</h3>
+                <p>The basic structure of a Spring Boot project with Maven looks like this:</p>
+                <pre><code>
+                        <span class="directory">my-spring-boot-app/</span><br>
+                        ├── <span class="directory">src/</span><br>
+                        │   ├── <span class="directory">main/</span><br>
+                        │   │   ├── <span class="directory">java/</span><br>
+                        │   │   │   └── <span class="directory">com/example/demo/</span><br>
+                        │   │   │       └── <span class="java-file">DemoApplication.java</span><br>
+                        │   │   └── <span class="directory">resources/</span><br>
+                        │   │       ├── <span class="java-file">application.properties</span><br>
+                        │   └── <span class="directory">test/</span><br>
+                        │       └── <span class="directory">java/</span><br>
+                        │           └── <span class="directory">com/example/demo/</span><br>
+                        │               └── <span class="java-file">DemoApplicationTests.java</span><br>
+                        ├── <span class="java-file">mvnw</span><br>
+                        ├── <span class="java-file">mvnw.cmd</span><br>
+                        ├── <span class="java-file">pom.xml</span><br>
+                        └── <span class="directory">.mvn/</span><br>
+                            └── <span class="directory">wrapper/</span><br>
+                                └── <span class="java-file">maven-wrapper.properties</span>
+                </code></pre>
+                <h2>Step 2: Open the Project in VS Code</h2>
+                <p>1.<b>Open VS Code: </b>Launch VS Code on your machine.</p>
+                <p>2.<b>Open Project:</b></p>
+                <ul>
+                    <li>Click on File -> Open Folder....</li><br>
+                    <li>Navigate to the root directory of your Spring Boot project and click Select Folder.</li><br>
+                </ul>
+                <p>VS Code will open the project and load the necessary files. </p>
+                <h2>Step 3: Install Java Extensions</h2>
+                <p>Ensure you have the Java Extension Pack installed in VS Code. If not, you can install it from the
+                    Extensions view:</p>
+                <p>1. <b>Open Extensions View:</b></p>
+                <ul>
+                    <li>Click on the Extensions icon in the Activity Bar on the side of the window or press
+                        Ctrl+Shift+X.</li>
+                </ul>
+                <p>2.<b>Search for Java Extension Pack:</b></p>
+                <li>
+                    Type Java Extension Pack in the search bar and press Enter.
+
+                </li>
+                <p>3.<b>Install the Extension Pack:</b></p>
+                <li>Click the Install button next to the Java Extension Pack.</li>
+                <p>This will install essential Java extensions, including support for Maven and Spring Boot.</p>
+                <h2>Step 4: Create the Application Class</h2>
+                <p>Create a Java class named DemoApplication in the src/main/java/com/example/demo directory. </p>
+                <pre>
+    <code>
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+    </code>
+   </pre>
+                <h3>Explanation:</h3>
+                <li>@SpringBootApplication: Marks this class as the main entry point for the Spring Boot application.
+                </li><br>
+                <li>main method: Starts the Spring Boot application.</li><br>
+                <h2>Step 5: Create a Simple REST Controller</h2>
+                <p>
+                    To verify the application works as expected, let's create a simple REST controller.<br><br>
+
+                    Create a Java class named HelloController in the src/main/java/com/example/demo directory:
+                </p>
+                <pre><code>
+package com.example.demo;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello, World!";
+    }
+}
+   </code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li><span class="java-file">@RestController</span>: Marks this class as a REST controller.</li><br>
+                    <li><span class="java-file">@GetMapping("/hello")</span>: Maps HTTP GET requests to the /hello
+                        endpoint to the sayHello method.</li><br>
+                    <li>sayHello method: Returns a "Hello, World!" message.</li><br>
+                </ul>
+
+
+                <h2>Step 6: Run the Application</h2>
+                <h3>Using the Integrated Terminal</h3>
+                <p>1.<b>Open Terminal:</b></p>
+                <li>Click on Terminal -> New Terminal or press Ctrl+ (backtick).</li>
+                <p>2.<b>Run the Application: </b></p>
+                <li>In the terminal, navigate to the root directory of your project (if not already there).</li><br>
+                <li>Use the Maven wrapper to run the Spring Boot application:</li><br>
+                <p>For Unix/Linux/macOS:</p>
+                <pre><code>./mvnw spring-boot:run  </code></pre>
+                <p>For Windows: </p>
+                <pre><code>mvnw.cmd spring-boot:run</code></pre>
+                <h2>Using the VS Code Debugger </h2>
+                <p>1.<b>Add Debug Configuration:</b></p>
+                <ul>
+                    <li>Click on the Run icon in the Activity Bar on the side of the window or press Ctrl+Shift+D.</li>
+                    <br>
+                    <li>Click on create a launch.json file and select Java environment.</li><br>
+                    <li>VS Code will create a launch.json file with default configurations.</li><br>
+                </ul>
+                <p>2.<b>Modify launch.json:</b></p>
+                <ul>
+                    <li>Ensure that the launch.json configuration looks like this:</li>
+                </ul>
+                <pre>
+                {
+                  <span class="java-file">"version"</span>: <span class="java-value">"0.2.0"</span>,
+                  <span class="java-file">"configurations"</span>: [
+                    {
+                      <span class="java-file">"type"</span>: <span class="java-value">"java"</span>,
+                      <span class="java-file">"name"</span>: <span class="java-value">"Spring Boot-DemoApplication&lt;demo&gt;"</span>,
+                      <span class="java-file">"request"</span>: <span class="java-value">"launch"</span>,
+                      <span class="java-file">"mainClass"</span>: <span class="java-value">"com.example.demo.DemoApplication"</span>,
+                      <span class="java-file">"projectName"</span>: <span class="java-value">"demo"</span>
+                    }
+                  ]
+                }
+            </pre>
+
+                <p>3.<b>Run the Application: </b></p>
+                <ul>
+                    <li>Click the green play button next to the configuration name in the Run view or press F5.
+                    </li>
+                </ul>
+                <h2>Step 7: Verify the Application </h2>
+                <p>Open a web browser or a tool like Postman and navigate to the following URL to verify the
+                    application:</p>
+                <ul>
+                    <li><b>Hello Endpoint:</b></li><br>
+                    <ul>
+                        <li>URL: http://localhost:8080/hello</li><br>
+                        <li>Method: GET</li><br>
+                        <li>Response: Hello, World!
+                        </li><br>
+
+                    </ul>
+                </ul>
+                <p>You should see the "Hello, World!" message returned by the HelloController. </p>
+                <h2> Step 8: Creating a Test Class</h2>
+                <p>Create a Java class named DemoApplicationTests in the src/test/java/com/example/demo directory.</p>
+                <pre><code>
+    package com.example.demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class DemoApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+}
+
+</code></pre>
+                <h2>Explanation:</h2>
+                <ul>
+                    <li>@SpringBootTest: Indicates that this is a Spring Boot test.</li><br>
+                    <li> contextLoads method: Tests if the Spring application context loads successfully.</li><br>
+                </ul>
+                <h3>Running Tests</h3>
+                <ul>
+                    <li><b>Open the Test File:</b><br>
+                        <ul>
+                            <li>Navigate to the <span class="java-file">DemoApplicationTests</span> class in the
+                                Explorer view.</li>
+                        </ul>
+                    </li><br>
+                    <li><b>Run Tests:</b><br>
+                        <ul>
+                            <li>Right-click on the <span class="java-file">DemoApplicationTests</span> class and select
+                                <span class="java-file">Run Tests</span>.
+                            </li>
+                        </ul>
+                    </li><br>
+                    <li><b>View Test Results:</b><br>
+                        <ul>
+                            <li>The Test Explorer will show the test results, indicating whether the tests passed
+                                successfully.</li>
+                        </ul>
+                    </li><br>
+                    <li>
+                        <h2>Conclusion</h2><br>
+                        In this tutorial, you have learned how to create, import, and run a Spring Boot Maven project in
+                        VS Code.<br><br> We covered:
+                        <ul><br>
+                            <li>Setting up a Spring Boot project using Spring Initializr with Maven.</li><br>
+                            <li>Importing the Maven project into VS Code.</li><br>
+                            <li>Installing necessary Java extensions in VS Code.</li><br>
+                            <li>Creating the main application class.</li><br>
+                            <li>Creating a simple REST controller to verify the application works as expected.</li><br>
+                            <li>Running the application using the integrated terminal and the VS Code debugger.</li><br>
+                            <li>Creating and running tests.</li><br>
+                        </ul><br>
+                        By following these steps, you can easily set up and manage Spring Boot projects using Maven in
+                        VS Code,<br><br> leveraging its powerful development and debugging features.
+                    </li>
+                </ul>
+
+
             </div>
         </div>
     </div>
-    
+
 </body>
+
 </html>
