@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Create Spring Boot Project With Spring Initializer</h1>
+        <p>In this article, we will learn how to create a simple Spring boot project with <a href="https://start.spring.io/" target="_blank">Spring
+                Initializr</a>.</p>
+        <p><a href="https://start.spring.io/" target="_blank">Spring Initializr</a> is a great tool developed by the spring team to quickly bootstrap your
+            Spring Boot projects.</p>
+        <p>There are many ways to create a Spring Boot application. The simplest way is to use Spring Initializr at <a
+                href="https://start.spring.io/" target="_blank">http://start.spring.io/</a>, which is an online Spring Boot application generator.</p>
+        <p>In this article, we will create a simple Spring boot hello world tutorial project using the <a href="https://start.spring.io/" target="_blank">Spring
+                Initializr</a> tool and import it to eclipse IDE.</p>
+        <h3>Create Spring Boot Project With Spring initializer</h3>
+        <p>The below gif image gives you step by step process to create a Spring boot project using <a href="https://start.spring.io/" target="_blank">Spring
+                Initializr</a>.</p>
+        <h2>1. Launch Spring Initializr</h2>
+        <p><a href="https://start.spring.io/" target="_blank">Spring Initializr</a> is a great tool developed by the spring team to quickly bootstrap your
+            Spring Boot projects.</p>
+        <p>Use the <a href="https://start.spring.io/" target="_blank">Spring Initializr</a> link to access its user interface.</p>
+        <h2>2. Specify Project Details </h2>
+        <p>Look at the diagram, we have specified the project details:</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/project-details.png" style="width: 100%;">
+        <p>To add dependencies, click on Add Dependencies button. Next, choose the dependencies:</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/project-dependencies.png" style="width: 100%;">
+        <p>Once, all the details are entered. Next, clicking on Generate Project button will generate a spring boot
+            project and downloads it. Next, Unzip the downloaded zip file.</p>
+        <h2>3. Import project in Eclipse </h2>
+        <p>In Eclipse, Click File -> Import -> Existing Maven Project as shown below.</p>
+        <img
+            src="../assets/spring-data-jpa-tutorial-images/CreatingSpringBootProject-Option1-SpringInitializr-Screen2.png">
+        <p>Navigate or type in the path of the folder where you extracted the zip file to the next screen.</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/springboot-screen-3.PNG">
+        <p>Once you click Finish, Maven would take some time to download all the dependencies and initialize the
+            project.</p>
+        <p>That’s it. Your first Spring Project is Ready.</p>
+        <p>Check out the complete Spring boot tutorial at <a href="/spring_boot_tutorial.html" target="_blank">Master in
+            Spring Boot Tutorial</a>.</p>
+    </div>
+</body>
+
+</html>

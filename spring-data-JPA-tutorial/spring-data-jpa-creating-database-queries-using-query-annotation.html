@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA - Creating Database Queries using @Query Annotation</h1>
+        <p>The previous part of this tutorial described <a
+                href="/spring-data-JPA-tutorial/spring-data-jpa-query-creation-from-method-names.html"
+                target="_blank">how we can create database queries from the method
+                names of our
+                query methods</a>. This blog post describes how to create database queries using the <code
+                style="color: red;">@Query</code> annotation.</p>
+        <p>Well, the method names query generation strategy has the following weaknesses:</p>
+        <ol>
+            <li>The features of the method name parser determine what kind of queries we can create. If the method name
+                parser doesn’t support the required keyword, we cannot use this strategy.</li>
+            <li>The method names of complex query methods are long and ugly.</li>
+            <li>There is no support for dynamic queries.</li>
+        </ol>
+        In this post, we can avoid those weaknesses by using the <code style="color: red;">@Query</code> annotation.
+        <h2>Creating Query Methods using @Query Annotation</h2>
+        <p>We can configure the invoked database query by annotating the query method with the <code
+                style="color: red;">@Query</code> annotation. It
+            supports both JPQL and SQL queries, and the query that is specified by using the <code
+                style="color: red;">@Query</code> annotation precedes
+            all other query generation strategies.</p>
+        <p>Let’s find out how we can create both <b>JPQL</b> and <b>SQL</b> queries with the <code
+                style="color: red;">@Query</code> annotation.</p>
+        <h3>Creating JPQL Queries</h3>
+        <p>We can create a <b>JPQL</b> query with the <code style="color: red;">@Query</code> annotation by following
+            these steps:</p>
+        <ul>
+            <li>Add a query method to our repository interface.</li>
+            <li>Annotate the query method with the <code style="color: red;">@Query</code> annotation, and specify the
+                invoked query by setting it as the value of the <code style="color: red;">@Query</code> annotation.</li>
+        </ul>
+        <p>Let's look at the below examples that demonstrate the creation of <b>JPQL</b> Queries using <code
+                style="color: red;">@Query</code> annotation.</p>
+        <p>The following example shows a query created with the <code style="color: red;">@Query</code> annotation:</p>
+        <pre><code>
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    @Query("select u from User u where u.emailAddress = ?1")
+    User findByEmailAddress(String emailAddress);
+}
+
+        </code></pre>
+        <p>Using Advanced LIKE Expressions - The query execution mechanism for manually defined queries created with
+            <code style="color: red;">@Query</code> allows the definition of advanced LIKE expressions inside the query
+            definition, as shown in the
+            following example:
+        </p>
+        <pre><code>
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    @Query("select u from User u where u.firstname like %?1")
+        List<User> findByFirstnameEndsWith(String firstname);
+}
+            </code></pre>
+        <p>In the preceding example, the LIKE delimiter character (%) is recognized, and the query is transformed into a
+            valid JPQL query (removing the %). Upon query execution, the parameter passed to the method call gets
+            augmented with the previously recognized LIKE pattern.</p>
+        <h2>Creating SQL Queries</h2>
+        <p>The <code style="color: red;">@Query</code> annotation allows for running native queries by setting the <code
+                style="color: red;">nativeQuery</code> flag to <b>true</b>.</p>
+        <p>Let's follow the below steps to create a SQL query with the <code style="color: red;">@Query</code>
+            annotation:</p>
+        <ul>
+            <li>Add a query method to our repository interface.</li>
+            <li>Annotate the query method with the <code style="color: red;">@Query</code> annotation, and specify the
+                invoked query by setting it as the
+                value of the <code style="color: red;">@Query</code> annotation’s value attribute.</li>
+            <li>Set the value of the <code style="color: red;">@Query</code> annotation’s <b>nativeQuery</b> attribute
+                to <b>true</b>.</li>
+        </ul>
+        <pre><code>
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import net.guides.springboot2.springboottestingexamples.model.User;
+
+/**
+ * UserRepository demonstrates the method name query generation.
+ * 
+ * @author Ramesh Fadatare
+ *
+ */
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    @Query(value = "select * from users where first_name like %?1", nativeQuery = true)
+    List<User> findByFirstnameEndsWith(String firstname);
+
+    @Query(value = "SELECT * FROM USERS WHERE EMAIL_ADDRESS = ?1", nativeQuery = true)
+    User findByEmailAddress(String emailAddress);
+}
+
+</code></pre>
+        <h2>Complete Example</h2>
+        <p>Let's develop a complete example to demonstrate the usage of @Query annotation using the <a
+                href="/spring_boot_tutorial.html" target="_blank">Spring
+                Boot
+                application</a> which quickly bootstraps with autoconfiguration.</p>
+        <h3>Tools and Technologies Used</h3>
+        <ul>
+            <li>Spring Boot - 2.0.6.RELEASE</li>
+            <li>JDK - 1.8 or later</li>
+            <li>Spring Framework - 5.0.9 RELEASE</li>
+            <li>Spring Data JPA - 2.0.10 RELEASE</li>
+            <li>Maven - 3.2+</li>
+            <li>IDE - Eclipse or Spring Tool Suite (STS)</li>
+        </ul>
+        <p>There are many ways to create a <a
+            href="/spring_boot_tutorial.html" target="_blank">Spring Boot application</a>. The simplest way is to use Spring
+            Initializr at
+            <a href="https://start.spring.io/">http://start.spring.io/</a>, which is an online Spring Boot application generator.
+        </p>
+        <h3>The pom.xml File</h3>
+        <pre><code>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;net.guides.springboot2&lt;/groupId&gt;
+    &lt;artifactId&gt;springboot-testing-examples&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+    &lt;name&gt;springboot-testing-examples&lt;/name&gt;
+    &lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;3.0.4&lt;/version&gt;
+        &lt;relativePath/&gt;
+        &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+            &lt;artifactId&gt;h2&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;
+
+</code></pre>
+        <h3>JPA Entity - User.java</h3>
+        <p>In this example, we store <code style="color: red;">User</code> objects, annotated as a JPA entity.</p>
+        <pre><code>
+import java.util.Date;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "users")
+public class User {
+    private long id;
+    private String firstname;
+    private String lastname;
+    private Date startDate;
+    private String emailAddress;
+    private int age;
+    private int active;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", startDate=" + startDate +
+            ", emailAddress=" + emailAddress + ", age=" + age + ", active=" + active + "]";
+    }
+}
+
+</code></pre>
+        <ul>
+            <li>The <code style="color: red;">User</code> class is annotated with <code
+                    style="color: red;">@Entity</code>, indicating that it is a JPA entity.</li>
+            <li>The User’s id property is annotated with <code style="color: red;">@Id</code> so that JPA will recognize
+                it as the object’s ID. The id
+                property is also annotated with <code style="color: red;">@GeneratedValue</code> to indicate that the ID
+                should be generated
+                automatically.</li>
+        </ul>
+        <h3>Spring Data JPA Repository - UserRepository.java</h3>
+        <pre><code>
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import net.guides.springboot2.springboottestingexamples.model.User;
+
+/**
+ * UserRepository demonstrates the method name query generation.
+ * 
+ * @author Ramesh Fadatare
+ *
+ */
+@Repository
+public interface UserRepository extends JpaRepository &lt; User, Long > {
+    @Query("select u from User u where u.emailAddress = ?1")
+    User findByEmailAddress(String emailAddress);
+
+    @Query("select u from User u where u.firstname like %?1")
+    List &lt; User > findByFirstnameEndsWith(String firstname);
+}
+        </code></pre>
+        <p>Let's create a SQL query with the <code style="color: red;">@Query</code> annotation:</p>
+        <pre><code>
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import net.guides.springboot2.springboottestingexamples.model.User;
+
+/**
+ * UserRepository demonstrates the method name query generation.
+ * 
+ * @author Ramesh Fadatare
+ *
+ */
+@Repository
+public interface UserRepository extends JpaRepository &lt; User, Long > {
+
+    @Query(value = "select * from users where first_name like %?1", nativeQuery = true)
+    List &lt; User > findByFirstnameEndsWith(String firstname);
+
+    @Query(value = "SELECT * FROM USERS WHERE EMAIL_ADDRESS = ?1", nativeQuery = true)
+    User findByEmailAddress(String emailAddress);
+}
+
+</code></pre>
+        <h3>Create an Application class</h3>
+        <p>Here you create an Application class with all the components.</p>
+        <pre><code>
+package net.guides.springboot2.springboottestingexamples;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import net.guides.springboot2.springboottestingexamples.model.User;
+import net.guides.springboot2.springboottestingexamples.repository.UserRepository;
+
+@SpringBootApplication
+public class Application implements CommandLineRunner {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
+    @Override
+    public void run(String...args) throws Exception {
+        User user = new User();
+        user.setActive(1);
+        user.setAge(28);
+        user.setEmailAddress("ramesh24@gmail.com");
+        user.setFirstname("Ramesh");
+        user.setLastname("Fadatare");
+        user.setStartDate(new Date());
+        user = userRepository.save(user);
+
+        System.out.println("-------------------------------------:: " + user.getId());
+
+        System.out.println(" ---------------@Query ---------------------");
+        System.out.println("--------------findByEmailAddress -----------------");
+
+        User user2 = userRepository.findByEmailAddress("ramesh24@gmail.com");
+        System.out.println(user2.toString());
+
+        System.out.println(" ---------------@Query ---------------------");
+        System.out.println("--------------findByLastname -----------------");
+
+        List &lt; User > user3 = userRepository.findByFirstnameEndsWith("Ramesh");
+        System.out.println(user3.get(0).toString());
+    }
+}
+
+</code></pre>
+        <p>Note that we have used UserRepository methods to demonstrate @Query annotation.</p>
+        <h3>Running Application</h3>
+        <p>We are using Maven so we can run the application using <b>./mvnw spring-boot:run</b>. Or you can build the
+            JAR file
+            with <b>./mvnw clean package</b>. Then you can run the JAR file:</p>
+        <pre><code>java -jar target/spring-data-jpa-example-0.1.0.jar</code></pre>
+        <h3>Output</h3>
+        <img src="../assets/spring-data-jpa-tutorial-images/query-annotation-output.PNG" style="width: 100%;">
+    </div>
+</body>
+
+</html>

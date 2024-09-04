@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Create Spring Boot Project in Spring Tool Suite [STS]</h1>
+        <p>In this article, we will see step by step, how to <a href="">create a Spring Boot project in STS ( Spring
+                Tool Suite)</a>.</p>
+        <p>Download the latest Spring tool suite at <a href="">https://spring.io/tools</a>.</p>
+        <p>Download STS for Windows 64-bit at <a href="">Spring Tool Suite for Windows 64-Bit</a>.</p>
+        <p>Download STS for Linux 64-bit at <a href="">Spring Tool Suite for Linux 64-Bit</a>.</p>
+        <p>Download STS for Mic OS 64-bit at <a href="">Spring Tool Suite for Mac OS 64-Bit</a>.</p>
+        <p>Once you download STS as a Jar file then double click on it ( make sure you have installed JDK in your system
+            and set up JAVA_HOME for the same)</p>
+        <p>Click on the STS icon in the Spring Tool Suite (STS) explorer and choose the workspace.</p>
+        <h2>Create Spring Boot Project in Spring Tool Suite [STS]</h2>
+        <p>The below gif image shows step by step process to create a Spring boot project in STS:</p>
+        <a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhB8BiZa_zNG-MaN22w-UlpHp2ntkl5bex9QNwM2UbiuHqSASfbaHe-I-VzX8YVEyQzei2Fb_w-qh0QEEYuRo3X-7xPzcaLwjmXBgNuTV4A9N3JONEcX6-SHwAXABz2vNjO0jgAWQBaoys/s1600/create-springboot-using-sts2.gif"
+            style="margin-left: 1em; margin-right: 1em;"><img border="0" data-original-height="664"
+                data-original-width="1267"
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhB8BiZa_zNG-MaN22w-UlpHp2ntkl5bex9QNwM2UbiuHqSASfbaHe-I-VzX8YVEyQzei2Fb_w-qh0QEEYuRo3X-7xPzcaLwjmXBgNuTV4A9N3JONEcX6-SHwAXABz2vNjO0jgAWQBaoys/s1600/create-springboot-using-sts2.gif"
+                style="width: 100%;"></a>
+        <p>Follow the below steps:</p>
+        <h3>1. Right-click in the package explorer and select New -> Spring Starter Project</h3>
+        <h3>2. Specify project details</h3>
+        <p>Look at the above diagram, we have specified the following details:</p>
+        <ul>
+            <li>Generate: Maven Project</li>
+            <li>Language: Java</li>
+            <li>Java Version: 1.8 (Default)</li>
+            <li>Spring Boot: 2.1.4</li>
+            <li>Group: com.springboot.tutorial</li>
+            <li>Artifact: springboot-helloworld-tutorial</li>
+            <li>Name: com.springboot.tutorial</li>
+            <li>Description: Demo project for Spring Boot</li>
+            <li>Package Name : com.springboot.tutorial</li>
+            <li>Packaging: jar (This is the default value)</li>
+            <li>Dependencies: Web, JPA, MySQL, Dev Tools</li>
+        </ul>
+        <p>Once you click Finish, Maven would take some time to download all the dependencies and initialize the
+            project.</p>
+        <h3>3. Project Structure</h3>
+        <img src="../assets/spring-data-jpa-tutorial-images/package-structure.PNG">
+        <p>Check out the complete Spring boot tutorial at <a href="/spring_boot_tutorial.html" target="_blank">Master in
+                Spring Boot Tutorial</a>.</p>
+    </div>
+</body>
+
+</html>

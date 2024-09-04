@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA - @NamedQuery Example</h1>
+        <p>In this tutorial, we will learn how to create a Named Query using <code
+                style="color: red;">@NamedQuery</code> annotation in Spring Data JPA.</p>
+        <p>Well, we use <code style="color: red;">@NamedQuery</code> annotation to define Named JPQL query.</p>
+        <h2>Steps to Define Named JPQL Query</h2>
+        <p>If we want to create a Named JPQL query, we must follow these steps:</p>
+        <ol>
+            <li>Annotate the entity with the <code style="color: red;">@NamedQuery</code> annotation from JPA:</li>
+            <pre><code>
+@NamedQuery(
+    name = "Product.findByPrice",
+    query = "SELECT p from Product p where p.price = :price"
+)
+class Product{ // code goes here}
+
+    </code></pre>
+            <li>Use <code style="color: red;">@NamedQuery</code> annotation’s name attribute to set the name of the
+                named query:</li>
+            <pre><code>
+@NamedQuery(
+    name = "Product.findByPrice",
+    query = "SELECT p from Product p where p.price = :price"
+)
+    </code></pre>
+            <li> Use <code style="color: red;">@NamedQuery</code> annotation’s query attribute to set the JPQL query the
+                value:</li>
+            <pre><code>
+@NamedQuery(
+    name = "Product.findByPrice",
+    query = "SELECT p from Product p where p.price = :price"
+)
+    </code></pre>
+            <li>Use named query name in a Spring Data JPA Repository:</li>
+            <pre><code>    
+// Define Named JPQL query
+Product findByPrice(@Param("price") BigDecimal price);
+
+</code></pre>
+        </ol>
+        <p>Let's create a Spring boot project from the scratch and let's understand the usage of <code
+                style="color: red;">@NamedQuery</code> annotation in Spring Data JPA.</p>
+        <h2>1. Creating Spring Boot Project</h2>
+        <p>Spring Boot provides a web tool called <a href="https://start.spring.io/">https://start.spring.io</a> to bootstrap an application
+            quickly. Just go
+            to <a href="https://start.spring.io/">https://start.spring.io</a> and generate a new spring boot project.</p>
+        <p><b>Use the below details in the Spring boot creation:</b></p>
+        <p><b>Project Name: </b>spring-data-jpa-course</p>
+        <p><b>Project Type: </b>Maven</p>
+        <p><b>Choose dependencies: </b>Spring Data JPA, MySQL Driver, Lombok</p>
+        <p><b>Package name: </b>net.javaguides.springboot</p>
+        <h2>2. Maven Dependencies</h2>
+        <p>Here is the complete <code style="color: red;">pom.xml</code> for your reference:</p>
+        <pre><code>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;parent&gt;
+		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+		&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+		&lt;version&gt;3.0.4&lt;/version&gt;
+		&lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+	&lt;/parent&gt;
+	&lt;groupId&gt;net.javaguides&lt;/groupId&gt;
+	&lt;artifactId&gt;spring-data-jpa-course&lt;/artifactId&gt;
+	&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;spring-data-jpa-course&lt;/name&gt;
+	&lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+	&lt;properties&gt;
+		&lt;java.version&gt;17&lt;/java.version&gt;
+	&lt;/properties&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.mysql&lt;/groupId&gt;
+			&lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+			&lt;scope&gt;runtime&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+				&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+
+&lt;/project&gt;
+
+</code></pre>
+        <h2>3. Configure MySQL database</h2>
+        <p>Let's use the MySQL database to store and retrieve the data in this example and we gonna use Hibernate
+            properties to create and drop tables.</p>
+        <p>Open the <code style="color: red;">application.properties</code> file and add the following configuration to
+            it:</p>
+        <pre><code>
+spring.datasource.url=jdbc:mysql://localhost:3306/demo?useSSL=false
+spring.datasource.username=root
+spring.datasource.password=Mysql@123
+
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQLDialect
+
+spring.jpa.hibernate.ddl-auto = create-drop
+
+</code></pre>
+        <p>Make sure that you will create a <b>demo</b> database before running the Spring boot application.</p>
+        <p>Also, change the MySQL username and password as per your MySQL installation on your machine.</p>
+        <h2>4. Create JPA Entity - Product.java</h2>
+        <p>Let's create an <code style="color: red;">entity</code> package inside a base package
+            "net.javaguides.springboot". </p>
+        <p>Within the <code style="color: red;">entity</code> package, create a <code style="color: red;">Product</code>
+            class with the following content:</p>
+        <pre><code>
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+
+@NamedQuery(
+        name = "Product.findByPrice",
+        query = "SELECT p from Product p where p.price = :price"
+)
+@Table(
+        name = "products",
+        schema = "ecommerce",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "sku_unique",
+                        columnNames = "stock_keeping_unit"
+                )
+        }
+)
+public class Product {
+
+    @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "product_generator"
+    )
+
+    @SequenceGenerator(
+            name = "product_generator",
+            sequenceName = "product_sequence_name",
+            allocationSize = 1
+    )
+    private Long id;
+
+    @Column(name = "stock_keeping_unit", nullable = false)
+    private String sku;
+
+    @Column(nullable = false)
+    private String name;
+
+    private String description;
+    private BigDecimal price;
+    private boolean active;
+    private String imageUrl;
+
+    @CreationTimestamp
+    private LocalDateTime dateCreated;
+
+    @UpdateTimestamp
+    private LocalDateTime lastUpdated;
+}
+
+</code></pre>
+        <p>Note that we are using Lombok annotations to reduce the boilerplate code.</p>
+        <h2>5. Create Spring Data JPA Repository</h2>
+        <p>The next thing we’re gonna do is to create a repository to access <code style="color: red;">Product</code>
+            entity data from the database..</p>
+        <p>The <code style="color: red;">JpaRepository</code> interface defines methods for all the CRUD operations on
+            the entity, and a default
+            implementation of the <code style="color: red;">JpaRepository</code> called <code style="color: red;">SimpleJpaRepository</code></p>
+        <p>Let's create a <code style="color: red;">repository</code> package inside a base package
+            "net.javaguides.springdatarest".</p>
+<p>Within the <code style="color: red;">repository</code> package, create a <code style="color: red;">ProductRepository</code> interface with the following content:</p>
+<pre><code>
+import com.springdatajpa.springboot.entity.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
+
+import java.math.BigDecimal;
+
+
+public interface ProductRepository extends JpaRepository<Product, Long> 
+{
+    // Define Named JPQL query
+    Product findByPrice(@Param("price") BigDecimal price);
+}
+
+</code></pre>
+<h2>6. Testing Named JPQL Query</h2>
+<pre><code>
+import com.springdatajpa.springboot.entity.Product;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+@SpringBootTest
+public class NamedQueriesTest {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Test
+    void namedJPQLQuery(){
+
+        Product product = productRepository.findByPrice(new BigDecimal(100));
+
+        System.out.println(product.getName());
+        System.out.println(product.getDescription());
+    }
+}
+
+</code></pre>
+<h2>Output:</h2>
+<img src="../assets/spring-data-jpa-tutorial-images/Spring Data JPA - @NamedQuery Example.png">
+    </div>
+</body>
+
+</html>

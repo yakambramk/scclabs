@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA @NamedNativeQuery and @NamedNativeQueries Example</h1>
+        <p>In the previous article, we learned how to <a
+                href="/spring-data-JPA-tutorial/spring-data-jpa-namedquery-and-namedqueries-example.html"
+                target="_blank">create database queries using Spring Data JPA
+                @NamedQuery and @NamedQueries annotations</a>. </p>
+        <p>In this article, we will learn how to create database queries using <code
+                style="color: red;">@NamedNativeQuery</code> and <code style="color: red;">@NamedNativeQueries</code>
+            annotations. These annotations let you define the query in native SQL by losing the database platform
+            independence.</p>
+        <p>Let's develop a complete example to demonstrate the usage of <code
+                style="color: red;">@NamedNativeQuery</code> and <code style="color: red;">@NamedNativeQueries</code>
+            using
+            the <a href="/spring_boot_tutorial.html" target="_blank">Spring Boot application</a> which quickly bootstraps with autoconfiguration.</p>
+        <h2>Create Spring Boot Project</h2>
+        <p>There are many ways to create a Spring Boot application. You can refer below articles to create a Spring Boot
+            application.</p>
+        >><a href="/spring-data-JPA-tutorial/create-spring-boot-project-with-spring-initializer.html" target="_blank">Create Spring Boot Project With Spring Initializer</a><br>
+        >><a href="/spring-data-JPA-tutorial/create-spring-boot-project-in-spring-tool-suite.html" target="_blank">Create Spring Boot Project in Spring Tool Suite [STS]</a>
+        <h2>The pom.xml File</h2>
+        <pre><code>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;net.guides.springboot2&lt;/groupId&gt;
+    &lt;artifactId&gt;springboot-testing-examples&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+    &lt;name&gt;springboot-testing-examples&lt;/name&gt;
+    &lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;3.0.4&lt;/version&gt;
+        &lt;relativePath/&gt;
+        &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+            &lt;artifactId&gt;h2&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;
+
+        </code></pre>
+        <p>The Spring Boot Maven plugin provides many convenient features:</p>
+        <ol>
+            <li>It collects all the jars on the classpath and builds a single, runnable "über-jar", which makes it more
+                convenient to execute and transport your service.</li>
+            <li>It searches for the public static void <code style="color: red;">main()</code> method to flag as a
+                runnable class.</li>
+            <li>It provides a built-in dependency resolver that sets the version number to match <code
+                    style="color: red;">Spring Boot</code>
+                dependencies. You can override any version you wish, but it will default to Boot’s chosen set of
+                versions.</li>
+        </ol>
+        <h2>JPA Entity - User.java</h2>
+        <p>In this example, we store <code style="color: red;">User</code> objects, annotated as a JPA entity.</p>
+        <pre><code>
+import java.util.Date;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "users")
+@NamedNativeQuery(name = "User.findByEmailAddress", query = "select * from users where email_address = ?1", resultClass = User.class)
+@NamedNativeQueries(value = {
+  @NamedNativeQuery(name = "User.findByLastname", query = "select * from users where lastname = ?1", resultClass = User.class) })
+public class User {
+    private long id;
+    private String firstname;
+    private String lastname;
+    private Date startDate;
+    private String emailAddress;
+    private int age;
+    private int active;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", startDate=" + startDate +
+            ", emailAddress=" + emailAddress + ", age=" + age + ", active=" + active + "]";
+    }
+}
+
+</code></pre>
+        <ul>
+            <li>The <code style="color: red;">User</code> class is annotated with <code
+                    style="color: red;">@Entity</code>, indicating that it is a JPA entity.</li>
+            <li>The User’s id property is annotated with <code style="color: red;">@Id</code> so that JPA will recognize
+                it as the object’s ID. The id
+                property is also annotated with <code style="color: red;">@GeneratedValue</code> to indicate that the ID
+                should be generated
+                automatically.</li>
+        </ul>
+        <h3>@NamedNativeQuery</h3>
+        <p>Specifies a named native SQL query. Query names are scoped to the persistence unit. The <code
+                style="color: red;">NamedNativeQuery</code> annotation can be applied to an entity or mapped superclass.
+        </p>
+        <pre><code>
+@Entity
+@Table(name = "users")
+@NamedNativeQuery(name = "User.findByEmailAddress", query = "select * from users where email_address = ?1", resultClass = User.class)
+public class User {
+}
+
+</code></pre>
+        <h3>@NamedNativeQueries</h3>
+        <p>Used to specify multiple native SQL-named queries. Query names are scoped to the persistence unit. The <code
+                style="color: red;">NamedNativeQueries</code> annotation can be applied to an entity or mapped
+            superclass.</p>
+        <pre><code>
+@Entity
+@Table(name = "users")
+@NamedNativeQueries(value = {
+  @NamedNativeQuery(name = "User.findByLastname", query = "select * from users where lastname = ?1", resultClass = User.class) })
+public class User {
+}
+
+</code></pre>
+        <h2>Spring Data JPA Repository - UserRepository.java</h2>
+        <pre><code>
+package net.guides.springboot2.springboottestingexamples.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import net.guides.springboot2.springboottestingexamples.model.User;
+
+/**
+ * UserRepository demonstrates the method name query generation.
+ * 
+ * @author Ramesh Fadatare
+ *
+ */
+@Repository
+public interface UserRepository extends JpaRepository &lt; User, Long > {
+    User findByEmailAddress(String emailAddress);
+
+    List &lt;User> findByLastname(String lastname);
+}
+
+</code></pre>
+        <h2>Create an Application class</h2>
+        <p>Here you create an <code style="color: red;">Application</code> class with all the components.</p>
+        <pre><code>
+package net.guides.springboot2.springboottestingexamples;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import net.guides.springboot2.springboottestingexamples.model.User;
+import net.guides.springboot2.springboottestingexamples.repository.UserRepository;
+
+@SpringBootApplication
+public class Application implements CommandLineRunner {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
+    @Override
+    public void run(String...args) throws Exception {
+        User user = new User();
+        user.setActive(1);
+        user.setAge(28);
+        user.setEmailAddress("ramesh24@gmail.com");
+        user.setFirstname("Ramesh");
+        user.setLastname("Fadatare");
+        user.setStartDate(new Date());
+        user = userRepository.save(user);
+
+        System.out.println("-------------------------------------:: " + user.getId());
+
+        System.out.println(" ---------------@NamedNativeQuery ---------------------");
+        System.out.println("--------------findByEmailAddress -----------------");
+
+        User user2 = userRepository.findByEmailAddress("ramesh24@gmail.com");
+        System.out.println(user2.toString());
+
+        System.out.println(" ---------------@NamedNativeQueries ---------------------");
+        System.out.println("--------------findByLastname -----------------");
+
+        List &lt; User > user3 = userRepository.findByLastname("Fadatare");
+        System.out.println(user3.get(0).toString());
+    }
+}
+
+</code></pre>
+        <p>Note that we have used <b>UserRepository</b> methods to demonstrate <code
+                style="color: red;">@NamedNativeQuery</code> and <code style="color: red;">@NamedNativeQueries</code>
+            annotations.</p>
+        <h2>Running Application</h2>
+        <p>We are using Maven so we can run the application using <b>./mvnw spring-boot:run</b>. Or you can build the
+            JAR file with <b>./mvnw clean package</b>. Then you can run the JAR file:</p>
+        <pre><code>java -jar target/spring-data-jpa-example-0.1.0.jar</code></pre>
+        <h3>Output</h3>
+        <img src="../assets/spring-data-jpa-tutorial-images/named-sql-query-output.PNG" style="width: 100%;">
+    </div>
+</body>
+
+</html>
