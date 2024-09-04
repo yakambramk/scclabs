@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/swagger-ui-home-page.png" alt="logo" />
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="heading">
+            <h3>Spring Boot REST API Documentation with Swagger</h3>
+            <h6>Author: Sai K</h6>
+        </div><br>
+        <p>In this tutorial, we will learn how to add step-by-step Swagger to the existing Spring boot application and
+            generate Swagger API documentation. <br><br>
+
+            In this tutorial, we'll look at Swagger 2 for a Spring Boot REST web service, using the Springfox
+            implementation of the Swagger 2 specification</p>
+
+        <h3>Step 1: Adding the Maven Dependency to Spring Boot Project</h3>
+        <p>Let's open pom.xml and below single maven springfox-boot-starter dependency:</p>
+        <code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;io.springfox&lt;/groupId&gt;
+    &lt;artifactId&gt;springfox-boot-starter&lt;/artifactId&gt;
+    &lt;version&gt;3.0.0&lt;/version&gt;
+&lt;/dependency&gt;</pre></code><br>
+
+        <p> After adding the springfox-boot-starter dependency, spring boot will auto-configure Swagger in Spring boot
+            so we don't need to manually add annotations to enable Swagger.</p>
+        <h4>Access Swagger documentation JSON API</h4>
+        <p>Here is the URL format:</p>
+        <code><pre>http://localhost:8080/your-app-root/v2/api-docs</pre></code><br>
+
+        <p>Consider we are creating blog app and to verify that Springfox is working, we can visit this URL in our
+            browser:</p>
+        <p><a href="http://localhost:8080/blog-app/v2/api-docs">http://localhost:8080/blog-app/v2/api-docs</a></p>
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/Snapshot_3.png" alt="logo" class="img-fluid" />
+        </div>
+
+
+
+        <h3>Step 2: Integrating Swagger 2 Into the Spring Boot Project</h3>
+        <p>Let's create a SwaggerConfig class and annotate with @Configuration annotation. The configuration of Swagger
+            mainly centers around the Docket bean so let's add the below code to SwaggerConfig class:</p>
+        <code><pre>
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.*;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
+import springfox.documentation.spring.web.plugins.Docket;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+@Configuration
+public class SwaggerConfiguration {
+
+    private ApiInfo apiInfo() {
+        return new ApiInfo("Blog REST APIs",
+                "REST APIs for Blog Application",
+                "1.0",
+                "Terms of service",
+                new Contact("Ramesh Fadatare", "www.javaguides.net", "ramesh@gmail.com"),
+                "License of API",
+                "API license URL",
+                Collections.emptyList());
+    }
+
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build();
+    }
+}</pre></code><br>
+
+
+        <p>After defining the Docket bean, it's select() method returns an instance of ApiSelectorBuilder, which
+            provides a way to control the endpoints exposed by Swagger. <br><br>
+
+            We can configure predicates for selecting RequestHandlers with the help of RequestHandlerSelectors and
+            PathSelectors. Using any() for both will make documentation for our entire API available through Swagger.
+        </p>
+
+        <h3>Step 3: Accessing Swagger UI</h3>
+        <p>Swagger UI is a built-in solution that makes user interaction with the Swagger-generated API documentation
+            much easier. <br><br>
+
+            Let's say we are creating a blog application so in our case, the exact URL will be: <br><br>
+
+            <a href="http://localhost:8080/blog-app/swagger-ui/">http://localhost:8080/blog-app/swagger-ui/</a> <br><br>
+
+            The result should look something like this:
+        </p>
+
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/Snapshot_5.png" alt="logo" class="img-fluid" />
+        </div><br>
+
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/Snapshot_4.png" alt="logo" class="img-fluid" />
+        </div><br>
+
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/Snapshot_6.png" alt="logo" class="img-fluid" />
+        </div><br>
+
+        <h3>Customizing Swagger REST Documentation with Annotations</h3>
+        <p>In order to customize the Swagger documentation, swagger-core offers a set of annotations to declare and
+            manipulate the output. </p>
+        <h5>Swagger-core Annotations:</h5>
+
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Api</td>
+                    <td>Marks a class as a Swagger resource.</td>
+                </tr>
+                <tr>
+                    <td>@ApiModel</td>
+                    <td>Provides additional information about Swagger models.</td>
+                </tr>
+                <tr>
+                    <td>@ApiModelProperty</td>
+                    <td>Adds and manipulates data of a model property.</td>
+                </tr>
+                <tr>
+                    <td>@ApiOperation</td>
+                    <td>Describes an operation or typically an HTTP method against a specific path.</td>
+                </tr>
+                <tr>
+                    <td>@ApiParam</td>
+                    <td>Adds additional meta-data for operation parameters.</td>
+                </tr>
+                <tr>
+                    <td>@ApiResponse</td>
+                    <td>Describes a possible response of an operation.</td>
+                </tr>
+                <tr>
+                    <td>@ApiResponses</td>
+                    <td>A wrapper to allow a list of multiple ApiResponse objects.</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>You can find more details about swagger annotations on
+            https://github.com/swagger-api/swagger-core/wiki/annotations
+            Below code snippet shows how to use @Api and @ApiOperation annotations to provide additional information to
+            REST APIs:</p>
+
+        <code><pre>
+@Api(value = "CRUD Rest APIs for Post resources")
+@RestController
+@RequestMapping()
+public class PostController {
+
+    private PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
+
+    @ApiOperation(value = "Create Post REST API")
+    @PostMapping("/api/v1/posts")
+    public ResponseEntity< PostDto> createPost(@Valid @RequestBody PostDto postDto){
+        return new ResponseEntity< >(postService.createPost(postDto), HttpStatus.CREATED);
+    }
+
+    @ApiOperation(value = "Get All Posts REST API")
+    @GetMapping("/api/v1/posts")
+    public PostResponse getAllPosts(
+            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir
+    ){
+        return postService.getAllPosts(pageNo, pageSize, sortBy, sortDir);
+    }
+
+    @ApiOperation(value = "Get Post By Id REST API")
+    @GetMapping(value = "/api/v1/posts/{id}")
+    public ResponseEntity< PostDto> getPostByIdV1(@PathVariable(name = "id") long id){
+        return ResponseEntity.ok(postService.getPostById(id));
+    }
+
+    @ApiOperation(value = "Update Post By Id REST API")
+    @PutMapping("/api/v1/posts/{id}")
+    public ResponseEntity< PostDto> updatePost(@Valid @RequestBody PostDto postDto, @PathVariable(name = "id") long id){
+
+       PostDto postResponse = postService.updatePost(postDto, id);
+
+       return new ResponseEntity< >(postResponse, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Delete Post By Id REST API")
+    @DeleteMapping("/api/v1/posts/{id}")
+    public ResponseEntity< String> deletePost(@PathVariable(name = "id") long id){
+
+        postService.deletePostById(id);
+
+        return new ResponseEntity< >("Post entity deleted successfully.", HttpStatus.OK);
+    }
+}</pre></code><br>
+        <p>Below code snippet shows how to use @ApiModel and @ApiModelProperty annotations to provide additional
+            information about Swagger models:</p>
+        <code><pre>
+@ApiModel(description = "Post model information")
+@Data
+public class PostDto {
+
+    @ApiModelProperty(value = "Blog post id")
+    private long id;
+
+    // title should not be null  or empty
+    // title should have at least 2 characters
+    @ApiModelProperty(value = "Blog post title")
+    @NotEmpty
+    @Size(min = 2, message = "Post title should have at least 2 characters")
+    private String title;
+
+    // post description should be not null or empty
+    // post description should have at least 10 characters
+    @ApiModelProperty(value = "Blog post description")
+    @NotEmpty
+    @Size(min = 10, message = "Post description should have at least 10 characters")
+    private String description;
+
+    // post content should not be null or empty
+    @ApiModelProperty(value = "Blog post conent")
+    @NotEmpty
+    private String content;
+
+    @ApiModelProperty(value = "Blog post comments")
+    private Set< CommentDto> comments;
+}</pre></code> <br>
+        <h3>Complete Course and Source Code</h3>
+        <div style="border-left: 8px solid rgb(237, 21, 21); height: 100px;"><br>
+            <p>Building Real-Time  REST APIs with Spring Boot at <a href="http://127.0.0.1:5500/spring_boot_tutorial.html">Spring Boot 2 Tutorial</a>
+            </p>
+        </div><br>
+
+
+
+
+
+        <h3>Related Spring and Spring Boot Tutorials/Guides:</h3>
+
+
+        <p>
+            <button type="button" class="btn btn-outline-primary">Spring Boot Tutorials [500+]s</button>
+            <button type="button" class="btn btn-outline-secondary">Spring Boot Testing Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Spring Boot Microservice Tutorial</button>
+            <button type="button" class="btn btn-outline-danger">Spring Boot Kafka Microservices </button>
+            <button type="button" class="btn btn-outline-warning">Spring Boot + Apache Kafka Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Spring Core Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Spring MVC Tutorial </button>
+            <button type="button" class="btn btn-outline-secondary">Spring Data JPA Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Spring Framework for Beginners</button>
+            <button type="button" class="btn btn-outline-danger">Spring AOP Tutorial</button>
+            <button type="button" class="btn btn-outline-warning">Spring Security Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Spring Exceptions Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Spring Boot Interview Questions</button>
+            <button type="button" class="btn btn-outline-dark">Spring Boot Microservices Interview Questions</button>
+            <button type="button" class="btn btn-outline-primary">Apache Kafka Tutorials </button>
+            <button type="button" class="btn btn-outline-secondary">Docker Tutorials and Guides</button>
+            <button type="button" class="btn btn-outline-success">Spring Boot RabbitMQ Tutorials</button>
+            <button type="button" class="btn btn-outline-danger">Angular CRUD Example with Spring Boot </button>
+            <button type="button" class="btn btn-outline-warning">Spring Boot + Angular 12 CRUD Full Stack</button>
+            <button type="button" class="btn btn-outline-info">Spring Boot + Angular 8 CRUD Full Stack</button>
+            <button type="button" class="btn btn-outline-danger">Spring Boot + Angular 10 CRUD Full Stack </button>
+            <button type="button" class="btn btn-outline-primary">React JS ( React Hooks) + Spring Boot</button>
+            <button type="button" class="btn btn-outline-secondary">Spring Boot + React JS CRUD Full Stack</button>
+            <button type="button" class="btn btn-outline-success">Spring Boot Thymeleaf CRUD Full Stack </button>
+            <button type="button" class="btn btn-outline-danger">Spring Boot User Registration and Login</button>
+            <button type="button" class="btn btn-outline-warning">Node Js + Express + MongoDB CRUDVue</button>
+            <button type="button" class="btn btn-outline-info">JS + Spring Boot REST API Tutorial</button>
+        </p>
+
+
+
+
+
+
+
+
+
+    </div>
+</body>
+
+</html>
