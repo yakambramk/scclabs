@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Angular Registration and Login Example</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Boot Angular Registration and Login Example</h1>
+                <h4>author : Sai K</h4>
+                <p>In this tutorial, we will create a Spring Boot backend and an Angular frontend to handle user
+                    registration and <br><br> login functionalities. We will use Spring Boot 3.2, Spring Security 6.1 for
+                    security and Angular 17 for the frontend. <br><br> The backend will be responsible for handling user data and
+                    authentication, while the frontend will provide a user- <br><br>friendly interface for registration and
+                    login. </p>
+                <h2>Prerequisites</h2>
+                <p>Before we start, ensure you have the following:</p>
+                <ul>
+                    <li>Java Development Kit (JDK) installed</li><br>
+                    <li>Apache Maven installed</li><br>
+                    <li>Node.js and npm installed</li><br>
+                    <li>Angular CLI installed (<code>npm install -g @angular/cli</code>)</li><br>
+                    <li>An IDE (such as IntelliJ IDEA, Eclipse, or VS Code) installed</li><br>
+                </ul>
+                <h2>Step 1: Setting Up the Spring Boot Backend</h2>
+                <p><b>1.1 Create a Spring Boot Project</b></p>
+                <p>1.<b>Open Spring Initializr:</b></p>
+                <li>Go to <a href="https://start.spring.io/">Spring Initializr</a> in your web browser.</li>
+                <p>1.<b> Configure Project Metadata:</b></p>
+                <ul>
+                    <li><b>Project:</b> Maven Project</li><br>
+                    <li><b>Language:</b> Java</li><br>
+                    <li><b>Spring Boot:</b> Select the latest version of Spring Boot 3.2</li><br>
+                    <li><b>Group:</b> com.example</li><br>
+                    <li><b>Artifact:</b> user-service</li><br>
+                    <li><b>Name:</b> user-service</li><br>
+                    <li><b>Description:</b> User Service</li><br>
+                    <li><b>Package Name:</b> com.example.userservice</li><br>
+                    <li><b>Packaging:</b> Jar</li><br>
+                    <li><b>Java Version:</b> 17 (or your preferred version)</li><br>
+                    <li><b>Click Next.</b></li>
+                </ul>
+                <p>3.<b>Select Dependencies:</b></p>
+                <li>On the Dependencies screen, select the dependencies you need: </li>
+                <ul>
+                    <li>Spring Web</li><br>
+                    <li>Spring Security</li><br>
+                    <li>Spring Data JPA</li><br>
+                    <li>H2 Database</li>
+
+                </ul>
+                <li>Click Next.</li><br>
+                <p>4.<b>Generate the Project:</b></p>
+                <ul>
+                    <li>Click Generate to download the project zip file.</li><br>
+                    <li>Extract the zip file to your desired location.</li><br>
+                </ul>
+                <p>5.<b>Open the Project in Your IDE:</b></p>
+                <li>Open your IDE and import the project as a Maven project.</li>
+                <h3>1.2 Update application.properties</h3>
+                <p>Open the application.properties file located in the src/main/resources directory and add the
+                    following <br><br>configuration:</p>
+                <pre><code>
+server.port=8080
+
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+spring.jpa.hibernate.ddl-auto=update
+                </code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>server.port=8080: Sets the server port to 8080.</li><br>
+                    <li>spring.datasource.url=jdbc:h2:mem:testdb: Configures an in-memory H2 database.</li><br>
+                    <li>spring.datasource.driverClassName=org.h2.Driver: Sets the H2 driver class.</li><br>
+                    <li>spring.datasource.username=sa and spring.datasource.password=password: Set the H2 database
+                        credentials.</li><br>
+                    <li>spring.jpa.database-platform=org.hibernate.dialect.H2Dialect: Configures Hibernate to use H2
+                        dialect.</li><br>
+                    <li>spring.h2.console.enabled=true: Enables the H2 console for database inspection.</li><br>
+                    <li>spring.jpa.hibernate.ddl-auto=update: Automatically updates the database schema based on the JPA
+                        entities.</li><br>
+                </ul>
+                <h3>1.3 Create User Entity</h3>
+                <p>Create a User entity class in the com.example.userservice.model package:</p>
+                <pre><code>
+  package com.example.userservice.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String username;
+    private String password;
+    private String email;
+
+    // Getters and Setters
+}
+                </code></pre>
+                <h2>Explanation:</h2>
+                <ul>
+                    <li>@Entity: Marks the class as a JPA entity.</li><br>
+                    <li>@Id: Marks the id field as the primary key.</li><br>
+                    <li>@GeneratedValue(strategy = GenerationType.IDENTITY): Configures auto-increment for the id field.
+                    </li><br>
+                    <li>username, password, email: Fields representing user attributes.</li><br>
+                    <li>Getters and Setters: Methods to access and modify the fields.</li><br>
+                </ul>
+                <h2>1.4 Create User Repository</h2>
+                <p>Create a UserRepository interface in the com.example.userservice.repository package:</p>
+                <pre><code>
+ package com.example.userservice.repository;
+
+import com.example.userservice.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findByUsername(String username);
+}
+</code></pre>
+                <h2>Explanation:</h2>
+                <ul>
+                    <li>@Repository: Marks the interface as a Spring Data repository.</li><br>
+                    <li>Extends JpaRepository&lt;User, Long&gt;: Provides CRUD operations for the User entity.</li><br>
+                    <li>findByUsername(String username): Custom query method to find a user by username.</li><br>
+                </ul>
+
+                <h2>1.5 Create User Service</h2>
+                <p>Create a UserService class in the com.example.userservice.service package that implements
+                    UserDetailsService:</p>
+                <pre><code>
+    package com.example.userservice.service;
+
+import com.example.userservice.model.User;
+import com.example.userservice.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+public class UserService implements UserDetailsService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();
+    }
+
+    public User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+    public Optional<User> findByUsername(String username) {
+        return Optional.ofNullable(userRepository.findByUsername(username));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getUsername())
+                .password(user.getPassword())
+                .authorities("USER")
+                .build();
+    }
+}
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@Service: Marks the class as a service component.</li><br>
+                    <li>Implements UserDetailsService: Required by Spring Security to load user-specific data.</li><br>
+                    <li>loadUserByUsername(String username): Loads user details for authentication.</li><br>
+                    <li>saveUser(User user): Saves a new user with an encoded password.</li><br>
+                    <li>findByUsername(String username): Finds a user by username.</li><br>
+                </ul>
+                <h2>1.6 Create Security Configuration</h2>
+                <p>Create a SecurityConfig class in the com.example.userservice.config package:</p>
+                <pre><code>
+    package com.example.userservice.config;
+
+import com.example.userservice.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    private final UserService userService;
+
+    @Autowired
+    public SecurityConfig(UserService userService) {
+        this.userService = userService;
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .formLogin(withDefaults());
+
+        return http.build();
+    }
+
+    @Autowired
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@Configuration: Marks the class as a configuration component.</li><br>
+                    <li>@EnableWebSecurity: Enables Spring Security.</li><br>
+                    <li>securityFilterChain(HttpSecurity http): Configures HTTP security, disabling CSRF and permitting
+                        access to /auth/** endpoints.</li><br>
+                    <li>configure(AuthenticationManagerBuilder auth): Configures the authentication manager with user
+                        details service and password encoder.</li><br>
+                    <li>passwordEncoder(): Configures the password encoder.</li><br>
+                </ul>
+                <h2>1.7 Create Authentication Controller</h2>
+                <p>Create an AuthController class in the com.example.userservice.controller package:</p>
+                <pre><code>
+    package com.example.userservice.controller;
+
+import com.example.userservice.model.User;
+import com.example.userservice.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+@CrossOrigin(origins = "http://localhost:4200")
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+
+    private final UserService userService;
+
+    @Autowired
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@RequestBody User
+
+ user) {
+        if (userService.findByUsername(user.getUsername()).isPresent()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(userService.saveUser(user));
+    }
+
+    @GetMapping("/login")
+    public ResponseEntity<User> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+        return userService.findByUsername(currentUsername)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.badRequest().build());
+    }
+}
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@RestController: Marks the class as a REST controller.</li><br>
+                    <li>@RequestMapping("/auth"): Maps requests to /auth URL.</li><br>
+                    <li>registerUser(@RequestBody User user): Handles user registration.</li><br>
+                    <li>getCurrentUser(): Returns the current authenticated user.</li><br>
+                    <li>The @CrossOrigin annotation on the controller allows CORS requests from the specified origin
+                        (http://localhost:4200).</li><br>
+                </ul>
+                <h2>Step 2: Setting Up the Angular Frontend</h2>
+                <h3>2.1 Create an Angular Project</h3>
+                <p>1.Open a terminal and run the following command to create a new Angular project:</p>
+                <pre><code>ng new user-registration</code></pre>
+                <p>2.ng new user-registration</p>
+                <pre><code>cd user-registration</code></pre>
+                <h3>cd user-registration</h3>
+                <p>cd user-registration</p>
+                <pre><code>npm install bootstrap</code></pre>
+                <p>Add Bootstrap to angular.json:</p>
+                <pre><code>
+"styles": [
+    "src/styles.css",
+    "node_modules/bootstrap/dist/css/bootstrap.min.css"
+  ],
+  </code></pre>
+                <h3>2.3 Create Angular Services and Components</h3>
+                <p><b>2.3.1 Create Auth Service</b></p>
+                <p>Generate the AuthService:</p>
+                <pre><code>ng generate service services/auth</code></pre>
+                <p>Edit auth.service.ts: </p>
+                <pre><code>
+    import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+
+  private baseUrl = 'http://localhost:8080/auth';
+
+  constructor(private http: HttpClient) { }
+
+  register(user: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/register`, user);
+  }
+
+  login(credentials: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/login`, credentials);
+  }
+}
+
+  </code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li><code>@Injectable({ providedIn: 'root' })</code>: Marks the service as injectable and available
+                        throughout the app.</li><br>
+                    <li><code>HttpClient</code>: Service for making HTTP requests.</li><br>
+                    <li><code>register(user: any)</code>: Sends a POST request to register a new user.</li><br>
+                    <li><code>login(credentials: any)</code>: Sends a POST request to log in a user.</li><br>
+                </ul>
+                <p><b>2.3.2 Create Registration Component</b></p>
+                <p>Generate the Registration component:</p>
+                <pre><code>ng generate component components/register</code></pre>
+                <p>Edit register.component.ts:</p>
+                <pre><code>
+    import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
+})
+export class RegisterComponent {
+  user: any = {};
+
+  constructor(private authService: AuthService, private router: Router) { }
+
+  register() {
+    this.authService.register(this.user).subscribe(() => {
+      this.router.navigate(['/login']);
+    }, error => {
+      console.error('Registration error: ', error);
+    });
+  }
+}
+</code></pre>
+                <p>Edit register.component.html:</p>
+                <pre><code>
+    < div class="container mt-5">
+        < div class="row justify-content-center">
+          < div class="col-md-6">
+            < div class="card">
+              < div class="card-header">Registration< /div>
+              < div class="card-body">
+                < form (ngSubmit)="register()">
+                  < div class="form-group">
+                    < label for="username">Username< /label>
+                    < input type="text" class="form-control" id="username" [(ngModel)]="user.username" name="username">
+                  < /div>
+                  < div class="form-group">
+                    < label for="email">Email< /label>
+                    < input type="email" class="form-control" id="email" [(ngModel)]="user.email" name="email">
+                  < /div>
+                  < div class="form-group">
+                    < label for="password">Password< /label>
+                    < input type="password" class="form-control" id="password" [(ngModel)]="user.password" name="password">
+                  < /div>
+                  < button type="submit" class="btn btn-primary">Register< /button>
+                < /form>
+              < /div>
+            < /div>
+          < /div>
+        < /div>
+      < /div>
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>register(): Calls the AuthService to register a new user.</li><br>
+                    <li><code>[(ngModel)]="user.username"</code>, <code>[(ngModel)]="user.email"</code>,
+                        <code>[(ngModel)]="user.password"</code>: Two-way data binding for form fields.
+                    </li><br>
+                </ul>
+                <p><b>2.3.3 Create Login Component</b></p>
+                <p>Generate the Login component:</p>
+                <pre><code>ng generate component components/login</code></pre>
+                <p>Edit login.component.ts:</p>
+                <pre><code>
+    import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent {
+  credentials: any = {};
+
+  constructor(private authService: AuthService, private router: Router) { }
+
+  login() {
+    this.authService.login(this.credentials).subscribe(() => {
+      this.router.navigate(['/home']);
+    }, error => {
+      console.error('Login error: ', error);
+    });
+  }
+}
+</code></pre>
+                <p>Edit login.component.html:</p>
+                <pre><code>
+    < div class="container mt-5">
+        < div class="row justify-content-center">
+          < div class="col-md-6">
+            < div class="card">
+              < div class="card-header">Login< /div>
+              < div class="card-body">
+                < form (ngSubmit)="login()">
+                  < div class="form-group">
+                    < label for="username">Username< /label>
+                    < input type="text" class="form-control" id="username" [(ngModel)]="credentials.username" name="username">
+                  < /div>
+                  < div class="form-group">
+                    < label for="password">Password< /label>
+                    < input type="password" class="form-control" id="password" [(ngModel)]="credentials.password" name="password">
+                  < /div>
+                  < button type="submit" class="btn btn-primary">Login< /button>
+                < /form>
+              < /div>
+            < /div>
+          < /div>
+        < /div>
+      < /div>
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>login(): Calls the AuthService to log in a user.</li><br>
+                    <li>[(ngModel)]="credentials.username", [(ngModel)]="credentials.password": Two-way data binding for
+                        form fields.</li><br>
+                </ul>
+                <h3>2.4 Update Angular Routing</h3>
+                <p>Edit app-routing.module.ts:</p>
+                <pre><code>
+    import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
+
+const routes: Routes = [
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: '/register', pathMatch: 'full' }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>Defines routes for the registration and login components.</li><br>
+                    <li>Redirects the root path to the registration component.</li><br>
+                </ul>
+                <h2>2.5 Update Angular App Module</h2>
+                <p>Edit app.module.ts:</p>
+                <pre><code>
+    import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    RegisterComponent,
+    LoginComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>Imports necessary modules for the Angular app.</li><br>
+                    <li>Declares the components used in the app.</li><br>
+                    <li>Sets up the app's root module. </li><br>
+                </ul>
+                <h2>2.6 Run the Angular Application</h2>
+                <p>Open a terminal in the Angular project directory and run the application:</p>
+                <pre><code>ng serve
+</code></pre>
+                <pre><code>Visit http://localhost:4200 in your web browser to see the application.</code></pre>
+                <h2>Conclusion</h2>
+                <p>In this tutorial, we created a Spring Boot backend and an Angular frontend to handle user
+                    registration and login <br><br> functionalities. The backend handles user data and authentication
+                    using Spring Security 6.1, while the frontend <br><br>provides a user-friendly interface using
+                    Angular 17. By following this structure, you can extend and customize the <br><br>application as
+                    needed.</p>
+                <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Spring Boot Maven Command</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Run Spring Boot Maven Command</h1>
+                <h4>author : Sai K</h4>
+                <p>Maven is a popular build automation tool used primarily for Java projects. Running a Spring Boot
+                    application with <br><br>Maven is straightforward using the spring-boot:run goal provided by the Spring Boot
+                    Maven plugin. This guide<br><br> will show you how to set up and run a Spring Boot application using Maven
+                    commands.</p>
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li> JDK 17 or later</li><br>
+                    <li> Maven installed on your machine</li><br>
+                    <li> Spring Boot (version 3.2+ recommended)</li><br>
+                    <li> An IDE (IntelliJ IDEA, Eclipse, VS Code, etc.)</li><br>
+                </ul>
+                <h2>Step 1: Set Up a Spring Boot Project Using Spring Initializr</h2>
+                <p>Use <a href="https://start.spring.io/">Spring Initializr</a> to generate a new Spring Boot project
+                    with the following configuration:</p>
+
+                <ul>
+                    <li>Project: Maven Project</li><br>
+                    <li>Language: Java</li><br>
+                    <li>Spring Boot: 3.2.x</li><br>
+                    <li>Dependencies: Spring Web</li><br>
+                </ul>
+
+                <p>Download the generated project, unzip it, and open it in your IDE.</p>
+                <h2>Example Project Structure</h2>
+                <p>The basic structure of a Spring Boot project with Maven looks like this:</p>
+                <pre><code>
+    my-spring-boot-app/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/example/demo/
+│   │   │       └── DemoApplication.java
+│   │   └── resources/
+│   │       ├── application.properties
+│   └── test/
+│       └── java/
+│           └── com/example/demo/
+│               └── DemoApplicationTests.java
+├── mvnw
+├── mvnw.cmd
+├── pom.xml
+└── .mvn/
+    └── wrapper/
+        └── maven-wrapper.properties
+</code></pre>
+                <h2>Step 2: Configure pom.xml</h2>
+                <p>The pom.xml file is the heart of a Maven project. It defines the project's dependencies, build
+                    configuration, and <br><br> more. Open the pom.xml file and ensure it has the following configuration:</p>
+                <pre><code>
+                < project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+                    < modelVersion>4.0.0< /modelVersion>
+
+                    < groupId>com.example< /groupId>
+                    < artifactId>demo< /artifactId>
+                    < version>0.0.1-SNAPSHOT< /version>
+                    < packaging>jar< /packaging>
+
+                    < name>demo< /name>
+                    < description>Demo project for Spring Boot< /description>
+
+                    < parent>
+                        < groupId>org.springframework.boot< /groupId>
+                        < artifactId>spring-boot-starter-parent< /artifactId>
+                        < version>3.2.0< /version>
+                        < relativePath /> <!-- lookup parent from repository -->
+                    < /parent>
+
+                    < properties>
+                        < java.version>17< /java.version>
+                    < /properties>
+
+                    < dependencies>
+                        < dependency>
+                            < groupId>org.springframework.boot< /groupId>
+                            < artifactId>spring-boot-starter-web< /artifactId>
+                        < /dependency>
+
+                        < dependency>
+                            < groupId>org.springframework.boot< /groupId>
+                            < artifactId>spring-boot-starter-test< /artifactId>
+                            < scope>test< /scope>
+                        < /dependency>
+                    < /dependencies>
+
+                    < build>
+                        < plugins>
+                            < plugin>
+                                < groupId>org.springframework.boot< /groupId>
+                                < artifactId>spring-boot-maven-plugin< /artifactId>
+                            < /plugin>
+                        < /plugins>
+                    < /build>
+                < /project>
+
+                </code></pre>
+                <h2>Step 3: Create the Application Class</h2>
+                <p>Create a Java class named DemoApplication in the src/main/java/com/example/demo directory.</p>
+                <pre><code>
+    package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>
+                        @SpringBootApplication: Marks this class as the main entry point for the Spring Boot
+                        application.</li><br>
+                    <li>main method: Starts the Spring Boot application.</li><br>
+                </ul>
+                <h2>Step 4: Create a Simple REST Controller</h2>
+                <p>
+                    To verify the application works as expected, let's create a simple REST controller.
+
+                    Create a Java class named <br><br>HelloController in the src/main/java/com/example/demo directory:
+                </p><br>
+                <pre><code>
+ package com.example.demo;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello, World!";
+    }
+}    </code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@RestController: Marks this class as a REST controller.</li><br>
+                    <li>@GetMapping("/hello"): Maps HTTP GET requests to the /hello endpoint to the sayHello method.
+                    </li><br>
+                    <li>sayHello method: Returns a "Hello, World!" message.</li><br>
+                </ul>
+                <h2>Step 5: Run the Application</h2>
+                <h3>Using the Maven Wrapper</h3>
+                <p>The Maven Wrapper is a script that allows you to run Maven commands without having Maven installed on
+                    your<br><br> system. It's included in your project when you generate a Spring Boot project from Spring
+                    Initializr.</p><br>
+                <b>Steps to Run the Application</b><br><br>
+                <p>1.<b>Open a terminal: </b>Navigate to the root directory of your Spring Boot project.</p><br>
+                <p>2.<b>Run the Application:</b> Use the spring-boot:run goal to start the application.</p><br>
+                <p>For Unix/Linux/macOS:</p>
+                <pre><code>./mvnw spring-boot:run</code></pre>
+                <p>For Windows:</p>
+                <pre><code>mvnw.cmd spring-boot:run</code></pre>
+                <h3>Using Maven Installed on Your Machine</h3>
+                <p>If you have Maven installed on your machine, you can use the mvn command directly:</p>
+                <p>1.<b>Open a terminal: </b>Navigate to the root directory of your Spring Boot project.</p>
+                <p>2.<b>Run the Application:</b> Use the spring-boot:run goal to start the application.</p>
+                <p>For Unix/Linux/macOS/Windows:</p>
+                <pre><code>mvn spring-boot:run</code></pre>
+                <h2>Step 6: Verify the Application</h2>
+                <p>Open a web browser or a tool like Postman and navigate to the following URL to verify the
+                    application:</p>
+                <li><b>Hello Endpoint:</b></li>
+                <ul>
+                    <li>URL: http://localhost:8080/hello</li><br>
+                    <li>Method: GET </li><br>
+                    <li>Response: Hello, World! </li><br>
+                </ul>
+                <p>You should see the "Hello, World!" message returned by the HelloController.</p>
+                <h2>Step 7: Creating a Test Class</h2>
+                <p>Create a Java class named DemoApplicationTests in the src/test/java/com/example/demo directory.</p>
+
+                <pre><code>
+    package com.example.demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class DemoApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+}
+
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@SpringBootTest: Indicates that this is a Spring Boot test.</li><br>
+                    <li>contextLoads method: Tests if the Spring application context loads successfully.</li><br>
+                </ul>
+                <h3>Running Tests </h3>
+                <p>1.<b>Run Tests:</b> Use the mvn test command to run the tests.</p><br>
+                <p>For Unix/Linux/macOS/Windows:</p>
+                <pre><code>mvn test</code></pre><br>
+                <p>1.<b>View Test Results:</b> The test results will be displayed in the terminal, indicating whether
+                    the tests passed <br><br>successfully. </p>
+                <h2>Conclusion</h2>
+                <p>In this tutorial, you have learned how to set up and run a Spring Boot application using Maven
+                    commands. We <br><br>covered:</p><br>
+                <ul>
+                    <li>Setting up a Spring Boot project using Spring Initializr with Maven.</li><br>
+                    <li>Configuring the pom.xml file. </li><br>
+                    <li>Creating the main application class.</li><br>
+                    <li>Creating a simple REST controller to verify the application works as expected.</li><br>
+                    <li>Running the application using Maven commands.</li><br>
+                    <li>Creating and running tests.</li><br>
+                </ul>
+                <p>By following these steps, you can easily set up and manage Spring Boot projects using Maven,
+                    leveraging its<br><br> powerful build and dependency management capabilities.</p><br>
+                <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+
+
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

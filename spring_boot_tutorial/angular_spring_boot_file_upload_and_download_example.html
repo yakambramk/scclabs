@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angular Spring Boot File Upload and Download Example</title>
+</head>
+<style>
+  .content {
+    flex-grow: 0.5;
+    padding: 20px;
+
+  }
+
+  .container {
+    max-width: 800px;
+    margin: auto;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+
+  h1 {
+    margin-bottom: 20px;
+    text-align: left;
+    color: red;
+  }
+
+  h4 {
+    color: red;
+  }
+
+  .circle-list {
+    list-style-type: circle;
+    /* Use circles for list items */
+  }
+
+  pre {
+    background-color: #edf3f2;
+    color: #282c34;
+    padding: 20px;
+    border-color: #282c34;
+    border-radius: 5px;
+    overflow-x: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 15px;
+
+
+  }
+
+  code {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .directory {
+    color: red;
+  }
+
+  .java-file {
+    color: blue;
+  }
+</style>
+
+<body>
+  <div class="content">
+    <div class="overlap-container">
+      <div class="container">
+        <h1>Angular Spring Boot File Upload and Download Example</h1>
+        <h4>author : Sai K</h4>
+        <p>In this tutorial, we will create a file upload and download application using Spring Boot 3.3 for the
+          backend and <br><br> Angular 18 for the frontend. We will handle CORS issues to ensure smooth communication
+          between the Angular<br><br> frontend and the Spring Boot backend.</p><br>
+        <h2>Prerequisites</h2>
+        <p>Before we start, ensure you have the following:</p>
+        <ul>
+          <li>Java Development Kit (JDK) installed</li><br>
+          <li>Apache Maven installed </li><br>
+          <li>Node.js and npm installed </li><br>
+          <li>Angular CLI installed (npm install -g @angular/cli)</li><br>
+          <li>An IDE (such as IntelliJ IDEA, Eclipse, or VS Code) installed</li><br>
+        </ul>
+        <h2>Step 1: Setting Up the Spring Boot Backend</h2>
+        <h3>1.1 Create a Spring Boot Project</h3>
+        <p>1.<b>Open Spring Initializr:</b></p>
+        <ul>
+          <li>Go to <a href="https://start.spring.io/">Spring Initializr</a> in your web browser.</li>
+        </ul>
+        <p>2.<b>Configure Project Metadata:</b> </p>
+        <ul>
+          <li><b>Project:</b> Maven Project</li><br>
+          <li><b>Language:</b> Java</li><br>
+          <li><b>Spring Boot:</b> Select the latest version of Spring Boot 3.3</li><br>
+          <li><b>Group:</b> com.example</li><br>
+          <li><b>Artifact:</b> file-service</li><br>
+          <li><b>Name:</b> file-service</li><br>
+          <li><b>Description:</b> File Upload and Download Service </li><br>
+          <li><b>Package Name:</b> com.example.fileservice</li><br>
+          <li><b>Packaging:</b> Jar</li><br>
+          <li><b>Java Version:</b> 17 (or your preferred version)</li><br>
+          <li>Click Next.</li><br>
+        </ul>
+        <p>3.<b>Select Dependencies:</b></p>
+        <ul>
+          <li>On the Dependencies screen, select:</li><br>
+          <li>Spring Web</li><br>
+          <li>Spring Boot DevTools</li><br>
+          <li>Click Next.</li><br>
+        </ul>
+        <p>4.<b>Generate the Project:</b></p>
+        <ul>
+          <li>Click Generate to download the project zip file.</li><br>
+          <li>Extract the zip file to your desired location.</li><br>
+        </ul>
+        <p>5.<b>Open the Project in Your IDE:</b></p>
+        <ul>
+          <li>Open your IDE and import the project as a Maven project.</li>
+        </ul>
+        <h3>1.2 Update application.properties </h3>
+        <p>Open the application.properties file located in the src/main/resources directory and add the
+          following <br><br>configuration:</p><br>
+
+        <pre><code>
+    server.port=8080
+    file.upload-dir=./uploads
+</code></pre>
+        <h3>Explanation:</h3>
+        <ul>
+          <li>Configures the server port to 8080.</li><br>
+          <li>Sets the directory where uploaded files will be stored.</li><br>
+        </ul>
+        <h3>1.3 Create File Storage Service</h3>
+        <p>Create a FileStorageService class in the com.example.fileservice.service package:</p>
+        <pre><code>
+    package com.example.fileservice.service;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
+@Service
+public class FileStorageService {
+
+    private final Path fileStorageLocation;
+
+    public FileStorageService(@Value("${file.upload-dir}") String uploadDir) {
+        this.fileStorageLocation = Paths.get(uploadDir)
+                .toAbsolutePath().normalize();
+        try {
+            Files.createDirectories(this.fileStorageLocation);
+        } catch (Exception ex) {
+            throw new RuntimeException("Could not create the directory where the uploaded files will be stored.", ex);
+        }
+    }
+
+    public String storeFile(MultipartFile file) {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+        try {
+            if (fileName.contains("..")) {
+                throw new RuntimeException("Sorry! Filename contains invalid path sequence " + fileName);
+            }
+
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+            return fileName;
+        } catch (IOException ex) {
+            throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
+        }
+    }
+
+    public Path loadFileAsResource(String fileName) {
+        return this.fileStorageLocation.resolve(fileName).normalize();
+    }
+}
+</code></pre>
+        <h3>Explanation:</h3>
+        <ul>
+          <li>@Service: Marks the class as a service component.</li><br>
+          <li>storeFile(MultipartFile file): Saves the uploaded file to the configured directory.</li><br>
+          <li>loadFileAsResource(String fileName): Loads the file as a resource for download.</li><br>
+        </ul>
+        <h3>1.4 Create File Controller</h3>
+        <p>Create a FileController class in the com.example.fileservice.controller package:</p>
+        <pre><code>
+    package com.example.fileservice.controller;
+
+import com.example.fileservice.service.FileStorageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Objects;
+
+@CrossOrigin(origins = "http://localhost:4200")
+@RestController
+@RequestMapping("/api/files")
+public class FileController {
+
+    private final FileStorageService fileStorageService;
+
+    @Autowired
+    public FileController(FileStorageService fileStorageService) {
+        this.fileStorageService = fileStorageService;
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+        String fileName = fileStorageService.storeFile(file);
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/files/download/")
+                .path(fileName)
+                .toUriString();
+
+        return ResponseEntity.ok(fileDownloadUri);
+    }
+
+    @GetMapping("/download/{fileName:.+}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+        Path filePath = fileStorageService.loadFileAsResource(fileName);
+        Resource resource;
+        try {
+            resource = filePath.toUri().toURL().openStream()::transferTo;
+        } catch (IOException ex) {
+            throw new RuntimeException("File not found " + fileName, ex);
+        }
+
+        String contentType;
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(Objects.requireNonNullElse(contentType, "application/octet-stream")))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .body(resource);
+    }
+}
+</code></pre>
+        <h3>Explanation:</h3>
+        <ul>
+          <li>@CrossOrigin(origins = "http://localhost:4200"): Enables CORS for requests from the Angular
+            frontend<br><br> running on localhost:4200.</li><br>
+          <li>uploadFile(@RequestParam("file") MultipartFile file): Handles file upload and returns the file
+            download URI.
+          </li><br>
+          <li>downloadFile(@PathVariable String fileName, HttpServletRequest request): Handles file download.
+          </li><br>
+        </ul>
+        <h3>1.5 Run the Spring Boot Application</h3>
+        <p>Run the application by executing the FileServiceApplication class. The backend should be up and
+          running on<br><br> http://localhost:8080.</p><br>
+        <h2>Step 2: Setting Up the Angular Frontend</h2>
+        <h3>2.1 Create an Angular Project</h3>
+        <p>1.Open a terminal and run the following command to create a new Angular project:</p>
+        <pre><code>ng new file-client</code></pre>
+        <p>2.Navigate to the project directory:</p>
+        <pre><code>cd file-client</code></pre>
+        <h2>2.2 Install Dependencies </h2>
+        <p>Install Bootstrap for styling:</p>
+        <pre><code>npm install bootstrap</code></pre>
+        <p>Add Bootstrap to angular.json: </p>
+        <pre><code>
+                    "styles": [
+                    "src/styles.css",
+                    "node_modules/bootstrap/dist/css/bootstrap.min.css"
+                  ],</code></pre>
+        <h3>2.3 Create Angular Services and Component </h3>
+        <p><b>2.3.1 Create File Service </b></p>
+        <p>Generate the FileService: </p>
+        <pre><code>ng generate service services/file  </code></pre>
+        <p>Edit file.service.ts: </p>
+        <pre><code>
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class FileService {
+
+  private baseUrl = 'http://localhost:8080/api/files';
+
+  constructor(private http: HttpClient) { }
+
+  upload(file: File): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.baseUrl}/upload`, formData, { responseType: 'text' });
+  }
+
+  download(fileName: string): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/download/${fileName}`, {
+      responseType: 'blob' as 'json'
+    });
+  }
+}   </code></pre>
+        <h3>Explanation:</h3>
+        <ul>
+          <li>@Injectable({ providedIn: 'root' }): Marks the service as injectable and available throughout the app.
+          </li><br>
+          <li>HttpClient: Service for making HTTP requests. </li><br>
+          <li>upload(file: File): Sends a POST request to upload a file.</li><br>
+          <li>download(fileName: string): Sends a GET request to download a file.</li><br>
+        </ul>
+        <p><b>2.3.2 Create Components</b></p>
+        <p>Generate the components for file upload and download:</p>
+        <pre><code>
+ng generate component components/upload
+ng generate component components/download
+</code></pre>
+        <p>Edit upload.component.ts:</p>
+        <pre><code>
+import { Component } from '@angular/core';
+import { FileService } from '../../services/file.service';
+
+@Component({
+  selector: 'app-upload',
+  templateUrl: './upload.component.html',
+  styleUrls: ['./upload.component.css']
+})
+export class UploadComponent {
+  selectedFile?: File;
+  message = '';
+
+  constructor(private fileService: FileService) {
+
+ }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  uploadFile() {
+    if (this.selectedFile) {
+      this.fileService.upload(this.selectedFile).subscribe(response => {
+        this.message = `File uploaded successfully: ${response}`;
+      }, error => {
+        console.error('Upload error: ', error);
+        this.message = 'Could not upload the file';
+      });
+    }
+  }
+}
+</code></pre>
+        <p>Edit upload.component.html:</p>
+        <pre><code>
+    < div class="container mt-5">
+        < div class="row justify-content-center">
+          < div class="col-md-6">
+            < div class="card">
+              < div class="card-header">Upload File< /div>
+              < div class="card-body">
+                < div class="form-group">
+                  < input type="file" (change)="onFileSelected($event)" class="form-control-file">
+                < /div>
+                < button (click)="uploadFile()" class="btn btn-primary">Upload< /button>
+                < div class="mt-3" *ngIf="message">{{ message }}< /div>
+              < /div>
+            < /div>
+          < /div>
+        < /div>
+      < /div>
+</code></pre>
+        <p>Edit download.component.ts:</p>
+        <pre><code>
+    import { Component } from '@angular/core';
+import { FileService } from '../../services/file.service';
+
+@Component({
+  selector: 'app-download',
+  templateUrl: './download.component.html',
+  styleUrls: ['./download.component.css']
+})
+export class DownloadComponent {
+  fileName = '';
+  message = '';
+
+  constructor(private fileService: FileService) { }
+
+  downloadFile() {
+    this.fileService.download(this.fileName).subscribe(response => {
+      const blob = new Blob([response], { type: 'application/octet-stream' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = this.fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      this.message = `File downloaded successfully`;
+    }, error => {
+      console.error('Download error: ', error);
+      this.message = 'Could not download the file';
+    });
+  }
+}
+</code></pre>
+        <p>Edit download.component.html:</p>
+        <pre><code>
+    < div class="container mt-5">
+        < div class="row justify-content-center">
+          < div class="col-md-6">
+            < div class="card">
+              < div class="card-header">Download File< /div>
+              < div class="card-body">
+                < div class="form-group">
+                  < input type="text" [(ngModel)]="fileName" class="form-control" placeholder="Enter filename to download">
+                < /div>
+                < button (click)="downloadFile()" class="btn btn-primary">Download< /button>
+                < div class="mt-3" *ngIf="message">{{ message }}< /div>
+              < /div>
+            < /div>
+          < /div>
+        < /div>
+      < /div>      
+</code></pre>
+        <h3>2.4 Update Angular Routing</h3>
+        <p>Edit app-routing.module.ts:</p>
+        <pre><code>
+    import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { UploadComponent } from './components/upload/upload.component';
+import { DownloadComponent } from './components/download/download.component';
+
+const routes: Routes = [
+  { path: 'upload', component: UploadComponent },
+  { path: 'download', component: DownloadComponent },
+  { path: '', redirectTo: '/upload', pathMatch: 'full' }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+</code></pre>
+        <h3>Explanation:</h3>
+        <ul>
+          <li>
+            Defines routes for the upload and download components. </li><br>
+          <li>Redirects the root path to the upload component. </li><br>
+        </ul>
+        <h3>2.5 Update Angular App Module</h3>
+        <p>Edit app.module.ts:</p>
+        <pre><code>
+    import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { UploadComponent } from './components/upload/upload.component';
+import { DownloadComponent } from './components/download/download.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    UploadComponent,
+    DownloadComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+</code></pre>
+        <h3>Explanation:</h3>
+        <ul>
+          <li>Imports necessary modules for the Angular app. </li><br>
+          <li>Declares the components used in the app. </li><br>
+          <li>Sets up the app's root module. </li><br>
+        </ul>
+        <h3>2.6 Run the Angular Application</h3>
+        <p>Open a terminal in the Angular project directory and run the application:</p>
+        <pre><code>ng serve</code></pre>
+        <p>Visit http://localhost:4200 in your web browser to see the application.</p>
+        <h2>Conclusion</h2>
+        <p>In this tutorial, we created a file upload and download application using Spring Boot 3.3 for the backend and
+          <br><br>
+          Angular 18 for the frontend. We handled CORS issues to ensure smooth communication between the Angular
+          <br><br>
+          frontend and the Spring Boot backend. By following this structure, you can extend and customize the <br><br>
+          application as needed.</p>
+        <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

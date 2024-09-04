@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Data JPA @Query Annotation</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Data JPA @Query Annotation</h1>
+                <h4>author : Sai K</h4>
+                <p>The @Query annotation in Spring Data JPA is used to define custom queries using JPQL (Java
+                    Persistence  <br><br>Query
+                    Language) or native SQL. This annotation allows you to write complex queries and perform operations <br><br>
+                    that may not
+                    be possible with standard method naming conventions. In this tutorial, we will cover the use of the <br><br>
+                    @Query
+                    annotation in a Spring Boot 3.2 application with Spring Data JPA.</p><br>
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li>JDK 17 or later </li><br>
+                    <li>Maven or Gradle </li><br>
+                    <li>IDE (IntelliJ IDEA, Eclipse, etc.) </li><br>
+                </ul>
+                <h2>Step 1: Set Up a Spring Boot Project</h2>
+                <h3>1.1 Create a New Spring Boot Project</h3>
+                <p>Use Spring Initializr to create a new project with the following dependencies:</p>
+                <li>Spring Web</li><br>
+                <li>Spring Data JPA</li><br>
+                <li>H2 Database (or any other database of your choice)</li>
+                <p>Download and unzip the project, then open it in your IDE.</p>
+                <h3>1.2 Configure application.properties </h3>
+                <p>Set up the application properties for your project. This file is located in the src/main/resources
+                    directory.</p>
+                <pre><code>
+ # src/main/resources/application.properties
+
+# H2 Database configuration
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.datasource.platform=h2
+
+# JPA configuration
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>Configures the H2 in-memory database.</li><br>
+                    <li>Enables SQL logging.</li><br>
+                    <li>Sets up JPA to update the database schema automatically. </li><br>
+                </ul>
+                <h2>Step 2: Define the Entity Class</h2>
+                <h3>2.1 Create the User Entity</h3>
+                <p>Create an entity class to represent a user in the database.</p>
+                <pre><code>
+    package com.example.demo.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String email;
+    private int age;
+
+    // Getters and setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@Entity: Specifies that the class is an entity and is mapped to a database table.</li><br>
+                    <li>@Id and @GeneratedValue: Indicates the primary key and its generation strategy. </li><br>
+                </ul>
+                <h2>Step 3: Create the Repository Interface</h2>
+                <h3>3.1 Create the UserRepository</h3>
+                <p>Create a repository interface to perform CRUD operations on the User entity and define custom queries
+                    using the @Query annotation.</p>
+                <pre><code>
+    package com.example.demo.repository;
+
+import com.example.demo.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    @Query("SELECT u FROM User u WHERE u.email = :email")
+    User findByEmail(@Param("email") String email);
+
+    @Query("SELECT u FROM User u WHERE u.age > :age")
+    List<User> findUsersOlderThan(@Param("age") int age);
+
+    @Query(value = "SELECT * FROM User WHERE name = :name", nativeQuery = true)
+    List<User> findByNameNative(@Param("name") String name);
+}
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@Repository: Indicates that the interface is a Spring Data repository. </li><br>
+                    <li>@Query: Defines custom queries using JPQL or native SQL.</li><br>
+                    <li>findByEmail: Finds a user by their email address using JPQL.</li><br>
+                    <li>findUsersOlderThan: Finds users older than a specified age using JPQL.</li><br>
+                    <li> findByNameNative: Finds users by their name using a native SQL query.</li><br>
+                </ul>
+                <h2>Step 4: Create Service and Controller Layers</h2>
+                <h3>4.1 Create the UserService</h3>
+                <p>Create a service class to handle business logic related to users.</p>
+                <pre><code>
+    package com.example.demo.service;
+
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public List<User> getUsersOlderThan(int age) {
+        return userRepository.findUsersOlderThan(age);
+    }
+
+    public List<User> getUsersByName(String name) {
+        return userRepository.findByNameNative(name);
+    }
+
+    public User createUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+}
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@Service: Marks the class as a service component in Spring.</li><br>
+                    <li>UserRepository: Injected to interact with the database. </li><br>
+                </ul>
+                <h3>4.2 Create the UserController</h3>
+                <p>Create a REST controller to expose endpoints for interacting with users.</p>
+                <pre><code>
+    Create a REST controller to expose endpoints for interacting with users.
+
+package com.example.demo.controller;
+
+import com.example.demo.entity.User;
+import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<User> getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
+
+    @GetMapping("/email")
+    public User getUserByEmail(@RequestParam String email) {
+        return userService.getUserByEmail(email);
+    }
+
+    @GetMapping("/older-than/{age}")
+    public List<User> getUsersOlderThan(@PathVariable int age) {
+        return userService.getUsersOlderThan(age);
+    }
+
+    @GetMapping("/name")
+    public List<User> getUsersByName(@RequestParam String name) {
+        return userService.getUsersByName(name);
+    }
+
+    @PostMapping
+    public User createUser(@RequestBody User user) {
+        return userService.createUser(user);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+    }
+}
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@RestController: Marks the class as a REST controller.</li><br>
+                    <li>@RequestMapping("/users"): Maps the controller to /users endpoint.</li><br>
+                    <li>@GetMapping, @PostMapping, @DeleteMapping: Maps HTTP GET, POST, and DELETE requests respectively
+                    </li><br>
+                    <li>@RequestBody: Binds the HTTP request body to the User parameter.</li><br>
+                    <li>@PathVariable: Binds the URI template variable to the method parameter.</li><br>
+                    <li>@RequestParam: Binds the query parameter to the method parameter. </li><br>
+                </ul>
+                <h2>Step 5: Running and Testing the Application</h2>
+                <h3>5.1 Run the Application</h3>
+                <p>Run the Spring Boot application using your IDE or the command line:</p>
+                <pre><code>./mvnw spring-boot:run</code></pre>
+                <h3>5.2 Test the Endpoints</h3>
+                <p>Use a tool like Postman or your browser to test the endpoints.</p>
+                <p><b>Create a User</b></p>
+                <ul>
+                    <li>URL: http://localhost:8080/users </li><br>
+                    <li>Method: POST</li><br>
+                    <li>Body:</li><br>
+                </ul>
+                <pre><code>
+    {
+        "name": "Ramesh Fadatare",
+        "email": "ramesh.fadatare@example.com",
+        "age": 30
+    }
+</code></pre>
+                <p><b>Get All Users</b></p>
+                <ul>
+                    <li>URL: http://localhost:8080/users</li><br>
+                    <li>Method: GET</li><br>
+                </ul>
+                <p><b>Get a User by ID</b></p>
+                <ul>
+                    <li>URL: http://localhost:8080/users/{id}</li><br>
+                    <li>Method: GET</li><br>
+                </ul>
+                <p><b>Get a User by Email</b></p>
+                <ul>
+                    <li>URL: http://localhost:8080/users/email?email=john.doe@example.com</li><br>
+                    <li>Method: GET</li><br>
+                </ul>
+                <p><b>Get Users Older Than a Certain Age</b></p>
+                <ul>
+                    <li>URL: http://localhost:8080/users/older-than/25 </li><br>
+                    <li>Method: GET</li><br>
+                </ul>
+                <p><b>Get Users by Name</b></p>
+                <ul>
+                    <li>URL: http://localhost:8080/users/name?name=John Doe </li><br>
+                    <li>Method: GET</li><br>
+                </ul>
+                <p><b>Delete a User</b></p>
+                <ul>
+                    <li>URL: http://localhost:8080/users/{id}</li><br>
+                    <li>Method: DELETE</li><br>
+                </ul>
+                <h2>Conclusion</h2>
+                <p>In this tutorial, you have learned how to use the @Query annotation in a Spring Boot 3.2 application
+                    with Spring Data JPA to define custom queries. We covered:</p>
+
+                <ul>
+                    <li>Setting up a Spring Boot project with Spring Data JPA.</li><br>
+                    <li>Defining an entity class and repository with custom queries.</li><br>
+                    <li>Creating service and controller layers.</li><br>
+                    <li>Running and testing the application using REST endpoints.</li><br>
+                </ul>
+
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Spring Boot JWT Authentication Tutorial</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Angular Spring Boot JWT Authentication Tutorial</h1>
+                <h4>author : Sai K</h4>
+                <p>In this tutorial, we will create a JWT (JSON Web Token) authentication system using Spring Boot 3.3
+                    for the<br><br> backend and Angular 18 for the frontend. We will use Spring Security for securing the
+                    backend, handle CORS <br><br> issues, and ensure smooth communication between the Angular frontend and the
+                    Spring Boot backend.</p><br>
+                <h2>Prerequisites</h2>
+                <p>Before we start, ensure you have the following:</p>
+                <ul>
+                    <li>Java Development Kit (JDK) installed </li><br>
+                    <li>Apache Maven installed</li><br>
+                    <li>Node.js and npm installed </li><br>
+                    <li>Angular CLI installed (npm install -g @angular/cli) </li><br>
+                    <li>An IDE (such as IntelliJ IDEA, Eclipse, or VS Code) installed </li><br>
+                </ul>
+                <h2>Step 1: Setting Up the Spring Boot Backend </h2>
+                <h3>1.1 Create a Spring Boot Project </h3>
+                <p>1.<b>Open Spring Initializr: </b></p>
+                <ul>
+                    <li>Go to <a href="https://start.spring.io/">Spring Initializr</a> in your web browser. </li>
+                </ul>
+                <p>2.<b>Configure Project Metadata: </b></p>
+                <ul>
+                    <li><b>Project:</b> Maven Project</li><br>
+                    <li><b>Language:</b> Java</li><br>
+                    <li><b>Spring Boot:</b> Select the latest version of Spring Boot 3.3</li><br>
+                    <li><b>Group:</b> com.example</li><br>
+                    <li><b>Artifact:</b> jwt-auth</li><br>
+                    <li><b>Name:</b> jwt-auth</li><br>
+                    <li><b>Description:</b> JWT Authentication Service</li><br>
+                    <li><b>Package Name:</b> com.example.jwtauth</li><br>
+                    <li><b>Packaging:</b> Jar</li><br>
+                    <li><b>Java Version:</b> 17 (or your preferred version)</li><br>
+                </ul>
+                <li>Click Next.</li>
+                <p>3.Select Dependencies: </p>
+
+                <li>On the Dependencies screen, select: </li>
+                <ul>
+                    <li>Spring Web </li><br>
+                    <li>Spring Security </li><br>
+                    <li>Spring Data JPA </li><br>
+                    <li>H2 Database </li><br>
+                    <li>Spring Boot DevTools </li><br>
+                </ul>
+                <li>Click Next. </li>
+                <p>4.<b>Generate the Project:</b></p>
+                <ul>
+                    <li>Click Generate to download the project zip file. </li><br>
+                    <li>Extract the zip file to your desired location. </li><br>
+                </ul>
+                <p>5. <b>Extract the zip file to your desired location. </b></p>
+                <p>Open your IDE and import the project as a Maven project.</p>
+                <h3>1.2 Update application.properties</h3>
+                <p>Open the application.properties file located in the src/main/resources directory and add the <br><br>
+                    following configuration:</p>
+                <pre><code>
+server.port=8080
+
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+spring.jpa.hibernate.ddl-auto=update
+
+jwt.secret=your_jwt_secret_key
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>Configures the server port to 8080. </li><br>
+                    <li>Sets up an in-memory H2 database.</li><br>
+                    <li>Enables the H2 console for database inspection. </li><br>
+                    <li>Automatically updates the database schema based on JPA entities. </li><br>
+                    <li>Adds a secret key for signing JWT tokens.</li><br>
+                </ul>
+                <h3>1.3 Create User Entity</h3>
+                <p>Create a User entity class in the com.example.jwtauth.model package:</p>
+
+                <pre><code>
+ package com.example.jwtauth.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String username;
+    private String password;
+    private String email;
+
+    // Getters and Setters
+}
+</code></pre>
+                <h2>Explanation:</h2>
+                <ul>
+                    <li><b>@Entity:</b> Marks the class as a JPA entity.</li><br>
+                    <li><b>@Id:</b> Marks the <code>id</code> field as the primary key.</li><br>
+                    <li><b>@GeneratedValue(strategy = GenerationType.IDENTITY):</b> Configures auto-increment for the
+                        <code>id</code> field.
+                    </li><br>
+                    <li><b>username, password, email:</b> Fields representing user attributes.</li><br>
+                    <li><b>Getters and Setters:</b> Methods to access and modify the fields.</li><br>
+                </ul>
+                <h3>1.4 Create User Repository</h3>
+                <p>Create a UserRepository interface in the com.example.jwtauth.repository package:</p>
+                <pre><code>
+ com.example.jwtauth.repository;
+
+import com.example.jwtauth.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findByUsername(String username);
+}
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@Repository: Marks the interface as a Spring Data repository.</li><br>
+                    <li>Extends JpaRepository<User, Long>: Provides CRUD operations for the User entity.</li><br>
+                    <li>findByUsername(String username): Custom query method to find a user by username.</li><br>
+                </ul>
+                <h3>1.5 Create User Service</h3>
+                <p>Create a UserService class in the com.example.jwtauth.service package that implements
+                    UserDetailsService:</p>
+                <pre><code>
+    package com.example.jwtauth.service;
+
+import com.example.jwtauth.model.User;
+import com.example.jwtauth.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+public class UserService implements UserDetailsService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();
+    }
+
+    public User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+    public Optional<User> findByUsername(String username) {
+        return Optional.ofNullable(userRepository.findByUsername(username));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getUsername())
+                .password(user.getPassword())
+                .authorities("USER")
+                .build();
+    }
+}
+</code></pre>
+                <h3>Explanation:</h3>
+
+
+                <ul>
+                    <li>@Service: Marks the class as a service component.</li><br>
+                    <li>Implements UserDetailsService: Required by Spring Security to load user-specific data.</li><br>
+                    <li>loadUserByUsername(String username): Loads user details for authentication.</li><br>
+                    <li>saveUser(User user): Saves a new user with an encoded password.</li><br>
+                    <li>findByUsername(String username): Finds a user by username.</li><br>
+                </ul>
+                <h3>1.6 Create JWT Utility Class</h3>
+                <p>Create a JwtUtils class in the com.example.jwtauth.util package:</p>
+                <pre><code>
+    package com.example.jwtauth.util;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+import java.util.function.Function;
+
+@Component
+public class JwtUtils {
+
+    @Value("${jwt.secret}")
+    private String secret;
+
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+    }
+
+    private Boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    public String generateToken(UserDetails userDetails) {
+        return createToken(userDetails.getUsername());
+    }
+
+    private String createToken(String subject) {
+        return Jwts.builder()
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+    }
+
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+}
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@Component: Marks the class as a Spring bean. </li><br>
+                    <li>Methods for generating and validating JWT tokens. </li><br>
+                    <li>Uses the secret key from the application properties for signing tokens. </li><br>
+                </ul>
+                <h3>1.7 Create Security Configuration </h3>
+                <p>Create a SecurityConfig class in the com.example.jwtauth.config package: </p>
+                <pre><code>
+                package com.example.jwtauth.config;
+
+import com.example.jwtauth.service.UserService;
+import com.example.jwtauth.util.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    private final UserService userService;
+    private
+
+ final JwtUtils jwtUtils;
+
+    @Autowired
+    public SecurityConfig(UserService userService, JwtUtils jwtUtils) {
+        this.userService = userService;
+        this.jwtUtils = jwtUtils;
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .addFilterBefore(new JwtAuthenticationFilter(userService, jwtUtils), UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+    @Autowired
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class).build();
+    }
+}</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@Configuration: Marks the class as a configuration component.</li><br>
+                    <li>@EnableWebSecurity: Enables Spring Security.</li><br>
+                    <li>securityFilterChain(HttpSecurity http): Configures HTTP security, disabling CSRF and permitting
+                        access to /auth/** endpoints.</li><br>
+                    <li>configure(AuthenticationManagerBuilder auth): Configures the authentication manager with user
+                        details service and password encoder.</li><br>
+                    <li>passwordEncoder(): Configures the password encoder</li><br>
+                    <li>authenticationManager(HttpSecurity http): Provides the authentication manager.</li><br>
+                </ul>
+                <h3>1.8 Create JWT Authentication Filter</h3>
+                <p>Create a JwtAuthenticationFilter class in the com.example.jwtauth.filter package:</p>
+                <pre><code>
+    package com.example.jwtauth.filter;
+
+import com.example.jwtauth.service.UserService;
+import com.example.jwtauth.util.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.web.filter.OncePerRequestFilter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private final UserService userService;
+    private final JwtUtils jwtUtils;
+
+    @Autowired
+    public JwtAuthenticationFilter(UserService userService, JwtUtils jwtUtils) {
+        this.userService = userService;
+        this.jwtUtils = jwtUtils;
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        final String authorizationHeader = request.getHeader("Authorization");
+
+        String username = null;
+        String jwt = null;
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwt = authorizationHeader.substring(7);
+            username = jwtUtils.extractUsername(jwt);
+        }
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userService.loadUserByUsername(username);
+
+            if (jwtUtils.validateToken(jwt, userDetails)) {
+                var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                usernamePasswordAuthenticationToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            }
+        }
+        filterChain.doFilter(request, response);
+    }
+}
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>extends OncePerRequestFilter: Ensures that the filter is executed once per request.</li><br>
+                    <li>doFilterInternal(...): Extracts the JWT token from the Authorization header, validates it, and
+                        sets the authentication in the security context.</li> <br>
+                </ul>
+                <h3>1.9 Create Authentication Controller</h3>
+                <p>Create an AuthController class in the com.example.jwtauth.controller package:</p>
+                <pre><code>
+    package com.example.jwtauth.controller;
+
+import com.example.jwtauth.model.User;
+import com.example.jwtauth.service.UserService;
+import com.example.jwtauth.util.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:4200")
+public class AuthController {
+
+    private final AuthenticationManager authenticationManager;
+    private final UserService userService;
+    private final JwtUtils jwtUtils;
+
+    @Autowired
+    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtUtils jwtUtils) {
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+        this.jwtUtils = jwtUtils;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody User user) {
+        if (userService.findByUsername(user.getUsername()).isPresent()) {
+            return ResponseEntity.badRequest().body("Username is already taken");
+        }
+        userService.saveUser(user);
+        return ResponseEntity.ok("User registered successfully");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody User user) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String jwt = jwtUtils.generateToken(userDetails);
+            return ResponseEntity.ok(jwt);
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(401).body("Invalid username or password");
+        }
+    }
+}
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@RestController: Marks the class as a REST controller.</li><br>
+                    <li>@RequestMapping("/auth"): Maps requests to /auth URL.</li><br>
+                    <li>@CrossOrigin(origins = "http://localhost:4200"): Enables CORS for requests from the Angular
+                        frontend running on localhost:4200. </li>br
+                    <li>registerUser(@RequestBody User user): Handles user registration.</li><br>
+                    <li>loginUser(@RequestBody User user): Handles user login and returns a JWT token.</li><br>
+                </ul>
+                <h2>Step 2: Setting Up the Angular Frontend</h2>
+                <h3>2.1 Create an Angular Project</h3>
+                <p>1.Open a terminal and run the following command to create a new Angular project:</p>
+                <pre><code>ng new jwt-auth-client</code></pre>
+                <p>1.Navigate to the project directory:</p>
+                <pre><code>cd jwt-auth-client</code></pre>
+                <h3>2.2 Install Dependencies</h3>
+                <p>Install Bootstrap for styling:</p>
+                <pre><code>npm install bootstrap</code></pre>
+                <p>Add Bootstrap to angular.json:</p>
+                <pre><code>
+    "styles": [
+  "src/styles.css",
+  "node_modules/bootstrap/dist/css/bootstrap.min.css"
+],
+</code></pre>
+                <h3>2.3 Create Angular Services and Components</h3>
+                <p><b>2.3.1 Create Auth Service</b></p>
+                <p>Generate the AuthService:</p>
+                <pre><code>ng generate service services/auth</code></pre>
+                <p>Edit auth.service.ts:</p>
+                <pre><code>
+    import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+
+  private baseUrl = 'http://localhost:8080/auth';
+
+  constructor(private http: HttpClient) { }
+
+  register(user: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/register`, user);
+  }
+
+  login(credentials: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/login`, credentials);
+  }
+}
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@Injectable({ providedIn: 'root' }): Marks the service as injectable and available throughout
+                        the app.</li>
+                    <li>HttpClient: Service for making HTTP requests.</li><br>
+                    <li>register(user: any): Sends a POST request to register a new user.</li><br>
+                    <li>login(credentials: any): Sends a POST request to log in a user.</li><br>
+                </ul>
+                <h3>2.3.2 Create Components</h3>
+                <p>Generate the components for registration and login:</p>
+                <pre><code>
+ng generate component components/register
+ng generate component components/login
+    </code></pre>
+                <p>Edit register.component.ts: </p>
+
+                <pre><code>
+            import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
+})
+export class RegisterComponent {
+  user: any = { username: '', password: '', email: '' };
+
+  constructor(private authService: AuthService, private router: Router) { }
+
+  register() {
+    this.authService.register(this.user).subscribe(() => {
+      this.router.navigate(['/login']);
+    }, error => {
+      console.error('Registration error: ', error);
+    });
+  }
+} </code></pre>
+                <p>Edit register.component.html:</p>
+                <pre><code>
+    < div class="container mt-5">
+        < div class="row justify-content-center">
+          < div class="col-md-6">
+            < div class="card">
+              < div class="card-header">Register< /div>
+              < div class="card-body">
+                < form (ngSubmit)="register()">
+                  < div class="form-group">
+                    < label for="username">Username< /label>
+                    < input type="text" class="form-control" id="username" [(ngModel)]="user.username" name="username" required>
+                  < /div>
+                  < div class="form-group">
+                    < label for="email">Email< /label>
+                    < input type
+      
+      ="email" class="form-control" id="email" [(ngModel)]="user.email" name="email" required>
+                  < /div>
+                  < div class="form-group">
+                    < label for="password">Password< /label>
+                    < input type="password" class="form-control" id="password" [(ngModel)]="user.password" name="password" required>
+                  < /div>
+                  < button type="submit" class="btn btn-primary">Register< /button>
+                < /form>
+              < /div>
+            < /div>
+          < /div>
+        < /div>
+      < /div>   
+</code></pre>
+                <p>Edit login.component.ts:</p>
+                <pre><code>
+    import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent {
+  credentials: any = { username: '', password: '' };
+
+  constructor(private authService: AuthService, private router: Router) { }
+
+  login() {
+    this.authService.login(this.credentials).subscribe((response) => {
+      localStorage.setItem('token', response);
+      this.router.navigate(['/home']);
+    }, error => {
+      console.error('Login error: ', error);
+    });
+  }
+}</code></pre>
+                <p>Edit login.component.html:</p>
+                <pre><code>
+    < div class="container mt-5">
+        <  class="row justify-content-center">
+          < div class="col-md-6">
+            < div class="card">
+              < div class="card-header">Login< /div>
+              < div class="card-body">
+                < form (ngSubmit)="login()">
+                  < div class="form-group">
+                    < label for="username">Username < /label>
+                    < input type="text" class="form-control" id="username" [(ngModel)]="credentials.username" name="username" required>
+                  < /div>
+                  < div class="form-group">
+                    < label for="password">Password< /label>
+                    < input type="password" class="form-control" id="password" [(ngModel)]="credentials.password" name="password" required>
+                  < /div>
+                   < button type="submit" class="btn btn-primary">Login< /button>
+                < /form>
+              < /div>
+            < /div>
+          < /div>
+        < /div>
+      < /div>    
+</code></pre>
+                <h3>2.4 Update Angular Routing</h3>
+                <p>Edit app-routing.module.ts:</p>
+                <pre><code>
+    import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
+
+const routes: Routes = [
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: '/register', pathMatch: 'full' }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>Defines routes for the registration and login components. </li><br>
+                    <li>Redirects the root path to the registration component. </li><br>
+                </ul>
+                <h3>2.5 Update Angular App Module </h3>
+                <p>Edit app.module.ts: </p>
+                <pre><code>
+                    import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    RegisterComponent,
+    LoginComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }   </code></pre>
+                <h3>Explanation: </h3>
+
+<ul>
+    <li> Imports necessary modules for the Angular app.</li><br>
+    <li>Declares the components used in the app.</li><br>
+    <li>Sets up the app's root module.    </li><br>
+</ul>
+<h3>2.6 Run the Angular Application</h3>
+<p>Open a terminal in the Angular project directory and run the application:</p>
+<pre><code>ng serve</code></pre>
+<p>Visit http://localhost:4200 in your web browser to see the application.</p>
+<h2>Conclusion</h2>
+<p>In this tutorial, we created a JWT authentication system using Spring Boot 3.3 for the backend and Angular 18 for <br><br> the frontend. We handled CORS issues to ensure smooth communication between the Angular frontend and the <br><br> Spring Boot backend. By following this structure, you can extend and customize the application as needed.</p><br>
+<h3>Related Spring and Spring Boot Tutorials/Guides:</h3>
+               
+
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

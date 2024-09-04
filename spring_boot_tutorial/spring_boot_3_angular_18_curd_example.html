@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot 3 + Angular 18 CRUD Example</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Boot 3 + Angular 18 CRUD Example</h1>
+                <h4>author : Sai K</h4>
+                <p>In this tutorial, we will create a CRUD (Create, Read, Update, Delete) application using Spring Boot
+                    3.3 for the <br><br> backend and Angular 18 for the frontend. We will handle CORS issues to ensure smooth
+                    communication <br><br>between the Angular frontend and the Spring Boot backend.</p>
+                <h2>Prerequisites </h2>
+                <p>Before we start, ensure you have the following:</p>
+                <ul>
+                    <li>Java Development Kit (JDK) installed<br></li><br>
+                    <li>Apache Maven installed<br></li><br>
+                    <li>Node.js and npm installed<br></li><br>
+                    <li>Angular CLI installed (npm install -g @angular/cli)<br></li><br>
+                    <li>An IDE (such as IntelliJ IDEA, Eclipse, or VS Code) installed<br></li><br>
+                </ul>
+                <h2>Step 1: Setting Up the Spring Boot Backend</h2>
+                <h3>1.1 Create a Spring Boot Project</h3>
+                <p>1.<b>Open Spring Initializr: </b></p>
+                <li>Go to <a href="https://start.spring.io/">Spring Initializr</a> in your web browser.</li>
+                <p>1.<b>Configure Project Metadata: </b></p>
+                <ul>
+                    <li> <b>Project:</b> Maven Project</li><br>
+                    <li><b>Language:</b> Java</li><br>
+                    <li><b>Spring Boot:</b> Select the latest version of Spring Boot 3.3</li><br>
+                    <li><b>Group:</b> <code>com.example</code></li><br>
+                    <li><b>Artifact:</b> <code>product-service</code></li><br>
+                    <li><b>Name:</b> <code>product-service</code></li><br>
+                    <li><b>Description:</b> Product Service<br></li><br>
+                    <li><b>Package Name:</b> <code>com.example.productservice</code></li><br>
+                    <li><b>Packaging:</b> Jar</li><br>
+                    <li><b>Java Version:</b> 17 (or your preferred version)</li><br>
+                    <li>Click Next.</li><br>
+                </ul>
+                <h3>Select Dependencies: </h3>
+                <ul>
+                    <li>On the Dependencies screen, select:
+                    </li>
+                </ul>
+                <li>Spring Web </li><br>
+                <li>Spring Data JPA </li><br>
+                <li>H2 Database</li><br>
+                <li>Spring Boot DevTools
+                </li><br>
+                <ul>
+                    <li>Click Next.
+                    </li>
+                </ul>
+                <h3>4.Generate the Project: </h3>
+                <ul>
+                    <li>Click Generate to download the project zip file.</li><br>
+                    <li>Extract the zip file to your desired location. </li><br>
+                </ul>
+                <h3>5.Open the Project in Your IDE:</h3>
+                <p>Open your IDE and import the project as a Maven project.</p>
+                <h3>1.2 Update application.properties</h3>
+                <p>Open the application.properties file located in the src/main/resources directory and add the
+                    following configuration:</p>
+                <pre><code>
+server.port=8080
+
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+spring.jpa.hibernate.ddl-auto=update
+              </code></pre>
+                <h3>Explanation:</h3>
+                <li>Configures the server port to 8080.</li><br>
+                <li>Sets up an in-memory H2 database. </li><br>
+                <li>Enables the H2 console for database inspection.</li><br>
+                <li>Automatically updates the database schema based on JPA entities.</li><br>
+                <h2>1.3 Create Product Entity</h2>
+                <p>Create a Product entity class in the com.example.productservice.model package:</p>
+                <pre><code>
+package com.example.productservice.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private double price;
+
+    // Getters and Setters
+}
+                </code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li><code>@Entity</code>: Marks the class as a JPA entity.</li><br>
+                    <li><code>@Id</code>: Marks the id field as the primary key.</li><br>
+                    <li><code>@GeneratedValue(strategy = GenerationType.IDENTITY)</code>: Configures auto-increment for
+                        the id field.</li><br>
+                    <li><code>name</code>, <code>price</code>: Fields representing product attributes.</li><br>
+                    <li>Getters and Setters: Methods to access and modify the fields.</li><br>
+                </ul>
+                <h2>1.4 Create Product Repository</h2>
+                <p>Create a ProductRepository interface in the com.example.productservice.repository package:</p>
+                <pre><code>
+package com.example.productservice.repository;
+
+import com.example.productservice.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductRepository extends JpaRepository<Product, Long> {
+} </code></pre>
+                <h3>Explanation:</h3>
+                <li>@Repository: Marks the interface as a Spring Data repository.</li><br>
+                <li>Extends JpaRepository<Product, Long>: Provides CRUD operations for the Product entity.</li><br>
+                <h2>1.5 Create Product Service</h2>
+                <p>Create a ProductService class in the com.example.productservice.service package:</p>
+                <pre><code>
+            package com.example.productservice.service;
+
+import com.example.productservice.model.Product;
+import com.example.productservice.repository.ProductRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ProductService {
+
+    private final ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    public Optional<Product> getProductById(Long id) {
+        return productRepository.findById(id);
+    }
+
+    public Product saveProduct(Product product) {
+        return productRepository.save(product);
+    }
+
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
+    }
+}
+         </code></pre>
+                <h3>Explanation: </h3>
+                <ul>
+                    <li><code>@Service</code>: Marks the class as a service component.</li><br>
+                    <li><code>ProductRepository productRepository</code>: Repository to interact with the database.</li>
+                    <br>
+                    <li><code>getAllProducts()</code>: Retrieves all products.</li><br>
+                    <li><code>getProductById(Long id)</code>: Retrieves a product by ID.</li><br>
+                    <li><code>saveProduct(Product product)</code>: Saves a new or updated product.</li><br>
+                    <li><code>deleteProduct(Long id)</code>: Deletes a product by ID.</li><br>
+                </ul>
+                <h3>1.6 Create Product Controller</h3>
+                <p>Create a ProductController class in the com.example.productservice.controller package: </p>
+                <pre><code>
+package com.example.productservice.controller;
+
+import com.example.productservice.model.Product;
+import com.example.productservice.service.ProductService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@CrossOrigin(origins = "http://localhost:4200")
+@RestController
+@RequestMapping("/products")
+public class ProductController {
+
+    private final ProductService productService;
+
+    @Autowired
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @GetMapping
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Product> getProductById(@PathVariable Long id) {
+        return productService.getProductById(id);
+    }
+
+    @PostMapping
+    public Product createProduct(@RequestBody Product product) {
+        return productService.saveProduct(product);
+    }
+
+    @PutMapping("/{id}")
+    public Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
+        product.setId(id);
+        return productService.saveProduct(product);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+    }
+}
+ </code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li><code>@CrossOrigin(origins = "http://localhost:4200")</code>: Enables CORS for requests from the
+                        Angular frontend running on localhost:4200.</li><br>
+                    <li><code>@RestController</code>: Marks the class as a REST controller.</li><br>
+                    <li><code>@RequestMapping("/products")</code>: Maps requests to /products.</li><br>
+                    <li><code>getAllProducts()</code>: Handles GET requests to retrieve all products.</li><br>
+                    <li><code>getProductById(Long id)</code>: Handles GET requests to retrieve a product by ID.</li><br>
+                    <li><code>createProduct(@RequestBody Product product)</code>: Handles POST requests to create a new
+                        product.</li><br>
+                    <li><code>updateProduct(@PathVariable Long id, @RequestBody Product product)</code>: Handles PUT
+                        requests to update an existing product.</li><br>
+                    <li><code>deleteProduct(@PathVariable Long id)</code>: Handles DELETE requests to delete a product
+                        by ID.</li><br>
+                </ul>
+                <h3>1.7 Run the Spring Boot Application</h3>
+                <p>Run the application by executing the ProductServiceApplication class. The backend should be up and
+                    running on http://localhost:8080.</p>
+                <h2>Step 2: Setting Up the Angular Frontend</h2>
+                <h3>2.1 Create an Angular Project</h3>
+                <p>1.Open a terminal and run the following command to create a new Angular project: </p>
+                <pre><code>ng new product-client</code></pre>
+                <p>2.Navigate to the project directory:</p>
+                <pre><code>cd product-client </code></pre>
+                <h3>2.2 Install Dependencies</h3>
+                <p>Install Bootstrap for styling:</p>
+                <pre><code>npm install bootstrap</code></pre>
+                <p>Add Bootstrap to angular.json:</p>
+                <pre><code>
+"styles": [
+  "src/styles.css",
+  "node_modules/bootstrap/dist/css/bootstrap.min.css"
+],
+                </code></pre>
+                <h3>2.3 Create Angular Services and Components</h3>
+                <b>2.3.1 Create Product Service</b>
+                <p>Generate the ProductService: </p>
+                <pre><code>
+ng generate service services/product
+</code></pre>
+ <p>Edit product.service.ts:</p>
+
+
+                <h3>Explanation:</h3>
+                <ul>
+                    <li><code>@Injectable({ providedIn: 'root' })</code>: Marks the service as injectable and available
+                        throughout the app.</li><br>
+                    <li><code>HttpClient</code>: Service for making HTTP requests.</li><br>
+                    <li><code>getAllProducts()</code>: Sends a GET request to retrieve all products.</li><br>
+                    <li><code>getProductById(id: number)</code>: Sends a GET request to retrieve a product by ID.</li>
+                    <br>
+                    <li><code>createProduct(product: Object)</code>: Sends a POST request to create a new product.</li>
+                    <br>
+                    <li><code>updateProduct(id: number, product: Object)</code>: Sends a PUT request to update an
+                        existing product.</li><br>
+                    <li><code>deleteProduct(id: number)</code>: Sends a DELETE request to delete a product by ID.</li>
+                    <br>
+                </ul>
+
+                <h3>2.3.2 Create Components</h3>
+                <p>Generate the components for displaying and managing products:</p>
+                <pre><code>
+ng generate component components/product-list
+ng generate component components/product-form
+</code></pre>
+
+                <p>Edit product-list.component.ts:</p>
+                <pre><code>
+import { Component, OnInit } from '@angular/core';
+import { ProductService } from '../../services/product.service';
+
+@Component({
+  selector: 'app-product-list',
+  templateUrl: './product-list.component.html',
+  styleUrls: ['./product-list.component.css']
+})
+export class ProductListComponent implements OnInit {
+  products: any[] = [];
+
+  constructor(private productService: ProductService) { }
+
+  ngOnInit(): void {
+    this.productService.getAllProducts().subscribe(data => {
+      this.products = data;
+    });
+  }
+
+  deleteProduct(id: number) {
+    this.productService.deleteProduct(id).subscribe(() => {
+      this.products = this.products.filter(product => product.id !== id);
+    });
+  }
+}
+</code></pre>
+
+                <p>Edit product-list.component.html:</p>
+                <pre><code>
+< div class="container mt-5">
+  < div class="row">
+    < div class="col-md-12">
+      < h2>Product List< /h2>
+      < a routerLink="/add-product" class="btn btn-primary mb-3">Add Product< /a>
+      < table class="table table-striped">
+        < thead>
+          < tr>
+            < th>ID</th>
+            < th>Name</th>
+            < th>Price</th>
+            < th>Actions</th>
+          < /tr>
+        < /thead>
+        < tbody>
+          < tr *ngFor="let product of products">
+            < td>{{ product.id }}< /td>
+            < td>{{ product.name }}< /td>
+            < td>{{ product.price }}< /td>
+            < td>
+              < a [routerLink]="['/edit-product', product.id]" class="btn btn-info btn-sm">Edit< /a>
+              < button (click)="deleteProduct(product.id)" class="btn btn-danger btn-sm">Delete< /button>
+            < /td>
+          < /tr>
+        < /tbody>
+      < /table>
+    < /div>
+  < /div>
+< /div>
+</code></pre>
+
+                <p>Edit product-form.component.ts:</p>
+                <pre><code>
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProductService } from '../../services/product.service';
+
+@Component({
+  selector: 'app-product-form',
+  templateUrl: './product-form.component.html',
+  styleUrls: ['./product-form.component.css']
+})
+export class ProductFormComponent implements OnInit {
+  product: any = { name: '', price: 0 };
+  isEditMode: boolean = false;
+
+  constructor(private productService: ProductService, private route: ActivatedRoute, private router: Router) { }
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.isEditMode = true;
+      this.productService.getProductById(Number(id)).subscribe(data => {
+        this.product = data;
+      });
+    }
+  }
+
+  saveProduct() {
+    if (this.isEditMode) {
+      this.productService.updateProduct(this.product.id, this.product).subscribe(() => {
+        this.router.navigate(['/products']);
+      });
+    } else {
+      this.productService.createProduct(this.product).subscribe(() => {
+        this.router.navigate(['/products']);
+      });
+    }
+  }
+}
+</code></pre>
+
+                <p>Edit product-form.component.html:</p>
+                <pre><code>
+< div class="container mt-5">
+  < div class="row justify-content-center">
+     < div class="col-md-6">
+      < div class="card">
+        < div class="card-header">
+          < h2>{{ isEditMode ? 'Edit Product' : 'Add Product' }}< /h2>
+        < /div>
+        < div class="card-body">
+          < form (ngSubmit)="saveProduct()">
+            < div class="form-group">
+              < label for="name">Name< /label>
+              < input type="text" id="name" class="form-control" [(ngModel)]="product.name" name="name" required>
+            < /div>
+            < div class="form-group">
+              < label for="price">Price< /label>
+              < input type="number" id="price" class="form-control" [(ngModel)]="product.price" name="price" required>
+            < /div>
+            < button type="submit" class="btn btn-primary">{{ isEditMode ? 'Update' : 'Save' }}< /button>
+            < a routerLink="/products" class="btn btn-secondary ml-2">Cancel< /a>
+          < /form>
+        < /div>
+      < /div>
+    < /div>
+  < /div>
+< /div>
+</code></pre>
+
+                <h3>2.4 Update Angular Routing</h3>
+                <p>Edit app-routing.module.ts:</p>
+                <pre><code>
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ProductListComponent } from './components/product-list/product-list.component';
+import { ProductFormComponent } from './components/product-form/product-form.component';
+
+const routes: Routes = [
+  { path: 'products', component: ProductListComponent },
+  { path: 'add-product', component: ProductFormComponent },
+  { path: 'edit-product/:id', component: ProductFormComponent },
+  { path: '', redirectTo: '/products', pathMatch: 'full' }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+</code></pre>
+
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>Defines routes for the product list and product form components.</li><br>
+                    <li>Redirects the root path to the product list component.</li><br>
+                </ul>
+
+                <h3>2.5 Update Angular App Module</h3>
+                <p>Edit app.module.ts:</p>
+                <pre><code>
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { ProductListComponent } from './components/product-list/product-list.component';
+import { ProductFormComponent } from './components/product-form/product-form.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    ProductListComponent,
+    ProductFormComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+</code></pre>
+
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>Imports necessary modules for the Angular app.</li><br>
+                    <li>Declares the components used in the app.</li><br>
+                    <li>Sets up the app's root module.</li><br>
+                </ul>
+
+                <h3>2.6 Run the Angular Application</h3>
+                <p>Open a terminal in the Angular project directory and run the application:</p>
+                <pre><code>ng serve</code></pre>
+                <p>Visit <a href="http://localhost:4200" target="_blank">http://localhost:4200</a> in your web browser
+                    to see the application.</p>
+
+                <h2>Conclusion:</h2>
+                <p>In this tutorial, we created a CRUD application using Spring Boot 3.3 for the backend and Angular 18
+                    for the <br><br> We handled CORS issues to ensure smooth communication between the Angular frontend
+                    and the Spring Boot <br><br> backend. By following this structure, you can extend and customize the
+                    application as needed.</p><br>
+
+                <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+                <!-- Add links to related tutorials or guides here -->
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
