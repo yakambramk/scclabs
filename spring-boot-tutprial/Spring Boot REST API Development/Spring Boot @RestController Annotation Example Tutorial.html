@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+    </style>
+
+</head>
+        <body>
+            <div class="container">
+                <div class="topImage mt-2 mb-4">
+                    <img src="../../assets/springboot images/Rest Controller.jpg" alt="logo" />
+                </div>
+            </div>
+        
+            <div class="container">
+                <div class="heading">
+                    <h3>Spring Boot @RestController Annotation Example Tutorial</h3>
+                    <h6>Author: Sai k</h6>
+                </div><br>
+                <p>In this tutorial, we will learn what is @RestController annotation and how to use it in a  Spring Boot  Application.</p>
+                <h3>@RestController Annotation Overview</h3>
+                <p>The <span> @RestController</span> annotation is a specialized version of the @Controller annotation in Spring MVC specifically designed for building RESTful web services. It combines the functionality of the @Controller and @ResponseBody annotations into a single annotation, making it convenient for creating RESTful APIs.  <br><br>
+
+                    When you annotate a class with <span>@RestController</span>, it indicates that the class is a controller responsible for handling incoming HTTP requests and generating the appropriate HTTP responses. Unlike the traditional @Controller, which typically returns a view name or model for server-side rendering, the @RestController directly returns the response body in a format like JSON or XML. <br><br>
+                    
+                    Key features and behaviors of the @RestController annotation include: <br>
+                   <b> Response Body Handling:</b> The @RestController annotation eliminates the need to annotate each individual handler method with @ResponseBody. By default, all methods in the class are considered to have @ResponseBody semantics, meaning their return values are automatically serialized and sent as the response body. <br><br>
+                    
+                   <b>Content Negotiation:</b> @RestController handles content negotiation automatically. It determines the response format based on the Accept header of the incoming request.  <br><br>
+                    
+                   <b>Exception Handling:</b> Similar to a regular @Controller, you can include exception-handling methods within a @RestController to handle and customize the responses for specific exceptions. These methods can be annotated with @ExceptionHandler to define how to handle different types of exceptions thrown during request processing. <br><br>
+                    
+                   <b>Spring MVC Features:</b> @RestController can still leverage various features provided by Spring MVC, such as request mapping, path variables, query parameters, request validation, and more. It integrates seamlessly with other Spring components and annotations to build robust and scalable RESTful services.</p>
+
+                    <h3>@RestController Annotation Example</h3>
+                    <p>Add the below Maven dependency to your Spring Boot project:</p>
+<code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;</pre></code><br>
+                <p>The <span> spring-boot-starter-web</span> dependency provides the necessary components to develop RESTful API in a Spring Boot project, including the embedded Tomcat server, Spring Web MVC, and other required dependencies. <br><br>
+
+                    Next, let's create<span> HelloWorldController</span> and annotate it with <span> @RestController</span> annotation:</p>
+
+                    <code><pre>
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloWorldController {
+
+    @GetMapping("/hello/{name}")
+    public String sayHello(@PathVariable String name) {
+        return "Hello, " + name + "!";
+    }
+} </pre></code><br>
+                        <p>In the above example, the <span> HelloWorldController</span> class is annotated with <span> @RestController</span>, which indicates that it is a controller class responsible for handling HTTP requests and returning JSON responses.  <br><br>
+
+                            The <b> @GetMapping annotation</b> is used to map the <span>/hello/{name}</span> URL path to the sayHello method. The <b> @PathVariable annotation</b> is used to extract the {name}</span> path variable and pass it as a method parameter. The method returns a simple greeting message. <br><br>
+                            
+                            Next, run your Spring boot application and send a request to the REST API. For example, you can send a GET request to <b>http://localhost:8080/hello/Ramesh</b> to get a response of "Hello, Ramesh!".</p>
+
+
+                            <div class=" mt-2 mb-4">
+                                <img src="../../assets/springboot images/Rest Controller Annotation Example.png" alt="logo" class="img-fluid" />
+                            </div><br><bR>
+                                <h3>Conclusion</h3>
+                                <p>The @RestController annotation is used in Spring Boot to indicate a class as a RESTful controller. It combines the functionality of the @Controller and @ResponseBody annotations, allowing for simplified RESTful API development. <br><br>
+
+                                    Check out the CRUD REST API development tutorial: Spring Boot 3, MySQL, Spring Data JPA, Hibernate CRUD REST API Tutorial
+                                    </p>
+
+
+
+                                    <h3>Related Spring and Spring Boot Tutorials/Guides:</h3>
+                                    <p>
+                                        <button type="button" class="btn btn-outline-primary">Spring Boot Tutorials [500+]s</button>
+                                        <button type="button" class="btn btn-outline-secondary">Spring Boot Testing Tutorial</button>
+                                        <button type="button" class="btn btn-outline-success">Spring Boot Microservice Tutorial</button>
+                                        <button type="button" class="btn btn-outline-danger">Spring Boot Kafka Microservices </button>
+                                        <button type="button" class="btn btn-outline-warning">Spring Boot + Apache Kafka Tutorial</button>
+                                        <button type="button" class="btn btn-outline-info">Spring Core Tutorial</button>
+                                        <button type="button" class="btn btn-outline-primary">Spring MVC Tutorial </button>
+                                        <button type="button" class="btn btn-outline-secondary">Spring Data JPA Tutorial</button>
+                                        <button type="button" class="btn btn-outline-success">Spring Framework for Beginners</button>
+                                        <button type="button" class="btn btn-outline-danger">Spring AOP Tutorial</button>
+                                        <button type="button" class="btn btn-outline-warning">Spring Security Tutorial</button>
+                                        <button type="button" class="btn btn-outline-info">Spring Exceptions Tutorial</button>
+                                        <button type="button" class="btn btn-outline-primary">Spring Boot Interview Questions</button>
+                                        <button type="button" class="btn btn-outline-dark">Spring Boot Microservices Interview Questions</button>
+                                        <button type="button" class="btn btn-outline-primary">Apache Kafka Tutorials </button>
+                                        <button type="button" class="btn btn-outline-secondary">Docker Tutorials and Guides</button>
+                                        <button type="button" class="btn btn-outline-success">Spring Boot RabbitMQ Tutorials</button>
+                                        <button type="button" class="btn btn-outline-danger">Angular CRUD Example with Spring Boot </button>
+                                        <button type="button" class="btn btn-outline-warning">Spring Boot + Angular 12 CRUD Full Stack</button>
+                                        <button type="button" class="btn btn-outline-info">Spring Boot + Angular 8 CRUD Full Stack</button>
+                                        <button type="button" class="btn btn-outline-danger">Spring Boot + Angular 10 CRUD Full Stack </button>
+                                        <button type="button" class="btn btn-outline-primary">React JS ( React Hooks) + Spring Boot</button>
+                                        <button type="button" class="btn btn-outline-secondary">Spring Boot + React JS CRUD Full Stack</button>
+                                        <button type="button" class="btn btn-outline-success">Spring Boot Thymeleaf CRUD Full Stack </button>
+                                        <button type="button" class="btn btn-outline-danger">Spring Boot User Registration and Login</button>
+                                        <button type="button" class="btn btn-outline-warning">Node Js + Express + MongoDB CRUDVue</button>
+                                        <button type="button" class="btn btn-outline-info">JS + Spring Boot REST API Tutorial</button>
+                                    </p>
+
+
+
+            </div>
+        </body>
+</html>

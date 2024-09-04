@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+        .image{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+    </style>
+
+</head>
+        <body>
+            <div class="container">
+                <div class="topImage mt-2 mb-4">
+                    <img src="../../assets/springboot images/Java Spring  Boot with H2 Database.jpg" alt="logo" />
+                </div>
+            </div>
+        
+            <div class="container">
+                <div class="heading">
+                    <h3>Spring Boot CRUD Example with H2 Database</h3>
+                    <h6>Author: Sai k</h6>
+                </div><br>
+                <p>In this tutorial, we will learn how to build CRUD  REST  APIs using Spring Boot, Spring Data JPA, and H2 in-memory database. <br><br>
+
+                    Learn Spring boot at <a href="http://127.0.0.1:5500/spring_boot_tutorial.html">http://Ssclabs/spring_boot_tutorial.html</a><br><br>
+                    
+                    Learn Hibernate at https://www.javaguides.net/p/hibernate-tutorial.html <br><br>
+                    
+                    We’ll first build the REST APIs to create, retrieve, update, and delete a Product, and then test them using postman.<br><br>
+                    
+                    Spring Boot has taken the Spring framework to the next level. It has drastically reduced the configuration and setup time required for spring projects.<br><br>
+                    
+                    You can set up a project with almost zero configuration and start building the things that actually matter to your application.</p>
+                    <h3>High-Level Architecture</h3>
+                    <div class="image mt-2 mb-4">
+                        <img src="../../assets/springboot images/springboot-crud-rest-api whit H2 Database.png" alt="logo" class="img-fluid" />
+                    </div><br>
+                    <h3>Add Maven Dependencies</h3>
+                    <code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+    &lt;artifactId&gt;h2&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</pre></code><br>
+                        <p>The <span> spring-boot-starter-web</span> starter for building web, including RESTful, applications using Spring MVC. Uses Tomcat as the default embedded container. <br><br>
+
+                            The <span>spring-boot-starter-data-jpa</span> starter for using Spring Data JPA with Hibernate.</p>
+
+                            <h3>Configure H2 Database</h3>
+                            <p>By default, Spring Boot configures the application to connect to an in-memory store with the username sa and an empty password. However, we can change those parameters by adding the following properties to the application.properties file:</p>
+<code><pre>
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect</pre></code><br>
+
+                <p>By design, the in-memory database is volatile and data will be lost when we restart the application. <br><br>
+ 
+                    We can change that behavior by using file-based storage. To do this we need to update the spring.datasource.url:</p>
+<code><pre>spring.datasource.url=jdbc:h2:file:/data/demo</pre></code>
+
+                    <p>In this example, we will use a default configuration of the H2 database (we don't use the above configuration, the above configuration is just to know more about H2 database configuration with Spring boot). </p>
+                    <h3>Create JPA Entity - Product.java</h3>
+<code><pre>
+package net.javaguides.springboot.model;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+import jakarta.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+@Entity
+@Table(name = "products")
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "price")
+    private BigDecimal price;
+
+    @CreationTimestamp
+    private Date createdAt;
+
+    @CreationTimestamp
+    private Date updatedAt;
+
+
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public BigDecimal getPrice() {
+        return price;
+    }
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+}</pre></code><br>
+                <p>In the above Product entity, the <span> @Entity</span> annotation marks the class as a JPA entity, and the @Table annotation specifies the name of the database table that this entity is mapped to.  <br><br>
+
+                    The @Id annotation marks the id field as the primary key of the entity, and the <span>@GeneratedValue</span> annotation specifies that the primary key values will be generated automatically by the database.  <br><br>
+                    
+                    The<span> @Column</span> annotation is used to specify the mapping between entity attributes and database columns.  <br><br>
+                    
+                    Finally, the class has getters and setters for each attribute, which are used by JPA to map the entity data to and from the database.
+                    </p><br>
+                    <h3>Create a Spring Data Repository - ProductRepository.java</h3>
+<code><pre>
+package net.javaguides.springboot.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import net.javaguides.springboot.model.Product;
+
+public interface ProductRepository extends JpaRepository<Product, Long> {
+
+}</pre></code><br>
+
+                <h3>Create Custom Exception - ResourceNotFoundException.java</h3>
+                <code><pre>
+package net.javaguides.springboot.exception;
+
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus
+public class ResourceNotFoundException extends RuntimeException {
+
+    private static final long serialVersionUID = 1 L;
+
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+
+    public ResourceNotFoundException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+}</pre></code><br>
+            <h3>Service Layer (uses repository)</h3>
+            <p>The service layer is optional – still recommended to perform additional business logic if any. Generally, we will connect with the repository here for crud operations. </p>
+            <h4>ProductService.java</h4>
+            <code><pre>
+package net.javaguides.springboot.service;
+
+import java.util.List;
+
+import net.javaguides.springboot.model.Product;
+
+public interface ProductService {
+    Product createProduct(Product product);
+
+    Product updateProduct(Product product);
+
+    List < Product > getAllProduct();
+
+    Product getProductById(long productId);
+
+    void deleteProduct(long id);
+}</pre></code> <br>
+                <h4>ProductServiceImpl.java</h4>
+<code><pre>
+package net.javaguides.springboot.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import net.javaguides.springboot.exception.ResourceNotFoundException;
+import net.javaguides.springboot.model.Product;
+import net.javaguides.springboot.repository.ProductRepository;
+
+@Service
+@Transactional
+public class ProductServiceImpl implements ProductService {
+
+
+    @Autowired
+    private ProductRepository productRepository;
+
+
+    @Override
+    public Product createProduct(Product product) {
+        return productRepository.save(product);
+    }
+
+    @Override
+    public Product updateProduct(Product product) {
+        Optional < Product > productDb = this.productRepository.findById(product.getId());
+
+        if (productDb.isPresent()) {
+            Product productUpdate = productDb.get();
+            productUpdate.setId(product.getId());
+            productUpdate.setName(product.getName());
+            productUpdate.setDescription(product.getDescription());
+            productRepository.save(productUpdate);
+            return productUpdate;
+        } else {
+            throw new ResourceNotFoundException("Record not found with id : " + product.getId());
+        }
+    }
+
+    @Override
+    public List < Product > getAllProduct() {
+        return this.productRepository.findAll();
+    }
+
+    @Override
+    public Product getProductById(long productId) {
+
+        Optional < Product > productDb = this.productRepository.findById(productId);
+
+        if (productDb.isPresent()) {
+            return productDb.get();
+        } else {
+            throw new ResourceNotFoundException("Record not found with id : " + productId);
+        }
+    }
+
+    @Override
+    public void deleteProduct(long productId) {
+        Optional < Product > productDb = this.productRepository.findById(productId);
+
+        if (productDb.isPresent()) {
+            this.productRepository.delete(productDb.get());
+        } else {
+            throw new ResourceNotFoundException("Record not found with id : " + productId);
+        }
+
+    }
+}</pre></code><br>
+            <h3>Spring REST Controller - ProductController</h3>
+            <p>Let's create a CRUD  REST API for the Product resource:</p>
+<code><pre>
+package net.javaguides.springboot.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import net.javaguides.springboot.model.Product;
+import net.javaguides.springboot.service.ProductService;
+
+@RestController
+public class ProductController {
+
+    @Autowired
+    private ProductService productService;
+
+    @GetMapping("/products")
+    public ResponseEntity < List < Product >> getAllProduct() {
+        return ResponseEntity.ok().body(productService.getAllProduct());
+    }
+
+    @GetMapping("/products/{id}")
+    public ResponseEntity < Product > getProductById(@PathVariable long id) {
+        return ResponseEntity.ok().body(productService.getProductById(id));
+    }
+
+    @PostMapping("/products")
+    public ResponseEntity < Product > createProduct(@RequestBody Product product) {
+        return ResponseEntity.ok().body(this.productService.createProduct(product));
+    }
+
+    @PutMapping("/products/{id}")
+    public ResponseEntity < Product > updateProduct(@PathVariable long id, @RequestBody Product product) {
+        product.setId(id);
+        return ResponseEntity.ok().body(this.productService.updateProduct(product));
+    }
+
+    @DeleteMapping("/products/{id}")
+    public HttpStatus deleteProduct(@PathVariable long id) {
+        this.productService.deleteProduct(id);
+        return HttpStatus.OK;
+    }
+}</pre></code><br>
+                        <p>In the above <span> ProductController</span>, we're using the<span> @RestController</span> annotation to indicate that this is a controller that handles HTTP requests and returns data directly to the client. The <span>@RequestMapping</span> annotation specifies the base URL for all requests to this controller. <br><br>
+
+                            The <span>ProductController</span> is using the <span>ProductService</span> to perform operations on products. We're injecting this service into the controller using the @Autowired annotation. <br><br>
+                            
+                            Each endpoint is mapped to an HTTP method using the @GetMapping, @PostMapping, @PutMapping, or @DeleteMapping annotations. The @RequestBody annotation indicates that the incoming data is expected to be in JSON format.</p>
+
+                            <h3>Running Spring Boot Application</h3>
+                            <p>This  spring boot application has an entry point Java class called SpringbootCrudHibernateExampleApplication.java with the public static void main(String[] args) method, which you can run to start the application.</p>
+<code><pre>
+package net.javaguides.springboot;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringbootCrudHibernateExampleApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringbootCrudHibernateExampleApplication.class, args);
+    }
+}</pre></code><br>
+                    <h3>Download Source Code from GitHub</h3>
+                    <div style="border-left: 8px solid rgb(237, 21, 21); height: 100px;"><br>
+                        <p >The source code of this tutorial is available on my  <a href="https://github.com/RameshMF/spring-boot-tutorial/tree/master/springboot-crud-hibernate-example">GitHub Repository</a></p>
+                    </div><br>
+                    <h3>Related Spring and Spring Boot Tutorials/Guides:</h3>
+                    <p>
+                        <button type="button" class="btn btn-outline-primary">Spring Boot Tutorials [500+]s</button>
+                        <button type="button" class="btn btn-outline-secondary">Spring Boot Testing Tutorial</button>
+                        <button type="button" class="btn btn-outline-success">Spring Boot Microservice Tutorial</button>
+                        <button type="button" class="btn btn-outline-danger">Spring Boot Kafka Microservices </button>
+                        <button type="button" class="btn btn-outline-warning">Spring Boot + Apache Kafka Tutorial</button>
+                        <button type="button" class="btn btn-outline-info">Spring Core Tutorial</button>
+                        <button type="button" class="btn btn-outline-primary">Spring MVC Tutorial </button>
+                        <button type="button" class="btn btn-outline-secondary">Spring Data JPA Tutorial</button>
+                        <button type="button" class="btn btn-outline-success">Spring Framework for Beginners</button>
+                        <button type="button" class="btn btn-outline-danger">Spring AOP Tutorial</button>
+                        <button type="button" class="btn btn-outline-warning">Spring Security Tutorial</button>
+                        <button type="button" class="btn btn-outline-info">Spring Exceptions Tutorial</button>
+                        <button type="button" class="btn btn-outline-primary">Spring Boot Interview Questions</button>
+                        <button type="button" class="btn btn-outline-dark">Spring Boot Microservices Interview Questions</button>
+                        <button type="button" class="btn btn-outline-primary">Apache Kafka Tutorials </button>
+                        <button type="button" class="btn btn-outline-secondary">Docker Tutorials and Guides</button>
+                        <button type="button" class="btn btn-outline-success">Spring Boot RabbitMQ Tutorials</button>
+                        <button type="button" class="btn btn-outline-danger">Angular CRUD Example with Spring Boot </button>
+                        <button type="button" class="btn btn-outline-warning">Spring Boot + Angular 12 CRUD Full Stack</button>
+                        <button type="button" class="btn btn-outline-info">Spring Boot + Angular 8 CRUD Full Stack</button>
+                        <button type="button" class="btn btn-outline-danger">Spring Boot + Angular 10 CRUD Full Stack </button>
+                        <button type="button" class="btn btn-outline-primary">React JS ( React Hooks) + Spring Boot</button>
+                        <button type="button" class="btn btn-outline-secondary">Spring Boot + React JS CRUD Full Stack</button>
+                        <button type="button" class="btn btn-outline-success">Spring Boot Thymeleaf CRUD Full Stack </button>
+                        <button type="button" class="btn btn-outline-danger">Spring Boot User Registration and Login</button>
+                        <button type="button" class="btn btn-outline-warning">Node Js + Express + MongoDB CRUDVue</button>
+                        <button type="button" class="btn btn-outline-info">JS + Spring Boot REST API Tutorial</button>
+                    </p>
+
+
+
+
+            </div>
+        </body>
+</html>
