@@ -12,60 +12,61 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <title>Spring Boot Tutorial</title>
-<style>
+        <style>
+                .navbar-brand img {
+                        max-height: 80px;
+                }
 
-.navbar-brand img {
-      max-height: 80px;
-    }
+                .navbar-nav .nav-item.active .nav-link,
+                .navbar-nav .nav-item:hover .nav-link {
+                        color: #1a59a7 !important;
+                        font-weight: bold;
+                }
 
-    .navbar-nav .nav-item.active .nav-link,
-    .navbar-nav .nav-item:hover .nav-link {
-      color: #1a59a7 !important;
-      font-weight: bold;
-    }
+                /* Add this style rule to highlight the dropdown menu item on hover */
+                .navbar-nav .nav-item.dropdown:hover .nav-link {
+                        color: #1a59a7 !important;
+                        font-weight: bold;
+                }
 
-    /* Add this style rule to highlight the dropdown menu item on hover */
-    .navbar-nav .nav-item.dropdown:hover .nav-link {
-      color: #1a59a7 !important;
-      font-weight: bold;
-    }
+                /* Add this style rule to highlight the active dropdown menu item */
+                .navbar-nav .nav-item.dropdown.active .nav-link {
+                        color: #1a59a7 !important;
+                        font-weight: bold;
+                }
 
-    /* Add this style rule to highlight the active dropdown menu item */
-    .navbar-nav .nav-item.dropdown.active .nav-link {
-      color: #1a59a7 !important;
-      font-weight: bold;
-    }
-
-    /* Add this style rule to highlight the dropdown menu item on hover */
-    .navbar-nav .nav-item.dropdown:hover .nav-link {
-      color: #1a59a7 !important;
-      font-weight: bold;
-    }
-
+                /* Add this style rule to highlight the dropdown menu item on hover */
+                .navbar-nav .nav-item.dropdown:hover .nav-link {
+                        color: #1a59a7 !important;
+                        font-weight: bold;
+                }
 
 
-.nav-item.dropdown:hover .dropdown-menu {
-    display: block;
-}
 
-/* Adjust the styling of the dropdown */
-.nav-item.dropdown .dropdown-menu {
-    display: none;
-    margin-top: 0; /* Ensure no margin is added when hovering */
-    transition: visibility 0.3s, opacity 0.3s ease;
-    opacity: 0;
-    visibility: hidden;
-}
+                .nav-item.dropdown:hover .dropdown-menu {
+                        display: block;
+                }
 
-.nav-item.dropdown:hover .dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-}
+                /* Adjust the styling of the dropdown */
+                .nav-item.dropdown .dropdown-menu {
+                        display: none;
+                        margin-top: 0;
+                        /* Ensure no margin is added when hovering */
+                        transition: visibility 0.3s, opacity 0.3s ease;
+                        opacity: 0;
+                        visibility: hidden;
+                }
 
-/* Optional: Add a background color to the dropdown items on hover */
-.dropdown-item:hover {
-    background-color: #9387e1;
-}
+                .nav-item.dropdown:hover .dropdown-menu {
+                        opacity: 1;
+                        visibility: visible;
+                }
+
+                /* Optional: Add a background color to the dropdown items on hover */
+                .dropdown-item:hover {
+                        background-color: #9387e1;
+                }
+
                 body {
                         font-family: Arial, sans-serif;
                         margin: 0;
@@ -164,106 +165,140 @@
                 }
 
 
-         .scrollup {
-         position: fixed;
-         bottom: 20px; /* Adjust this value to position it higher or lower */
-         right: 20px;  /* Adjust this value to position it further left or right */
-         z-index: 1000; /* Ensures it stays on top of other elements */
-        }
-
+                .scrollup {
+                        position: fixed;
+                        bottom: 20px;
+                        /* Adjust this value to position it higher or lower */
+                        right: 20px;
+                        /* Adjust this value to position it further left or right */
+                        z-index: 1000;
+                        /* Ensures it stays on top of other elements */
+                }
         </style>
 
 </head>
 
 <body>
 
-        
+
         <!-- *********************************************** -->
         <div class="container-fluid mt-3">
 
                 <nav class="navbar navbar-expand-lg navbar-white bg-white ms-auto">
                         <div class="container-fluid ">
-                          <a class="navbar-brand" href="index.html">
-                            <img src="assets/media/general/logo.png" alt="logo" />
-                          </a>
-                          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-                            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                          </button>
-                          <div class="collapse navbar-collapse mx-auto" id="navbarNavDropdown">
-                            <ul class="navbar-nav mx-auto">
-                              <li class="nav-item">
-                                <a class="nav-link" aria-current="page" href="index.html">HOME</a>
-                              </li>
-                              <li class="nav-item">
-                                <a class="nav-link" aria-current="page" href="about.html">ABOUT</a>
-                              </li>
-                              <li class="nav-item dropdown">
-                                <a class="nav-link  dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                                  data-bs-toggle="dropdown" aria-expanded="false">CAREERS</a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                  <li>
-                                    <a class="dropdown-item" href="internship.html" class="menu-link">Internship</a>
-                                  </li>
-                                </ul>
-                              </li>
-                              <li class="nav-item dropdown">
-                                <a class="nav-link  dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                                  data-bs-toggle="dropdown" aria-expanded="false">SERVICES</a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                  <li>
-                                    <a href="web_application.html" class="dropdown-item">Web Applications</a>
-                                  </li>
-                                  <li>
-                                    <a href="mobile_application.html" class="dropdown-item">Mobile Applications</a>
-                                  </li>
-                                  <li>
-                                    <a href="data_analytics.html" class="dropdown-item">Data Analytics</a>
-                                  </li>
-                                  <li>
-                                    <a href="ai_ml.html" class="dropdown-item">AI & ML Services</a>
-                                  </li>
-                                  <li>
-                                    <a href="tooldesign.html" class="dropdown-item">Tool Design</a>
-                                  </li>
-                  
-                                  <li>
-                                    <a href="product_engineering.html" class="dropdown-item">Product Engineering</a>
-                                  </li>
-                                  <li>
-                                    <a href="digital_marketinig.html" class="dropdown-item">Digital Marketing</a>
-                                  </li>
-                  
-                                </ul>
-                              </li>
-                              <li class="nav-item dropdown">
-                                  <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">TRAINING COURSES</a>
-                                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li>
-                                        <a href="spring_framework_tutorial.html" class="dropdown-item">Spring Framework Tutorial</a>
-                                      </li>
-                                      <li>
-                                        <a href="spring_boot_tutorial.html" class="dropdown-item">Spring Boot Tutorial</a>
-                                      </li>
-                                      <li>
-                                        <a href="java_fullstack.html" class="dropdown-item">Java Fullstack</a>
-                                      </li>
-                                      <li>
-                                        <a href="mern_stack.html" class="dropdown-item">MERN Stack</a>
-                                      </li>
-                                      <li>
-                                        <a href="angular_CRUD_example_with_spring_boot.html" class="dropdown-item">Full Stack</a>
-                                      </li>  
-                                   
-                                  </ul>
-                                </li>
-                              <li class="nav-item">
-                                <a class="nav-link" aria-current="page" href="contact.html">CONTACT</a>
-                              </li>
-                            </ul>
-                          </div>
-                      </nav>
+                                <a class="navbar-brand" href="index.html">
+                                        <img src="assets/media/general/logo.png" alt="logo" />
+                                </a>
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+                                        aria-expanded="false" aria-label="Toggle navigation">
+                                        <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="collapse navbar-collapse mx-auto" id="navbarNavDropdown">
+                                        <ul class="navbar-nav mx-auto">
+                                                <li class="nav-item">
+                                                        <a class="nav-link" aria-current="page"
+                                                                href="index.html">HOME</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                        <a class="nav-link" aria-current="page"
+                                                                href="about.html">ABOUT</a>
+                                                </li>
+                                                <li class="nav-item dropdown">
+                                                        <a class="nav-link  dropdown-toggle" href="#"
+                                                                id="navbarDropdownMenuLink" role="button"
+                                                                data-bs-toggle="dropdown"
+                                                                aria-expanded="false">CAREERS</a>
+                                                        <ul class="dropdown-menu"
+                                                                aria-labelledby="navbarDropdownMenuLink">
+                                                                <li>
+                                                                        <a class="dropdown-item" href="internship.html"
+                                                                                class="menu-link">Internship</a>
+                                                                </li>
+                                                        </ul>
+                                                </li>
+                                                <li class="nav-item dropdown">
+                                                        <a class="nav-link  dropdown-toggle" href="#"
+                                                                id="navbarDropdownMenuLink" role="button"
+                                                                data-bs-toggle="dropdown"
+                                                                aria-expanded="false">SERVICES</a>
+                                                        <ul class="dropdown-menu"
+                                                                aria-labelledby="navbarDropdownMenuLink">
+                                                                <li>
+                                                                        <a href="web_application.html"
+                                                                                class="dropdown-item">Web
+                                                                                Applications</a>
+                                                                </li>
+                                                                <li>
+                                                                        <a href="mobile_application.html"
+                                                                                class="dropdown-item">Mobile
+                                                                                Applications</a>
+                                                                </li>
+                                                                <li>
+                                                                        <a href="data_analytics.html"
+                                                                                class="dropdown-item">Data Analytics</a>
+                                                                </li>
+                                                                <li>
+                                                                        <a href="ai_ml.html" class="dropdown-item">AI &
+                                                                                ML Services</a>
+                                                                </li>
+                                                                <li>
+                                                                        <a href="tooldesign.html"
+                                                                                class="dropdown-item">Tool Design</a>
+                                                                </li>
+
+                                                                <li>
+                                                                        <a href="product_engineering.html"
+                                                                                class="dropdown-item">Product
+                                                                                Engineering</a>
+                                                                </li>
+                                                                <li>
+                                                                        <a href="digital_marketinig.html"
+                                                                                class="dropdown-item">Digital
+                                                                                Marketing</a>
+                                                                </li>
+
+                                                        </ul>
+                                                </li>
+                                                <li class="nav-item dropdown">
+                                                        <a class="nav-link active dropdown-toggle" href="#"
+                                                                id="navbarDropdownMenuLink" role="button"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">TRAINING
+                                                                COURSES</a>
+                                                        <ul class="dropdown-menu"
+                                                                aria-labelledby="navbarDropdownMenuLink">
+                                                                <li>
+                                                                        <a href="spring_framework_tutorial.html"
+                                                                                class="dropdown-item">Spring Framework
+                                                                                Tutorial</a>
+                                                                </li>
+                                                                <li>
+                                                                        <a href="spring_boot_tutorial.html"
+                                                                                class="dropdown-item">Spring Boot
+                                                                                Tutorial</a>
+                                                                </li>
+                                                                <li>
+                                                                        <a href="java_fullstack.html"
+                                                                                class="dropdown-item">Java Fullstack</a>
+                                                                </li>
+                                                                <li>
+                                                                        <a href="mern_stack.html"
+                                                                                class="dropdown-item">MERN Stack</a>
+                                                                </li>
+                                                                <li>
+                                                                        <a href="angular_CRUD_example_with_spring_boot.html"
+                                                                                class="dropdown-item">Full Stack</a>
+                                                                </li>
+
+                                                        </ul>
+                                                </li>
+                                                <li class="nav-item">
+                                                        <a class="nav-link" aria-current="page"
+                                                                href="contact.html">CONTACT</a>
+                                                </li>
+                                        </ul>
+                                </div>
+                </nav>
 
                 <h1>Spring Boot Tutorial</h1>
                 <h4>Author: Sai K</h4>
@@ -303,25 +338,35 @@
                         <li><a href="spring_ai_roles_tutorial.html">Spring AI Roles Tutorial</a></li><br>
                         <li><a href="spring-ai-prompt-engineering-tutorial.html">Spring AI Prompt Engineering
                                         Tutorial</a></li><br>
-                        <li><a href="spring_boot_tutorial/spring_ai_embeddings_tutorial.html">Spring AI Embeddings Tutorial</a></li><br>
-                        <li><a href="spring_boot_tutorial/spring_ai_example_tutorial.html">Spring AI Example Tutorial</a></li><br>
-                        <li><a href="spring_boot_tutorial/spring_boot_spring_ai_example_chatbot_example.html">Spring Boot + Spring AI
+                        <li><a href="spring_boot_tutorial/spring_ai_embeddings_tutorial.html">Spring AI Embeddings
+                                        Tutorial</a></li><br>
+                        <li><a href="spring_boot_tutorial/spring_ai_example_tutorial.html">Spring AI Example
+                                        Tutorial</a></li><br>
+                        <li><a href="spring_boot_tutorial/spring_boot_spring_ai_example_chatbot_example.html">Spring
+                                        Boot + Spring AI
                                         Example (Chatbot
                                         Example)</a></li><br>
-                        <li><a href="spring_boot_tutorial/spring_boot_chatgpt_integration_tutorial.html">Spring Boot ChatGPT Integration
+                        <li><a href="spring_boot_tutorial/spring_boot_chatgpt_integration_tutorial.html">Spring Boot
+                                        ChatGPT Integration
                                         Tutorial</a>
                         </li><br>
-                        <li><a href="spring_boot_tutorial/spring_ai_output_parsers_example.html">Spring AI Output Parsers Example</a>
+                        <li><a href="spring_boot_tutorial/spring_ai_output_parsers_example.html">Spring AI Output
+                                        Parsers Example</a>
                         </li><br>
                         <li><a href="spring_boot_tutorial/java_8_foreach_method.html">Java 8 forEach Method</a></li><br>
-                        <li><a href="spring_boot_tutorial/iterating_over_a_hashset_in_java.html">Iterating over a HashSet in Java</a>
+                        <li><a href="spring_boot_tutorial/iterating_over_a_hashset_in_java.html">Iterating over a
+                                        HashSet in Java</a>
                         </li><br>
-                        <li><a href="spring_boot_tutorial/iterating_over_an_arraylist_in_java.html">Iterating over an ArrayList in
+                        <li><a href="spring_boot_tutorial/iterating_over_an_arraylist_in_java.html">Iterating over an
+                                        ArrayList in
                                         Java</a></li><br>
-                        <li><a href="spring_boot_tutorial/iterating_over_linkedlist_in_java.html">Iterating Over LinkedList in Java</a>
+                        <li><a href="spring_boot_tutorial/iterating_over_linkedlist_in_java.html">Iterating Over
+                                        LinkedList in Java</a>
                         </li><br>
-                        <li><a href="spring_boot_tutorial/spring_boot_rest_api_tutorial.html">Spring Boot REST API Tutorial</a></li><br>
-                        <li><a href="spring_boot_tutorial/spring_boot_security_rest_api_tutorial.html">Spring Boot Security REST API
+                        <li><a href="spring_boot_tutorial/spring_boot_rest_api_tutorial.html">Spring Boot REST API
+                                        Tutorial</a></li><br>
+                        <li><a href="spring_boot_tutorial/spring_boot_security_rest_api_tutorial.html">Spring Boot
+                                        Security REST API
                                         Tutorial</a></li>
                         <br>
                         <li><a href="spring_boot_tutorial/cachemanager_in_spring_boot_a_step_by_step_tutorial.html">CacheManager in
@@ -646,51 +691,86 @@
                                 - YouTube
                                 Channel</a> </p>
                 <h2>Spring Boot - Getting Started</h2>
-                <a href="spring-boot-tutprial/spring-boot-getting-started/spring_boot_3_tutorial_for_beginners_quick_start.html"> ✅Spring Boot 3 Tutorial for
+                <a
+                        href="spring-boot-tutprial/spring-boot-getting-started/spring_boot_3_tutorial_for_beginners_quick_start.html">
+                        ✅Spring Boot 3 Tutorial for
                         Beginners - Quick
                         Start</a><br>
-                <a href="spring-boot-tutprial\spring-boot-getting-started\prerequisites_to_learn_spring_boot.html">✅ Prerequisites to Learn Spring Boot<br>
-                        <a href="spring-boot-tutprial\spring-boot-getting-started\spring_vs_spring_MVC_vs_spring_boot.html"> ✅Spring vs Spring MVC vs Spring Boot<br>
+                <a href="spring-boot-tutprial\spring-boot-getting-started\prerequisites_to_learn_spring_boot.html">✅
+                        Prerequisites to Learn Spring Boot<br>
+                        <a
+                                href="spring-boot-tutprial\spring-boot-getting-started\spring_vs_spring_MVC_vs_spring_boot.html">
+                                ✅Spring vs Spring MVC vs Spring Boot<br>
 
-                                <a href="spring-boot-tutprial\spring-boot-getting-started\spring_framework_vs_spring_boot.html"> ✅ Difference Between Spring
+                                <a
+                                        href="spring-boot-tutprial\spring-boot-getting-started\spring_framework_vs_spring_boot.html">
+                                        ✅ Difference Between Spring
                                         and Spring
                                         Boot</a><br>
-                                <a href="spring-boot-tutprial\spring-boot-getting-started\what_is_spring_boot_and_spring_boot_features.html"> ✅ What is Spring Boot
+                                <a
+                                        href="spring-boot-tutprial\spring-boot-getting-started\what_is_spring_boot_and_spring_boot_features.html">
+                                        ✅ What is Spring Boot
                                         and Spring Boot
                                         Features</a><br>
-                                <a href="spring-boot-tutprial\spring-boot-getting-started\spring-boot-hello-world-REST_API.html">✅Spring Boot Hello World REST
+                                <a
+                                        href="spring-boot-tutprial\spring-boot-getting-started\spring-boot-hello-world-REST_API.html">✅Spring
+                                        Boot Hello World REST
                                         API</a><br>
-                                <a href="spring-boot-tutprial\spring-boot-getting-started\Spring Boot Constructor Injection Example.html"> ✅ Spring Boot Constructor
+                                <a
+                                        href="spring-boot-tutprial\spring-boot-getting-started\Spring Boot Constructor Injection Example.html">
+                                        ✅ Spring Boot Constructor
                                         Injection
                                         Example</a><br>
-                                <a href="spring-boot-tutprial\spring-boot-getting-started\Spring Boot Setter Injection Example.html"> ✅ Spring Boot Setter Injection
+                                <a
+                                        href="spring-boot-tutprial\spring-boot-getting-started\Spring Boot Setter Injection Example.html">
+                                        ✅ Spring Boot Setter Injection
                                         Example</a><br>
-                                <a href="spring-boot-tutprial\spring-boot-getting-started\Spring Boot Field Injection Example.html"> ✅Spring Boot Field Injection
+                                <a
+                                        href="spring-boot-tutprial\spring-boot-getting-started\Spring Boot Field Injection Example.html">
+                                        ✅Spring Boot Field Injection
                                         Example</a><br>
-                                <a href="spring-boot-tutprial\spring-boot-getting-started\Using Interface as Dependency in Spring Boot Application.html"> ✅Using
+                                <a
+                                        href="spring-boot-tutprial\spring-boot-getting-started\Using Interface as Dependency in Spring Boot Application.html">
+                                        ✅Using
                                         Interface as Dependency
                                         in Spring Boot Application</a><br>
-                                <a href="spring-boot-tutprial\spring-boot-getting-started\Overview of Spring Boot Starter Parent.html"> ✅Overview of Spring Boot
+                                <a
+                                        href="spring-boot-tutprial\spring-boot-getting-started\Overview of Spring Boot Starter Parent.html">
+                                        ✅Overview of Spring Boot
                                         Starter Parent</a><br>
-                                <a href="spring-boot-tutprial\spring-boot-getting-started\Important Spring Boot Starters with Examples.html">✅Important Spring Boot Starters with Examples</a><br>
-                                <a href="spring-boot-tutprial\spring-boot-getting-started\Spring Boot Embedded Servers - Tomcat, Jetty, and Undertow.html"> ✅Spring
+                                <a
+                                        href="spring-boot-tutprial\spring-boot-getting-started\Important Spring Boot Starters with Examples.html">✅Important
+                                        Spring Boot Starters with Examples</a><br>
+                                <a
+                                        href="spring-boot-tutprial\spring-boot-getting-started\Spring Boot Embedded Servers - Tomcat, Jetty, and Undertow.html">
+                                        ✅Spring
                                         Boot Embedded Servers
                                         - Tomcat, Jetty, and Undertow</a><br>
-                                <a href="spring-boot-tutprial\spring-boot-getting-started\Spring Boot How to Change Port and Context Path.html"> ✅Spring Boot How to
+                                <a
+                                        href="spring-boot-tutprial\spring-boot-getting-started\Spring Boot How to Change Port and Context Path.html">
+                                        ✅Spring Boot How to
                                         Change Port and
                                         Context Path // Popular</a><br>
-                                <a href="spring-boot-tutprial\spring-boot-getting-started\Different Ways of Running Spring Boot Application.html"> ✅Different Ways of
+                                <a
+                                        href="spring-boot-tutprial\spring-boot-getting-started\Different Ways of Running Spring Boot Application.html">
+                                        ✅Different Ways of
                                         Running Spring Boot
                                         Application</a><br>
-                                <a href="spring-boot-tutprial\spring-boot-getting-started\SpringApplication Class in Spring Boot with Examples Popular.html">
+                                <a
+                                        href="spring-boot-tutprial\spring-boot-getting-started\SpringApplication Class in Spring Boot with Examples Popular.html">
                                         ✅SpringApplication Class in Spring
                                         Boot with Examples // Popular</a><br>
-                                <a href="spring-boot-tutprial\spring-boot-getting-started\ApplicationContext Interface and Its Implementation Classes.html">
+                                <a
+                                        href="spring-boot-tutprial\spring-boot-getting-started\ApplicationContext Interface and Its Implementation Classes.html">
                                         ✅What is
                                         ApplicationContext Interface and Its Implementation Classes</a><br>
-                                <a href="spring-boot-tutprial\spring-boot-getting-started\Spring Boot @EnableAutoConfiguration Annotation with Example.html">✅Spring Boot
+                                <a
+                                        href="spring-boot-tutprial\spring-boot-getting-started\Spring Boot @EnableAutoConfiguration Annotation with Example.html">✅Spring
+                                        Boot
                                         @EnableAutoConfiguration Annotation with Example</a><br>
-                                <a href="spring-boot-tutprial\spring-boot-getting-started\Spring Boot @SpringBootApplication Annotation with Example.html">✅ Spring
+                                <a
+                                        href="spring-boot-tutprial\spring-boot-getting-started\Spring Boot @SpringBootApplication Annotation with Example.html">✅
+                                        Spring
                                         Boot @SpringBootApplication Annotation with Example</a><br>
 
                                 <h2>Spring Boot + IDE Tutorials</h2>
@@ -713,49 +793,71 @@
                                         Create and Setup Spring BootProject in Eclipse IDE</a><br>
                                 <h2>Spring Boot REST API Development
                                 </h2>
-                                <a href="Spring Boot, MySQL, JPA, Hibernate Restful CRUD API Tutorial">✅ Spring
+                                <a
+                                        href="spring-boot-tutprial\Spring Boot REST API Development\Spring_Boot_MySQL_JPA_Hibernate_Restful_CRUD_API_Tutorial.html">✅
+                                        Spring
                                         Boot, MySQL, JPA, Hibernate Restful CRUD APITutorial // LATEST</a><br>
-                                <a href="Spring Boot Project Architecture">✅ Spring Boot Project
+                                <a
+                                        href="spring-boot-tutprial\Spring Boot REST API Development\Spring Boot Project Architecture.html">✅
+                                        Spring Boot Project
                                         Architecture</a><br>
-                                <a href="Spring Boot CRUD REST API Project using IntelliJ IDEA | Postman | MySQL">✅
+                                <a
+                                        href="spring-boot-tutprial\Spring Boot REST API Development\Spring Boot CRUD REST API Project using IntelliJ IDEA_Postman_MySQL.html">✅
                                         Spring Boot CRUD REST API Project using IntelliJ IDEA | Postman |
                                         MySQL</a><br>
-                                <a href="Search REST API using Spring Boot, Spring Data JPA, and MySQL Database">✅Search
+                                <a
+                                        href="spring-boot-tutprial\Spring Boot REST API Development\Search REST API using SpringBoot, Spring Data JPA, and MySQL Database.html">✅Search
                                         REST API using SpringBoot, Spring Data JPA, and MySQL Database</a><br>
-                                <a href="Spring Boot File Upload / Download Rest API Example">✅Spring Boot File
+                                <a
+                                        href="spring-boot-tutprial\Spring Boot REST API Development\Spring Boot File Upload , Download Rest API Example.html">✅Spring
+                                        Boot File
                                         Upload / Download Rest API Example</a><br>
-                                <a href="Spring Boot, MySQL, JPA, Hibernate Restful CRUD API Tutorial">✅ Spring
+                                <a
+                                        href="spring-boot-tutprial\Spring Boot REST API Development\Spring_Boot_MySQL_JPA_Hibernate_Restful_CRUD_API_Tutorial.html">✅
+                                        Spring
                                         Boot, MySQL, JPA, Hibernate Restful CRUD API Tutorial</a><br>
-                                <a href="Spring Boot REST API CRUD Example With MySQL Database">✅ Spring Boot
+                                <a
+                                        href="spring-boot-tutprial\Spring Boot REST API Development\Spring Boot REST API CRUD Example With MySQL Database.html">✅
+                                        Spring Boot
                                         REST API CRUD Example With MySQL Database</a><br>
-                                <a href="Spring Boot 3 REST API Documentation using SpringDoc OpenAPI">✅
+                                <a
+                                        href="spring-boot-tutprial\Spring Boot REST API Development\Spring Boot 3 REST API Documentation using SpringDoc OpenAPI.html">✅
                                         Spring Boot 3 REST API Documentation using SpringDoc OpenAPI</a><br>
-                                <a href=" Spring Boot CRUD RESTful WebServices with MySQL Database">✅
+                                <a
+                                        href="spring-boot-tutprial\Spring Boot REST API Development\Spring Boot CRUD RESTful WebServices with MySQL Database.html">✅
                                         Spring Boot CRUD RESTful
                                         WebServices with MySQL
                                         Database</a><br>
-                                <a href=@PatchMapping Spring Boot Example">✅ @PatchMapping Spring
+                                <a
+                                        href="spring-boot-tutprial\Spring Boot REST API Development\PatchMapping Spring Boot Example.html">✅
+                                        @PatchMapping Spring
                                         Boot Example</a><br>
-                                <a href="#">✅ @DeleteMapping Spring
+                                <a
+                                        href="spring-boot-tutprial\Spring Boot REST API Development\DeleteMapping Spring Boot Example.html">✅
+                                        @DeleteMapping Spring
                                         Boot Example</a><br>
-                                <a href="#">✅ @GetMapping Spring
+                                <a
+                                        href="spring-boot-tutprial\Spring Boot REST API Development\GetMapping Spring Boot Example.html">✅
+                                        @GetMapping Spring
                                         Boot Example</a><br>
-                                <a href="#">✅ @PostMapping Spring
+                                <a
+                                        href="spring-boot-tutprial\Spring Boot REST API Development\PostMapping Spring Boot Example.html">✅
+                                        @PostMapping Spring
                                         Boot Example</a><br>
-                                <a href="#">✅ @PostMapping Spring
-                                        Boot Example</a><br>
-                                <a href="#">✅ Spring Boot
+                                <a
+                                        href="spring-boot-tutprial\Spring Boot REST API Development\Spring Boot @RestController Annotation Example Tutorial.html">✅
+                                        Spring Boot
                                         @RestController Annotation
                                         Example Tutorial</a><br>
-                                <a href="#">✅ Spring Boot, H2, JPA,
+                                <a href="spring-boot-tutprial\Spring Boot REST API Development\Spring Boot CRUD Example with H2 Database.html">✅ Spring Boot, H2, JPA,
                                         Hibernate Restful CRUD API
                                         Tutorial</a><br>
-                                <a href="#">✅ Spring Boot 3 JPA
+                                <a href="spring-boot-tutprial\Spring Boot REST API Development\Spring Boot CRUD RESTful WebServices with MySQL Database.html">✅ Spring Boot 3 JPA
                                         MySQL CRUD Example</a><br>
-                                <a href="#">✅ Spring Data JPA
+                                <a href="spring-boot-tutprial\Spring Boot REST API Development\Spring Data JPA Auditing with Spring Boot 2 and MySQL Example.html">✅ Spring Data JPA
                                         Auditing with Spring Boot 2 and
                                         MySQL Example</a><br>
-                                <a href="#">✅ Spring Boot Logging
+                                <a href="spring-boot-tutprial\Spring Boot REST API Development\Spring Boot Logging SLF4j Logback and LOG4j2 Example.html">✅ Spring Boot Logging
                                         SLF4j Logback and LOG4j2
                                         Example</a><br>
                                 <a href="#">✅ Spring Boot + Jersey
@@ -1125,9 +1227,9 @@
                                                         Page</a></li>
                                 </ul>
                                 <div class="scrollup justify-content-end">
-                                <a href="#">
-                                        <img class="scrollup" src="assets/img/arrow.png" alt="">
-                                 </a>
+                                        <a href="#">
+                                                <img class="scrollup" src="assets/img/arrow.png" alt="">
+                                        </a>
                                 </div>
 
                                 <div id="footer"></div>
@@ -1138,10 +1240,11 @@
                                                         document.getElementById('footer').innerHTML = html;
                                                 });
                                 </script>
-                                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>               
+                                <script
+                                        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         </div>
 
-        
+
 </body>
 
 </html>

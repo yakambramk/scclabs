@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+    </style>
+
+</head>
+        <body>
+            <div class="container">
+                <div class="topImage mt-2 mb-4">
+                    <img src="../../assets/springboot images/Api Documentation_1.jpg" alt="logo" />
+                </div>
+            </div>
+        
+            <div class="container">
+                <div class="heading">
+                    <h3>Spring Boot 3 REST API Documentation using SpringDoc OpenAPI</h3>
+                    <h6>Author: Sai k</h6>
+                </div><br>
+                <p>In this tutorial, we will learn how to generate REST  API documentation using theb <b> SpringDoc OpenAPI</b>  library in Spring Boot 3 Applications.</p>
+                <div style="border-left: 8px solid rgb(237, 21, 21); height: 100px;"><br>
+                    <p >Check out my 10+ Udemy courses to learn Spring boot, Microservices, and Full stack development: <a href="https://www.javaguides.net/p/my-udemy-courses-ramesh-fadatare.html">https://www.javaguides.net/p/my-udemy-courses-ramesh-fadatare.html.</a></p>
+                </div><br>
+                <h3>SpringDoc OpenAPI Library Overview</h3>
+                <p>The springdoc-openapi java library helps to automate the generation of API documentation using spring boot projects. <br><br>
+
+                    The springdoc-openapi java library provides integration between spring-boot and swagger-UI.<br><br>
+                    
+                    The springdoc-openapi java library automatically generates documentation in JSON/YAML and HTML format APIs. <br><br>
+                    
+                    This library supports: </p>
+
+                    <ul>
+                        <li>OpenAPI 3 </li>
+                        <li>Spring-boot v3 (Java 17 & Jakarta EE 9)</li>
+                        <li>JSR-303, specifically for @NotNull, @Min, @Max, and @Size </li>
+                        <li>Swagger-ui</li>
+                        <li>OAuth 2</li>
+                    </ul>
+                    <p>This is a community-based project, not maintained by the Spring Framework Contributors.</p>
+
+                    <h4>Prerequisites</h4>
+                    <p>We are going to generate REST API documentation for a user management project developed using below tutorial:
+                        Spring Boot 3, MySQL, Spring Data JPA, Hibernate CRUD REST API Tutorial [2024] <br><br>
+                        
+                        Before proceeding with this tutorial, make sure that you set up the Spring Boot project with CRUD REST APIs.</p>
+                        <h3>Development Steps</h3>
+                        <ol>
+                            <li>Adding springdoc-openapi Maven dependency </li>
+                            <li>Defining General API Information (Using Annotations)</li>
+                            <li>Customizing Swagger API Documentation with Annotations</li>
+                            <li>Customizing Swagger Models Documentation with Annotations</li>
+                            <li>Demo</li>                      
+                        </ol>
+                        <h3>1. Adding springdoc-openapi Maven dependency</h3>
+                        <p>The springdoc-openapi dependency provides integration between spring-boot and swagger-UI. <br><br>
+
+                            Let's add the below dependency to the Spring Boot 3 Maven project:</p>
+                            <code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springdoc&lt;/groupId&gt;
+    &lt;artifactId&gt;springdoc-openapi-starter-webmvc-ui&lt;/artifactId&gt;
+    &lt;version&gt;2.0.4&lt;/version&gt;
+&lt;/dependency&gt; </pre></code><br>
+                                <p>Next, run the Spring boot application and access the Swagger UI in the browser using the below URL:
+                                   <a href="http://localhost:8080/swagger-ui/index.html"> http://localhost:8080/swagger-ui/index.html</a></p>
+                                   <h3>2. Defining General API Information (Using Annotations)</h3>
+                                    <p>There are two ways to define API information. You can define API information programmatically or using Annotations. In this tutorial, we will define the general API information using annotations. <br><br>
+
+                                        Let's open the main entry point class and add the following code:</p>
+                                        <code><pre>
+package net.javaguides.springboot;
+
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
+import org.modelmapper.ModelMapper;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+@SpringBootApplication
+@OpenAPIDefinition(
+		info = @Info(
+				title = "Spring Boot REST API Documentation",
+				description = "Spring Boot REST API Documentation",
+				version = "v1.0",
+				contact = @Contact(
+						name = "Ramesh",
+						email = "javaguides.net@gmail.com",
+						url = "https://www.javaguides.net"
+				),
+				license = @License(
+						name = "Apache 2.0",
+						url = "https://www.javaguides.net/license"
+				)
+		),
+		externalDocs = @ExternalDocumentation(
+				description = "Spring Boot User Management Documentation",
+				url = "https://www.javaguides.net/user_management.html"
+		)
+)
+public class SpringbootRestfulWebservicesApplication {
+
+	@Bean
+	public ModelMapper modelMapper(){
+		return new ModelMapper();
+	}
+
+	public static void main(String[] args) {
+		SpringApplication.run(SpringbootRestfulWebservicesApplication.class, args);
+	}
+
+}</pre></code>
+    <p>Note that we have used Swagger annotations to define API information:</p>
+<code><pre>
+@OpenAPIDefinition(
+		info = @Info(
+				title = "Spring Boot REST API Documentation",
+				description = "Spring Boot REST API Documentation",
+				version = "v1.0",
+				contact = @Contact(
+						name = "Ramesh",
+						email = "javaguides.net@gmail.com",
+						url = "https://www.javaguides.net"
+				),
+				license = @License(
+						name = "Apache 2.0",
+						url = "https://www.javaguides.net/license"
+				)
+		),
+		externalDocs = @ExternalDocumentation(
+				description = "Spring Boot User Management Documentation",
+				url = "https://www.javaguides.net/user_management.html"
+		)
+)</pre></code><br>
+            <h3>3. Customizing Swagger API Documentation with Annotations</h3>
+            <p>Next, we can customize the REST API documentation using annotations like we can provide more information about the Resource and REST APIs. <br><br>
+
+                Let's open UserController and let's use annotations to add more information about REST APIs in the documentation.</p>
+                <code><pre>
+package net.javaguides.springboot.controller;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import net.javaguides.springboot.dto.UserDto;
+import net.javaguides.springboot.entity.User;
+import net.javaguides.springboot.exception.ErrorDetails;
+import net.javaguides.springboot.exception.ResourceNotFoundException;
+import net.javaguides.springboot.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Tag(
+        name = "CRUD REST APIs for User Resource",
+        description = "CRUD REST APIs - Create User, Update User, Get User, Get All Users, Delete User"
+)
+@RestController
+@AllArgsConstructor
+@RequestMapping("api/users")
+public class UserController {
+
+    private UserService userService;
+
+    @Operation(
+            summary = "Create User REST API",
+            description = "Create User REST API is used to save user in a database"
+    )
+    @ApiResponse(
+            responseCode = "201",
+            description = "HTTP Status 201 CREATED"
+    )
+    // build create User REST API
+    @PostMapping
+    public ResponseEntity< UserDto> createUser(@Valid @RequestBody UserDto user){
+        UserDto savedUser = userService.createUser(user);
+        return new ResponseEntity< >(savedUser, HttpStatus.CREATED);
+    }
+
+    @Operation(
+            summary = "Get User By ID REST API",
+            description = "Get User By ID REST API is used to get a single user from the database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "HTTP Status 200 SUCCESS"
+    )
+    // build get user by id REST API
+    // http://localhost:8080/api/users/1
+    @GetMapping("{id}")
+    public ResponseEntity< UserDto> getUserById(@PathVariable("id") Long userId){
+        UserDto user = userService.getUserById(userId);
+        return new ResponseEntity< >(user, HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Get All Users REST API",
+            description = "Get All Users REST API is used to get a all the users from the database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "HTTP Status 200 SUCCESS"
+    )
+    // Build Get All Users REST API
+    // http://localhost:8080/api/users
+    @GetMapping
+    public ResponseEntity< List< UserDto>> getAllUsers(){
+        List< UserDto> users = userService.getAllUsers();
+        return new ResponseEntity< >(users, HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Update User REST API",
+            description = "Update User REST API is used to update a particular user in the database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "HTTP Status 200 SUCCESS"
+    )
+    // Build Update User REST API
+    @PutMapping("{id}")
+    // http://localhost:8080/api/users/1
+    public ResponseEntity< UserDto> updateUser(@PathVariable("id") Long userId,
+                                           @RequestBody @Valid UserDto user){
+        user.setId(userId);
+        UserDto updatedUser = userService.updateUser(user);
+        return new ResponseEntity< >(updatedUser, HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Delete User REST API",
+            description = "Delete User REST API is used to delete a particular user from the database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "HTTP Status 200 SUCCESS"
+    )
+    // Build Delete User REST API
+    @DeleteMapping("{id}")
+    public ResponseEntity< String> deleteUser(@PathVariable("id") Long userId){
+        userService.deleteUser(userId);
+        return new ResponseEntity< >("User successfully deleted!", HttpStatus.OK);
+    }
+
+//    @ExceptionHandler(ResourceNotFoundException.class)
+//    public ResponseEntity< ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException exception,
+//                                                                        WebRequest webRequest){
+//
+//        ErrorDetails errorDetails = new ErrorDetails(
+//                LocalDateTime.now(),
+//                exception.getMessage(),
+//                webRequest.getDescription(false),
+//                "USER_NOT_FOUND"
+//        );
+//
+//        return new ResponseEntity< >(errorDetails, HttpStatus.NOT_FOUND);
+//    }
+}</pre></code>
+                    <p>Note that we have used 3 annotations to customize the RESt  API documentation.</p>
+                    <p>@Tag annotation is used to provide resource information:</p>
+<code><pre>
+@Tag(
+        name = "CRUD REST APIs for User Resource",
+        description = "CRUD REST APIs - Create User, Update User, Get User, Get All Users, Delete User"
+)</pre></code><br>
+                <p>@Operation and @ApiResponse annotations to provide REST API information:</p>
+
+            <code><pre>
+ @Operation(
+            summary = "Create User REST API",
+            description = "Create User REST API is used to save user in a database"
+    )
+    @ApiResponse(
+            responseCode = "201",
+            description = "HTTP Status 201 CREATED"
+    ) </pre></code><br>
+
+                <h3>4. Customizing Swagger Models Documentation with Annotations</h3>
+                <p>Next, we can also customize the Model classes in  Swagger documentation using annotations. <br><br>
+
+                    Let's open UserDto class and add @Schema annotation to provide the model and its attributes information:</p>
+<code><pre>
+package net.javaguides.springboot.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Schema(
+        description = "UserDto Model Information"
+)
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserDto {
+
+    private Long id;
+
+    @Schema(
+            description = "User First Name"
+    )
+    // User first name should not be null or empty
+    @NotEmpty(message = "User first name should not be null or empty")
+    private String firstName;
+
+    @Schema(
+            description = "User Last Name"
+    )
+    // User last name should not be null or empty
+    @NotEmpty(message = "User last name should not be null or empty")
+    private String lastName;
+
+    @Schema(
+            description = "User Email Address"
+    )
+    // User email should not be null or empty
+    // Email address should be valid
+    @NotEmpty(message = "User email should not be null or empty")
+    @Email(message = "Email address should be valid")
+    private String email;
+}</pre></code><br>
+                    <h3>5. Demo</h3>
+                    <p>Finally, let's run the Spring boot application and access the REST API documentation using below swagger URL: <br><br>
+
+                     <a href="http://localhost:8080/swagger-ui/index.html">http://localhost:8080/swagger-ui/index.html</a></p>
+
+                     <div class=" mt-2 mb-4">
+                        <img src="../../assets/springboot images/API testing with Swagger.png" alt="logo" class="img-fluid" />
+                    </div><br><bR>
+
+                        <p>Next, use the below URL to generate API documentation in JSON format.</p>
+                        <a href="http://localhost:8080/v3/api-docs">http://localhost:8080/v3/api-docs</a>
+                        <div class=" mt-2 mb-4">
+                            <img src="../../assets/springboot images/Json forment.png" alt="logo" class="img-fluid" />
+                        </div><br><bR>
+                            <h3>Conclusion</h3>
+                            <p>In this tutorial, we learned how to generate REST API documentation using the SpringDoc OpenAPI library in Spring Boot 3 Applications.</p>
+
+                            <h3>Related Spring and Spring Boot Tutorials/Guides:</h3>
+                            <p>
+                                <button type="button" class="btn btn-outline-primary">Spring Boot Tutorials [500+]s</button>
+                                <button type="button" class="btn btn-outline-secondary">Spring Boot Testing Tutorial</button>
+                                <button type="button" class="btn btn-outline-success">Spring Boot Microservice Tutorial</button>
+                                <button type="button" class="btn btn-outline-danger">Spring Boot Kafka Microservices </button>
+                                <button type="button" class="btn btn-outline-warning">Spring Boot + Apache Kafka Tutorial</button>
+                                <button type="button" class="btn btn-outline-info">Spring Core Tutorial</button>
+                                <button type="button" class="btn btn-outline-primary">Spring MVC Tutorial </button>
+                                <button type="button" class="btn btn-outline-secondary">Spring Data JPA Tutorial</button>
+                                <button type="button" class="btn btn-outline-success">Spring Framework for Beginners</button>
+                                <button type="button" class="btn btn-outline-danger">Spring AOP Tutorial</button>
+                                <button type="button" class="btn btn-outline-warning">Spring Security Tutorial</button>
+                                <button type="button" class="btn btn-outline-info">Spring Exceptions Tutorial</button>
+                                <button type="button" class="btn btn-outline-primary">Spring Boot Interview Questions</button>
+                                <button type="button" class="btn btn-outline-dark">Spring Boot Microservices Interview Questions</button>
+                                <button type="button" class="btn btn-outline-primary">Apache Kafka Tutorials </button>
+                                <button type="button" class="btn btn-outline-secondary">Docker Tutorials and Guides</button>
+                                <button type="button" class="btn btn-outline-success">Spring Boot RabbitMQ Tutorials</button>
+                                <button type="button" class="btn btn-outline-danger">Angular CRUD Example with Spring Boot </button>
+                                <button type="button" class="btn btn-outline-warning">Spring Boot + Angular 12 CRUD Full Stack</button>
+                                <button type="button" class="btn btn-outline-info">Spring Boot + Angular 8 CRUD Full Stack</button>
+                                <button type="button" class="btn btn-outline-danger">Spring Boot + Angular 10 CRUD Full Stack </button>
+                                <button type="button" class="btn btn-outline-primary">React JS ( React Hooks) + Spring Boot</button>
+                                <button type="button" class="btn btn-outline-secondary">Spring Boot + React JS CRUD Full Stack</button>
+                                <button type="button" class="btn btn-outline-success">Spring Boot Thymeleaf CRUD Full Stack </button>
+                                <button type="button" class="btn btn-outline-danger">Spring Boot User Registration and Login</button>
+                                <button type="button" class="btn btn-outline-warning">Node Js + Express + MongoDB CRUDVue</button>
+                                <button type="button" class="btn btn-outline-info">JS + Spring Boot REST API Tutorial</button>
+                            </p>
+            </div>
+        </body>
+</html>
