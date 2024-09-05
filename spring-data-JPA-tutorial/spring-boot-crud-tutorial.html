@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+
+        img {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Boot CRUD Tutorial with Spring MVC, Spring Data JPA, Thymeleaf, Hibernate, MySQL</h1>
+        <p>This tutorial will build a simple <b>Student Management System</b> web application using Spring Boot, Spring
+            MVC,
+            Thymeleaf, Spring Data JPA, and MySQL database.</p>
+        <p>We will build a CRUD operation for the Student entity in our <b>Student Management System</b> web
+            application.</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/list-students-javaguides.png" style="width: 100%;">
+        <h2>Tools and Technologies Used</h2>
+        <ul>
+            <li>Java 17</li>
+            <li>Spring Boot 3</li>
+            <li>Spring MVC</li>
+            <li>Spring Data JPA ( Hibernate)</li>
+            <li>MySQL</li>
+            <li>Thymeleaf</li>
+            <li>Eclipse STS</li>
+        </ul>
+        <h2>1. Create Spring Boot Project</h2>
+        <p>Let's open STS ( Spring Suite Tool) IDE to develop and bootstrap the Spring boot project.</p>
+        <p>Use the below guide to create a Spring boot project in Eclipse STS IDE: </h2>
+        <p>=> <a href="/spring-data-JPA-tutorial/create-spring-boot-project-in-spring-tool-suite.html"
+                target="_blank">Create Spring Boot Project in Spring Tool Suite [STS]</a></p>
+        <p>Selected below dependencies while creating spring boot project using spring initializr:</p>
+        <ul>
+            <li>Spring Web</li>
+            <li>Thymeleaf</li>
+            <li>Spring Data JPA</li>
+            <li>MySQL Driver</li>
+            <li>Spring Boot Devtools</li>
+        </ul>
+        <h2>2. Create Spring Boot Project Structure</h2>
+        <p>Let's create the below packages in our Spring boot project:</p>
+        <ul>
+            <li>controller</li>
+            <li>service</li>
+            <li>repository</li>
+            <li>entity</li>
+        </ul>
+        <h2>3. Maven Dependencies</h2>
+        <p>Note that we are using Spring Boot 3 and it requires minimum Java version 17 or later.</p>
+        <pre><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+    &lt;optional&gt;true&lt;/optional&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+    &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;
+
+</code></pre>
+        <h2>4. Create Student JPA Entity</h2>
+        <p>Let's create a <code style="color: red;">Student</code> JPA entity under the entity package and add the
+            following content to it:</p>
+        <pre><code>
+package net.javaguides.sms.entity;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "students")
+public class Student {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column(name = "first_name", nullable = false)
+	private String firstName;
+	
+	@Column(name = "last_name")
+	private String lastName;
+	
+	@Column(name = "email")
+	private String email;
+	
+	public Student() {
+		
+	}
+	
+	public Student(String firstName, String lastName, String email) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+}
+</code></pre>
+        <ul>
+            <li><b>@Entity</b> - This annotation specifies that the class is an entity. This annotation can be applied
+                to Class, Interface of Enums.</li>
+            <li><b>@Table</b> - JPA annotation specifies the table in the database with which this entity is mapped.
+            </li>
+            <li><b>@Id</b> - The <code style="color: red;">@Id</code> JPA annotation specifies the primary key of the
+                entity.</li>
+            <li><b>@Column</b> - The <code style="color: red;">@Column</code> annotation is used to specify the mapping
+                between a basic entity attribute and the database table column.</li>
+        </ul>
+        <h2>5. Create JPA StudentRepository</h2>
+        <p>Let's create a <code style="color: red;">StudentRepository</code> interface under the repository package and
+            add the following content:</p>
+        <pre><code>
+package net.javaguides.sms.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import net.javaguides.sms.entity.Student;
+
+public interface StudentRepository extends JpaRepository&lt;Student, Long>{
+
+}
+
+</code></pre>
+        <h2>6. Configure MySQL Database</h2>
+        <p>Before configuring the MySQL database configuration in our Spring boot project, first, create a database
+            named <b>SMS</b> in MySQL workbench:</p>
+        <pre><code>create database sms</code></pre>
+        <p>Let's open the <code style="color: red;">application.properties</code> file and add following content to it:
+        </p>
+        <pre><code>
+spring.datasource.url=jdbc:mysql://localhost:3306/sms?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+spring.datasource.username=root
+spring.datasource.password=root
+
+#Hibernate
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQLDialect
+
+#Hibernate auto ddl
+spring.jpa.hibernate.ddl-auto=update
+
+logging.level.org.hibernate.SQL=DEBUG
+
+</code></pre>
+        <h2>7. Creating Service Layer</h2>
+        <h3>StudentService Interface</h3>
+        <p>Let's create a <code style="color: red;">StudentService</code> interface under the <b>service</b> package and
+            add
+            the following content to it:</p>
+        <pre><code>
+package net.javaguides.sms.service;
+
+import java.util.List;
+
+import net.javaguides.sms.entity.Student;
+
+public interface StudentService {
+	List&lt;Student> getAllStudents();
+	
+	Student saveStudent(Student student);
+	
+	Student getStudentById(Long id);
+	
+	Student updateStudent(Student student);
+	
+	void deleteStudentById(Long id);
+}
+
+</code></pre>
+        <h3>StudentServiceImpl Class</h3>
+        <p>Let's create a new package called <b>impl</b> inside the <b>service</b> package. Let's create
+            <b>StudentServiceImpl</b> class and
+            add the following content to it:
+        </p>
+        <pre><code>
+package net.javaguides.sms.service.impl;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import net.javaguides.sms.entity.Student;
+import net.javaguides.sms.repository.StudentRepository;
+import net.javaguides.sms.service.StudentService;
+
+@Service
+public class StudentServiceImpl implements StudentService{
+
+	private StudentRepository studentRepository;
+	
+	public StudentServiceImpl(StudentRepository studentRepository) {
+		super();
+		this.studentRepository = studentRepository;
+	}
+
+	@Override
+	public List<Student> getAllStudents() {
+		return studentRepository.findAll();
+	}
+
+	@Override
+	public Student saveStudent(Student student) {
+		return studentRepository.save(student);
+	}
+
+	@Override
+	public Student getStudentById(Long id) {
+		return studentRepository.findById(id).get();
+	}
+
+	@Override
+	public Student updateStudent(Student student) {
+		return studentRepository.save(student);
+	}
+
+	@Override
+	public void deleteStudentById(Long id) {
+		studentRepository.deleteById(id);	
+	}
+}
+
+</code></pre>
+        <h2>8. Controller Layer</h2>
+        <p>Let's create a <code style="color: red;">StudentController</code> class and add the following content to it:
+        </p>
+        <pre><code>
+    package net.javaguides.sms.controller;
+
+    import org.springframework.stereotype.Controller;
+    import org.springframework.ui.Model;
+    import org.springframework.web.bind.annotation.GetMapping;
+    import org.springframework.web.bind.annotation.ModelAttribute;
+    import org.springframework.web.bind.annotation.PathVariable;
+    import org.springframework.web.bind.annotation.PostMapping;
+    
+    import net.javaguides.sms.entity.Student;
+    import net.javaguides.sms.service.StudentService;
+    
+    @Controller
+    public class StudentController {
+        
+        private StudentService studentService;
+    
+        public StudentController(StudentService studentService) {
+            super();
+            this.studentService = studentService;
+        }
+        
+        // handler method to handle list students and return mode and view
+        @GetMapping("/students")
+        public String listStudents(Model model) {
+            model.addAttribute("students", studentService.getAllStudents());
+            return "students";
+        }
+        
+        @GetMapping("/students/new")
+        public String createStudentForm(Model model) {
+            
+            // create student object to hold student form data
+            Student student = new Student();
+            model.addAttribute("student", student);
+            return "create_student";
+            
+        }
+        
+        @PostMapping("/students")
+        public String saveStudent(@ModelAttribute("student") Student student) {
+            studentService.saveStudent(student);
+            return "redirect:/students";
+        }
+        
+        @GetMapping("/students/edit/{id}")
+        public String editStudentForm(@PathVariable Long id, Model model) {
+            model.addAttribute("student", studentService.getStudentById(id));
+            return "edit_student";
+        }
+    
+        @PostMapping("/students/{id}")
+        public String updateStudent(@PathVariable Long id,
+                @ModelAttribute("student") Student student,
+                Model model) {
+            
+            // get student from database by id
+            Student existingStudent = studentService.getStudentById(id);
+            existingStudent.setId(id);
+            existingStudent.setFirstName(student.getFirstName());
+            existingStudent.setLastName(student.getLastName());
+            existingStudent.setEmail(student.getEmail());
+            
+            // save updated student object
+            studentService.updateStudent(existingStudent);
+            return "redirect:/students";		
+        }
+        
+        // handler method to handle delete student request
+        
+        @GetMapping("/students/{id}")
+        public String deleteStudent(@PathVariable Long id) {
+            studentService.deleteStudentById(id);
+            return "redirect:/students";
+        }	
+    }
+
+</code></pre>
+        <h2>9. View Layer</h2>
+        <h3>resources/templates/students.html</h3>
+        <p>Let's create a <code style="color: red;">students.html</code> file and add the following content to it:</p>
+        <pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;ISO-8859-1&quot;&gt;
+&lt;title&gt;Student Management System&lt;/title&gt;
+&lt;link rel=&quot;stylesheet&quot;
+	href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;
+	integrity=&quot;sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm&quot;
+	crossorigin=&quot;anonymous&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;nav class=&quot;navbar navbar-expand-md bg-dark navbar-dark&quot;&gt;
+  &lt;!-- Brand --&gt;
+  &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;Student Management System&lt;/a&gt;
+
+  &lt;!-- Toggler/collapsibe Button --&gt;
+  &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#collapsibleNavbar&quot;&gt;
+    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+  &lt;/button&gt;
+
+  &lt;!-- Navbar links --&gt;
+  &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;collapsibleNavbar&quot;&gt;
+    &lt;ul class=&quot;navbar-nav&quot;&gt;
+      &lt;li class=&quot;nav-item&quot;&gt;
+        &lt;a class=&quot;nav-link&quot; th:href=&quot;@{/students}&quot;&gt;Student Management&lt;/a&gt;
+      &lt;/li&gt;
+      &lt;li class=&quot;nav-item&quot;&gt;
+        &lt;a class=&quot;nav-link&quot; th:href=&quot;@{/students}&quot;&gt;Teacher Management&lt;/a&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;
+
+	&lt;div class =&quot;container&quot;&gt;
+		&lt;div class = &quot;row&quot;&gt;
+			&lt;h1&gt; List Students &lt;/h1&gt;
+		&lt;/div&gt;
+		
+		&lt;div class = &quot;row&quot;&gt;
+			&lt;div class = &quot;col-lg-3&quot;&gt;
+				&lt;a th:href = &quot;@{/students/new}&quot; class = &quot;btn btn-primary btn-sm mb-3&quot;&gt; Add Student&lt;/a&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;table class = &quot;table table-striped table-bordered&quot;&gt;
+			&lt;thead class = &quot;table-dark&quot;&gt;
+				&lt;tr&gt;
+					&lt;th&gt; Student First Name&lt;/th&gt;
+					&lt;th&gt; Student Last Name&lt;/th&gt;
+					&lt;th&gt; Student Email &lt;/th&gt;
+					&lt;th&gt; Actions &lt;/th&gt;
+				&lt;/tr&gt;
+			&lt;/thead&gt;
+			
+			&lt;tbody&gt;
+				&lt;tr th:each = &quot;student: ${students}&quot;&gt;
+					&lt;td th:text = &quot;${student.firstName}&quot;&gt;&lt;/td&gt;
+					&lt;td th:text = &quot;${student.lastName}&quot;&gt;&lt;/td&gt;
+					&lt;td th:text = &quot;${student.email}&quot;&gt;&lt;/td&gt;
+					&lt;td&gt;
+						&lt;a th:href = &quot;@{/students/edit/{id}(id=${student.id})}&quot;
+						 class = &quot;btn btn-primary&quot;&gt;Update&lt;/a&gt;
+						
+						&lt;a th:href = &quot;@{/students/{id}(id=${student.id})}&quot;
+						 class = &quot;btn btn-danger&quot;&gt;Delete&lt;/a&gt;
+						 
+					&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/tbody&gt;
+		
+		&lt;/table&gt;
+		
+	&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+        <p>We have used <code style="color: red;">th:each</code> Thymeleaf attribute in our template to iterate the list
+            of students:</p>
+        <h3>resources/templates/create_student.html</h3>
+        <p>Let's create a <code style="color: red;">create_student.html</code> file and add the following content to it:
+        </p>
+        <pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;ISO-8859-1&quot;&gt;
+&lt;title&gt;Student Management System&lt;/title&gt;
+&lt;link rel=&quot;stylesheet&quot;
+	href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;
+	integrity=&quot;sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm&quot;
+	crossorigin=&quot;anonymous&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;nav class=&quot;navbar navbar-expand-md bg-dark navbar-dark&quot;&gt;
+  &lt;!-- Brand --&gt;
+  &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;Student Management System&lt;/a&gt;
+
+  &lt;!-- Toggler/collapsibe Button --&gt;
+  &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#collapsibleNavbar&quot;&gt;
+    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+  &lt;/button&gt;
+
+  &lt;!-- Navbar links --&gt;
+  &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;collapsibleNavbar&quot;&gt;
+    &lt;ul class=&quot;navbar-nav&quot;&gt;
+      &lt;li class=&quot;nav-item&quot;&gt;
+        &lt;a class=&quot;nav-link&quot; th:href=&quot;@{/students}&quot;&gt;Student Management&lt;/a&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;
+&lt;br&gt;
+&lt;br&gt;
+	&lt;div class = &quot;container&quot;&gt;
+		&lt;div class = &quot;row&quot;&gt;
+			&lt;div class =&quot;col-lg-6 col-md-6 col-sm-6 container justify-content-center card&quot;&gt;
+				&lt;h1 class = &quot;text-center&quot;&gt; Create New Student &lt;/h1&gt;
+				&lt;div class = &quot;card-body&quot;&gt;
+					&lt;form th:action=&quot;@{/students}&quot; th:object = &quot;${student}&quot; method=&quot;POST&quot;&gt;
+						&lt;div class =&quot;form-group&quot;&gt;
+							&lt;label&gt; Student First Name &lt;/label&gt;
+							&lt;input
+							type = &quot;text&quot;
+							name = &quot;firstName&quot;
+							th:field = &quot;*{firstName}&quot;
+							class = &quot;form-control&quot;
+							placeholder=&quot;Enter Student First Name&quot; 
+							/&gt;
+						&lt;/div&gt;
+						
+						&lt;div class =&quot;form-group&quot;&gt;
+							&lt;label&gt; Student Last Name &lt;/label&gt;
+							&lt;input
+							type = &quot;text&quot;
+							name = &quot;lastName&quot;
+							th:field = &quot;*{lastName}&quot;
+							class = &quot;form-control&quot;
+							placeholder=&quot;Enter Student Last Name&quot; 
+							/&gt;
+						&lt;/div&gt;
+						
+						&lt;div class =&quot;form-group&quot;&gt;
+							&lt;label&gt; Student Email &lt;/label&gt;
+							&lt;input
+							type = &quot;text&quot;
+							name = &quot;email&quot;
+							th:field = &quot;*{email}&quot;
+							class = &quot;form-control&quot;
+							placeholder=&quot;Enter Student Email&quot; 
+							/&gt;
+						&lt;/div&gt;
+						
+						&lt;div class = &quot;box-footer&quot;&gt;
+							&lt;button type=&quot;submit&quot; class = &quot;btn btn-primary&quot;&gt;
+								Submit
+							&lt;/button&gt;
+						&lt;/div&gt;
+					&lt;/form&gt;
+				
+				&lt;/div&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+        <h3>resources/templates/edit_student.html</h3>
+        <p>Let's create an <code style="color: red;">edit_student.html</code> file and add the following content to it:
+        </p>
+        <pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;ISO-8859-1&quot;&gt;
+&lt;title&gt;Student Management System&lt;/title&gt;
+&lt;link rel=&quot;stylesheet&quot;
+	href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;
+	integrity=&quot;sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm&quot;
+	crossorigin=&quot;anonymous&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;nav class=&quot;navbar navbar-expand-md bg-dark navbar-dark&quot;&gt;
+  &lt;!-- Brand --&gt;
+  &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;Student Management System&lt;/a&gt;
+
+  &lt;!-- Toggler/collapsibe Button --&gt;
+  &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#collapsibleNavbar&quot;&gt;
+    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+  &lt;/button&gt;
+
+  &lt;!-- Navbar links --&gt;
+  &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;collapsibleNavbar&quot;&gt;
+    &lt;ul class=&quot;navbar-nav&quot;&gt;
+      &lt;li class=&quot;nav-item&quot;&gt;
+        &lt;a class=&quot;nav-link&quot; th:href=&quot;@{/students}&quot;&gt;Student Management&lt;/a&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;
+&lt;br&gt;
+&lt;br&gt;
+	&lt;div class = &quot;container&quot;&gt;
+		&lt;div class = &quot;row&quot;&gt;
+			&lt;div class =&quot;col-lg-6 col-md-6 col-sm-6 container justify-content-center card&quot;&gt;
+				&lt;h1 class = &quot;text-center&quot;&gt; Update Student &lt;/h1&gt;
+				&lt;div class = &quot;card-body&quot;&gt;
+					&lt;form th:action=&quot;@{/students/{id} (id=${student.id})}&quot; th:object = &quot;${student}&quot; method=&quot;POST&quot;&gt;
+						&lt;div class =&quot;form-group&quot;&gt;
+							&lt;label&gt; Student First Name &lt;/label&gt;
+							&lt;input
+							type = &quot;text&quot;
+							name = &quot;firstName&quot;
+							th:field = &quot;*{firstName}&quot;
+							class = &quot;form-control&quot;
+							placeholder=&quot;Enter Student First Name&quot; 
+							/&gt;
+						&lt;/div&gt;
+						
+						&lt;div class =&quot;form-group&quot;&gt;
+							&lt;label&gt; Student Last Name &lt;/label&gt;
+							&lt;input
+							type = &quot;text&quot;
+							name = &quot;lastName&quot;
+							th:field = &quot;*{lastName}&quot;
+							class = &quot;form-control&quot;
+							placeholder=&quot;Enter Student Last Name&quot; 
+							/&gt;
+						&lt;/div&gt;
+						
+						&lt;div class =&quot;form-group&quot;&gt;
+							&lt;label&gt; Student Email &lt;/label&gt;
+							&lt;input
+							type = &quot;text&quot;
+							name = &quot;email&quot;
+							th:field = &quot;*{email}&quot;
+							class = &quot;form-control&quot;
+							placeholder=&quot;Enter Student Email&quot; 
+							/&gt;
+						&lt;/div&gt;
+						
+						&lt;div class = &quot;box-footer&quot;&gt;
+							&lt;button type=&quot;submit&quot; class = &quot;btn btn-primary&quot;&gt;
+								Submit
+							&lt;/button&gt;
+						&lt;/div&gt;
+					&lt;/form&gt;
+				
+				&lt;/div&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+        <h2>10. Run Spring Boot Application</h2>
+        <p>Run the Spring boot application with the main class:</p>
+        <pre><code>
+package net.javaguides.sms;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class StudentManagementSystemApplication{
+
+	public static void main(String[] args) {
+		SpringApplication.run(StudentManagementSystemApplication.class, args);
+	}
+}
+
+</code></pre>
+        <h2>11. Demo</h2>
+        <p>Once the Spring boot application is up and running then use the below URL to access this application:</p>
+        <p>URL: <a href="http://localhost:8080/students">http://localhost:8080/students</a></p>
+        <h3>List Students</h3>
+        <img src="../assets/spring-data-jpa-tutorial-images/list-students-javaguides.png">
+        <h3>Add Student</h3>
+        <img src="../assets/spring-data-jpa-tutorial-images/create-student-javaguides.png">
+        <h3>Update Student</h3>
+        <img src="../assets/spring-data-jpa-tutorial-images/update-student-javaguides.png">
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Boot JPA Multiple Datasources</h1>
+        <p>In this article, we will learn how to configure multiple data sources and connect to multiple databases in a
+            typical Spring Boot web application.</p>
+        <p>We will create a Spring boot project to demonstrate how to configure multiple data sources and connect to
+            multiple databases.</p>
+        <p>As we know that Spring Boot autoconfiguration works out of the box if you have a single database to work with
+            and provides plenty of customization options through its properties. But if your application demands more
+            control over the application configuration, you can turn off specific auto-configurations and configure the
+            components by yourself.</p>
+        <p>In this article, we will learn step-by-step how to use multiple databases in the same application. If we need
+            to connect to multiple databases, we need to configure various Spring beans like <code
+                style="color: red;">DataSources</code>,
+            <code style="color: red;">TransactionManagers</code>, <code
+                style="color: red;">EntityManagerFactoryBeans</code>, <code
+                style="color: red;">DataSourceInitializers</code>, etc., explicitly.
+        </p>
+        <h2>What we'll build?</h2>
+        <p>We will build a Spring Boot web application where the <code style="color: red;">security data</code> has been
+            stored in one database and
+            <code style="color: red;">order-related data</code> has been stored in another database.
+        </p>
+        <p>Let's see how we can work with multiple databases in Spring Boot and use the Spring Data JPA-based
+            application.</p>
+        <h2>Tools and Technologies Used</h2>
+        <ul>
+            <li>Spring Boot - 3+</li>
+            <li>JDK - 17 or later</li>
+            <li>Spring Framework - 6+</li>
+            <li>Hibernate - 6+</li>
+            <li>Maven - 3.2+</li>
+            <li>JPA</li>
+            <li>H2</li>
+            <li>Thymeleaf</li>
+            <li>IDE - Eclipse or Spring Tool Suite (STS)</li>
+        </ul>
+        <h2>Create and Set up a Spring Boot Project</h2>
+        <p>There are many ways to create a Spring Boot application. The simplest way is to use Spring Initializr at <a
+                href="https://start.spring.io/">http://start.spring.io/</a>, which is an online Spring Boot application generator.</p>
+        <ul>
+            <li><code style="color: red;">Generate: </code>Maven Project</li>
+            <li><code style="color: red;">Java Version: </code>17 (Default)</li>
+            <li><code style="color: red;">Spring Boot: </code>3.0.4</li>
+            <li><code style="color: red;">Group: </code>net.guides.springboot</li>
+            <li><code style="color: red;">Artifact: </code>springboot-multiple-datasources</li>
+            <li><code style="color: red;">Name: </code>springboot-multiple-datasources</li>
+            <li><code style="color: red;">Description: </code>Rest API for a Simple User Management Application</li>
+            <li><code style="color: red;">Package Name : </code>net.guides.springboot.springbootmultipledatasources</li>
+            <li><code style="color: red;">Packaging: </code>jar (This is the default value)</li>
+            <li><code style="color: red;">Dependencies: </code>Web, JPA, H2, DevTools</li>
+            </li>
+        </ul>
+        <p>Once, all the details are entered, then click on Generate Project button will generate a spring boot project
+            and downloads it. Next, Unzip the downloaded zip file and import it into your favorite IDE.</p>
+        <h2>Maven pom.xml File</h2>
+        <pre><code>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+	&lt;groupId&gt;net.guides.springboot&lt;/groupId&gt;
+	&lt;artifactId&gt;springboot-multiple-datasources&lt;/artifactId&gt;
+	&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+
+	&lt;name&gt;springboot-multiple-datasources&lt;/name&gt;
+	&lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+
+	&lt;parent&gt;
+		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+		&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+		&lt;version&gt;3.0.4&lt;/version&gt;
+		&lt;relativePath /&gt; &lt;!-- lookup parent from repository --&gt;
+	&lt;/parent&gt;
+
+	&lt;properties&gt;
+		&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+		&lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+		&lt;java.version&gt;17&lt;/java.version&gt;
+	&lt;/properties&gt;
+
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+			&lt;optional&gt;true&lt;/optional&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-configuration-processor&lt;/artifactId&gt;
+			&lt;optional&gt;true&lt;/optional&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;			
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;			
+		&lt;/dependency&gt;	
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.mysql&lt;/groupId&gt;
+			&lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.h2database&lt;/groupId&gt;
+			&lt;artifactId&gt;h2&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+				&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+
+</code></pre>
+        <h2>Packaging Structure</h2>
+        <p>Following is the packing structure -</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/packaging-structure.PNG">
+        <p>The next step is very important please have a look.</p>
+        <h2>Excluding the AutoConfiguration classes</h2>
+        <p>Let's turn off the DataSource JPA-related autoconfiguration classes. As we are going to configure the
+            database-related beans explicitly, we will turn off the DataSource JPA Autoconfiguration by excluding the
+            AutoConfiguration classes:</p>
+        <pre><code>
+package net.guides.springboot.springbootmultipledatasources;
+
+import org.springframework.boot.SpringApplication;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+@SpringBootApplication(
+  exclude = { DataSourceAutoConfiguration.class, 
+     HibernateJpaAutoConfiguration.class,
+     DataSourceTransactionManagerAutoConfiguration.class })
+@EnableTransactionManagement
+public class SpringbootMultipleDatasourcesApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringbootMultipleDatasourcesApplication.class, args);
+    }
+}
+            </code></pre>
+        <p>Once we have turned off AutoConfigurations, we need to enable <code
+                style="color: red;">TransactionManagement</code> explicitly by using the
+            <code style="color: red;">@EnableTransactionManagement</code> annotation.
+        </p>
+        <h2>Configure Multiple Datasource Properties</h2>
+        <h3>H2 Database Configuration</h3>
+        <p>Let's configure the H2 datasource properties. Configure the Security and Orders database connection
+            parameters in the <code style="color: red;">application.properties</code> file.</p>
+        <pre><code>
+debug=true
+
+datasource.security.driver-class-name=org.h2.Driver
+datasource.security.url=jdbc:h2:mem:securitydb;DB_CLOSE_DELAY=-1
+datasource.security.username=sa
+datasource.security.password=
+
+datasource.security.initialize=true
+
+datasource.orders.driver-class-name=org.h2.Driver
+datasource.orders.url=jdbc:h2:mem:ordersdb;DB_CLOSE_DELAY=-1
+datasource.orders.username=sa
+datasource.orders.password=
+
+datasource.orders.initialize=true
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+            </code></pre>
+        <h3>MySQL Database Configuration</h3>
+        <p>We are using an H2 database to quickly set up the application but you can also use MySQL database for
+            production by replacing the below configuration in an <code
+                style="color: red;">application.properties</code> file.</p>
+        <pre><code>
+datasource.security.driver-class-name=com.mysql.jdbc.Driver
+datasource.security.url=jdbc:mysql://localhost:3306/securitydb
+datasource.security.username=root
+datasource.security.password=root
+
+datasource.security.initialize=true
+
+datasource.orders.driver-class-name=com.mysql.jdbc.Driver
+datasource.orders.url=jdbc:mysql://localhost:3306/ordersdb
+datasource.orders.username=root
+datasource.orders.password=root
+
+datasource.orders.initialize=true
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+</code></pre>
+        <p>Note that we have used custom property keys to configure the two datasource properties.</p>
+        <p>In the next step, we will create a security-related JPA entity and a JPA repository.</p>
+        <h2>Create JPA Entites - User and Address</h2>
+        <h3>User</h3>
+        <pre><code>
+package net.guides.springboot.springbootmultipledatasources.security.entities;
+
+import java.util.Set;
+
+import jakarta.persistence.*;
+
+/**
+ * @author Ramesh Fadatare
+ *
+ */
+@Entity
+@Table(name="USERS")
+public class User
+{
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer id;
+    @Column(nullable=false)
+    private String name;
+    @Column(nullable=false, unique=true)
+    private String email;
+    private boolean disabled;
+    @OneToMany(mappedBy="user")
+    private Set&lt;Address> addresses;
+ 
+    public User()
+    {
+    }
+
+    public User(Integer id, String name, String email)
+    {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
+    public User(Integer id, String name, String email, boolean disabled)
+    {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.disabled = disabled;
+     }
+    public Integer getId()
+    {
+        return id;
+    }
+
+    public void setId(Integer id)
+    {
+        this.id = id;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
+
+    public boolean isDisabled()
+    {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled)
+    {
+        this.disabled = disabled;
+    }
+
+    public Set&lt;Address> getAddresses()
+    {
+        return addresses;
+    }
+
+    public void setAddresses(Set&lt;Address> addresses)
+    {
+         this.addresses = addresses;
+    } 
+}
+    </code></pre>
+        <h3>Address</h3>
+        <pre><code>
+package net.guides.springboot.springbootmultipledatasources.security.entities;
+
+import jakarta.persistence.*;
+
+/**
+ * @author Ramesh Fadatare
+ *
+ */
+@Entity
+@Table(name="ADDRESSES")
+public class Address
+{
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer id;
+    @Column(nullable=false)
+    private String city;
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
+ 
+    public Integer getId()
+    {
+        return id;
+    }
+    public void setId(Integer id)
+    {
+        this.id = id;
+    }
+    public String getCity()
+    {
+        return city;
+    }
+    public void setCity(String city)
+    {
+        this.city = city;
+    }
+    public User getUser()
+    {
+        return user;
+    }
+    public void setUser(User user)
+    {
+        this.user = user;
+    } 
+}
+
+</code></pre>
+        <h2>Spring JPA Repository - UserRepository.java</h2>
+        <pre><code>
+package net.guides.springboot.springbootmultipledatasources.security.repositories;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+
+import net.guides.springboot.springbootmultipledatasources.security.entities.User;
+
+/**
+ * @author Ramesh Fadatare
+ *
+ */
+public interface UserRepository extends JpaRepository<User, Integer>
+{
+ 
+}
+
+</code></pre>
+        <h2>Create JPA Entities - Order and OrderItem</h2>
+        <h3>Order</h3>
+        <pre><code>
+package net.guides.springboot.springbootmultipledatasources.orders.entities;
+
+import java.util.Set;
+
+
+import jakarta.persistence.*;
+
+/**
+ * @author Ramesh Fadatare
+ *
+ */
+@Entity
+@Table(name="ORDERS")
+public class Order
+{
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer id;
+    @Column(nullable=false, name="cust_name")
+    private String customerName;
+    @Column(nullable=false, name="cust_email")
+    private String customerEmail;
+ 
+    @OneToMany(mappedBy="order")
+    private Set<OrderItem> orderItems;
+ 
+    public Integer getId() {
+        return id;
+    }
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    public String getCustomerName() {
+        return customerName;
+    }
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+    public Set&lt;OrderItem> getOrderItems()
+    {
+        return orderItems;
+    }
+    public void setOrderItems(Set<OrderItem> orderItems)
+    {
+        this.orderItems = orderItems;
+    }
+}
+
+</code></pre>
+        <h3>OrderItem</h3>
+        <pre><code>
+package net.guides.springboot.springbootmultipledatasources.orders.entities;
+
+import jakarta.persistence.*;
+
+/**
+ * @author Ramesh Fadatare
+ *
+ */
+@Entity
+@Table(name="ORDER_ITEMS")
+public class OrderItem
+{
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer id;
+    private String productCode;
+    private int quantity;
+    @ManyToOne
+    @JoinColumn(name="order_id")
+    private Order order;
+ 
+    public Integer getId()
+    {
+        return id;
+    }
+    public void setId(Integer id)
+    {
+        this.id = id;
+    }
+    public String getProductCode()
+    {
+        return productCode;
+    }
+    public void setProductCode(String productCode)
+    {
+        this.productCode = productCode;
+    }
+    public int getQuantity()
+    {
+        return quantity;
+    }
+    public void setQuantity(int quantity)
+    {
+        this.quantity = quantity;
+    }
+    public Order getOrder()
+    {
+        return order;
+    }
+    public void setOrder(Order order)
+    {
+        this.order = order;
+    } 
+}
+
+</code></pre>
+        <h2>Spring JPA Repository - OrderRepository.java</h2>
+        <pre><code>
+package net.guides.springboot.springbootmultipledatasources.orders.repositories;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import net.guides.springboot.springbootmultipledatasources.orders.entities.Order;
+
+/**
+ * @author Ramesh Fadatare
+ *
+ */
+public interface OrderRepository extends JpaRepository<Order, Integer>{
+
+}
+
+</code></pre>
+        <h2>Initialize Sample Data - security-data.sql script</h2>
+        <p>Create SQL scripts to initialize sample data. Create the <code style="color: red;">security-data.sql</code>
+            script in the <code style="color: red;">src/main/resources</code>
+            folder to initialize the <code style="color: red;">USERS</code> table with sample data.</p>
+        <pre><code>
+delete from addresses;
+delete from users;
+
+insert into users(id, name, email,disabled) values(1,'John Cena','john@gmail.com', false);
+insert into users(id, name, email,disabled) values(2,'Salman Khan','salman@gmail.com', false);
+insert into users(id, name, email,disabled) values(3,'Amitr Khan','amir@gmail.com', true);
+
+insert into addresses(id,city,user_id) values(1, 'Pune',1);
+insert into addresses(id,city,user_id) values(2, 'Landon',1);
+insert into addresses(id,city,user_id) values(3, 'Newyork',2);
+insert into addresses(id,city,user_id) values(4, 'Mumbai',3);
+insert into addresses(id,city,user_id) values(6, 'Washington',3);
+
+</code></pre>
+        <h2>Initialize Sample Data - orders-data.sql script</h2>
+        <p>Create the <code style="color: red;">orders-data.sql</code> script in the <code
+                style="color: red;">src/main/resources</code> folder to initialize the ORDERS table with sample data.
+        </p>
+        <pre><code>
+delete from order_items;
+delete from orders;
+
+insert into orders(id, cust_name, cust_email) values(1,'John Cena','john@gmail.com');
+insert into orders(id, cust_name, cust_email) values(2,'Salman Khan','salman@gmail.com');
+insert into orders(id, cust_name, cust_email) values(3,'Amir Khan','amir@gmail.com');
+
+insert into order_items(id, productcode,quantity,order_id) values(1,'order item1', 2, 1);
+insert into order_items(id, productcode,quantity,order_id) values(2,'order item2', 1, 1);
+insert into order_items(id, productcode,quantity,order_id) values(3,'order item3', 5, 1);
+insert into order_items(id, productcode,quantity,order_id) values(4,'order item4', 2, 2);
+insert into order_items(id, productcode,quantity,order_id) values(5,'order item5', 1, 2);
+
+</code></pre>
+        <h2>Create Security Datasource Configuration - SecurityDataSourceConfig.java</h2>
+        <p>Create the <code style="color: red;">SecurityDataSourceConfig.java</code> configuration class. we will
+            configure the Spring beans such as
+            <code style="color: red;">DataSource</code>, <code style="color: red;">TransactionManager</code>, <code
+                style="color: red;">EntityManagerFactoryBean</code>, and <code
+                style="color: red;">DataSourceInitializer</code> by
+            connecting to the
+            Security database in <code style="color: red;">SecurityDataSourceConfig.java</code>
+        </p>
+        <pre><code>
+package net.guides.springboot.springbootmultipledatasources.config;
+
+import java.util.Properties;
+
+import jakarta.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+
+/**
+ * @author Ramesh Fadatare
+ * 
+ */
+@Configuration
+@EnableJpaRepositories(
+  basePackages = "net.guides.springboot.springbootmultipledatasources.security.repositories",
+        entityManagerFactoryRef = "securityEntityManagerFactory",
+        transactionManagerRef = "securityTransactionManager"
+)
+public class SecurityDataSourceConfig
+{
+       @Autowired
+       private Environment env;
+  
+       @Bean
+       @ConfigurationProperties(prefix="datasource.security")
+       public DataSourceProperties securityDataSourceProperties() {
+           return new DataSourceProperties();
+       }
+    
+       @Bean
+       public DataSource securityDataSource() {
+            DataSourceProperties securityDataSourceProperties = securityDataSourceProperties();
+            return DataSourceBuilder.create()
+           .driverClassName(securityDataSourceProperties.getDriverClassName())
+           .url(securityDataSourceProperties.getUrl())
+           .username(securityDataSourceProperties.getUsername())
+           .password(securityDataSourceProperties.getPassword())
+           .build();
+       }
+    
+       @Bean
+       public PlatformTransactionManager securityTransactionManager()
+       {
+           EntityManagerFactory factory = securityEntityManagerFactory().getObject();
+           return new JpaTransactionManager(factory);
+       }
+
+       @Bean
+       public LocalContainerEntityManagerFactoryBean securityEntityManagerFactory()
+       {
+           LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+           factory.setDataSource(securityDataSource());
+           factory.setPackagesToScan(new String[]{"net.guides.springboot.springbootmultipledatasources.security.entities"});
+           factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        
+           Properties jpaProperties = new Properties();
+           jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("spring.jpa.hibernate.ddl-auto"));
+           jpaProperties.put("hibernate.show-sql", env.getProperty("spring.jpa.show-sql"));
+           factory.setJpaProperties(jpaProperties);
+        
+           return factory;
+       }
+    
+       @Bean
+       public DataSourceInitializer securityDataSourceInitializer() 
+       {
+           DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
+           dataSourceInitializer.setDataSource(securityDataSource());
+           ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
+           databasePopulator.addScript(new ClassPathResource("security-data.sql"));
+           dataSourceInitializer.setDatabasePopulator(databasePopulator);
+           dataSourceInitializer.setEnabled(env.getProperty("datasource.security.initialize", Boolean.class, false));
+           return dataSourceInitializer;
+       }   
+}
+
+</code></pre>
+        <p>Note that you have populated the <code style="color: red;">datasource.security.* properties</code> into <code
+                style="color: red;">DataSourceProperties</code> by using
+            <code style="color: red;">@ConfigurationProperties(prefix="datasource.security")</code> and <code
+                style="color: red;">DataSourceBuilder</code> fluent API to create the
+            <code style="color: red;">DataSource</code> bean.
+        </p>
+        <p>While creating the <code style="color: red;">LocalContainerEntityManagerFactoryBean</code> bean, you have
+            configured the package called
+            <code style="color: red;">net.guides.springboot.springbootmultipledatasources.security.entities</code> to
+            scan for JPA entities. You have
+            configured the <code style="color: red;">DataSourceInitializer</code> bean to initialize the sample data
+            from security-data.sql.
+        </p>
+        <p>Finally, we enabled Spring Data JPA support by using the <code
+                style="color: red;"></code>@EnableJpaRepositories annotation. As we are going
+            to have multiple <code style="color: red;">EntityManagerFactory</code> and <code
+                style="color: red;">TransactionManager</code> beans, we configured the bean IDs for
+            <code style="color: red;">entityManagerFactoryRef</code> and <code
+                style="color: red;">transactionManagerRef</code> by pointing to the respective bean names. we also
+            configured the basePackages property to indicate where to look for the Spring Data JPA repositories (the
+            packages).
+        </p>
+        <h2>Create Security Datasource Configuration - OrdersDataSourceConfig.java</h2>
+        <p>Create the <code style="color: red;">OrdersDataSourceConfig.java</code> configuration class. Similar to <code
+                style="color: red;">SecurityDataSourceConfig.java</code>, you
+            will create <code style="color: red;">OrdersDataSourceConfig.java</code> but point it to the Orders
+            database.</p>
+        <pre><code>
+package net.guides.springboot.springbootmultipledatasources.config;
+
+import java.util.Properties;
+
+import jakarta.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+
+/**
+ * @author Ramesh Fadatare
+ * 
+ */
+@Configuration
+@EnableJpaRepositories(
+    basePackages = "net.guides.springboot.springbootmultipledatasources.orders.repositories",
+    entityManagerFactoryRef = "ordersEntityManagerFactory",
+    transactionManagerRef = "ordersTransactionManager"
+)
+public class OrdersDataSourceConfig {
+
+    @Autowired
+    private Environment env;
+
+    @Bean
+    @ConfigurationProperties(prefix = "datasource.orders")
+    public DataSourceProperties ordersDataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Bean
+    public DataSource ordersDataSource() {
+        DataSourceProperties primaryDataSourceProperties = ordersDataSourceProperties();
+        return DataSourceBuilder.create()
+            .driverClassName(primaryDataSourceProperties.getDriverClassName())
+            .url(primaryDataSourceProperties.getUrl())
+            .username(primaryDataSourceProperties.getUsername())
+            .password(primaryDataSourceProperties.getPassword())
+            .build();
+    }
+
+    @Bean
+    public PlatformTransactionManager ordersTransactionManager() {
+        EntityManagerFactory factory = ordersEntityManagerFactory().getObject();
+        return new JpaTransactionManager(factory);
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean ordersEntityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+        factory.setDataSource(ordersDataSource());
+        factory.setPackagesToScan(new String[] {
+            "net.guides.springboot.springbootmultipledatasources.orders.entities"
+        });
+        factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+
+        Properties jpaProperties = new Properties();
+        jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("spring.jpa.hibernate.ddl-auto"));
+        jpaProperties.put("hibernate.show-sql", env.getProperty("spring.jpa.show-sql"));
+        factory.setJpaProperties(jpaProperties);
+
+        return factory;
+
+    }
+
+    @Bean
+    public DataSourceInitializer ordersDataSourceInitializer() {
+        DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
+        dataSourceInitializer.setDataSource(ordersDataSource());
+        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
+        databasePopulator.addScript(new ClassPathResource("orders-data.sql"));
+        dataSourceInitializer.setDatabasePopulator(databasePopulator);
+        dataSourceInitializer.setEnabled(env.getProperty("datasource.orders.initialize", Boolean.class, false));
+        return dataSourceInitializer;
+    }
+}
+
+</code></pre>
+        <h2>Create UserOrdersService.java</h2>
+        <pre><code>
+package net.guides.springboot.springbootmultipledatasources.services;
+
+import java.util.List;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import net.guides.springboot.springbootmultipledatasources.orders.entities.Order;
+import net.guides.springboot.springbootmultipledatasources.orders.repositories.OrderRepository;
+import net.guides.springboot.springbootmultipledatasources.security.entities.User;
+import net.guides.springboot.springbootmultipledatasources.security.repositories.UserRepository;
+
+/**
+ * @author Ramesh Fadatare
+ *
+ */
+@Service
+public class UserOrdersService
+{
+    @Autowired
+    private OrderRepository orderRepository;
+ 
+    @Autowired
+    private UserRepository userRepository;
+ 
+    @Transactional(transactionManager="securityTransactionManager")
+    public List&lt;User> getUsers()
+    {
+        return userRepository.findAll();
+    }
+ 
+    @Transactional(transactionManager="ordersTransactionManager")
+    public List&lt;Order> getOrders()
+    {
+        return orderRepository.findAll();
+    }
+}
+
+</code></pre>
+        <h2>Create HomeController.java</h2>
+        <pre><code>
+package net.guides.springboot.springbootmultipledatasources.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import net.guides.springboot.springbootmultipledatasources.services.UserOrdersService;
+
+/**
+ * @author Ramesh Fadatare
+ *
+ */
+@Controller
+public class HomeController
+{
+    @Autowired
+    private UserOrdersService userOrdersService;
+ 
+    @RequestMapping(value = {"/", "/app/users"}, method = RequestMethod.GET)
+    public String getUsers(Model model)
+    {
+        model.addAttribute("users", userOrdersService.getUsers());
+        model.addAttribute("orders", userOrdersService.getOrders());
+  
+        return "users";
+    }
+}
+
+</code></pre>
+        <h2>Use OpenEntityManagerInViewFilter for Multiple Data Sources</h2>
+        <p>Let's see how to use <code style="color: red;">OpenEntityManagerInViewFilter</code> to enable lazy loading of
+            JPA entity LAZY associated
+            collections while rendering the view, you need to register the <code
+                style="color: red;">OpenEntityManagerInViewFilter</code> beans.</p>
+        <pre><code>
+ /**
+ * 
+ */
+package net.guides.springboot.springbootmultipledatasources.config;
+
+import org.springframework.context.annotation.Bean;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+/**
+ * @author Ramesh Fadatare
+ * 
+ */
+@Configuration
+public class WebMvcConfig extends WebMvcConfigurerAdapter
+{
+ 
+    @Bean
+    public OpenEntityManagerInViewFilter securityOpenEntityManagerInViewFilter()
+    {
+        OpenEntityManagerInViewFilter osivFilter = new OpenEntityManagerInViewFilter();
+        osivFilter.setEntityManagerFactoryBeanName("securityEntityManagerFactory");
+        return osivFilter;
+    }
+ 
+    @Bean
+    public OpenEntityManagerInViewFilter ordersOpenEntityManagerInViewFilter()
+    {
+        OpenEntityManagerInViewFilter osivFilter = new OpenEntityManagerInViewFilter();
+        osivFilter.setEntityManagerFactoryBeanName("ordersEntityManagerFactory");
+        return osivFilter;
+    }
+}
+
+</code></pre>
+        <p>As we are building a web application so the method returns the users.html view.</p>
+        <h2>Create Thymeleaf page - users.html</h2>
+        <pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:th="http://www.thymeleaf.org"&gt;
+      
+      &lt;head&gt;
+        &lt;title&gt;SpringBoot&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;div style="width: 20%; float:left"&gt;
+    	&lt;h1&gt;Users&lt;/h1&gt;
+    	&lt;hr/&gt;
+    	&lt;div th:each="user : ${users}"&gt;
+    		&lt;h2&gt;Name: &lt;span th:text="${user.name}"&gt;Name&lt;/span&gt;&lt;/h2&gt;
+    		&lt;h4&gt;Addresses&lt;/h4&gt;
+    		&lt;div th:each="addr : ${user.addresses}"&gt;
+    			&lt;p th:text="${addr.city}"&gt;City&lt;/p&gt;
+    		&lt;/div&gt;	
+    	&lt;/div&gt;
+    	&lt;/div&gt;
+    	&lt;div style="width: 80%; float:right"&gt;
+    	&lt;h1&gt;Orders&lt;/h1&gt;
+    	&lt;hr/&gt;
+    	&lt;div th:each="order : ${orders}"&gt;
+    		&lt;h2&gt;Customer Name: &lt;span th:text="${order.customerName}"&gt;customerName&lt;/span&gt;&lt;/h2&gt;
+    		&lt;h4&gt;Order Items&lt;/h4&gt;
+    		&lt;div th:each="item : ${order.orderItems}"&gt;
+    			&lt;p th:text="${item.productCode}"&gt;productCode&lt;/p&gt;
+    		&lt;/div&gt;	
+    	&lt;/div&gt;
+    	&lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+        <h2>Running an Application</h2>
+        <p>The <code style="color: red;">SpringbootMultipleDatasourcesApplication.java</code> is an entry point so
+            right-click and choose run as in your
+            IDE will start the embedded tomcat server on port 8080.</p>
+        <p>Hit <a href="http://localhost:8080/">http://localhost:8080/</a> link in a browser will display below web page
+            on a browser.</p>
+        <h3>Output</h3>
+        <img src="../assets/spring-data-jpa-tutorial-images/output.PNG">
+        <p>That's all, I am done with developing a Spring Boot web application with multiple datasources.</p>
+    </div>
+</body>
+
+</html>

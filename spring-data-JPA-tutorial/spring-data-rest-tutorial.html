@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+
+        .web-app {
+            border-left: 8px solid orange;
+            margin: 2% 5%;
+        }
+
+        img {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data REST Tutorial</h1>
+        <p>In this tutorial, we will learn how to use the Spring Data REST module to create REST endpoints.</p>
+        <p>Spring Data REST is part of the umbrella Spring Data project and makes it easy to build hypermedia-driven
+            REST web services on top of Spring Data repositories.</p>
+        <p>Spring Data REST builds on top of Spring Data repositories, analyzes your application’s domain model, and
+            exposes hypermedia-driven HTTP resources for aggregates contained in the model.</p>
+        <h2>Problem and Solution</h2>
+        <h3>What is the Problem?</h3>
+        <p>In a typical Spring-based application, we create three-layer architecture as below:</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/image.png">
+        <p>If we want to create a CRUD REST APIs for an entity then we need to create a controller class and need to
+            manually write REST APIs ( create, update, delete, get, pagination, sorting etc).</p>
+        <p>If we want to create a CRUD REST APIs for another entity: For example, <b>Department</b>, <b>Project</b>,
+            <b>Company</b>, <b>User</b>,
+            etc. Then, we need to create a controller for all these entities and create REST APIs.
+        </p>
+        <p>We are repeating the same code again….</p>
+        <p><b>Think about the solution : </b>Spring can Create CRUD REST APIs for entity automatically for us</p>
+        <h3>Solution</h3>
+        <p><b>Spring Data REST module is the solution</b>. Spring Data REST uses interfaces that extend <code
+                style="color: red;">JpaRepository</code> and
+            provides CRUD REST APIs for entities for FREE - Helps to minimize the boiler-plate controller layer code.
+        </p>
+        <img src="../assets/spring-data-jpa-tutorial-images/rest-app-arch.png">
+        <h2>1. Create Spring Boot Project</h2>
+        <p>Spring Boot provides a web tool called <a href="https://start.spring.io/">https://start.spring.io</a> to bootstrap an application
+            quickly. Just go to <a href="https://start.spring.io/">https://start.spring.io</a> and generate a new spring boot project.</p>
+        <p><b>Use the below details in the Spring boot creation:</b></p>
+        <p><b>Project Name: </b>spring-data-rest-tutorial</p>
+        <p><b>Project Type: </b>Maven</p>
+        <p><b>Choose dependencies: </b>REST Repositories, Spring Data JPA, H2 database, Lombok</p>
+        <p><b>Package name: </b>net.javaguides.springdatarest</p>
+        <h2>2. Maven Dependencies</h2>
+        <p>Here is the complete pom.xml for your reference:</p>
+        <pre><code>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;parent&gt;
+		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+		&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+		&lt;version&gt;3.0.4&lt;/version&gt;
+		&lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+	&lt;/parent&gt;
+	&lt;groupId&gt;net.javaguides&lt;/groupId&gt;
+	&lt;artifactId&gt;spring-data-rest-tutorial&lt;/artifactId&gt;
+	&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;spring-data-rest-tutorial&lt;/name&gt;
+	&lt;description&gt;Demo project for Spring Boot and Spring Data REST&lt;/description&gt;
+	&lt;properties&gt;
+		&lt;java.version&gt;17&lt;/java.version&gt;
+	&lt;/properties&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-data-rest&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+			&lt;scope&gt;runtime&lt;/scope&gt;
+			&lt;optional&gt;true&lt;/optional&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.h2database&lt;/groupId&gt;
+			&lt;artifactId&gt;h2&lt;/artifactId&gt;
+			&lt;scope&gt;runtime&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+			&lt;artifactId&gt;lombok&lt;/artifactId&gt;
+			&lt;optional&gt;true&lt;/optional&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+				&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+				&lt;configuration&gt;
+					&lt;excludes&gt;
+						&lt;exclude&gt;
+							&lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+							&lt;artifactId&gt;lombok&lt;/artifactId&gt;
+						&lt;/exclude&gt;
+					&lt;/excludes&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+
+&lt;/project&gt;
+
+</code></pre>
+        <h2>3. Create JPA Entity</h2>
+        <p>Let's create an <code style="color: red;">entity</code> package inside a base package
+            "net.javaguides.springdatarest". Within the <code style="color: red;">entity</code>
+            package, create a <code style="color: red;">User</code> class with the following content:</p>
+        <pre><code>
+package net.javaguides.springdatarest.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import jakarta.persistence.*;
+
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
+@Entity
+@Table(name = "users")
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(
+            name = "first_name", nullable = false
+    )
+    private String firstName;
+
+    @Column(
+            name = "last_name"
+    )
+    private String lastName;
+
+    private String email;
+}
+
+</code></pre>
+        <p>Note that we are using Lombok annotation <code style="color: red;">@Data</code> to reduce the boilerplate
+            code (getters/setters).</p>
+        <h2>4. Create Spring Data JPA Repository</h2>
+        <p>The next thing we’re gonna do is create a repository to access a User’s data from the database.</p>
+        <p>The <code style="color: red;">JpaRepository</code> interface defines methods for all the CRUD operations on
+            the entity, and a default
+            implementation of the <code style="color: red;">JpaRepository</code> called <code
+                style="color: red;">SimpleJpaRepository</code>.</p>
+        <p>Let's create a <code style="color: red;">repository</code> package inside a base package
+            "net.javaguides.springdatarest". Within the
+            <code style="color: red;">repository</code> package, create a <code style="color: red;">UserReposity</code>
+            interface with the following content:
+        </p>
+        <pre><code>
+    package net.javaguides.springdatarest.repository;
+
+    import net.javaguides.springdatarest.entity.User;
+    import org.springframework.data.jpa.repository.JpaRepository;
+    
+    public interface UserRepository extends JpaRepository<User, Long> {
+    
+    }
+
+</code></pre>
+        <p>That's it. Spring Data REST will create REST APIs based on the entity type. We do not need to create a
+            controller layer implementation.</p>
+        <h2>5. Test REST APIs using Postman</h2>
+        <h3>Test GET All Users:</h3>
+        <p>URL: <a href="http://localhost:8080/users">http://localhost:8080/users</a></p>
+        <p>HTTP Method: GET</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/Snapshot_12.png">
+        <h3>Test GET User By ID:</h3>
+        <p>URL: <a href="http://localhost:8080/users/1">http://localhost:8080/users/1</a></p>
+        <p>HTTP Method: GET</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/Snapshot_13.png">
+        <h3>Test POST User:</h3>
+        <p>URL: <a href="http://localhost:8080/users">http://localhost:8080/users</a></p>
+        <p>HTTP Method: POST</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/Snapshot_14.png">
+        <h3>Test PUT User:</h3>
+        <p>URL: <a href="http://localhost:8080/users/1">http://localhost:8080/users/1</a></p>
+        <p>HTTP Method: PUT</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/Snapshot_15.png">
+        <h3>Test DELETE User:</h3>
+        <p>URL: <a href="http://localhost:8080/users/1">http://localhost:8080/users/1</a></p>
+        <p>HTTP Method: DELETE</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/Snapshot_16.png">
+        <h2>6. Change REST API Path
+            You can use @RepositoryRestResource annotation to change the path from <code
+                style="color: red">/users</code> to <code style="color: red">/members</code>:</h2>
+        <pre><code>
+package net.javaguides.springdatarest.repository;
+
+import net.javaguides.springdatarest.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+import java.util.List;
+
+@RepositoryRestResource(path = "members")
+public interface UserRepository extends JpaRepository&lt;User, Long> {
+
+}
+                </code></pre>
+        <h2>7. Pagination and Sorting Support</h2>
+        <h3>Pagination:</h3>
+        <img src="../assets/spring-data-jpa-tutorial-images/Snapshot_18.png">
+        <h3>Sorting:</h3>
+        <img src="../assets/spring-data-jpa-tutorial-images/Snapshot_17.png">
+        <h2>8. REST API for Query Methods</h2>
+        <p>Let's create a query method in the below repository and test using the postman client:</p>
+        <pre><code>
+package net.javaguides.springdatarest.repository;
+
+import net.javaguides.springdatarest.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+import java.util.List;
+
+@RepositoryRestResource(path = "members")
+public interface UserRepository extends JpaRepository&lt;User, Long> {
+
+    List&lt;User> findByFirstName(@Param("firstName") String firstName);
+
+}
+
+</code></pre>
+        <img src="../assets/spring-data-jpa-tutorial-images/Snapshot_19.png">
+    </div>
+</body>
+
+</html>
