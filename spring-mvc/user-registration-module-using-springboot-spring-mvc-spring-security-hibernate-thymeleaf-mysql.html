@@ -157,7 +157,1103 @@
 
 <body>
     <div class="container">
-<h1>Spring Boot User Registration and Login Example Tutorial</h1>
+        <h1>Spring Boot User Registration and Login Example Tutorial</h1>
+        <p>In this tutorial, we discuss how to create a Spring Boot User Registration and Login Module using Spring Boot
+            3, Spring Security 6, Hibernate, and Thymeleaf.</p>
+        <p>In Spring Security 5.7.0-M2, the <b>WebSecurityConfigurerAdapter</b> class is deprecated, and the Spring team
+            encourages users to move towards a component-based security configuration</p>
+        <p><b>In this tutorial, we will use a new component-based security configuration approach.</b></p>
+        <p>Spring Security is a framework that provides authentication, authorization, and protection against common
+            attacks. With first-class support for securing imperative and reactive applications, it is the de-facto
+            standard for securing Spring-based applications.</p>
+        <h2>Tools and Technologies Used:
+        </h2>
+        <p><b>In this tutorial, we will use the latest version of all the tools and technologies:</b></p>
+        <p>- Spring Boot 3 </p>
+        <p> - Spring MVC 6 </p>
+        <p> - Spring Security 6 </p>
+        <p> - Hibernate 6 </p>
+        <p> - Thymeleaf 3 </p>
+        <p> - MySQL 8 </p>
+        <p> - Maven</p>
+        <p>We validate the user registration fields with Java bean validation annotations and Hibernate validator
+            implementation.</p>
+
+        <p>Basically, we will develop a simple User Registration Module using Role-based Spring Security that can be
+            used in any Spring MVC-based project.</p>
+        <p>Let's get started with our objective. What will we build?</p>
+        <h2>What will we build?</h2>
+        <p>We will build two main functionalities:</p>
+        <ol>
+            <li>Register a user (stored data in MySQL database).</li>
+            <li> Login Authentication - validate user login credentials with database email and password.</li>
+            <li> We will secure the Registered Users Page with role-based Spring Security.</li>
+        </ol>
+        <p><b>User Registration Page:</b></p>
+        <img src="/assets/spring-mvc-image/Screenshot 2022-08-21 at 10.24.11 AM.png" alt="" class="image-fluid">
+        <p><b>Login Page:</b></p>
+        <img src="/assets/spring-mvc-image/Screenshot 2022-08-21 at 10.23.59 AM.png" alt="" class="image-fluid">
+        <p><b>Registered Users Page:</b></p>
+        <img src="/assets/spring-mvc-image/Screenshot 2022-08-21 at 10.24.34 AM.png" alt="" class="image-fluid">
+        <p>Spring Boot provides a web tool called Spring Initializer to quickly bootstrap an application. To use it, go
+            to <a href="https://start.spring.io/ ">https://start.spring.io/</a>and generate a new Spring Boot project.
+        </p>
+        <p> Use the below details in the Spring boot creation:</p>
+        <ul>
+            <li>Generate: Maven Project</li>
+            <li> Java Version: 17</li>
+            <li> Spring Boot: 3.0.0</li>
+            <li> Group: net.guides.springboot</li>
+            <li> Artifact: registration-login-demo</li>
+            <li> Name: registration-login-demo</li>
+            <li> Dependencies: Web, JPA, MySQL, Thymeleaf, Security, Lombok </li>
+        </ul>
+        <p>Click on the Generate Project button. Next, you can extract and import the downloaded ZIP file into your
+            favourite IDE.</p>
+        <p>Here is the <b>pom.xml</b> file for your reference:</p>
+        <pre>
+            &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+            &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+                &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+                &lt;parent&gt;
+                    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+                    &lt;version&gt;3.0.0&lt;/version&gt;
+                    &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+                &lt;/parent&gt;
+                &lt;groupId&gt;com.example&lt;/groupId&gt;
+                &lt;artifactId&gt;registration-login-demo&lt;/artifactId&gt;
+                &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+                &lt;name&gt;registration-login-demo&lt;/name&gt;
+                &lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+                &lt;properties&gt;
+                    &lt;java.version&gt;17&lt;/java.version&gt;
+                &lt;/properties&gt;
+                &lt;dependencies&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                        &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+                    &lt;/dependency&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                        &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+                    &lt;/dependency&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+                    &lt;/dependency&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                        &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+                    &lt;/dependency&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;mysql&lt;/groupId&gt;
+                        &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+                        &lt;scope&gt;runtime&lt;/scope&gt;
+                    &lt;/dependency&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+                        &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+                        &lt;optional&gt;true&lt;/optional&gt;
+                    &lt;/dependency&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                        &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+                        &lt;scope&gt;test&lt;/scope&gt;
+                    &lt;/dependency&gt;
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                        &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;
+                    &lt;/dependency&gt;
+                &lt;/dependencies&gt;
+            
+                &lt;build&gt;
+                    &lt;plugins&gt;
+                        &lt;plugin&gt;
+                            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                            &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                            &lt;configuration&gt;
+                                &lt;excludes&gt;
+                                    &lt;exclude&gt;
+                                        &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+                                        &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+                                    &lt;/exclude&gt;
+                                &lt;/excludes&gt;
+                            &lt;/configuration&gt;
+                        &lt;/plugin&gt;
+                    &lt;/plugins&gt;
+                &lt;/build&gt;
+            &lt;/project&gt;
+            </pre>
+        <h2>2. Create a Project Structure or Packing Structure</h2>
+        <p>Create packaging structure as per the screenshot below:</p>
+        <img src="/assets/spring-mvc-image/Screenshot 2022-08-21 at 10.26.22 AM.png" alt="" class="image-fluid">
+        <h2>3. Configure MySQL database</h2>
+        <p>Let's use the MySQL database to store and retrieve the data in this example, and we gonna use Hibernate
+            properties to create and drop tables.</p>
+        <p>Open the <b>application.properties</b> file and add the following configuration to it:</p>
+        <pre>spring.datasource.url=jdbc:mysql://localhost:3306/login_system
+    spring.datasource.username=root
+    spring.datasource.password=Mysql@123
+    
+    spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+    spring.jpa.hibernate.ddl-auto=update</pre>
+        <p>Ensure you create a login_system database before running the Spring boot application. Also, change the MySQL
+            username and password as per the MySQL installation on your machine.</p>
+        <h2>4. Create JPA Entities - User and Role</h2>
+        <p>Let's create User and Role JPA entities and establish a many-to-many mapping between them - one user can have
+            multiple roles, and one role can be assigned to multiple users.</p>
+
+        <p>The @ManyToMany JPA annotation is used to link the source entity with the target entity.</p>
+        <p> A many-to-many association always uses an intermediate join table to store the association that joins two
+            entities. The join table is defined using the @JoinTable JPA annotation.</p>
+        <p><b>User</b></p>
+        <pre>package com.example.registrationlogindemo.entity;
+
+    import jakarta.persistence.*;
+    import lombok.AllArgsConstructor;
+    import lombok.Getter;
+    import lombok.NoArgsConstructor;
+    import lombok.Setter;
+    
+    import java.util.ArrayList;
+    import java.util.List;
+    
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Entity
+    @Table(name="users")
+    public class User
+    {
+        private static final long serialVersionUID = 1L;
+    
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+    
+        @Column(nullable=false)
+        private String name;
+    
+        @Column(nullable=false, unique=true)
+        private String email;
+    
+        @Column(nullable=false)
+        private String password;
+    
+        @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+        @JoinTable(
+                name="users_roles",
+                joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="ID")},
+                inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="ID")})
+        private List<Role> roles = new ArrayList<>();
+    
+    }</pre>
+        <p>This above code defines a Java class called User that is mapped to a database table called users. The class
+            has several annotations on it:</p>
+        <ul>
+            <li><b>@Getter and @Setter:</b> These annotations are from the Lombok library and automatically generate
+                getter and setter methods for all of the class's fields.</li>
+
+            <li><b> @NoArgsConstructor: </b>This annotation is from Lombok and generates a no-argument constructor for
+                the class.</li>
+
+            <li><b> @AllArgsConstructor: </b>This annotation is from Lombok and generates a constructor that takes
+                arguments for all of the class's fields.</li>
+
+            <li><b> @Entity: </b>This annotation is from the Java Persistence API (JPA) and specifies that the class is
+                a JPA entity, meaning that it is mapped to a database table.</li>
+
+            <li><b> @Table(name="users"):</b> This annotation is from JPA and specifies the name of the database table
+                that the entity is mapped to.</li>
+
+            <li><b> @Id: </b>This annotation is from JPA and specifies that the field id is the primary key for the
+                database table.</li>
+
+            <li><b> @GeneratedValue(strategy = GenerationType.IDENTITY): </b>This annotation is from JPA and specifies
+                that the primary key values are automatically generated by the database using an identity column.</li>
+
+            <li><b> @Column(nullable=false):</b> These annotations are from JPA and specify that the fields name, email,
+                and password cannot be null in the database table.</li>
+
+            <li><b> @Column(nullable=false, unique=true):</b> This annotation is from JPA and specifies that the email
+                field must be unique in the database table.</li>
+
+            <li><b> @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL):</b> This annotation is from JPA and
+                specifies that the relationship between User and Role entities is many-to-many. </li>
+
+            <li><b> @JoinTable:</b> This annotation is from JPA and specifies the details of the join table that is used
+                to implement the many-to-many relationship between User and Role entities. It specifies the name of the
+                join table (users_roles) and the names of the foreign key columns in the join table (USER_ID and
+                ROLE_ID).</li>
+        </ul>
+        <h2>Role</h2>
+        <pre>package com.example.registrationlogindemo.entity;
+
+            import jakarta.persistence.*;
+            import lombok.AllArgsConstructor;
+            import lombok.Getter;
+            import lombok.NoArgsConstructor;
+            import lombok.Setter;
+            
+            import java.util.List;
+            
+            @Setter
+            @Getter
+            @NoArgsConstructor
+            @AllArgsConstructor
+            @Entity
+            @Table(name="roles")
+            public class Role
+            {
+                @Id
+                @GeneratedValue(strategy = GenerationType.IDENTITY)
+                private Long id;
+            
+                @Column(nullable=false, unique=true)
+                private String name;
+            
+                @ManyToMany(mappedBy="roles")
+                private List<User> users;
+            }</pre>
+        <p>This above code defines a Java class called Role that is mapped to a database table called roles. The class
+            has several annotations on it:</p>
+        <ul>
+            <li><b>@Getter and @Setter: </b>These annotations are from the Lombok library and automatically generate
+                getter and setter methods for all of the class's fields.</li>
+
+            <li><b> @NoArgsConstructor:</b> This annotation is from Lombok and generates a no-argument constructor for
+                the class.</li>
+
+            <li><b> @AllArgsConstructor:</b> This annotation is from Lombok and generates a constructor that takes
+                arguments for all of the class's fields.</li>
+
+            <li><b> @Entity:</b> This annotation is from the Java Persistence API (JPA) and specifies that the class is
+                a JPA entity, meaning that it is mapped to a database table.</li>
+
+            <li><b> @Table(name="users"): </b>This annotation is from JPA and specifies the name of the database table
+                that the entity is mapped to.</li>
+
+            <li><b> @Id:</b> This annotation is from JPA and specifies that the field id is the primary key for the
+                database table.</li>
+
+            <li><b> @GeneratedValue(strategy = GenerationType.IDENTITY):</b> This annotation is from JPA and specifies
+                that the primary key values are automatically generated by the database using an identity column.</li>
+        </ul>
+        <h2>5. Create UserRepository and RoleRepository</h2>
+        <p>Next, let's create Spring Data JPA repositories for <b>User</b> and <b>Role</b> JPA Entities.</p>
+        <p><b>UserRepository</b></p>
+        <pre>package net.javaguides.springboot.repository;
+
+            import net.javaguides.springboot.entity.User;
+            import org.springframework.data.jpa.repository.JpaRepository;
+            
+            public interface UserRepository extends JpaRepository<User, Long> {
+            
+                User findByEmail(String email);
+            
+            }</pre>
+        <p>The above code defines a Spring Data JPA repository interface called <b>UserRepository</b>, which extends the
+            <b>JpaRepository</b> interface. The <b>JpaRepository</b> interface provides several methods for performing
+            CRUD (Create,
+            Read, Update, Delete) operations on a JPA entity. It takes two type parameters: the entity type,
+            <b>User</b>, and
+            the type of the entity's primary key, <b>Long</b>.
+        </p>
+        <p>In addition to the methods provided by <b>JpaRepository</b>, the <b>UserRepository</b> interface also
+            declares a custom
+            method called <b>findByEmail()</b>. This method uses Spring Data JPA's method name query creation feature to
+            generate a query that finds a user by their email address. The method takes a single argument, which is the
+            <b>email</b> address to search for, and it returns a User object if a match is found or null otherwise.
+        </p>
+        <h2>RoleRepository</h2>
+        <pre>package net.javaguides.springboot.repository;
+
+                import net.javaguides.springboot.entity.Role;
+                import org.springframework.data.jpa.repository.JpaRepository;
+                
+                public interface RoleRepository extends JpaRepository<Role, Long> {
+                
+                    Role findByName(String name);
+                }</pre>
+        <p>The above code defines a Spring Data JPA repository interface called <b>RoleRepository</b>, which extends the
+            <b>JpaRepository</b> interface. The <b>JpaRepository</b> interface provides several methods for performing
+            CRUD (Create,
+            Read, Update, Delete) operations on a JPA entity. It takes two type parameters: the entity type, Role, and
+            the type of the entity's primary key, Long.
+        </p>
+        <p>In addition to the methods provided by <b>JpaRepository</b>, the <b>RoleRepository</b> interface also
+            declares a custom
+            method called <b>findByName()</b>. This method uses Spring Data JPA's method name query creation feature to
+            generate a query that finds a role by its name. The method takes a single argument, which is the role name
+            to search for, and it returns a Role object if a match is found or null otherwise.</p>
+        <h2>6. Create a Thymeleaf Template for the Home Page</h2>
+        <p>Let's create an <b>AuthController</b> Spring MVC controller class and add the following content:</p>
+        <pre>package net.javaguides.springboot.controller;
+                import org.springframework.stereotype.Controller;
+                import org.springframework.ui.Model;
+                import org.springframework.web.bind.annotation.GetMapping;
+                
+                @Controller
+                public class AuthController {
+                
+                    // handler method to handle home page request
+                    @GetMapping("/index")
+                    public String home(){
+                        return "index";
+                    }
+                }</pre>
+        <p>The above code defines a Spring MVC controller class called <b>AuthController</b>, which handles incoming
+            requests
+            to the <b>/index</b> URL path. The <b>@Controller </b>annotation indicates that this class is a Spring MVC
+            controller and
+            should be scanned by the Spring framework to handle incoming requests.</p>
+        <p>The <b>@GetMapping("/index")</b> annotation on the <b>home()</b> method maps HTTP GET requests to the
+            <b>/index </b>URL path to
+            this method. When a user makes a GET request to this URL path, the <b>home()</b> method is executed. This
+            method
+            returns the String "index", the name of a view template that will be resolved by the Spring framework's view
+            resolver.
+        </p>
+        <h2>Thymeleaf Template - Index.html</h2>
+        <p>Next, let's create an index Thymeleaf template view. Note that we use bootstrap CSS CDN links below the
+            Thymeleaf HTML page.</p>
+        <pre>
+                &lt;!DOCTYPE html&gt;
+                &lt;html lang="en" xmlns:th="http://www.thymeleaf.org"&gt;
+                &lt;head&gt;
+                    &lt;meta charset="UTF-8"&gt;
+                    &lt;title&gt;Registration and Login System&lt;/title&gt;
+                    &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+                          rel="stylesheet"
+                          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+                          crossorigin="anonymous"&gt;
+                &lt;/head&gt;
+                &lt;body&gt;
+                &lt;nav class="navbar navbar-expand-lg navbar-dark bg-dark"&gt;
+                    &lt;div class="container-fluid"&gt;
+                        &lt;a class="navbar-brand" th:href="@{/index}"&gt;Registration and Login System&lt;/a&gt;
+                        &lt;button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"&gt;
+                            &lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;
+                        &lt;/button&gt;
+                        &lt;div class="collapse navbar-collapse" id="navbarSupportedContent"&gt;
+                            &lt;ul class="navbar-nav me-auto mb-2 mb-lg-0"&gt;
+                                &lt;li class="nav-item"&gt;
+                                    &lt;a class="nav-link active" aria-current="page" th:href="@{/register}"&gt;Register&lt;/a&gt;
+                                &lt;/li&gt;
+                            &lt;/ul&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/nav&gt;
+                &lt;br /&gt;&lt;br /&gt;
+                &lt;div class="container"&gt;
+                    &lt;div class="row"&gt;
+                        &lt;h1 class="text-center"&gt; Registration and Login System &lt;/h1&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;/body&gt;
+                &lt;/html&gt;
+                </pre>
+        <h2>7. Create a Service Layer</h2>
+        <p><b>UserService Interface</b></p>
+        <pre>package net.javaguides.springboot.service;
+
+            import net.javaguides.springboot.dto.UserDto;
+            import net.javaguides.springboot.entity.User;
+            
+            import java.util.List;
+            
+            public interface UserService {
+                void saveUser(UserDto userDto);
+            
+                User findUserByEmail(String email);
+            
+                List&lt;UserDto> findAllUsers();
+            }</pre>
+        <h2>UserServiceImpl class</h2>
+        <p>Let's define a Spring service class called UserServiceImpl that implements the UserService interface. The
+            @Service annotation indicates that this class is a Spring service that should be scanned by the Spring
+            framework for dependency injection.</p>
+        <pre>package net.javaguides.springboot.service.impl;
+
+    import net.javaguides.springboot.dto.UserDto;
+    import net.javaguides.springboot.entity.Role;
+    import net.javaguides.springboot.entity.User;
+    import net.javaguides.springboot.repository.RoleRepository;
+    import net.javaguides.springboot.repository.UserRepository;
+    import net.javaguides.springboot.service.UserService;
+    import org.springframework.security.crypto.password.PasswordEncoder;
+    import org.springframework.stereotype.Service;
+    
+    import java.util.Arrays;
+    import java.util.List;
+    import java.util.stream.Collectors;
+    
+    @Service
+    public class UserServiceImpl implements UserService {
+    
+        private UserRepository userRepository;
+        private RoleRepository roleRepository;
+        private PasswordEncoder passwordEncoder;
+    
+        public UserServiceImpl(UserRepository userRepository,
+                               RoleRepository roleRepository,
+                               PasswordEncoder passwordEncoder) {
+            this.userRepository = userRepository;
+            this.roleRepository = roleRepository;
+            this.passwordEncoder = passwordEncoder;
+        }
+    
+        @Override
+        public void saveUser(UserDto userDto) {
+            User user = new User();
+            user.setName(userDto.getFirstName() + " " + userDto.getLastName());
+            user.setEmail(userDto.getEmail());
+            // encrypt the password using spring security
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+    
+            Role role = roleRepository.findByName("ROLE_ADMIN");
+            if(role == null){
+                role = checkRoleExist();
+            }
+            user.setRoles(Arrays.asList(role));
+            userRepository.save(user);
+        }
+    
+        @Override
+        public User findUserByEmail(String email) {
+            return userRepository.findByEmail(email);
+        }
+    
+        @Override
+        public List<UserDto> findAllUsers() {
+            List<User> users = userRepository.findAll();
+            return users.stream()
+                    .map((user) -> mapToUserDto(user))
+                    .collect(Collectors.toList());
+        }
+    
+        private UserDto mapToUserDto(User user){
+            UserDto userDto = new UserDto();
+            String[] str = user.getName().split(" ");
+            userDto.setFirstName(str[0]);
+            userDto.setLastName(str[1]);
+            userDto.setEmail(user.getEmail());
+            return userDto;
+        }
+    
+        private Role checkRoleExist(){
+            Role role = new Role();
+            role.setName("ROLE_ADMIN");
+            return roleRepository.save(role);
+        }
+    }</pre>
+        <p>The UserServiceImpl class implements the UserService interface, which defines several methods for working
+            with users. These methods include:</p>
+        <ul>
+            <li><b>saveUser(UserDto userDto): </b>This method creates a new User Entity and saves it to the database.
+            </li>
+
+            <li> <b> findUserByEmail(String email):</b> This method finds a user in the database by their email address.
+                It takes an email address as input and returns the corresponding User entity if it exists.</li>
+
+
+            <li><b>findAllUsers(): </b>This method retrieves a list of all users from the database and maps each User
+                entity
+                to a UserDto object, which contains only the user's name and email address.</li>
+        </ul>
+        <h2>8. Create UserDto Model Class</h2>
+        <p>We use UserDto class to transfer the data between the controller layer and the view layer. We also use
+            UserDto class for form binding.</p>
+        <pre>package com.example.registrationlogindemo.dto;
+
+    import jakarta.validation.constraints.Email;
+    import jakarta.validation.constraints.NotEmpty;
+    import lombok.AllArgsConstructor;
+    import lombok.Getter;
+    import lombok.NoArgsConstructor;
+    import lombok.Setter;
+    
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public class UserDto
+    {
+        private Long id;
+        @NotEmpty
+        private String firstName;
+        @NotEmpty
+        private String lastName;
+        @NotEmpty(message = "Email should not be empty")
+        @Email
+        private String email;
+        @NotEmpty(message = "Password should not be empty")
+        private String password;
+    }</pre>
+        <h2>9. User Registration Feature Implementation</h2>
+        <p>Let's first add a handler method in <b>AuthController</b> to handle User registration requests:</p>
+        <pre>package net.javaguides.springboot.controller;
+
+    import jakarta.validation.Valid;
+    import net.javaguides.springboot.dto.UserDto;
+    import org.springframework.stereotype.Controller;
+    import org.springframework.ui.Model;
+    import org.springframework.web.bind.annotation.GetMapping;
+    
+    @Controller
+    public class AuthController {
+    
+        // handler method to handle home page request
+        @GetMapping("/index")
+        public String home(){
+            return "index";
+        }
+    
+        // handler method to handle user registration form request
+        @GetMapping("/register")
+        public String showRegistrationForm(Model model){
+            // create model object to store form data
+            UserDto user = new UserDto();
+            model.addAttribute("user", user);
+            return "register";
+        }
+    }</pre>
+        <p>
+            Next, let's create a <b>register.html</b> Thymeleaf template and design a User Registration form:</p>
+        <pre>
+            &lt;!DOCTYPE html&gt;
+            &lt;html lang="en" xmlns:th="http://www.thymeleaf.org"&gt;
+            &lt;head&gt;
+                &lt;meta charset="UTF-8"&gt;
+                &lt;title&gt;Registration and Login System&lt;/title&gt;
+                &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+                    rel="stylesheet"
+                    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+                    crossorigin="anonymous"&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+            &lt;nav class="navbar navbar-expand-lg navbar-dark bg-dark"&gt;
+                &lt;div class="container-fluid"&gt;
+                    &lt;a class="navbar-brand" th:href="@{/index}"&gt;Registration and Login System&lt;/a&gt;
+                    &lt;button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"&gt;
+                        &lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;
+                    &lt;/button&gt;
+                    &lt;div class="collapse navbar-collapse" id="navbarSupportedContent"&gt;
+                        &lt;ul class="navbar-nav me-auto mb-2 mb-lg-0"&gt;
+                            &lt;li class="nav-item"&gt;
+                                &lt;a class="nav-link active" aria-current="page" th:href="@{/login}"&gt;Login&lt;/a&gt;
+                            &lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/nav&gt;
+            &lt;br /&gt;&lt;br /&gt;&lt;br /&gt;
+            &lt;div class="container"&gt;
+                &lt;div class="row col-md-8 offset-md-2"&gt;
+                    &lt;div class="card"&gt;
+                        &lt;div class="card-header"&gt;
+                            &lt;h2 class="text-center"&gt;Registration&lt;/h2&gt;
+                        &lt;/div&gt;
+                        &lt;div th:if="${param.success}"&gt;
+                            &lt;div class="alert alert-info"&gt;
+                                You have successfully registered our app!
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;div class="card-body"&gt;
+                            &lt;form
+                                method="post"
+                                role="form"
+                                th:action="@{/register/save}"
+                                th:object="${user}"&gt;
+                                &lt;div class="form-group mb-3"&gt;
+                                    &lt;label class="form-label"&gt;First Name&lt;/label&gt;
+                                    &lt;input
+                                        class="form-control"
+                                        id="firstName"
+                                        name="firstName"
+                                        placeholder="Enter first name"
+                                        th:field="*{firstName}"
+                                        type="text" /&gt;
+                                    &lt;p th:errors="*{firstName}" class="text-danger" th:if="${#fields.hasErrors('firstName')}"&gt;&lt;/p&gt;
+                                &lt;/div&gt;
+                                
+                                &lt;div class="form-group mb-3"&gt;
+                                    &lt;label class="form-label"&gt;Last Name&lt;/label&gt;
+                                    &lt;input
+                                        class="form-control"
+                                        id="lastName"
+                                        name="lastName"
+                                        placeholder="Enter last name"
+                                        th:field="*{lastName}"
+                                        type="text" /&gt;
+                                    &lt;p th:errors="*{lastName}" class="text-danger" th:if="${#fields.hasErrors('lastName')}"&gt;&lt;/p&gt;
+                                &lt;/div&gt;
+                                
+                                &lt;div class="form-group mb-3"&gt;
+                                    &lt;label class="form-label"&gt;Email&lt;/label&gt;
+                                    &lt;input
+                                        class="form-control"
+                                        id="email"
+                                        name="email"
+                                        placeholder="Enter email address"
+                                        th:field="*{email}"
+                                        type="email" /&gt;
+                                    &lt;p th:errors="*{email}" class="text-danger" th:if="${#fields.hasErrors('email')}"&gt;&lt;/p&gt;
+                                &lt;/div&gt;
+                                
+                                &lt;div class="form-group mb-3"&gt;
+                                    &lt;label class="form-label"&gt;Password&lt;/label&gt;
+                                    &lt;input
+                                        class="form-control"
+                                        id="password"
+                                        name="password"
+                                        placeholder="Enter password"
+                                        th:field="*{password}"
+                                        type="password" /&gt;
+                                    &lt;p th:errors="*{password}" class="text-danger" th:if="${#fields.hasErrors('password')}"&gt;&lt;/p&gt;
+                                &lt;/div&gt;
+                                
+                                &lt;div class="form-group"&gt;
+                                    &lt;button class="btn btn-primary" type="submit"&gt;Register&lt;/button&gt;
+                                    &lt;span&gt;Already registered? &lt;a th:href="@{/login}"&gt;Login here&lt;/a&gt;&lt;/span&gt;
+                                &lt;/div&gt;
+                            &lt;/form&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;
+            </pre>
+        <p>Next, let's create a handler method to save user registration data in the MySQL database.</p>
+        <pre>package net.javaguides.springboot.controller;
+
+                import jakarta.validation.Valid;
+                import net.javaguides.springboot.dto.UserDto;
+                import net.javaguides.springboot.entity.User;
+                import net.javaguides.springboot.service.UserService;
+                import org.springframework.stereotype.Controller;
+                import org.springframework.ui.Model;
+                import org.springframework.validation.BindingResult;
+                import org.springframework.web.bind.annotation.GetMapping;
+                import org.springframework.web.bind.annotation.ModelAttribute;
+                import org.springframework.web.bind.annotation.PostMapping;
+                
+                import java.util.List;
+                
+                @Controller
+                public class AuthController {
+                
+                    private UserService userService;
+                
+                    public AuthController(UserService userService) {
+                        this.userService = userService;
+                    }
+                
+                    // handler method to handle home page request
+                    @GetMapping("/index")
+                    public String home(){
+                        return "index";
+                    }
+                
+                    // handler method to handle user registration form request
+                    @GetMapping("/register")
+                    public String showRegistrationForm(Model model){
+                        // create model object to store form data
+                        UserDto user = new UserDto();
+                        model.addAttribute("user", user);
+                        return "register";
+                    }
+                
+                    // handler method to handle user registration form submit request
+                    @PostMapping("/register/save")
+                    public String registration(@Valid @ModelAttribute("user") UserDto userDto,
+                                               BindingResult result,
+                                               Model model){
+                        User existingUser = userService.findUserByEmail(userDto.getEmail());
+                
+                        if(existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()){
+                            result.rejectValue("email", null,
+                                    "There is already an account registered with the same email");
+                        }
+                
+                        if(result.hasErrors()){
+                            model.addAttribute("user", userDto);
+                            return "/register";
+                        }
+                
+                        userService.saveUser(userDto);
+                        return "redirect:/register?success";
+                    }
+                }</pre>
+        <h2>10. Display List Registered Users</h2>
+        <p>Next, let's create a handler method in AuthController to handle Get Registered Users requests from the MySQL
+            database.</p>
+        <pre> // handler method to handle list of users
+    @GetMapping("/users")
+    public String users(Model model){
+        List&lt;UserDto> users = userService.findAllUsers();
+        model.addAttribute("users", users);
+        return "users";
+    }</pre>
+        <p>Here is the complete code for AuthController:</p>
+        <pre>package net.javaguides.springboot.controller;
+
+        import jakarta.validation.Valid;
+        import net.javaguides.springboot.dto.UserDto;
+        import net.javaguides.springboot.entity.User;
+        import net.javaguides.springboot.service.UserService;
+        import org.springframework.stereotype.Controller;
+        import org.springframework.ui.Model;
+        import org.springframework.validation.BindingResult;
+        import org.springframework.web.bind.annotation.GetMapping;
+        import org.springframework.web.bind.annotation.ModelAttribute;
+        import org.springframework.web.bind.annotation.PostMapping;
+        
+        import java.util.List;
+        
+        @Controller
+        public class AuthController {
+        
+            private UserService userService;
+        
+            public AuthController(UserService userService) {
+                this.userService = userService;
+            }
+        
+            // handler method to handle home page request
+            @GetMapping("/index")
+            public String home(){
+                return "index";
+            }
+        
+            // handler method to handle login request
+            @GetMapping("/login")
+            public String login(){
+                return "login";
+            }
+        
+            // handler method to handle user registration form request
+            @GetMapping("/register")
+            public String showRegistrationForm(Model model){
+                // create model object to store form data
+                UserDto user = new UserDto();
+                model.addAttribute("user", user);
+                return "register";
+            }
+        
+            // handler method to handle user registration form submit request
+            @PostMapping("/register/save")
+            public String registration(@Valid @ModelAttribute("user") UserDto userDto,
+                                       BindingResult result,
+                                       Model model){
+                User existingUser = userService.findUserByEmail(userDto.getEmail());
+        
+                if(existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()){
+                    result.rejectValue("email", null,
+                            "There is already an account registered with the same email");
+                }
+        
+                if(result.hasErrors()){
+                    model.addAttribute("user", userDto);
+                    return "/register";
+                }
+        
+                userService.saveUser(userDto);
+                return "redirect:/register?success";
+            }
+        
+            // handler method to handle list of users
+            @GetMapping("/users")
+            public String users(Model model){
+                List&lt;UserDto> users = userService.findAllUsers();
+                model.addAttribute("users", users);
+                return "users";
+            }
+        }</pre>
+        <p>Next, let's create a Thymeleaf template to display a list of registered users:</p>
+        <pre>
+            &lt;!DOCTYPE html&gt;
+            &lt;html lang="en"
+                xmlns:th="http://www.thymeleaf.org"&gt;
+            &lt;head&gt;
+                &lt;meta charset="UTF-8"&gt;
+                &lt;title&gt;Registration and Login System&lt;/title&gt;
+                &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+                      rel="stylesheet"
+                      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+                      crossorigin="anonymous"&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+            &lt;nav class="navbar navbar-expand-lg navbar-dark bg-dark"&gt;
+                &lt;div class="container-fluid"&gt;
+                    &lt;a class="navbar-brand" th:href="@{/index}"&gt;Registration and Login System&lt;/a&gt;
+                    &lt;button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"&gt;
+                        &lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;
+                    &lt;/button&gt;
+                    &lt;div class="collapse navbar-collapse" id="navbarSupportedContent"&gt;
+                        &lt;ul class="navbar-nav me-auto mb-2 mb-lg-0"&gt;
+                            &lt;li class="nav-item"&gt;
+                                &lt;a class="nav-link active" aria-current="page" th:href="@{/logout}"&gt;Logout&lt;/a&gt;
+                            &lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/nav&gt;
+            &lt;div class="container"&gt;
+                &lt;div class="row col-md-10"&gt;
+                    &lt;h2&gt;List of Registered Users&lt;/h2&gt;
+                &lt;/div&gt;
+                &lt;table class="table table-bordered table-hover"&gt;
+                    &lt;thead class="table-dark"&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;First Name&lt;/th&gt;
+                            &lt;th&gt;Last Name&lt;/th&gt;
+                            &lt;th&gt;Email&lt;/th&gt;
+                        &lt;/tr&gt;
+                    &lt;/thead&gt;
+                    &lt;tbody&gt;
+                        &lt;tr th:each="user : ${users}"&gt;
+                            &lt;td th:text="${user.firstName}"&gt;&lt;/td&gt;
+                            &lt;td th:text="${user.lastName}"&gt;&lt;/td&gt;
+                            &lt;td th:text="${user.email}"&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;
+            </pre>
+        <h2>11. Create a Custom Login Form </h2>
+        <p>Let's create a handler method to handle login requests in AuthController:</p>
+        <pre> // handler method to handle login request
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }</pre>
+        <p>Next, let's create a <b>login.html </b>Thymeleaf template and design a login form:</p>
+        <pre>
+    &lt;!DOCTYPE html&gt;
+    &lt;html lang="en"
+        xmlns:th="http://www.thymeleaf.org"&gt;
+    &lt;head&gt;
+        &lt;meta charset="UTF-8"&gt;
+        &lt;title&gt;Registration and Login System&lt;/title&gt;
+        &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+              crossorigin="anonymous"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;nav class="navbar navbar-expand-lg navbar-dark bg-dark"&gt;
+        &lt;div class="container-fluid"&gt;
+            &lt;a class="navbar-brand" th:href="@{/index}"&gt;Registration and Login System&lt;/a&gt;
+            &lt;button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"&gt;
+                &lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;div class="collapse navbar-collapse" id="navbarSupportedContent"&gt;
+                &lt;ul class="navbar-nav me-auto mb-2 mb-lg-0"&gt;
+                    &lt;li class="nav-item"&gt;
+                        &lt;a class="nav-link active" aria-current="page" th:href="@{/register}"&gt;Register&lt;/a&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;br /&gt;&lt;br /&gt;
+    &lt;div class="container"&gt;
+        &lt;div class="row"&gt;
+            &lt;div class="col-md-6 offset-md-3"&gt;
+    
+                &lt;div th:if="${param.error}"&gt;
+                    &lt;div class="alert alert-danger"&gt;Invalid Email or Password&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div th:if="${param.logout}"&gt;
+                    &lt;div class="alert alert-success"&gt; You have been logged out.&lt;/div&gt;
+                &lt;/div&gt;
+    
+                &lt;div class="card"&gt;
+                    &lt;div class="card-header"&gt;
+                        &lt;h2 class="text-center"&gt;Login Form&lt;/h2&gt;
+                    &lt;/div&gt;
+                    &lt;div class="card-body"&gt;
+                        &lt;form
+                            method="post"
+                            role="form"
+                            th:action="@{/login}"
+                            class="form-horizontal"&gt;
+                            &lt;div class="form-group mb-3"&gt;
+                                &lt;label class="control-label"&gt; Email&lt;/label&gt;
+                                &lt;input
+                                    type="text"
+                                    id="username"
+                                    name="username"
+                                    class="form-control"
+                                    placeholder="Enter email address"
+                                /&gt;
+                            &lt;/div&gt;
+    
+                            &lt;div class="form-group mb-3"&gt;
+                                &lt;label class="control-label"&gt; Password&lt;/label&gt;
+                                &lt;input
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        class="form-control"
+                                        placeholder="Enter password"
+                                /&gt;
+                            &lt;/div&gt;
+                            &lt;div class="form-group mb-3"&gt;
+                                &lt;button type="submit" class="btn btn-primary"&gt;Submit&lt;/button&gt;
+                                &lt;span&gt; Not registered ?
+                                    &lt;a th:href="@{/register}"&gt;Register/Signup here&lt;/a&gt;
+                                &lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/form&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+    </pre>
+        <h2>12. Configure Spring Security</h2>
+        <p>In Spring Security 5.7.0-M2, <b>WebSecurityConfigurerAdapter</b> class is deprecated and the Spring team
+            encourages users to move towards a component-based security configuration.</p>
+
+        <p> In this tutorial, we will use a new component-based security configuration approach.</p>
+
+        <p> Let's create a SpringSecurity class and add the following security configuration:</p>
+        <pre>package com.example.registrationlogindemo.config;
+
+            import org.springframework.beans.factory.annotation.Autowired;
+            import org.springframework.context.annotation.Bean;
+            import org.springframework.context.annotation.Configuration;
+            import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+            import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+            import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+            import org.springframework.security.core.userdetails.UserDetailsService;
+            import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+            import org.springframework.security.crypto.password.PasswordEncoder;
+            import org.springframework.security.web.SecurityFilterChain;
+            import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+            
+            @Configuration
+            @EnableWebSecurity
+            public class SpringSecurity {
+            
+                @Autowired
+                private UserDetailsService userDetailsService;
+            
+                @Bean
+                public static PasswordEncoder passwordEncoder(){
+                    return new BCryptPasswordEncoder();
+                }
+            
+                @Bean
+                public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+                    http.csrf().disable()
+                            .authorizeHttpRequests((authorize) ->
+                                    authorize.requestMatchers("/register/**").permitAll()
+                                            .requestMatchers("/index").permitAll()
+                                            .requestMatchers("/users").hasRole("ADMIN")
+                            ).formLogin(
+                                    form -> form
+                                            .loginPage("/login")
+                                            .loginProcessingUrl("/login")
+                                            .defaultSuccessUrl("/users")
+                                            .permitAll()
+                            ).logout(
+                                    logout -> logout
+                                            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                                            .permitAll()
+                            );
+                    return http.build();
+                }
+            
+                @Autowired
+                public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+                    auth
+                            .userDetailsService(userDetailsService)
+                            .passwordEncoder(passwordEncoder());
+                }
+            }</pre>
+        <p><b>@EnableWebSecurity</b> annotation is used to enable Spring Security’s web security support and provide the
+            Spring MVC integration.</p>
+
+        <p> The <b>BCryptPasswordEncoder</b> implementation uses the widely supported bcrypt algorithm to hash the
+            passwords.</p>
+        <h2>13. Database Authentication Implementation</h2>
+        <p>We are implementing database authentication, so let's load the User from the database.</p>
+        <p><b>CustomUserDetailsService</b></p>
+        <p>Let's create a <b>CustomUserDetailsService</b> class with the following content:</p>
+        <pre>package com.example.registrationlogindemo.security;
+
+                    import com.example.registrationlogindemo.entity.Role;
+                    import com.example.registrationlogindemo.entity.User;
+                    import com.example.registrationlogindemo.repository.UserRepository;
+                    import org.springframework.security.core.GrantedAuthority;
+                    import org.springframework.security.core.authority.SimpleGrantedAuthority;
+                    import org.springframework.security.core.userdetails.UserDetails;
+                    import org.springframework.security.core.userdetails.UserDetailsService;
+                    import org.springframework.security.core.userdetails.UsernameNotFoundException;
+                    import org.springframework.stereotype.Service;
+                    
+                    import java.util.Collection;
+                    import java.util.stream.Collectors;
+                    
+                    @Service
+                    public class CustomUserDetailsService implements UserDetailsService {
+                    
+                        private UserRepository userRepository;
+                    
+                        public CustomUserDetailsService(UserRepository userRepository) {
+                            this.userRepository = userRepository;
+                        }
+                    
+                        @Override
+                        public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+                            User user = userRepository.findByEmail(email);
+                    
+                            if (user != null) {
+                                return new org.springframework.security.core.userdetails.User(user.getEmail(),
+                                        user.getPassword(),
+                                        mapRolesToAuthorities(user.getRoles()));
+                            }else{
+                                throw new UsernameNotFoundException("Invalid username or password.");
+                            }
+                        }
+                    
+                        private Collection < ? extends GrantedAuthority> mapRolesToAuthorities(Collection <Role> roles) {
+                            Collection < ? extends GrantedAuthority> mapRoles = roles.stream()
+                                    .map(role -> new SimpleGrantedAuthority(role.getName()))
+                                    .collect(Collectors.toList());
+                            return mapRoles;
+                        }
+                    }</pre>
+        <h2>14. Demo</h2>
+        <p>Let's run the spring boot application using the main entry point class and have a demo.</p>
+
+        <p> Let's access the <b> http://localhost:8080/ </b>link from the browser, which will result in the home page:
+        </p>
+        <img src="/assets/spring-mvc-image/Screenshot 2022-08-21 at 10.25.32 AM.png" alt="" class="image-fluid">
+        <p><b>Click on the Register link to navigate to the Registration page:</b></p>
+        <img src="/assets/spring-mvc-image/Screenshot 2022-08-21 at 10.24.11 AM (1).png" alt="" class="image-fluid">
+        <p><b>Click on the Login link to navigate to the Login page:</b></p>
+        <img src="/assets/spring-mvc-image/Screenshot 2022-08-21 at 10.23.59 AM (1).png" alt="" class="image-fluid">
+        <p><b>ADMIN user will access this Registered Users Page:
+            </b></p>
+        <img src="/assets/spring-mvc-image/Screenshot 2022-08-21 at 10.24.34 AM (1).png" alt="" class="image-fluid">
+        <h2>15. Conclusion</h2>
+        <p>This tutorial shows how to create a Spring Boot User Registration and Login Module using Spring Boot, Spring
+            Security, Hibernate, and Thymeleaf.</p>
+
+
     </div>
 </body>
+
 </html>

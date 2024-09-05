@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring @GetMapping, @PostMapping, @PutMapping, @DeleteMapping and @PatchMapping</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring @GetMapping, @PostMapping, @PutMapping, @DeleteMapping and @PatchMapping</h1>
+        <p>In this article, we will discuss Spring 4.3. introduced HTTP method-specific shortcut variants of <b>
+                @RequestMapping are @GetMapping, @PostMapping, @PutMapping, @DeleteMapping, and @PatchMapping</b>
+            annotations with sample code examples.</p>
+        <h2>New Spring MVC Request Annotations</h2>
+        <p>Typically, if we want to implement the URL handler using traditional @RequestMapping annotation, it would
+            have been something like this:</p>
+        <pre>@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)</pre>
+        <p>The new approach makes it possible to shorten this simply to:</p>
+        <pre>@GetMapping("/get/{id}")</pre>
+        <p>Spring currently supports five types of inbuilt annotations for handling different types of incoming HTTP
+            request methods which are GET, POST, PUT, DELETE, and PATCH. These annotations are:</p>
+        <ol>
+            <li><b>@GetMapping </b>- shortcut for @RequestMapping(method = RequestMethod.GET)</li>
+            <li><b> @PostMapping </b>- shortcut for @RequestMapping(method = RequestMethod.POST)</li>
+            <li><b> @PutMapping </b>- shortcut for @RequestMapping(method = RequestMethod.PUT)</li>
+            <li><b> @DeleteMapping</b> - shortcut for @RequestMapping(method =RequestMethod.DELETE)</li>
+            <li><b> @PatchMapping </b>- shortcut for @RequestMapping(method = RequestMethod.PATCH)</li>
+        </ol>
+        <p>From the naming convention, we can see that each annotation is meant to handle the respective incoming
+            request method type, i.e. <b>@GetMapping</b> is used to handle the GET type of request method,
+            <b>@PostMapping</b> is used
+            to handle the POST type of request method, etc.
+        </p>
+        <h2>How It Works</h2>
+
+        <p>All of the above annotations are already internally annotated with <b>@RequestMapping</b> and the respective
+            value in the method element.</p>
+        <p> For example, if we’ll look at the source code of the <b>@GetMapping</b> annotation, we can see that it’s
+            already annotated with <b>RequestMethod.GET</b> in the following way:</p>
+        <pre>@Target({ java.lang.annotation.ElementType.METHOD })
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @RequestMapping(method = { RequestMethod.GET })
+    public @interface GetMapping {
+        // abstract codes
+    }</pre>
+
+        <p>All the other annotations are created in the same way, i.e. <b>@PostMapping</b> is annotated with
+            RequestMethod.POST, <b>@PutMapping</b> is annotated with <b>RequestMethod.PUT,</b> etc.</p>
+        <h2>Add Maven Dependency</h2>
+
+        <p>Let’s try to use these annotations to build a quick REST application.</p>
+        <p> Please note that since we would use maven to build the project and Spring MVC to create our application, we
+            need to add the necessary dependencies in the pom.xml:</p>
+        <pre>
+                &lt;!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc --&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+                    &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+                    &lt;version&gt;5.1.2.RELEASE&lt;/version&gt;
+                &lt;/dependency&gt;
+                </pre>
+        <p>Let's discuss each annotation with an example.</p>
+        <h2>@GetMapping</h2>
+        <p>The <b>GET HTTP</b> request is used to get single or multiple resources and <b>@GetMapping</b> annotation for
+            mapping HTTP GET requests onto specific handler methods.</p>
+        <p> Specifically, <b>@GetMapping</b> is a composed annotation that acts as a shortcut for
+            <b>@RequestMapping(method = RequestMethod.GET)</b>.
+        </p>
+        <p><b>Example:</b></p>
+        <pre>@GetMapping("/employees")
+    public List&lt;Employee> getAllEmployees() {
+        return employeeRepository.findAll();
+    }
+    
+    @GetMapping("/employees/{id}")
+    public ResponseEntity&lt;Employee> getEmployeeById(@PathVariable(value = "id") Long employeeId)
+     throws ResourceNotFoundException {
+        Employee employee = employeeRepository.findById(employeeId)
+          .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+        return ResponseEntity.ok().body(employee);
+    }</pre>
+        <h2>@PostMapping</h2>
+        <p>The <b>POST HTTP method </b>is used to create a resource and <b>@PostMapping</b> annotation for mapping HTTP
+            POST requests onto specific handler methods.</p>
+        <p> Specifically, <b>@PostMapping</b> is a composed annotation that acts as a shortcut for
+            <b>@RequestMapping(method = RequestMethod.POST)</b>.
+        </p>
+        <p><b>Example:</b></p>
+        <pre>@PostMapping("/employees")
+    public Employee createEmployee(@Valid @RequestBody Employee employee) {
+        return employeeRepository.save(employee);
+    }</pre>
+        <h2>@PutMapping
+        </h2>
+        <p>The <b>PUT HTTP method</b> is used to update the resource and <b>@PutMapping</b> annotation for mapping HTTP
+            PUT requests onto specific handler methods.
+            Specifically, <b>@PutMapping </b>is a composed annotation that acts as a shortcut for
+            <b>@RequestMapping(method = RequestMethod.PUT)</b>.
+        </p>
+        <p><b>Example:</b></p>
+        <pre>@PutMapping("/employees/{id}")
+    public ResponseEntity&lt;Employee> updateEmployee(@PathVariable(value = "id") Long employeeId,
+      @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
+        Employee employee = employeeRepository.findById(employeeId)
+        .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+    
+        employee.setEmailId(employeeDetails.getEmailId());
+        employee.setLastName(employeeDetails.getLastName());
+        employee.setFirstName(employeeDetails.getFirstName());
+        final Employee updatedEmployee = employeeRepository.save(employee);
+        return ResponseEntity.ok(updatedEmployee);
+    }</pre>
+        <h2>@DeleteMapping </h2>
+
+        <p>The <b>DELETE HTTP method</b> is used to delete the resource and <b>@DeleteMapping </b>annotation for mapping
+            HTTP DELETE requests onto specific handler methods.
+            Specifically,<b> @DeleteMapping</b> is a composed annotation that acts as a shortcut for
+            <b>@RequestMapping(method = RequestMethod.DELETE)</b>.
+        </p>
+
+        <p><b>Example:</b></p>
+        <pre>@DeleteMapping("/employees/{id}")
+    public Map&lt;String, Boolean> deleteEmployee(@PathVariable(value = "id") Long employeeId)
+      throws ResourceNotFoundException {
+        Employee employee = employeeRepository.findById(employeeId)
+          .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+    
+        employeeRepository.delete(employee);
+        Map&lt;String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return response;
+    }</pre>
+
+        <h2>@PatchMapping</h2>
+
+        <p>The <b>PATCH HTTP method </b>is used when you want to apply a partial update to the resource and
+            <b>@PatchMapping </b>annotation for mapping HTTP PATCH requests onto specific handler methods.
+        </p>
+        <p> Specifically, <b>@PatchMapping</b> is a composed annotation that acts as a shortcut for
+            <b>@RequestMapping(method = RequestMethod.PATCH)</b>.
+        </p>
+
+        <p><b>Example:</b> Consider we want to update the <b>Employee</b> resources partially (only the firstName field)
+            in a database. So here is the REST API that demonstrates the usage of <b>@PatchMapping</b> annotation:</p>
+        <pre>@PatchMapping("/employees/{id}/{firstName}")
+    public ResponseEntity&lt;Employee> updateEmployeePartially(@PathVariable Long id, @PathVariable String firstName) {
+        try {
+            Employee employee = employeeRepository.findById(id).get();
+            employee.setFirstName(firstName);
+            return new ResponseEntity&lt;Employee>(employeeRepository.save(employee), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }</pre>
+<h2>Complete Example - EmployeeController.java</h2>
+<pre>@RestController
+    @RequestMapping("/api/v1")
+    public class EmployeeController {
+        @Autowired
+        private EmployeeRepository employeeRepository;
+    
+        @GetMapping("/employees")
+        public List&lt;Employee> getAllEmployees() {
+            return employeeRepository.findAll();
+        }
+    
+        @GetMapping("/employees/{id}")
+        public ResponseEntity&lt;Employee> getEmployeeById(@PathVariable(value = "id") Long employeeId)
+            throws ResourceNotFoundException {
+            Employee employee = employeeRepository.findById(employeeId)
+              .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+            return ResponseEntity.ok().body(employee);
+        }
+        
+        @PostMapping("/employees")
+        public Employee createEmployee(@Valid @RequestBody Employee employee) {
+            return employeeRepository.save(employee);
+        }
+    
+        @PutMapping("/employees/{id}")
+        public ResponseEntity&lt;Employee> updateEmployee(@PathVariable(value = "id") Long employeeId,
+             @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
+            Employee employee = employeeRepository.findById(employeeId)
+            .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+    
+            employee.setEmailId(employeeDetails.getEmailId());
+            employee.setLastName(employeeDetails.getLastName());
+            employee.setFirstName(employeeDetails.getFirstName());
+            final Employee updatedEmployee = employeeRepository.save(employee);
+            return ResponseEntity.ok(updatedEmployee);
+        }
+    
+        @DeleteMapping("/employees/{id}")
+        public Map&lt;String, Boolean> deleteEmployee(@PathVariable(value = "id") Long employeeId)
+             throws ResourceNotFoundException {
+            Employee employee = employeeRepository.findById(employeeId)
+           .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+    
+            employeeRepository.delete(employee);
+            Map&lt;String, Boolean> response = new HashMap<>();
+            response.put("deleted", Boolean.TRUE);
+            return response;
+        }
+        
+        @PatchMapping("/employees/{id}/{firstName}")
+        public ResponseEntity&lt;Employee> updateEmployeePartially(@PathVariable Long id, @PathVariable String firstName) {
+        try {
+            Employee employee = employeeRepository.findById(id).get();
+            employee.setFirstName(firstName);
+            return new ResponseEntity&lt;Employee>(employeeRepository.save(employee), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        }
+    }</pre>
+
+    </div>
+</body>
+
+</html>
