@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logging in Spring Boot: A Comprehensive Guide </title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Logging in Spring Boot: A Comprehensive Guide</h1>
+                <h4>author : Sai K</h4>
+                <P>Logging is a crucial aspect of any application. It helps in debugging, monitoring, and maintaining
+                    the application. <br><br> Spring Boot provides extensive support for logging, making it easy to configure and
+                    use. This guide will walk you <br><br> through setting up and using logging in a Spring Boot 3.2 application.
+                </P><br>
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li>JDK 17 or later</li><br>
+                    <li>Maven or Gradle </li><br>
+                    <li>IDE (IntelliJ IDEA, Eclipse, etc.)</li><br>
+                </ul>
+                <h2>Step 1: Set Up a Spring Boot Project</h2>
+                <h3>1.1 Create a New Spring Boot Project</h3>
+                <p>Use <a href="https://start.spring.io/">Spring Initializr</a> to create a new project with the
+                    following dependencies: </p>
+                <ul>
+                    <li>Spring Web</li><br>
+                </ul>
+                <p>Download and unzip the project, then open it in your IDE. </p>
+                <h2>Step 2: Basic Logging Configuration</h2>
+                <p>Spring Boot uses Logback as the default logging framework. It also supports other logging frameworks
+                    such as<br><br> Log4j2  and Java Util Logging.</p><br>
+                <h3>2.1 Using application.properties for Logging Configuration</h3>
+                <p>In the src/main/resources directory, create or update the application.properties file to configure
+                    logging.</p>
+                <pre><code>
+# src/main/resources/application.properties
+
+# Logging configuration
+logging.level.root=INFO
+logging.level.org.springframework.web=DEBUG
+logging.file.name=logs/spring-boot-application.log
+logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} - %msg%n
+logging.pattern.file=%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>logging.level.root=INFO: Sets the root logging level to INFO.</li><br>
+                    <li>logging.level.org.springframework.web=DEBUG: Sets the logging level for Spring Web to DEBUG.
+                    </li><br>
+                    <li>logging.file.name=logs/spring-boot-application.log: Specifies the file name for logging.</li><br>
+                    <li>logging.pattern.console: Sets the pattern for console logging.</li><br>
+                    <li>logging.pattern.file: Sets the pattern for file logging.</li><br>
+                </ul>
+                <h3>2.2 Using application.yml for Logging Configuration</h3>
+                <p>Alternatively, you can use the aprepplication.yml file for logging configuration.</p>
+                <pre><code>
+# src/main/resources/application.yml
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+  file:
+    name: logs/spring-boot-application.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+</code></pre>
+                <h3>Explanation:</h3>
+                <p>The YAML configuration mirrors the properties file configuration but uses YAML syntax.</p>
+                <h2>Step 3: Using Logging in Your Application</h2>
+                <h3>3.1 Create a Sample Controller</h3>
+                <p>Create a controller class named HelloController in the com.example.demo.controller package.</p>
+                <pre><code>
+package com.example.demo.controller;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+
+    private static final Logger logger = LoggerFactory.getLogger(HelloController.class);
+
+    @GetMapping("/hello")
+    public String hello(@RequestParam(required = false, defaultValue = "World") String name) {
+        logger.info("Received request to /hello with name: {}", name);
+        return "Hello, " + name + "!";
+    }
+}
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>Logger and LoggerFactory: Classes from SLF4J (Simple Logging Facade for Java) to log messages.
+                    </li><br>
+                    <li>logger.info: Logs an informational message.</li><br>
+                    <li>logger.debug, logger.error, etc.: Other logging levels.</li><br>
+                </ul>
+                <h2>Step 4: Advanced Logging Configuration</h2>
+                <h3>4.1 Configuring Logback with logback-spring.xml</h3>
+                <p>For more advanced logging configurations, you can use a logback-spring.xml file. Create this file in
+                    the <br><br> src/main/resources directory.</p>
+                <pre><code>
+    
+< configuration>
+    < property name="LOGS" value="logs"/>
+
+    < appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        < file>${LOGS}/spring-boot-application.log< /file>
+        < rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            < fileNamePattern>${LOGS}/spring-boot-application-%d{yyyy-MM-dd}.log< /fileNamePattern>
+            < maxHistory>30< /maxHistory>
+        < /rollingPolicy>
+        < encoder>
+            < pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n< /pattern>
+        < /encoder>
+    < /appender>
+
+    < appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        < encoder>
+            < pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n< /pattern>
+        < /encoder>
+    < /appender>
+
+    < logger name="org.springframework.web" level="DEBUG"/>
+    < root level="INFO">
+        < appender-ref ref="FILE"/>
+        < appender-ref ref="CONSOLE"/>
+    < /root>
+< /configuration>
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>RollingFileAppender: Logs messages to a file with rolling based on time.</li><br>
+                    <li>ConsoleAppender: Logs messages to the console.</li><br>
+                    <li> logger and root: Configures logging levels and appenders.</li><br>
+                </ul>
+                <h3>4.2 Using Log4j2</h3>
+                <p>If you prefer Log4j2, include the necessary dependencies in your pom.xml file and configure
+                    log4j2-spring.xml.</p>
+                <h3>Adding Log4j2 Dependencies</h3>
+                <pre><code>
+    < dependency>
+        < groupId>org.springframework.boot< /groupId>
+        < artifactId>spring-boot-starter-log4j2< /artifactId>
+    < /dependency>
+</code></pre>
+                <h3>Creating log4j2-spring.xml</h3>
+                <p>Create log4j2-spring.xml in the src/main/resources directory.</p>
+                <pre><code>
+    < ?xml version="1.0" encoding="UTF-8"?>
+< Configuration status="WARN">
+    < Appenders>
+        < Console name="Console" target="SYSTEM_OUT">
+            < PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"/>
+        < /Console>
+        < RollingFile name="File" fileName="logs/spring-boot-application.log" filePattern="logs/spring-boot-application-%d{yyyy-MM-dd}.log">
+            < PatternLayout>
+                < pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n< /pattern>
+            < /PatternLayout>
+            < TimeBasedTriggeringPolicy/>
+            < DefaultRolloverStrategy max="30"/>
+        < /RollingFile>
+    < /Appenders>
+    < Loggers>
+        < Root level="info">
+            < AppenderRef ref="Console"/>
+            < AppenderRef ref="File"/>
+        < /Root>
+        < Logger name="org.springframework.web" level="debug" additivity="false">
+            < AppenderRef ref="Console"/>
+            < AppenderRef ref="File"/>
+        < /Logger>
+    < /Loggers>
+< /Configuration>
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>Configuration: Defines the configuration for Log4j2.</li><br>
+                    <li> Appenders: Defines where the log messages will be sent (console and file).</li><br>
+                    <li>Loggers: Defines logging levels and the appenders for different packages.</li><br>
+                </ul>
+                <h2>Step 5: Running and Testing the Application</h2>
+                <h3>5.1 Run the Application</h3>
+                <p>Run the Spring Boot application using your IDE or the command line:</p>
+                <pre><code>./mvnw spring-boot:run</code></pre>
+                <h3>5.2 Test Logging</h3>
+                <p>Use a web browser or a tool like Postman to send a GET request to
+                    http://localhost:8080/hello? <br><br>name=SpringBoot. Check the console and log files to see the logging
+                    messages.</p><br>
+                <h2>Conclusion</h2>
+                <p>In this comprehensive guide, you have learned how to set up and use logging in a Spring Boot 3.2
+                    application.  <br><br>We covered:</p><br>
+                <ul>
+                    <li>Basic logging configuration using application.properties and application.yml.</li><br>
+                    <li>Using SLF4J for logging in your application.</li><br>
+                    <li>Advanced logging configuration using logback-spring.xml.</li><br>
+                    <li>Configuring and using Log4j2.</li><br>
+                </ul>
+                <p>By following these steps, you can effectively configure and manage logging in your Spring Boot
+                    applications to <br><br> help with debugging, monitoring, and maintaining your application.</p><br>
+                <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

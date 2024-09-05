@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Banners in Spring Boot </title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Custom Banners in Spring Boot</h1>
+                <h4>author : Sai K</h4>
+                <p>Spring Boot allows you to customize the startup banner that is displayed when the application starts.
+                    By default,<br><br> Spring Boot shows a simple ASCII art banner. This tutorial will guide you through the
+                    steps to create and use a <br><br>custom banner in your Spring Boot application.</p><br>
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li>JDK 17 or later</li><br>
+                    <li>Maven or Gradle </li><br>
+                    <li>IDE (IntelliJ IDEA, Eclipse, etc.)</li><br>
+                </ul>
+                <h2>Step 1: Set Up a Spring Boot Project</h2>
+                <h3>1.1 Create a New Spring Boot Project</h3>
+                <p>Use <a href="https://start.spring.io/">Spring Initializr</a> to create a new project with the
+                    following dependencies: </p>
+                <ul>
+                    <li>Spring Web</li><br>
+                </ul>
+                <p>Download and unzip the project, then open it in your IDE. </p>
+
+                <h3>1.2 Configure application.properties</h3>
+                <p>(Optional) Set up the application properties for your project. This file is located in the
+                    src/main/resources <br><br> directory. You can customize the banner properties here if needed.</p>
+                <pre><code>
+# src/main/resources/application.properties
+
+# Server port
+server.port=8080
+
+# Banner mode (console, log, or off)
+spring.main.banner-mode=console
+</code></pre>
+                <h3>Explanation:</h3>
+                <li> spring.main.banner-mode: Specifies where the banner is displayed (console, log, or off).</li>
+                <h2>Step 2: Create a Custom Banner</h2>
+                <p>Spring Boot looks for a banner.txt file in the src/main/resources directory to display as the startup
+                    banner. You <br><br> can create your own ASCII art banner or use an online tool to generate one.</p>
+                <h3>2.1 Create banner.txt</h3>
+                <p>Create a file named banner.txt in the src/main/resources directory and add your custom ASCII art
+                    banner. You<br><br> can use an online ASCII art generator like <a
+                        href="https://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20">TAAG</a> to
+                    create your banner</p>
+                <pre><code>
+    ____                  _        ____              _
+    |  _ \  ___   __ _  __| | ___  | __ )  ___   ___ | |_
+    | | | |/ _ \ / _` |/ _` |/ _ \ |  _ \ / _ \ / _ \| __|
+    | |_| | (_) | (_| | (_| |  __/ | |_) | (_) | (_) | |_
+    |____/ \___/ \__,_|\__,_|\___| |____/ \___/ \___/ \__|
+</code></pre>
+                <p>You can also add Spring Boot placeholders in your banner for dynamic content:</p>
+                <ul>
+                    <li>${application.version}: Displays the application version.</li><br>
+                    <li> ${spring-boot.version}: Displays the Spring Boot version.</li><br>
+                </ul>
+                <p>Example:</p>
+                <pre><code>
+    ____                  _        ____              _
+    |  _ \  ___   __ _  __| | ___  | __ )  ___   ___ | |_
+    | | | |/ _ \ / _` |/ _` |/ _ \ |  _ \ / _ \ / _ \| __|
+    | |_| | (_) | (_| | (_| |  __/ | |_) | (_) | (_) | |_
+    |____/ \___/ \__,_|\__,_|\___| |____/ \___/ \___/ \__|
+   
+    :: Spring Boot ::  (v${spring-boot.version})
+</code></pre>
+                <h2>Step 3: Customize Banner Using Code</h2>
+                <p>If you want to customize the banner using code, you can implement the Banner interface.</p>
+                <h3>3.1 Create a Custom Banner Class</h3>
+                <p>Create a new class named CustomBanner in the com.example.demo package (or any other package).</p>
+                <pre><code>
+package com.example.demo;
+
+import org.springframework.boot.Banner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.core.env.Environment;
+
+import java.io.PrintStream;
+
+public class CustomBanner implements Banner {
+
+    @Override
+    public void printBanner(Environment environment, Class<?> sourceClass, PrintStream out) {
+        out.println("  ____                  _        ____              _   ");
+        out.println(" |  _ \\  ___   __ _  __| | ___  | __ )  ___   ___ | |_ ");
+        out.println(" | | | |/ _ \\ / _` |/ _` |/ _ \\ |  _ \\ / _ \\ / _ \\| __|");
+        out.println(" | |_| | (_) | (_| | (_| |  __/ | |_) | (_) | (_) | |_ ");
+        out.println(" |____/ \\___/ \\__,_|\\__,_|\\___| |____/ \\___/ \\___/ \\__|");
+        out.println("                                                       ");
+        out.println(" :: Custom Spring Boot Banner :: ");
+    }
+}
+</code></pre>
+                <h3>3.2 Register the Custom Banner</h3>
+                <p>Modify the main method in your DemoApplication class to register the custom banner.</p>
+                <pre><code>
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication app = new SpringApplication(DemoApplication.class);
+        app.setBanner(new CustomBanner());
+        app.run(args);
+    }
+}
+</code></pre>
+                <h2>
+                    Step 4: Running and Testing the Application
+                </h2>
+                <h3>4.1 Run the Application</h3>
+                <p>Run the Spring Boot application using your IDE or the command line:</p>
+                <pre><code>./mvnw spring-boot:run</code></pre>
+                <h3>4.2 Check the Custom Banner</h3>
+                <p>When the application starts, you should see your custom banner displayed in the console or log,
+                    depending on <br><br>your configuration.</p><br>
+                <h2>Conclusion</h2>
+                <p>In this tutorial, you have learned how to customize the startup banner in a Spring Boot application.
+                    We covered:</p>
+                <ul>
+                    <li>Setting up a Spring Boot project.</li><br>
+                    <li>Creating a custom ASCII art banner in a banner.txt file.</li><br>
+                    <li>Adding dynamic content to the banner using placeholders.</li><br>
+                    <li>Implementing a custom banner programmatically using the Banner interface.</li><br>
+                    <li>Registering and displaying the custom banner.</li><br>
+                </ul>
+                <p>By following these steps, you can create and display custom banners in your Spring Boot applications
+                    to provide <br><br> a unique and personalized startup experience.</p><br>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

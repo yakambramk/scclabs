@@ -78,22 +78,22 @@
             <div class="container">
                 <h1>How to Change the Context Path in Spring Boot </h1>
                 <h4>author : Sai K</h4>
-                <p>The context path is the prefix of the URL path that routes requests to the appropriate controller in a Spring Boot application. By default, the context path is set to /, which means that the application will handle requests from the root context. However, you may need to change the context path for various reasons, such as deploying multiple applications on the same server. This tutorial will guide you through different methods to change the context path in a Spring Boot application.</p>
-                <h2>Prerequisites</h2>
+                <p>The context path is the prefix of the URL path that routes requests to the appropriate controller in a Spring Boot <br><br> application. By default, the context path is set to /, which means that the application will handle requests from <br><br>the root context. However, you may need to change the context path for various reasons, such as deploying<br><br> multiple applications on the same server. This tutorial will guide you through different methods to change the<br><br> context path in a Spring Boot application.</p>
+                <br> <h2>Prerequisites</h2>
                 <ul>
-                    <li>JDK 17 or later</li>
-                    <li>Maven or Gradle</li>
-                    <li>IDE (IntelliJ IDEA, Eclipse, etc.)</li>
+                    <li>JDK 17 or later</li><br>
+                    <li>Maven or Gradle</li><br>
+                    <li>IDE (IntelliJ IDEA, Eclipse, etc.)</li><br>
                 </ul>
     <h2>Method 1: Using application.properties    </h2>
-    <p>The simplest way to change the context path is by setting the server.servlet.context-path property in the application.properties file.</p>
+    <p>The simplest way to change the context path is by setting the server.servlet.context-path property in the <br><br>application.properties file.</p>
     <h3>Step 1: Set Up a Spring Boot Project    </h3>
     <p>Use <a href="https://start.spring.io/">Spring Initializr</a> to create a new project with the
         following dependencies: </p>
-    <li>Spring Web </li>
+    <li>Spring Web </li><br>
     <p>Download and unzip the project, then open it in your IDE. </p>
 <h3>Step 2: Configure application.properties</h3>
-<p>Set up the application properties to change the context path. This file is located in the src/main/resources directory.</p>
+<p>Set up the application properties to change the context path. This file is located in the src/main/resources<br><br> directory.</p><br>
 <pre><code>
 # src/main/resources/application.properties
 
@@ -112,7 +112,7 @@ server.servlet.context-path=/myapp
     <li>Spring Web </li>
     <p>Download and unzip the project, then open it in your IDE. </p>
     <h3>Step 2: Configure application.yml    </h3>
-    <p>Set up the application YAML configuration to change the context path. This file is located in the src/main/resources directory.</p>
+    <p>Set up the application YAML configuration to change the context path. This file is located in the<br><br> src/main/resources directory.</p>
     <pre><code>
 # src/main/resources/application.yml
 
@@ -122,7 +122,7 @@ server:
     </code></pre>
     <h2>Explanation:    </h2>
     <ul>
-        <li>The above property changes the context path from the default / to /myapp.        </li>
+        <li>The above property changes the context path from the default / to /myapp.</li>
     </ul>
     <h2>Method 3: Using Command Line Arguments    </h2>
     <p>You can override the context path by passing a command line argument when starting the application.    </p>
@@ -133,7 +133,7 @@ server:
 </code></pre>
 <h2>Explanation:</h2>
 <ul>
-    <li>-Dspring-boot.run.arguments=--server.servlet.context-path=/myapp: Specifies the context path as a command line argument.</li>
+    <li>-Dspring-boot.run.arguments=--server.servlet.context-path=/myapp: Specifies the context path as a <br><br> command line argument.</li>
 </ul>
 <h2>Method 4: Programmatically Setting the Context Path</h2>
 <p>You can programmatically set the context path by configuring a ConfigurableServletWebServerFactory bean.</p>
@@ -158,8 +158,8 @@ public class WebServerConfig {
 </code></pre>
 <h3>Explanation:</h3>
 <ul>
-    <li>WebServerFactoryCustomizer<ConfigurableWebServerFactory>: Customizes the web server factory to set the context path.</li>
-    <li>factory.setContextPath("/myapp"): Sets the context path to /myapp.</li>
+    <li>WebServerFactoryCustomizer<ConfigurableWebServerFactory>: Customizes the web server factory to set the context path.</li><br>
+    <li>factory.setContextPath("/myapp"): Sets the context path to /myapp.</li><br>
 </ul>
 <h2>Method 5: Using Environment Variables</h2>
 <p>You can use environment variables to set the context path.</p>
@@ -177,7 +177,7 @@ set SERVER_SERVLET_CONTEXT_PATH=/myapp
 </code></pre>
 <h3>Explanation:</h3>
 <ul>
-    <li>SERVER_SERVLET_CONTEXT_PATH=/myapp: Sets the environment variable for the context path to /myapp.    </li>
+    <li>SERVER_SERVLET_CONTEXT_PATH=/myapp: Sets the environment variable for the context path to <br><br>/myapp.    </li>
 </ul>
 <h3>Step 3: Create a Simple Controller</h3>
 <b>Create the HelloController</b>
@@ -199,8 +199,8 @@ public class HelloController {
 </code></pre>
 <h3>Explanation:</h3>
 <ul>
-    <li>@RestController: Marks the class as a REST controller.</li>
-    <li>@GetMapping("/hello"): Maps GET requests to the /hello endpoint.</li>
+    <li>@RestController: Marks the class as a REST controller.</li><br>
+    <li>@GetMapping("/hello"): Maps GET requests to the /hello endpoint.</li><br>
 </ul>
 <h2>Step 4: Running and Testing the Application</h2>
 <h3>4.1 Run the Application</h3>
@@ -209,17 +209,17 @@ public class HelloController {
 ./mvnw spring-boot:run
 </code></pre>
 <h3>4.2 Test the Context Path Change</h3>
-<p>Use a web browser or a tool like Postman to test the new context path. Navigate to http://localhost:8080/myapp/hello to see the "Hello, World!" message.</p>
+<p>Use a web browser or a tool like Postman to test the new context path. Navigate to <br><br>http://localhost:8080/myapp/hello to see the "Hello, World!" message.</p>
 <h2>Conclusion</h2>
-<p>In this tutorial, you have learned different methods to change the context path in a Spring Boot application. The methods include:</p>
+<p>In this tutorial, you have learned different methods to change the context path in a Spring Boot application. The <br><br>methods include:</p><br>
 <ul>
-    <li>Using application.properties</li>
-    <li>Using application.yml</li>
-    <li>Using command line arguments</li>
-    <li> Programmatically setting the context path</li>
-    <li>Using environment variables</li>
+    <li>Using application.properties</li><br>
+    <li>Using application.yml</li><br>
+    <li>Using command line arguments</li><br>
+    <li> Programmatically setting the context path</li><br>
+    <li>Using environment variables</li><br>
 </ul>
-<p>By following these steps, you can effectively change the context path of your Spring Boot application to suit your needs.</p>
+<p>By following these steps, you can effectively change the context path of your Spring Boot application to suit your <br><br>needs.</p>
 <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
             </div>
         </div>
