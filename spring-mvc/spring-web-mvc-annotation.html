@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring MVC Annotations with Examples</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring MVC Annotations with Examples</h1>
+        <p>In this tutorial, we’ll explore Spring Web annotations from the <a
+                href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/">
+                org.springframework.web.bind.annotation package</a>.</p>
+        <p><b>This article is part of a series:</b></p>
+        <ul>
+            <li><a href="">Spring Core Annotations</a></li>
+            <li> <a href="">Spring Web Annotations (current article)</a></li>
+            <li> <a href="">Spring Boot Annotations</a> </li>
+            <li> <a href="">Spring Scheduling Annotations</a></li>
+        </ul>
+        <img src="/assets/spring-mvc-image/spring-web-annotations.PNG" alt="" class="image-fluid">
+        <h2>Before you get started, check out Spring Data JPA Tutorial and Spring MVC Tutorial</h2><br><br>
+        <h2>Spring MVC Tutorials and Articles :</h2>
+        <br>
+        <h2>@RequestBody Annotation</h2>
+        <p>@RequestBody annotation indicating a method parameter should be bound to the body of the web request. The
+            body of the request is passed through an <b>HttpMessageConverter</b> to resolve the method argument
+            depending on the content type of the request. Optionally, automatic validation can be applied by annotating
+            the argument with <b>@Valid</b>.</p>
+        For example, the employee JSON object is converted into Java employee object using <b>@RequestBody</b>
+        annotation.</p>
+        <pre>@RestController
+            @RequestMapping("/api/v1")
+            public class EmployeeController {
+                @Autowired
+                private EmployeeRepository employeeRepository;
+                
+                @PostMapping("/employees")
+                public Employee createEmployee(@Valid @RequestBody Employee employee) {
+                    return employeeRepository.save(employee);
+                } 
+            }</pre>
+        <h2>@RequestMapping
+        </h2>
+        <p><b>@RequestMapping</b> annotation for mapping web requests onto methods in request-handling classes with
+            flexible method signatures.</p>
+        <p> Both Spring MVC and Spring WebFlux support this annotation through a <b>RequestMappingHandlerMapping</b> and
+            <b>RequestMappingHandlerAdapter</b> in their respective modules and package structure.
+        </p>
+        <p><b>@RequestMapping</b> marks request handler methods inside <b>@Controller</b> classes; it can be configured
+            using:</p>
+        <ul>
+            <li>path, or its aliases, name, and value: which URL the method is mapped to</li>
+            <li> method: compatible HTTP methods</li>
+            <li> params: filters requests based on the presence, absence, or value of HTTP parameters</li>
+            <li> headers: filters requests based on the presence, absence, or value of HTTP headers</li>
+            <li> consumes: which media types the method can consume in the HTTP request body</li>
+            <li> produces: which media types the method can produce in the HTTP response body Here’s a quick example of
+                what that looks like:</li>
+        </ul>
+        <pre>@Controller
+            class EmployeeController {
+             
+                @RequestMapping(value = "/employees/home", method = RequestMethod.GET)
+                String home() {
+                    return "home";
+                }
+            }</pre>
+        <p>We can provide default settings for all handler methods in a <b>@Controller</b> class if we apply this
+            annotation to the class level. The only exception is the URL which Spring won’t override with method level
+            settings but appends the two path parts.
+            For example, the following configuration has the same effect as the one above:</p>
+        <pre>@Controller
+                    @RequestMapping(value = "/employees", method = RequestMethod.GET)
+                    class EmployeeController {
+                     
+                        @RequestMapping("/home")
+                        String home() {
+                            return "home";
+                        }
+                    }</pre>
+        <h2>@GetMapping</h2>
+        <p><b>@GetMapping</b> annotation for mapping HTTP GET requests onto specific handler methods.
+            Specifically, <b>@GetMapping</b> is a composed annotation that acts as a shortcut for
+            <b>@RequestMapping(method = RequestMethod.GET)</b>.
+        </p>
+        <p><b>Example:</b></p>
+        <pre>@GetMapping("/employees")
+    public List&lt;Employee> getAllEmployees() {
+     return employeeRepository.findAll();
+    }
+    
+    @GetMapping("/employees/{id}")
+    public ResponseEntity&lt;Employee> getEmployeeById(@PathVariable(value = "id") Long employeeId)
+     throws ResourceNotFoundException {
+     Employee employee = employeeRepository.findById(employeeId)
+       .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+     return ResponseEntity.ok().body(employee);
+    }</pre>
+        <h2>@PostMapping</h2>
+        <p><b>@PostMapping </b>annotation for mapping HTTP POST requests onto specific handler methods.</p>
+        <p> Specifically, <b>@PostMapping</b> is a composed annotation that acts as a shortcut for
+            <b>@RequestMapping(method = RequestMethod.POST)</b>.
+        </p>
+        <p><b>Example:</b></p>
+        <pre>@PostMapping("/employees")
+    public Employee createEmployee(@Valid @RequestBody Employee employee) {
+     return employeeRepository.save(employee);
+    }</pre>
+        <h2>@PutMapping</h2>
+        <p><b>@PutMapping</b> annotation for mapping HTTP PUT requests onto specific handler methods.</p>
+        <p> Specifically, <b>@PutMapping</b> is a composed annotation that acts as a shortcut for
+            <b>@RequestMapping(method = RequestMethod.PUT)</b>.
+        </p>
+        <p><b>Example:</b></p>
+        <pre>@PutMapping("/employees/{id}")
+    public ResponseEntity<Employee> updateEmployee(@PathVariable(value = "id") Long employeeId,
+      @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
+     Employee employee = employeeRepository.findById(employeeId)
+     .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+    
+     employee.setEmailId(employeeDetails.getEmailId());
+     employee.setLastName(employeeDetails.getLastName());
+     employee.setFirstName(employeeDetails.getFirstName());
+     final Employee updatedEmployee = employeeRepository.save(employee);
+     return ResponseEntity.ok(updatedEmployee);
+    }</pre>
+        <h2>@DeleteMapping</h2>
+        <p><b>@DeleteMapping</b> annotation for mapping HTTP DELETE requests onto specific handler methods.</p>
+        <p> Specifically, <b>@DeleteMapping</b> is a composed annotation that acts as a shortcut for
+            <b>@RequestMapping(method = RequestMethod.DELETE)</b>.
+        </p>
+        <p><b>Example:</b></p>
+
+        <pre>@DeleteMapping("/employees/{id}")
+    public Map&lt;String, Boolean> deleteEmployee(@PathVariable(value = "id") Long employeeId)
+      throws ResourceNotFoundException {
+     Employee employee = employeeRepository.findById(employeeId)
+       .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+    
+     employeeRepository.delete(employee);
+     Map&lt;String, Boolean> response = new HashMap<>();
+     response.put("deleted", Boolean.TRUE);
+     return response;
+    }</pre>
+        <h2>@PatchMapping</h2>
+        <p><b>@PatchMapping</b> annotation for mapping HTTP PATCH requests onto specific handler methods.</p>
+        <p> Specifically, <b>@PatchMapping</b> is a composed annotation that acts as a shortcut for
+            <b>@RequestMapping(method = RequestMethod.PATCH)</b>.
+        </p>
+        <p><b>Example:</b></p>
+        <pre>@PatchMapping("/patch")
+    public @ResponseBody ResponseEntity&lt;String> patch() {
+        return new ResponseEntity&lt;String>("PATCH Response", HttpStatus.OK);
+    }</pre>
+
+        <h2>@ControllerAdvice</h2>
+        <p><b>@ControllerAdvice</b> annotation is a specialization of <b>@Component</b>. The classes annotated with
+            @ControllerAdvice
+            are auto-detected by classpath scanning.</p>
+        <p> The use of <b>@ControllerAdvice</b> is advising all or selected controllers for <b>@ExceptionHandler,
+                @InitBinder,</b> and
+            <b>@ModelAttribute</b>. What we have to do is create a class annotated with @ControllerAdvice and create a
+            required
+            method which will be annotated with @ExceptionHandler for global exception handling, <b>@InitBinder</b> for
+            global
+            init binding and <b>@ModelAttribute</b> for global model attributes addition. Whenever a request comes to a
+            controller and its method with <b>@RequestMapping</b> and if there is no locally defined
+            <b>@ExceptionHandler,</b>
+            <b>@InitBinder</b> and <b>@ModelAttribute,</b> the globally defined class annotated with
+            <b>@ControllerAdvice</b> is served.
+        </p>
+        <p> Here’s a quick example of what that looks like:</p>
+        <pre>@ControllerAdvice(basePackages = {"com.javaguides.springmvc.controller"} )
+            public class GlobalControllerAdvice {
+             @InitBinder
+             public void dataBinding(WebDataBinder binder) {
+              SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+              dateFormat.setLenient(false);
+              binder.registerCustomEditor(Date.class, "dob", new CustomDateEditor(dateFormat, true));
+             }
+             @ModelAttribute
+                    public void globalAttributes(Model model) {
+              model.addAttribute("msg", "Welcome to My World!");
+                    }
+             @ExceptionHandler(FileNotFoundException.class)
+                    public ModelAndView myError(Exception exception) {
+                 ModelAndView mav = new ModelAndView();
+                 mav.addObject("exception", exception);
+                 mav.setViewName("error");
+                 return mav;
+             }
+            }</pre>
+        <h2>@ResponseBody Annotation</h2>
+        <p>When you use the <b>@ResponseBody</b> annotation on a method, Spring converts the return value and writes it
+            to the HTTP response automatically. Each method in the Controller class must be annotated with
+            <b>@ResponseBody</b>.
+        </p>
+        <p> The <b> @ResponseBody</b> annotation tells a controller that the object returned is automatically serialized
+            into JSON and passed back into the <b>HttpResponse</b> object.</p>
+        <p><b>Example:</b></p>
+        <pre>@ResponseBody
+                    @RequestMapping("/hello")
+                    String hello() {
+                        return "Hello World!";
+                    }</pre>
+        <p>Spring 4.0 introduced @RestController, a specialized version of the controller which is a convenience
+            annotation that does nothing more than adding the @Controller and @ResponseBody annotations.</p>
+        <h2>@ExceptionHandler</h2>
+        <p><b>@ExceptionHandler</b> annotation for handling exceptions in specific handler classes and/or handler
+            methods.</p>
+        <p> Handler methods which are annotated with this annotation are allowed to have very flexible signatures.</p>
+        <p> Spring calls this method when a request handler method throws any of the specified exceptions. The caught
+            exception can be passed to the method as an argument:</p>
+        <pre>@ExceptionHandler(ResourceNotFoundException.class)
+                public ResponseEntity<?> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+                  ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+                  return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+                }</pre>
+        <h2>@ResponseStatus</h2>
+        <p>We can specify the desired HTTP status of the response if we annotate a request handler method with this
+            annotation. We can declare the status code with the code argument, or its alias, the value argument.</p>
+        <p> Also, we can provide a reason using the reason argument.</p>
+        <p></p> We also can use it along with <b>@ExceptionHandler</b>:</p>
+        <pre>@ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<?> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+      ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+      return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }</pre>
+        <h2>@PathVariable</h2>
+
+        <p>This annotation indicates that a method argument is bound to a URI template variable. We can specify the URI
+            template with the <b>@RequestMapping </b>annotation and bind a method argument to one of the template parts
+            with <b>@PathVariable</b>.</p>
+        <p> We can achieve this with the name or its alias, the value argument:
+        </p>
+        <pre>@RequestMapping("/{id}")
+    public User getUser(@PathVariable("id") long id) {
+        // ...
+    }</pre>
+
+        <p>If the name of the part in the template matches the name of the method argument, we don’t have to specify it
+            in the annotation:</p>
+        <pre>@RequestMapping("/{id}")
+    public User getUser(@PathVariable long id) {
+        // ...
+    }</pre>
+        <p>
+            Moreover, we can mark a path variable optional by setting the argument required to false:</p>
+        <pre>@RequestMapping("/{id}")
+        public User getUser(@PathVariable(required = false) long id) {
+            // ...
+        }</pre>
+        <h2>@RequestParam</h2>
+        <p><b>@RequestParam</b> annotation which indicates that a method parameter should be bound to a web request
+            parameter. We use <b>@RequestParam</b> for accessing HTTP request parameters:</p>
+
+        <pre>@RequestMapping
+    Vehicle getVehicleByParam(@RequestParam("id") long id) {
+        // ...
+    }</pre>
+        <p>It has the same configuration options as the <b> @PathVariable</b> annotation.</p>
+        <p> In addition to those settings, with <b>@RequestParam</b> we can specify an injected value when Spring finds
+            no or empty value in the request. To achieve this, we have to set the default value argument.</p>
+        <p> Providing a default value implicitly sets required to false:</p>
+        <pre>@RequestMapping("/buy")
+                Car buyCar(@RequestParam(defaultValue = "5") int seatCount) {
+                    // ...
+                }</pre>
+        <h2>@Controller</h2>
+        <p>This annotation is simply a specialization of the @Component class and allows implementation classes to be
+            autodetected through the classpath scanning.</p>
+        <p> We can define a Spring MVC controller with @Controller. Read more at The <a
+                href="spring-controller-and-restcontroller-annotations-with-examples.html">Spring @Controller and
+                @RestController Annotations with Examples</a></p>
+        <p>For example,</p>
+        <pre>@Controller
+    @RequestMapping("/api/v1")
+    public class EmployeeController {
+        @Autowired
+        private EmployeeRepository employeeRepository;
+    
+        @GetMapping("/employees")
+        public List&lt;Employee> getAllEmployees() {
+            return employeeRepository.findAll();
+        }
+    }</pre>
+        <h2>@RestController</h2>
+        <p>Spring 4.0 introduced <b>@RestController</b>, a specialized version of the controller which is a convenience
+            annotation that does nothing more than adding the <b>@Controller </b>and <b> @ResponseBody</b> annotations.
+            By annotating
+            the controller class with <b>@RestController</b> annotation, you no longer need to add <b>@ResponseBody</b>
+            to all the
+            request mapping methods. The <b>@ResponseBody</b> annotation is active by default.</p>
+        <p> To use <b>@RestController</b> in our example, all we need to do is modify the <b>@Controller</b> to
+            <b>@RestController</b> and
+            remove the <b>@ResponseBody</b> from each method. The resultant class should look like the following:
+        </p>
+        <pre>@RestController
+    @RequestMapping("/api/v1")
+    public class EmployeeController {
+        @Autowired
+        private EmployeeRepository employeeRepository;
+    
+        @GetMapping("/employees")
+        public List<Employee> getAllEmployees() {
+            return employeeRepository.findAll();
+        }
+    }</pre>
+        <h2>@ModelAttribute</h2>
+        <p>With this annotation we can access elements that are already in the model of an MVC @Controller, by providing
+            the model key:</p>
+        <pre>@PostMapping("/users")
+    void saveUser(@ModelAttribute("user") User user) {
+        // ...
+    }</pre>
+        <p>Like with @PathVariable and @RequestParam, we don’t have to specify the model key if the argument has the
+            same name:
+        </p>
+        <pre>@PostMapping("/users")
+    void saveUser(@ModelAttribute User user) {
+        // ...
+    }</pre>
+        <p>Besides, @ModelAttribute has another use: if we annotate a method with it, Spring will automatically add the
+            method’s return value to the model:</p>
+        <pre>@ModelAttribute("vehicle")
+    User getUser() {
+        // ...
+    }</pre>
+        <p>Like before, we don’t have to specify the model key, Spring uses the method’s name by default:</p>
+
+        <pre>@ModelAttribute
+    User user() {
+        // ...
+    }</pre>
+        <p>Before Spring calls a request handler method, it invokes all <b> @ModelAttribute </b>annotated methods in the
+            class.</p>
+        <h2>@CrossOrigin</h2>
+        <p><b>@CrossOrigin </b>enables cross-domain communication for the annotated request handler methods:</p>
+        <pre>@CrossOrigin
+    @RequestMapping("/hello")
+    String hello() {
+        return "Hello World!";
+    }</pre>
+        <p>If we mark a class with it, it applies to all request handler methods in it.</p>
+        <p> We can fine-tune CORS behavior with this annotation’s arguments.
+        </p>
+        <h2>@InitBinder</h2>
+        <p><b>@InitBinder</b> annotation that identifies methods which initialize the WebDataBinder which will be used
+            for populating command and form object arguments of annotated handler methods.</p>
+        <p> Such init-binder methods support all arguments that RequestMapping supports, except for command/form objects
+            and corresponding validation result objects. Init-binder methods must not have a return value; they are
+            usually declared as void.</p>
+        <p>For example,</p>
+        <pre>// add an initbinder ... to convert trim input strings
+            // remove leading and trailing whitespace
+            // resolve issue for our validation
+        
+            @InitBinder
+            public void initBinder(WebDataBinder dataBinder) {
+        
+                StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+        
+                dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+            }</pre>
+
+    </div>
+</body>
+
+</html>

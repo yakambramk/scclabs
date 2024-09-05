@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring @Service Annotation</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring @Service Annotation</h1>
+        <p>In this quick article, we will discuss how to use @Service annotation in Spring ( Spring Boot) based
+            applications.</p>
+
+        <h2>Spring @Service Annotation Overview</h2>
+        <p>The business logic of an application usually resides within the service layer – so we’ll use the <b>@Service
+            </b>annotation to indicate that a class belongs to the service layer.</p>
+
+        <p> Well, <b>@Service</b> annotation serves as a specialization of <b> @Component</b>, allowing for
+            implementation classes to be autodetected through classpath scanning.</p>
+
+        <p> The below diagram shows a source code definition of <b>@Service</b> annotation. Spring context will
+            autodetect these classes when annotation-based configuration and classpath scanning is used because it is a
+            specialization of <b>@Component</b> as shown below diagram.
+        </p>
+        <img src="/assets/spring-mvc-image/service-annotation-impl.PNG" alt="" class="image-fluid">
+        <p><b>Whenever we annotated a class with @Service annotation then Spring Container will automatically create a
+                Spring bean for that class.</b></p>
+        <h2>Spring @Service Annotation Example</h2>
+        <p>Let's create a simple Spring boot application to bootstrap quickly. Add the below dependencies to your
+            <b>pom.xml</b> file.
+        </p>
+        <pre>
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+                    &lt;/dependency&gt;
+                    
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                        &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+                    &lt;/dependency&gt;
+                    </pre>
+        <h2>Create User JPA Entity </h2>
+        <p>
+            Spring @Service Annotation
+            Author: Ramesh Fadatare
+            Spring Annotations
+
+            In this quick article, we will discuss how to use @Service annotation in Spring ( Spring Boot) based
+            applications.
+            YouTube Video
+
+            Spring @Service Annotation Overview
+            The business logic of an application usually resides within the service layer – so we’ll use the @Service
+            annotation to indicate that a class belongs to the service layer.
+
+            Well, @Service annotation serves as a specialization of @Component, allowing for implementation classes to
+            be autodetected through classpath scanning.
+
+            The below diagram shows a source code definition of @Service annotation. Spring context will autodetect
+            these classes when annotation-based configuration and classpath scanning is used because it is a
+            specialization of @Component as shown below diagram.
+
+
+            Whenever we annotated a class with @Service annotation then Spring Container will automatically create a
+            Spring bean for that class.
+            Spring @Service Annotation Example
+            Let's create a simple Spring boot application to bootstrap quickly. Add the below dependencies to your
+            pom.xml file.
+        <pre>
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    </pre>
+        <h2>Create User JPA Entity
+        </h2>
+
+        <p>Let's create a simple User JPA entity that maps with the users table in the database:</p>
+        <pre>@Entity
+    @Table(name = "users")
+    class User {
+    
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        private int id;
+        private String name;
+    
+        public User(int id, String name) {
+            super();
+            this.id = id;
+            this.name = name;
+        }
+    
+        public User() {}
+    
+        public int getId() {
+            return id;
+        }
+    
+        public void setId(int id) {
+            this.id = id;
+        }
+    
+        public String getName() {
+            return name;
+        }
+    
+        public void setName(String name) {
+            this.name = name;
+        }
+    }</pre>
+        <h2>Create UserRepository</h2>
+        <p>Next, create a <b>UserRepository</b> interface and annotate with <b> @Repository</b> annotation:</p>
+
+        <pre>@Repository
+    interface UserRepository extends JpaRepository < User, Integer > {
+    
+    }</pre>
+        <p>Note Spring Data JPA automatically provides an implementation for the above interface.</p>
+
+        <h2>Create UserService and UserServiceImpl</h2>
+        <pre>interface UserService {
+    public void saveUser(User user);
+}
+
+@Service
+class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+}</pre>
+        <h2>Testing</h2>
+        <p>Let's write a code to test UserRepository to save user objects into the database table:</p>
+        <pre>@SpringBootApplication
+    public class DemoApplication {
+    
+        public static void main(String[] args) {
+            ConfigurableApplicationContext applicationContext = SpringApplication.run(DemoApplication.class, args);
+            UserService userService = (UserService) applicationContext.getBean("userServiceImpl");
+            userService.saveUser(new User(10, "Ramesh"));
+        }
+    }</pre>
+        <h2>Complete Code</h2>
+        <p>Here is the complete code for your reference: </p>
+        <pre>import javax.persistence.Entity;
+    import javax.persistence.GeneratedValue;
+    import javax.persistence.GenerationType;
+    import javax.persistence.Id;
+    import javax.persistence.Table;
+    
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+    import org.springframework.context.ConfigurableApplicationContext;
+    import org.springframework.data.jpa.repository.JpaRepository;
+    import org.springframework.stereotype.Repository;
+    import org.springframework.stereotype.Service;
+    
+    @SpringBootApplication
+    public class DemoApplication {
+    
+        public static void main(String[] args) {
+            ConfigurableApplicationContext applicationContext = SpringApplication.run(DemoApplication.class, args);
+            UserService userService = (UserService) applicationContext.getBean("userServiceImpl");
+            userService.saveUser(new User(10, "Ramesh"));
+        }
+    }
+    
+    @Entity
+    @Table
+    class User {
+    
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        private int id;
+        private String name;
+    
+        public User(int id, String name) {
+            super();
+            this.id = id;
+            this.name = name;
+        }
+    
+        public User() {}
+    
+        public int getId() {
+            return id;
+        }
+    
+        public void setId(int id) {
+            this.id = id;
+        }
+    
+        public String getName() {
+            return name;
+        }
+    
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+    
+    @Repository
+    interface UserRepository extends JpaRepository < User, Integer > {
+    
+    }
+    
+    interface UserService {
+        public void saveUser(User user);
+    }
+    
+    @Service
+    class UserServiceImpl implements UserService {
+    
+        @Autowired
+        private UserRepository userRepository;
+    
+        @Override
+        public void saveUser(User user) {
+            userRepository.save(user);
+        }
+    }</pre>
+        <p>Note that we have created ApplicationContext and retrieved bean using the <b>getBean()</b> method:</p>
+        <pre>ConfigurableApplicationContext  applicationContext =  SpringApplication.run(DemoApplication.class, args);
+    UserService userService = (UserService) applicationContext.getBean("userServiceImpl");
+    userService.saveUser(new User(10, "mahesh"));</pre>
+        <h2>Usage of @Service annotation</h2>
+        <pre>interface UserService {
+            public void saveUser(User user);
+        }
+        
+        @Service
+        class UserServiceImpl implements UserService {
+        
+            @Autowired
+            private UserRepository userRepository;
+        
+            @Override
+            public void saveUser(User user) {
+                userRepository.save(user);
+            }
+        }</pre>
+
+    </div>
+</body>
+
+</html>

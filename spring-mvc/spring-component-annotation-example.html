@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring @Component Annotation Example</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring @Component Annotation Example</h1>
+        <p>In this quick article, we will discuss how to use @Component annotation in Spring ( Spring Boot) based
+            applications.</p>
+        <h2>Spring @Component Annotation Overview</h2>
+        <p>The <b>@Component</b> annotation indicates that an annotated class is a "component". Such classes are
+            considered candidates for auto-detection when using annotation-based configuration and classpath scanning.
+        </p>
+
+        <p> In short, <b>@Component</b> is a class-level annotation. During the component scan, Spring Framework
+            automatically detects classes annotated with <b>@Component</b> annotation and creates Spring beans for those
+            classes.</p>
+        <h2>Component Scanning</h2>
+        <p>Spring can automatically scan a package for beans if component scanning is enabled.</p>
+
+        <p> <b> @ComponentScan</b> configures which packages to scan for classes with annotation configuration. We can
+            specify the base package names directly with one of the <b>basePackages</b> or <b>value </b>arguments (value
+            is an alias for basePackages):</p>
+        <pre>@Configuration
+    @ComponentScan(basePackages = "com.javaguides.annotations")
+    class UserConfig {}</pre>
+        <h2>Spring @Component Annotation Example</h2>
+        <p>Let’s create a very simple Spring boot maven application to showcase the use of Spring <b>@Component</b>
+            annotation and how Spring autodetects it with annotation-based configuration and classpath scanning.</p>
+
+        <p> Add below Spring boot starter web dependency:</p>
+        <pre>
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    </pre>
+        <h2>Create Spring Component class - ComponentDemo.java</h2>
+        <p>Let’s create a simple component class and mark it with @Component annotation.</p>
+        <pre>@Component
+        class ComponentDemo{
+            public String getValue() {
+                return "Hello World";
+            } 
+        }</pre>
+        <p>Spring Container will automatically create and manage the spring bean for the above class because it is
+            annotated with <b>@Component</b> annotation.</p>
+        <h2>Running Spring Boot Application</h2>
+        <p>Note that we have created ApplicationContext and retrieved ComponentDemo bean using getBean() Method.</p>
+        <pre>package com.example.demo;
+
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+    import org.springframework.context.ConfigurableApplicationContext;
+    import org.springframework.stereotype.Component;
+    
+    @SpringBootApplication
+    public class DemoApplication {
+    
+        public static void main(String[] args) {
+            ConfigurableApplicationContext applicationContext = SpringApplication.run(DemoApplication.class, args);
+            ComponentDemo componentDemo = (ComponentDemo) applicationContext.getBean("componentDemo");
+            System.out.println(componentDemo.getValue());
+        }
+    }
+    
+    
+    @Component
+    class ComponentDemo {
+        public String getValue() {
+            return "Hello World";
+        }
+    }</pre>
+        <p><b>Output:
+
+            </b></p>
+            <img src="/assets/spring-mvc-image/compont-output.PNG" alt="" class="image-fluid">
+            <p>By default, the bean instances of this class have the same name as the class name with a lowercase initial. On top of that, we can specify a different name using the optional value argument of this annotation.</p>
+            <pre>@Component("componentDemo")
+                class ComponentDemo {
+                    public String getValue() {
+                        return "Hello World";
+                    }
+                }</pre>
+
+    </div>
+</body>
+
+</html>
