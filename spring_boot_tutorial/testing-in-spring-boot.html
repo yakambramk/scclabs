@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing in Spring Boot: Unit Testing and Integration Testing </title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Testing in Spring Boot: Unit Testing and Integration Testing</h1>
+                <h4>author : Sai K</h4>
+                <P>Testing is a crucial part of developing robust and reliable applications. Spring Boot provides
+                    extensive support for <br><br> testing applications, including unit tests, integration tests, and end-to-end
+                    tests. This guide will walk you through <br><br>setting up and running tests in a Spring Boot 3 application.
+                </P><br>
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li>JDK 17 or later</li><br>
+                    <li>Maven or Gradle </li><br>
+                    <li>IDE (IntelliJ IDEA, Eclipse, etc.)</li><br>
+                </ul>
+                <h2>Setting Up the Project</h2>
+                <h3>Step 1: Create a New Spring Boot Project</h3>
+                <p>Use <a href="https://start.spring.io/">Spring Initializr</a> to create a new project with the
+                    following dependencies: </p>
+                <ul>
+                    <li>Spring Web</li><br>
+                    <li>Spring Data JPA</li><br>
+                    <li>H2 Database</li><br>
+                    <li>Spring Boot Starter Test</li><br>
+                    <p>Download and unzip the project, then open it in your IDE.</p>
+                    <h2>Step 2: Define the Entity, Repository, Service, and Controller</h2>
+                    <h3>2.1 Create the Student Entity</h3>
+                    <p>Create a class named Student in the com.example.demo.entity package.</p>
+                    <pre><code>
+package com.example.demo.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String email;
+
+    // Getters and setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+}</code></pre>
+                    <h3>Explanation:</h3>
+                    <ul>
+                        <li>
+                            @Entity: Marks the class as a JPA entity.</li><br>
+                        <li> @Id and @GeneratedValue: Define the primary key and its generation strategy.</li><br>
+                        <li>name and email: Simple fields representing the student's name and email.</li><br>
+                    </ul>
+                    <h3>2.2 Create the StudentRepository</h3>
+                    <p>Create an interface named StudentRepository in the com.example.demo.repository package.</p>
+                    <pre><code>
+package com.example.demo.repository;
+
+import com.example.demo.entity.Student;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface StudentRepository extends JpaRepository<Student, Long> {
+}
+</code></pre>
+                    <h3>Explanation:</h3>
+                    <ul>
+                        <li>JpaRepository<Student, Long>: Provides CRUD operations for the Student entity.</li><br>
+                        <li>@Repository: Marks the interface as a Spring Data repository.</li><br>
+
+                    </ul>
+                    <h3>2.3 Create the StudentService</h3>
+                    <p>Create a service class named StudentService in the com.example.demo.service package.</p>
+                    <pre><code>
+    package com.example.demo.service;
+
+import com.example.demo.entity.Student;
+import com.example.demo.repository.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class StudentService {
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
+    }
+
+    public Optional<Student> getStudentById(Long id) {
+        return studentRepository.findById(id);
+    }
+
+    public Student createStudent(Student student) {
+        return studentRepository.save(student);
+    }
+
+    public void deleteStudent(Long id) {
+        studentRepository.deleteById(id);
+    }
+}
+</code></pre>
+                    <h3>Explanation:</h3>
+                    <ul>
+                        <li>@Service: Marks the class as a service component in Spring.</li><br>
+                        <li> @Autowired: Injects the StudentRepository dependency.</li><br>
+                        <li>getAllStudents(), getStudentById(Long id),<br><br> createStudent(Student student),
+                            deleteStudent(Long id): Methods to perform CRUD operations on Student entities.</li><br>
+                        <li> getAllStudents(), getStudentById(Long id),<br><br> createStudent(Student student),
+                            deleteStudent(Long id): Methods to perform CRUD operations on Student entities.</li><br>
+
+                    </ul>
+                    <h3>2.4 Create the StudentController</h3>
+                    <p>Create a controller class named StudentController in the com.example.demo.controller package.</p>
+                    <pre><code>
+ package com.example.demo.controller;
+
+import com.example.demo.entity.Student;
+import com.example.demo.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/students")
+public class StudentController {
+
+    @Autowired
+    private StudentService studentService;
+
+    @GetMapping
+    public List<Student> getAllStudents() {
+        return studentService.getAllStudents();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Student> getStudentById(@PathVariable Long id) {
+        return studentService.getStudentById(id);
+    }
+
+    @PostMapping
+    public Student createStudent(@RequestBody Student student) {
+        return studentService.createStudent(student);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteStudent(@PathVariable Long id) {
+        studentService.deleteStudent(id);
+    }
+}
+</code></pre>
+                    <h3>Explanation:</h3>
+                    <ul>
+                        <li>@RestController: Marks the class as a REST controller.</li><br>
+                        <li>@RequestMapping("/students"): Maps the controller to /students endpoint.</li><br>
+                        <li>@Autowired: Injects the StudentService dependency. </li><br>
+                        <li>@GetMapping, @PostMapping, @DeleteMapping: Maps HTTP GET, POST, and DELETE requests
+                            respectively.</li><br>
+                    </ul>
+                    <h2>Writing Unit Tests</h2>
+
+                    <p>Unit tests focus on testing individual components in isolation. Spring Boot provides support for
+                        writing unit <br><br> tests with the help of <a href="junit-5.html">JUnit</a> and <a href="mockito-tutorial.html">Mockito.</a></p>
+                    <h2>Step 3: Write Unit Tests for the Service Layer</h2>
+                    <h3>3.1 Write Unit Tests for StudentService</h3>
+                    <p>Create a test class named StudentServiceTest in the src/test/java/com/example/demo/service
+                        package. </p>
+                    <pre><code>
+ package com.example.demo.service;
+
+import com.example.demo.entity.Student;
+import com.example.demo.repository.StudentRepository;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+public class StudentServiceTest {
+
+    @Mock
+    private StudentRepository studentRepository;
+
+    @InjectMocks
+    private StudentService studentService;
+
+    @Test
+    void testGetAllStudents() {
+        Student student1 = new Student();
+        student1.setName("John Doe");
+        student1.setEmail("john.doe@example.com");
+
+        Student student2 = new Student();
+        student2.setName("Jane Doe");
+        student2.setEmail("jane.doe@example.com");
+
+        List<Student> students = Arrays.asList(student1, student2);
+
+        when(studentRepository.findAll()).thenReturn(students);
+
+        List<Student> result = studentService.getAllStudents();
+
+        assertEquals(2, result.size());
+        verify(studentRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testGetStudentById() {
+        Student student = new Student();
+        student.setId(1L);
+        student.setName("John Doe");
+        student.setEmail("john.doe@example.com");
+
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
+
+        Optional<Student> result = studentService.getStudentById(1L);
+
+        assertEquals("John Doe", result.get().getName());
+        assertEquals("john.doe@example.com", result.get().getEmail());
+        verify(studentRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    void testCreateStudent() {
+        Student student = new Student();
+        student.setName("John Doe");
+        student.setEmail("john.doe@example.com");
+
+        when(studentRepository.save(student)).thenReturn(student);
+
+        Student result = studentService.createStudent(student);
+
+        assertEquals("John Doe", result.getName());
+        assertEquals("john.doe@example.com", result.getEmail());
+        verify(studentRepository, times(1)).save(student);
+    }
+
+    @Test
+    void testDeleteStudent() {
+        Long studentId = 1L;
+
+        doNothing().when(studentRepository).deleteById(studentId);
+
+        studentService.deleteStudent(studentId);
+
+        verify(studentRepository, times(1)).deleteById(studentId);
+    }
+} </code></pre>
+<h3>Explanation:</h3>
+<ul>
+    <li>@ExtendWith(MockitoExtension.class): Tells JUnit to use the Mockito extension.</li><br>
+    <li> @Mock: Creates a mock instance of StudentRepository.</li><br>
+    <li>@InjectMocks: Injects the mocks into StudentService.</li><br>
+    <li>when, thenReturn, verify: Methods from Mockito to define behavior and verify interactions.</li><br>
+</ul>
+<h3>Writing Integration Tests</h3>
+<p>Integration tests verify the interaction between different components of the application. Spring Boot <br><br>provides support for writing integration tests with the help of the @SpringBootTest annotation.</p><br>
+<h2>Step 4: Write Integration Tests</h2>
+<h3>4.1 Create the Integration Test Class</h3>
+<p>Create a test class named StudentControllerIntegrationTest in the src/test/java/com/example/demo/controller package.</p>
+<pre><code>
+    package com.example.demo.controller;
+
+import com.example.demo.entity.Student;
+import com.example.demo.repository.StudentRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Optional;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+public class StudentControllerIntegrationTest {
+
+    @Autowired
+    private MockMvc mockMvc
+
+;
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    private Student student;
+
+    @BeforeEach
+    public void setUp() {
+        studentRepository.deleteAll();
+        student = new Student();
+        student.setName("John Doe");
+        student.setEmail("john.doe@example.com");
+        studentRepository.save(student);
+    }
+
+    @Test
+    public void testGetAllStudents() throws Exception {
+        mockMvc.perform(get("/students")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name", is(student.getName())))
+                .andExpect(jsonPath("$[0].email", is(student.getEmail())));
+    }
+
+    @Test
+    public void testGetStudentById() throws Exception {
+        mockMvc.perform(get("/students/{id}", student.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is(student.getName())))
+                .andExpect(jsonPath("$.email", is(student.getEmail())));
+    }
+
+    @Test
+    public void testCreateStudent() throws Exception {
+        mockMvc.perform(post("/students")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"Jane Doe\", \"email\": \"jane.doe@example.com\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("Jane Doe")))
+                .andExpect(jsonPath("$.email", is("jane.doe@example.com")));
+    }
+
+    @Test
+    public void testDeleteStudent() throws Exception {
+        mockMvc.perform(delete("/students/{id}", student.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        Optional<Student> deletedStudent = studentRepository.findById(student.getId());
+        assertEquals(Optional.empty(), deletedStudent);
+    }
+}
+</code></pre>
+<h3>Explanation:</h3>
+<ul>
+    <li>@SpringBootTest: Tells Spring Boot to look for the main configuration class and start the application context.</li><br>
+    <li> @AutoConfigureMockMvc: Configures MockMvc for testing MVC controllers.</li><br>
+    <li>MockMvc: Mocks the servlet environment to test Spring MVC controllers.</li><br>
+    <li>@BeforeEach: Sets up the database state before each test.</li><br>
+    <li> mockMvc.perform, andExpect: Methods from MockMvc to send requests and verify responses.</li></li>
+</ul>
+<h2>Running the Tests</h2>
+<p>Run the tests using your IDE or from the command line with Maven:</p>
+<pre><code>./mvnw test</code></pre>
+<h2>Conclusion</h2>
+<p>In this comprehensive guide, you have learned how to set up and run tests in a Spring Boot 3.2 application. We covered:</p>
+<ul>
+    <li>Setting up a Spring Boot project for testing.</li><br>
+    <li> Creating an entity, repository, service, and controller.</li><br>
+    <li>Writing unit tests for the service layer using JUnit and Mockito.</li><br>
+    <li> Writing integration tests for the controller layer using MockMvc and @SpringBootTest</li><br>
+</ul>
+<p>By following these steps, you can ensure your Spring Boot applications are well-tested and reliable.</p>
+<h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
