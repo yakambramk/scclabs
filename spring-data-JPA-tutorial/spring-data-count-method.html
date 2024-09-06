@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA CrudRepository - count() Method</h1>
+        <p>In this tutorial, we will learn how to use the Spring Data - <code style="color: red;">CrudRepository</code>
+            interface provided the <code style="color: red;">count()</code>
+            method with an example. </p>
+        <h2>count() Method Overview</h2>
+        <p>As the name depicts, the <code style="color: red;">count()</code> method allows us to count the number of
+            records that exist in a database
+            table. It belongs to the <code style="color: red;">CrudRepository</code> interface defined by Spring Data.
+        </p>
+        <h2>Maven Dependencies</h2>
+        <p>Add the following maven dependencies to your Spring Boot project:</p>
+        <pre><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+    &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+&lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;
+
+</code></pre>
+        <h2>Product Entity</h2>
+        <p>Let's first create a <code style="color: red;">Product</code> entity that we are going to use to test the
+            <code style="color: red;">count()</code> method:
+        </p>
+        <pre><code>
+package net.javaguides.springdatajpacourse.entity;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.util.Date;
+
+@Entity
+@Table(name="products")
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "sku")
+    private String sku;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "price")
+    private BigDecimal price;
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "active")
+    private boolean active;
+
+    @Column(name = "date_created")
+    @CreationTimestamp
+    private Date dateCreated;
+
+    @Column(name = "last_updated")
+    @UpdateTimestamp
+    private Date lastUpdated;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", sku='" + sku + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", active=" + active +
+                ", dateCreated=" + dateCreated +
+                ", lastUpdated=" + lastUpdated +
+                '}';
+    }
+}
+
+</code></pre>
+        <h2>ProductRepository</h2>
+        <p>Let's create <code style="color: red;">ProductRepository</code> which extends the <code
+                style="color: red;">CrudRepository</code> interface. As we know that <code
+                style="color: red;">CrudRepository</code>
+            interface provides the <code style="color: red;">count()</code> method so our <code
+                style="color: red;">ProductRepository</code> interface should extend to the <code
+                style="color: red;">CrudRepository</code>
+            interface to get all its methods:</p>
+        <pre><code>
+import net.javaguides.springdatajpacourse.entity.Product;
+import org.springframework.data.repository.CrudRepository;
+
+public interface ProductRepository extends CrudRepository&lt;Product, Long> {
+
+}
+
+</code></pre>
+        <h2>Configure MySQL and Hibernate Properties</h2>
+        <p>Let's use the MySQL database to store and retrieve the data in this example and we gonna use Hibernate
+            properties to create and drop tables.</p>
+        <p>Open the <code style="color: red;">application.properties</code> file and add the following configuration to
+            it:</p>
+        <pre><code>
+spring.datasource.url=jdbc:mysql://localhost:3306/ecommerce?useSSL=false
+spring.datasource.username=root
+spring.datasource.password=Mysql@123
+
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQLDialect
+
+spring.jpa.hibernate.ddl-auto = create-drop
+
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+</code></pre>
+        <p>Make sure that you will create <b>ecommerce</b> database before running the Spring boot application.
+            Also, change the MySQL username and password as per your MySQL installation on your machine.</p>
+        <h2>Testing count() Method</h2>
+        <p>In order to test the <code style="color: red;">count()</code> method, we gonna use <code
+                style="color: red;">CommandLineRunner.run()</code> method to execute the testing code
+            while the Spring boot application startup: </p>
+        <pre><code>
+import net.javaguides.springdatajpacourse.entity.Product;
+import net.javaguides.springdatajpacourse.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+@SpringBootApplication
+public class SpringDataJpaCourseApplication implements CommandLineRunner{
+
+	public static void main(String[] args) throws Exception {
+		SpringApplication.run(SpringDataJpaCourseApplication.class, args);
+	}
+
+	@Autowired
+	private ProductRepository productRepository;
+
+	@Override
+	public void run(String... args) throws Exception {
+		Product product = new Product();
+        product.setName("product 1");
+        product.setDescription("product 1 desc");
+        product.setPrice(new BigDecimal(100));
+        product.setDateCreated(new Date());
+        product.setLastUpdated(new Date());
+        product.setSku("product 1 sku");
+        product.setActive(true);
+        product.setImageUrl("product1.png");
+        productRepository.save(product);
+
+        Product product2 = new Product();
+        product2.setName("product 2");
+        product2.setDescription("product 2 desc");
+        product2.setPrice(new BigDecimal(200));
+        product2.setDateCreated(new Date());
+        product2.setLastUpdated(new Date());
+        product2.setSku("product 2 sku");
+        product2.setActive(true);
+        product2.setImageUrl("product2.png");
+
+        // save product 2
+        productRepository.save(product2);
+          // product count
+        long count = productRepository.count();
+	}
+}
+            </code></pre>
+        <p>After finishing the Spring boot application, you can able to see Hibernate-generated SQL statements in a
+            console:</p>
+        <pre><code>
+Hibernate: 
+    insert 
+    into
+        products
+        (active, date_created, description, image_url, last_updated, name, price, sku) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        products
+        (active, date_created, description, image_url, last_updated, name, price, sku) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        count(*) as col_0_0_ 
+    from
+        products product0_
+
+</code></pre>
+    </div>
+</body>
+
+</html>
