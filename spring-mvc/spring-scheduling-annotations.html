@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Scheduling Annotations</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Scheduling Annotations</h1>
+        <p>In this quick article, Spring provides annotation support for both task scheduling and asynchronous method
+            execution so we’re going to explore the <b>Spring Scheduling Annotations.</b></p>
+
+        <p><b>This article is part of a series:</b></p>
+        <ul>
+            <li>Spring Core Annotations</li>
+            <li> Spring Web Annotations </li>
+            <li> Spring Boot Annotations </li>
+            <li> Spring Scheduling Annotations (current article)</li>
+        </ul>
+        <p>Let's explore task scheduling and asynchronous annotations from the
+            <b>org.springframework.scheduling.annotation package</b>.
+        </p>
+        <img src="/assets/spring-mvc-image/spring-scheduling-example.PNG" alt="" class="image-fluid">
+        <h2>1. @Scheduled Annotation</h2>
+
+        <p>The @Scheduled annotation is added to a method along with some information about when to execute it, and
+            Spring takes care of the rest.</p>
+        <p> For example, the following method would be invoked every 5 seconds with a fixed delay, meaning that the
+            period will be measured from the completion time of each preceding invocation.</p>
+
+        <pre>@Scheduled(fixedDelay=5000)
+    public void doSomething() {
+        // something that should execute periodically
+    }</pre>
+
+        <p>If a fixed rate execution is desired, simply change the property name specified within the annotation. The
+            following would be executed every 5 seconds measured between the successive start times of each invocation.
+        </p>
+
+        <pre>@Scheduled(fixedRate=5000)
+    public void doSomething() {
+        // something that should execute periodically
+    }</pre>
+        <p>For fixed-delay and fixed-rate tasks, an initial delay may be specified indicating the number of milliseconds
+            to wait before the first execution of the method.</p>
+
+        <pre>@Scheduled(initialDelay=1000, fixedRate=5000)
+    public void doSomething() {
+        // something that should execute periodically
+    }</pre>
+        <p>If simple periodic scheduling is not expressive enough, then a cron expression may be provided. For example,
+            the following will only execute on weekdays.</p>
+        <pre>@Scheduled(cron="*/5 * * * * MON-FRI")
+    public void doSomething() {
+        // something that should execute on weekdays only
+    }</pre>
+        <h2>2. @EnableScheduling Annotation</h2>
+        <p><b>@EnableScheduling</b> annotation is used to enable scheduling in the application. We also have to use it
+            in conjunction with @Configuration:</p>
+        <pre>@Configuration
+    @EnableScheduling
+    public class Appconfig{}</pre>
+        <p>As a result, we can now run methods periodically with @Scheduled.</p>
+
+        <h2>3. @Async Annotation</h2>
+
+        <p>The <b>@Async</b> annotation can be provided on a method so that invocation of that method will occur
+            asynchronously. In other words, the caller will return immediately upon invocation and the actual execution
+            of the method will occur in a task that has been submitted to a Spring <b>TaskExecutor</b>. In the simplest
+            case,
+            the annotation may be applied to a void-returning method.</p>
+
+        <pre>@Async
+    void doSomething() {
+        // this will be executed asynchronously
+    }</pre>
+        <p>Unlike the methods annotated with the @Scheduled annotation, these methods can expect arguments, because they
+            will be invoked in the "normal" way by callers at runtime rather than from a scheduled task being managed by
+            the container. </p>
+        <p> For example, the following is a legitimate application of the <b>@Async </b>annotation.</p>
+        <pre>@Async
+    void doSomething(String s) {
+        // this will be executed asynchronously
+    }</pre>
+
+        <p>Even methods that return a value can be invoked asynchronously. However, such methods are required to have a
+            Future typed return value. This still provides the benefit of asynchronous execution so that the caller can
+            perform other tasks prior to calling get() on that Future.</p>
+        <pre>@Async
+    Future&lt;String> returnSomething(int i) {
+        // this will be executed asynchronously
+    }</pre>
+        <p>@Async cannot be used in conjunction with lifecycle callbacks such as <b>@PostConstruct</b>. To
+            asynchronously initialize Spring beans you currently have to use a separate initializing Spring bean that
+            invokes the @Async annotated method on the target then.</p>
+        <pre>public class SampleBeanImpl implements SampleBean {
+    @Async
+    void doSomething() {
+        // ...
+    }
+}
+
+public class SampleBeanInitializer {
+
+    private final SampleBean bean;
+
+    public SampleBeanInitializer(SampleBean bean) {
+        this.bean = bean;
+    }
+
+    @PostConstruct
+    public void initialize() {
+        bean.doSomething();
+    }
+}</pre>
+        <h2>4. @EnableAsync Annotation</h2>
+
+        <p>With this annotation, we can enable asynchronous functionality in Spring. We must use it with @Configuration:
+        </p>
+
+        <pre>@Configuration
+    @EnableAsync
+    public class AppConfig{}</pre>
+        <p>Now, that we enabled asynchronous calls, we can use @Async to define the methods supporting it.</p>
+
+
+        <h2>5. @Schedules Annotation</h2>
+
+        <p>We can use this annotation to specify multiple @Scheduled rules:</p>
+        <pre>@Schedules({ 
+    @Scheduled(fixedRate = 10000), 
+    @Scheduled(cron = "0 * * * * MON-FRI")
+  })
+  void checkVehicle() {
+      // ...
+  }</pre>
+
+    </div>
+</body>
+
+</html>

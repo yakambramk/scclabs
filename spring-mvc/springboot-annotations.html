@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring boot Annotations </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Boot Annotations List</h1>
+
+        <p>In this quick article, we will discuss Spring boot annotations with examples.</p>
+        <p> All the Spring boot annotations are mainly from autoconfigure packages so we’ll explore the Spring Boot
+            annotations from the below packages:</p>
+        <ul>
+            <li><span style="color: #f2154c;">org.springframework.boot.autoconfigure</span> </li>
+            <li> <span style="color: #f2154c;">org.springframework.boot.autoconfigure.condition</span> </li>
+        </ul>
+        <p><b>This article is part of a series:</b></p>
+        <ul>
+            <li> Spring Core Annotations</li>
+            <li> Spring Web Annotations </li>
+            <li> Spring Boot Annotations (current article)</li>
+            <li> Spring Scheduling Annotations</li>
+        </ul>
+        <p>As we know Spring Boot is a brand new framework from the team at Pivotal, designed to simplify the
+            bootstrapping and development of a new Spring application. </p>
+
+        <p> The framework takes an opinionated approach to configuration, freeing developers from the need to define a
+            boilerplate configuration. It provides defaults for code and annotation configuration to quick start new
+            Spring projects within no time.</p>
+
+        <p> Let's list all the annotations from these packages.
+        </p>
+        <img src="/assets/spring-mvc-image/spring-boot-annotations.PNG" alt="" class="image-fluid">
+        <h2>1. @SpringBootApplication</h2>
+        <p><b>@SpringBootApplication</b> annotation indicates a configuration class that declares one or more @Bean
+            methods and also triggers auto-configuration and component scanning.</p>
+        <p> The <b>@SpringBootApplication</b> annotation is equivalent to using @Configuration,
+            @EnableAutoConfiguration, and @ComponentScan with their default attributes.</p>
+        <h2>@SpringBootApplication Annotation Example</h2>
+
+        <p>We use this annotation to mark the main class of a Spring Boot application:</p>
+        <pre>import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+    
+    @SpringBootApplication // same as @Configuration @EnableAutoConfiguration @ComponentScan
+    public class Application {
+        public static void main(String[] args) {
+            SpringApplication.run(Application.class, args);
+        }
+    }</pre>
+        <p>Basically, the @SpringBootApplication annotation is a combination of the following three Spring annotations:
+        </p>
+        <img src="/assets/spring-mvc-image/springbootapplication.png" alt="" class="image-fluid">
+        <h2>@Configuration</h2>
+        <p>This annotation marks a class as a Configuration class for Java-based configuration.</p>
+        <h2>@ComponentScan</h2>
+        <p>This annotation enables component-scanning so that the web controller classes and other components you create
+            will be automatically discovered and registered as beans in Spring's Application Context. </p>
+
+        <p> All the @Component, @Service, @Repository, and @Controller annotated classes are automatically discovered by
+            this annotation.</p>
+
+        <h2>@EnableAutoConfiguration</h2>
+        <p>This annotation enables the magical auto-configuration feature of Spring Boot, which can automatically
+            configure a lot of stuff for you.</p>
+        <h2>2. @EnableAutoConfiguration</h2>
+
+        <p>@EnableAutoConfiguration annotation tells Spring Boot to “guess” how you want to configure Spring, based on
+            the jar dependencies that you have added. </p>
+
+        <p>Since the <b>spring-boot-starter-web</b> dependency added to classpath leads to configuring <b>Tomcat</b> and
+            <b>Spring MVC</b>,
+            the auto-configuration assumes that you are developing a web application and sets up Spring accordingly.
+        </p>
+        <pre>
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            </pre>
+        <p>When using @SpringBootApplication annotation, the auto-configuration of the context is automatically enabled,
+            and adding this annotation has, therefore, no additional effect.</p>
+        <h2>@EnableAutoConfiguration Annotation Example</h2>
+        <p>Let's add @EnableAutoConfiguration annotation to the Spring Boot Application class or Main class to enable an
+            auto-configuration feature.</p>
+        <pre>import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+    
+    @EnableAutoConfiguration
+    public class Application {
+        public static void main(String[] args) {
+            SpringApplication.run(Application.class, args);
+        }
+    }</pre>
+
+        <h2>3. @ConditionalOnClass and @ConditionalOnMissingClass</h2>
+        <p>These annotations belong to Class conditions. The <b>@ConditionalOnClass</b> and
+            <b>@ConditionalOnMissingClass</b> annotations let configuration be included based on the presence or absence
+            of specific classes.
+        </p>
+        <p><b>Example:</b> In the below example, using these conditions, Spring Boot will only use the marked
+            auto-configuration bean if the class in the annotation’s argument is present/absent:</p>
+        <pre>@Configuration
+    @ConditionalOnClass(DataSource.class)
+    class OracleAutoconfiguration {
+        //...
+    }</pre>
+        <h2>4. @ConditionalOnBean and @ConditionalOnMissingBean</h2>
+
+        <p>The <b>@ConditionalOnBean</b> and <b>@ConditionalOnMissingBean</b> annotations let a bean be included based
+            on the presence or absence of specific beans.</p>
+        <h2>@ConditionalOnBean Annotation Example</h2>
+        <p>Use when we want to define conditions based on the presence or absence of a specific bean:</p>
+        <pre>@Bean
+    @ConditionalOnBean(name = "dataSource")
+    LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        // ...
+    }</pre>
+        <h2>@ConditionalOnMissingBean Annotation Example </h2>
+        <p>When placed on a @Bean method, the target type defaults to the return type of the method, as shown in the
+            following example:</p>
+        <pre>@Configuration
+    public class MyAutoConfiguration {
+    
+     @Bean
+     @ConditionalOnMissingBean
+     public MyService myService() { ... }
+    }</pre>
+
+        <p>In the preceding example, the <b>myService</b> bean is going to be created if no bean of type MyService is
+            already contained in the <b>ApplicationContext</b>.</p>
+        <h2>5. @ConditionalOnProperty</h2>
+        <p>The <b>@ConditionalOnProperty</b> annotation lets configuration be included based on a Spring Environment
+            property.</p>
+        <p><b>@ConditionalOnProperty Annotation Example</b></p>
+        <p>With this annotation, we can make conditions on the values of properties:</p>
+        <pre>@Bean
+    @ConditionalOnProperty(
+        name = "usemysql", 
+        havingValue = "local"
+    )
+    DataSource dataSource() {
+        // ...
+    }</pre>
+        <h2>6. @ConditionalOnResource</h2>
+        <p>The <b>@ConditionalOnResource</b> annotation lets configuration be included only when a specific resource is
+            present:</p>
+        <pre>@ConditionalOnResource(resources = "classpath:mysql.properties")
+    Properties additionalProperties() {
+        // ...
+    }</pre>
+        <h2>7. @ConditionalOnWebApplication and @ConditionalOnNotWebApplication</h2>
+        <p>The <b>@ConditionalOnWebApplication</b> and <b>@ConditionalOnNotWebApplication</b> annotations let
+            configuration be included depending on whether the application is a “web application”.
+
+            A web application is an application that uses a Spring <b>WebApplicationContext</b>, defines a session
+            scope, or has a <b>StandardServletEnvironment</b>.</p>
+        <p><b>@ConditionalOnWebApplication annotation sample code</b></p>
+
+        <p>With these annotations, we can create conditions based on if the current application is or isn’t a web
+            application:</p>
+
+        <pre>@ConditionalOnWebApplication
+    HealthCheckController healthCheckController() {
+        // ...
+    }</pre>
+        <h2>8. @ConditionalExpression</h2>
+        <p>We can use this annotation in more complex situations. Spring will use the marked definition when the SpEL
+            expression is evaluated to be true:</p>
+
+        <pre>@Bean
+    @ConditionalOnExpression("${usemysql} && ${mysqlserver == 'local'}")
+    DataSource dataSource() {
+        // ...
+    }</pre>
+        <h2>9. @Conditional</h2>
+        <p>For even more complex conditions, we can create a class evaluating the custom condition. </p>
+
+        <p> We tell Spring to use this custom condition with @Conditional:</p>
+        <pre>@Conditional(HibernateCondition.class)
+    Properties additionalProperties() {
+        //...
+    }</pre>
+
+
+    </div>
+</body>
+
+</html>
