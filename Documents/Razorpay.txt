@@ -1,0 +1,3 @@
+Merchant ID : FUdLVVJi83YEqg
+key_id      : rzp_test_4lw80NvYa0WUy3
+key_secret  : gcRNdsbxpT2b6njQEkL8PBws

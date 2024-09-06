@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+      .container-fluid {
+        width: 100%;
+        background-color: rgb(105, 30, 225); /* Updated color */
+        padding: 0;
+        margin: 0;
+      }
+
+      .image {
+        display: flex;
+        justify-content: center; /* Centers the image horizontally */
+        align-items: center; /* Centers the image vertically */
+      }
+
+      .image img {
+        max-width: 60%; /* Ensures the image is responsive */
+        height: 40%; /* Maintains the aspect ratio */
+        border-radius: 1px; /* Optional: adds rounded corners to the image */
+      }
+
+      .heading {
+        color: rgb(204, 145, 9);
+      }
+
+      span {
+        background-color: rgb(224, 237, 235);
+        color: #d73a49;
+      }
+
+      pre {
+        background-color: #282c34;
+        color: #edf3f2;
+        padding: 20px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 18px;
+      }
+
+      code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        unicode-bidi: isolate;
+      }
+
+      .btn {
+        transition: transform 0.3s ease;
+      }
+
+      .btn:hover {
+        transform: scale(1.1); /* Zoom in */
+      }
+
+      .btn:active {
+        transform: scale(0.9); /* Zoom out on click */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="image mt-2 mb-4 mx-auto">
+      <img align="center"
+        src="../../assets/springboot images/spring initializr main.jpg"alt="logo" />
+    </div>
+
+
+
+    <div class="container">
+      <div class="heading">
+        <h3>Standard Project Structure for Spring Boot Projects</h3>
+        <h6>Author: Sai K</h6>
+      </div>
+    
+      <p>In this short article, we will discuss how to create a standard spring boot project structure or packaging structure. I will show you recommended ways to create a spring boot project structure so this will help beginners to maintain a standard coding structure.</p>
+      <h2>Video</h2>
+      <p>This tutorial is explained in the below Youtube Video. Subscribe to my youtube channel to learn more about Spring boot at Java Guides - YouTube Channel.</p>
+    
+     <p> As per Spring boot documentation, the team says Spring Boot does not require any specific code layout to work. However, there are some best practices that help.</p><br>
+      <h2>Don't use the “default” Package</h2><br>
+     <p> When a class does not include a package declaration, it is considered to be in the “default package”. The use of the “default package” is generally discouraged and should be avoided. It can cause particular problems for Spring Boot applications that use the @ComponentScan, @EntityScan, or @SpringBootApplication annotations since every class from every jar is read.</p>
+      
+    
+     <p>I recommend that you follow Java’s recommended package naming conventions and use a reversed domain name (for example, com.javaguides.projectname).</p><br>
+     <p>To know standard package naming conventions, check out - about Java Packages with Examples.</p><br>
+     <h2>Layout</h2><br>
+     <p>Spring boot team generally recommend that you locate your main application class in a root package above other classes. The @SpringBootApplication annotation is often placed on your main class, and it implicitly defines a base “search package” for certain items. For example, if you are writing a JPA application, the package of the @SpringBootApplication annotated class is used to search for @Entity items. Using a root package also allows the component scan to apply only on your project.</p><br>
+     <h2>Tip</h2><br>
+     <p>If you don’t want to use @SpringBootApplication, the @EnableAutoConfiguration and @ComponentScan annotations that it imports defines that behaviour so you can also use that instead.</p><br>
+     <h2>Structure - First approach</h2><br>
+     <p>The following spring boot project structure shows a typical layout recommended by spring boot team:</p>
+    
+    
+     <p>The Application.java file would declare the main method, along with the basic @SpringBootApplication, as follows:</p>
+<code><pre>
+     import org.springframework.boot.SpringApplication;
+     import org.springframework.boot.autoconfigure.SpringBootApplication;
+     
+     @SpringBootApplication
+     public class Application {
+         public static void main(String[] args) {
+              SpringApplication.run(Application.class, args);
+         }
+     }</pre></code>
+
+     <h2>Static Content</h2>
+
+     <p>In a spring boot web application, static files like HTML, CSS, JS and IMAGE files can be served directly from any of the following classpath locations out of the box. No configuration required.</p>
+
+    <p> Let's look at the resources folder in the above project structure. This directory, as the name suggests, is dedicated to all the static resources, templates and property files.</p>
+     <ul>
+    <li> resources/static - contains static resources such as CSS, js, and images.
+    <li> resources/templates - contains server-side templates which are rendered by Spring.
+     <li>resources/application.properties - This file is very important. It contains application-wide properties. Spring reads the properties defined in this file to configure your application. You can define a server’s default port, server’s context path, database URLs etc, in this file.</li>
+     </ul>
+
+     <p>By default, Spring boot serves static content from one of the following locations in the classpath:</p>
+
+     <ul>
+     <li>/static
+     <li>/public
+     <li>/resources
+     <li>/META-INF/resources</li>
+     </ul>
+
+     <p>By default, resources are mapped on /**, but you can tune that with the spring.mvc.static-path-pattern property. For instance, relocating all resources to /resources/** can be achieved as follows:</p>
+     
+    <p> spring.mvc.static-path-pattern=/resources/**</p>
+     
+     <p>You can also customize the static resource locations by using the spring.resources.static-locations property (replacing the default values with a list of directory locations). The root Servlet context path, "/", is automatically added as a location as well.</p>
+     
+     <h2>Dynamic web content (Templates)</h2>
+
+     <p>Spring supports the following template engines by default. These templates can be activated using appropriate spring boot starters.</p>
+
+     <ul>
+     <li>FreeMarker - spring-boot-starter-freemarker
+      <li>Groovy - spring-boot-starter-groovy
+      <li>Thymeleaf - spring-boot-starter-thymeleaf
+        <li>Mustache - spring-boot-starter-mustache</li>
+     </ul>
+
+     <p>All these template engines will resolve their template files from the path src/main/resources/template.</p>
+
+     <P>Read more about how to serve static content in spring boot application at Spring Boot Official Doc - Static Content</p>
+     
+     <h2>Project Structure - Second approach</h2>
+
+    <p>However, above typical layout approach works well but some of the developers prefer to use the following packaging or project structure: </p>
+     
+     <p>Separate package for each layer like a model, controller, dao and service etc.</p>
+
+     <h2>pom.xml</h2>
+
+     <P>In a spring boot project, most of the modules can be enabled or disabled just by adding a set of starters. All Spring Boot projects typically use spring-boot-starter-parent as the parent in pom.xml.</P>
+     
+    
+     <h2>What is the Spring Boot Starter Parent and How to use it?</h2>
+
+     <code><pre>
+     <parent>
+
+         <groupId>org.springframework.boot</groupId>
+
+         <artifactId>spring-boot-starter-parent</artifactId>
+
+         <version>2.0.4.RELEASE</version>
+
+     </parent>
+
+    </pre></code>
+     
+ <P>spring-boot-starter-parent allows us to manage the following things for multiple child projects and modules:</P>
+
+ <ul>
+ <li>Configuration - Java Version and Other Properties
+    <li> Dependency Management - Version of dependencies
+        <li> Default Plugin Configuration,li</li>
+ </ul>
+ <p>We should need to specify only the Spring Boot version number on this dependency. If you import additional starters, you can safely omit the version number.</p>
+ 
+    
+    </div>
+  </body>
+</html>

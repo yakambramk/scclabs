@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+      body {
+          font-family: 'Poppins', sans-serif;
+          margin: 0;
+          padding: 20px;
+      }
+      .container {
+          max-width: 1000px;
+          margin: auto;
+      }
+      h1 {
+          color: red;
+          margin: 50px 0;
+          font-weight: bold;
+      }
+      h2 {
+          margin: 30px 0;
+          font-weight: bold;
+      }
+      h3 {
+          margin: 30px 0;
+          font-weight: bold;
+      }
+      p {
+          line-height: 1.6;
+          letter-spacing: 0.5px;
+          font-size: 15px;
+      }
+      a {
+          text-decoration: none;
+          cursor: pointer;
+          color: #3D85C6;
+          line-height: 2;
+          font-weight: bold;
+      }
+      a:hover {
+          color: red;
+          font-weight: bold;
+          text-decoration: none;
+      }
+      li {
+          letter-spacing: 0.5px;
+          margin: 15px 0;
+          font-size: 15px;
+          line-height: 1.8;
+      }
+      pre {
+          font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+          font-size: 14px;
+          padding: 2%;
+          line-height: 1.8 !important;
+          border: solid 1px #3D85C6;
+          border-radius: 6px;
+          background-color: #F6F8FA !important;
+          overflow: auto;
+          white-space: pre;
+          box-sizing: border-box;
+      }
+      @media only screen and (max-width: 600px) {
+          pre {
+              font-size: 14px;
+              padding: 2%;
+              white-space: pre;
+              overflow-x: auto;
+          }
+      }
+      code {
+          background: #F6F8FA;
+      }
+  </style>
+  </head>
+  <body>
+      <div class="container">
+          <h1>Spring Boot Microservices Tutorial</h1>
+          <h6>Author: Sai K</h6>
+        <h2>Introduction</h2>
+        
+      <p>This page contains a list of Microservices tutorials using Spring Boot and Spring Cloud.</p>
+      <h2>What are Microservices?</h2>
+      
+      <p>Microservices are a software architectural style in which a large application is built as a collection of small, independent services that communicate with each other over a network.</p>
+
+     <p>Each service is a self-contained unit of functionality that can be developed, tested, and deployed independently of the other services. This allows for more flexibility and scalability than a monolithic architecture, where all the functionality is contained in a single, large codebase.</p>
+
+     <p>Microservices can be written in different programming languages and use different technologies as long as they can communicate with each other through a common API.</p>
+
+    <p>Microservices are designed to be loosely coupled, meaning that changes to one service should not affect the other services. This makes it easier to update, maintain, and scale the application. Microservices architecture is best suited for large and complex applications that need to handle a high volume of traffic and be scaled horizontally.</p>
+
+  <h2>Key Components of a Microservices Architecture</h2>
+
+  <ol>
+    <li>Core Services: Each service is a self-contained unit of functionality that can be developed, tested, and deployed independently of the other services.<br>
+
+  <li>Service registry: A service registry is a database of all the services in the system, along with their locations and capabilities. It allows services to discover and communicate with each other.<br>
+
+  <li>API Gateway: An API gateway is a single entry point for all incoming requests to the microservices. It acts as a reverse proxy, routing requests to the appropriate service and handling tasks such as authentication and rate limiting.<br>
+
+  <li>Message bus: A message bus is a messaging system that allows services to communicate asynchronously with each other. This can be done through protocols like HTTP, RabbitMQ, or Kafka.<br>
+
+   <li >Monitoring and logging: Monitoring and logging are necessary to track the health of the services and troubleshoot problems.<br>
+
+    <li >Service discovery and load balancing: This component is responsible for discovering service instances and directing traffic to the appropriate service instances based on load and availability.<br>
+
+        <li >Continuous integration and continuous deployment (CI/CD): To make the development and deployment process of microservices as smooth as possible, it is recommended to use a tool such as Jenkins, TravisCI, or CircleCI to automate the process of building, testing, and deploying microservices.</li>
+    </ol>
+            <h2>Microservices Tutorials/Guides Using Spring Boot and Spring Cloud</h2><br>
+
+               <h3> Introduction to Microservices</h3>
+
+               <p> <a href="/spring-boot-tutprial/Spring Boot + IDE Tutorials/microservice/What are Microservices and How to Build Microservices in Java.html" target="_blank">What are Microservices and How to Build Microservices in Java?</a>
+               </p>
+                <p><a href="/spring-boot-tutprial/Spring Boot + IDE Tutorials/microservice/How to Create Microservices in Java Using Spring Boot.html" target="_blank">How to Create Microservices in Java Using Spring Boot</a></p>
+
+                    <p><a href="/spring-boot-tutprial/Spring Boot + IDE Tutorials/microservice/Spring Boot Microservices Architecture.html" target="_blank">Spring Boot Microservices Architecture</a></p>
+
+                    <p><a href="/spring-boot-tutprial/Spring Boot + IDE Tutorials/microservice/What is Spring Cloud.html" target="_blank">What is Spring Cloud?</a></p>
+                    
+  <h3> Microservices Communication</h3>
+
+  <p> Spring Boot Microservices Communication Example using RestTemplate</p>
+
+    <p>Spring Boot Microservices Communication Example using WebClient</p>
+
+        <p>  Spring Boot Microservices Communication Example using Spring Cloud Open Feign</p>
+
+    <h3> Configuration and Service Discovery</h3>
+
+    <p> Spring Boot Microservices - Spring Cloud Config Server</p>
+    
+
+        <p>  Spring Boot Microservices - Spring Cloud Netflix Eureka-based Service Registry</p>
+        
+
+    <h3> API Gateway</h3>
+
+    <p> Spring Boot Microservices - Spring Cloud API Gateway</p>
+
+        <p> Spring Boot Microservices API Gateway with Automatic Routes Mapping</p>
+
+            <p> Spring Cloud API Gateway Global Filter Example - Spring Boot Microservices</p>
+
+
+  <h3> Event-Driven Microservices</h3>
+
+  <p> Event-Driven Microservices using Spring Boot and Kafka</p>
+
+
+    <p> Spring Boot Microservices with RabbitMQ Example</p>
+
+
+        <p> Spring Boot Microservices with Apache Kafka Example</p>
+
+
+            <p> Spring Boot Microservices REST API Example</p>
+
+
+                <p> Spring Boot Microservices with Spring Cloud Stream Example</p>
+
+
+   <h3> Microservices Project</h3>
+
+   <p> Microservices Project using Spring Boot</p>
+
+
+    <p> Spring Boot Microservices E-Commerce Project: Step-by-Step Tutorial</p>
+
+
+     <h3> Testing</h3>
+
+     <p> Mocking Feign Client in Spring Boot Microservices</p>
+
+
+     <h3>Docker Integration</h3>
+
+     <p>Spring Boot Microservices with Docker Tutorial</p>
+
+
+        <p>Spring Boot Microservices with Docker Example</p>
+
+
+            <p>Spring Boot Microservices with Docker Compose Example</p>
+
+
+    <h3>Spring Cloud Tutorials</h3>
+
+    <p>Spring Cloud Config Example Tutorial</p>
+
+
+        <p>Spring Cloud OpenFeign Example Tutorial</p>
+
+
+            <p>Spring Cloud LoadBalancer Example - Client-Side Load Balancing </p>
+
+
+                <p>Spring Cloud Gateway Tutorial</p>
+
+
+                    <p>Spring Cloud Netflix Eureka: Step-by-Step Tutorial</p>
+
+
+                        <p>Spring Cloud Circuit Breaker: Step-by-Step Tutorial</p>
+
+
+<h3>Securing Spring Boot Microservices</h3>
+
+<p>Spring Boot Microservices Security with JWT Authentication</p>
+
+
+    <p>Secure Spring Boot Microservices with Keycloak</p>
+
+
+        <p>Securing Spring Boot Microservices with OAuth2</p>
+
+
+<h3>Microservices with Client</h3>
+
+<p>Angular Spring Boot Microservices Example</p>
+
+
+    <p>React JS + Spring Boot Microservices Tutorial</p>
+
+
+<h3>Spring Boot Microservices Shopping Cart Project</h3>
+
+<p>Part 1 - Spring Boot Microservices Shopping Cart Example</p>
+
+
+    <p>Part 2 - Spring Cloud OpenFeign</p>
+
+
+        <p>Part 3 - Spring Cloud Netflix Eureka</p>
+
+
+<h3>Best Practices</h3>
+
+<p>Best Practices for Spring Boot Microservices</p>
+
+
+    <p>Java Spring Boot Best Practices</p>
+
+
+        <h3>Spring Boot Microservices Design Patterns</h3>
+
+        <p> Saga Design Pattern in Spring Boot Microservices</p>
+
+            <p> Spring Boot Microservices Architecture</p>
+
+     <h3>My Highest-rated Udemy Course</h3>
+
+     <p>Learn to build microservices using Spring Boot, Spring Cloud, React, Kafka, RabbitMQ, and REST API (REST Web Services).</p>
+
+        <p>Course link: Building Microservices with Spring Boot and Spring Cloud
+
+        </body>
+        
+        </html>

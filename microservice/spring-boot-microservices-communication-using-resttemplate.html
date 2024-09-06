@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+      .container-fluid {
+        width: 100%;
+        background-color: rgb(105, 30, 225); /* Updated color */
+        padding: 0;
+        margin: 0;
+      }
+
+      .image {
+        display: flex;
+        justify-content: center; /* Centers the image horizontally */
+        align-items: center; /* Centers the image vertically */
+      }
+
+      .image img {
+        max-width: 60%; /* Ensures the image is responsive */
+        height: 40%; /* Maintains the aspect ratio */
+        border-radius: 1px; /* Optional: adds rounded corners to the image */
+      }
+
+      .heading {
+        color: rgb(204, 145, 9);
+      }
+
+      span {
+        background-color: rgb(224, 237, 235);
+        color: #d73a49;
+      }
+
+      pre {
+        background-color: #282c34;
+        color: #edf3f2;
+        padding: 20px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 18px;
+      }
+
+      code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        unicode-bidi: isolate;
+      }
+
+      .btn {
+        transition: transform 0.3s ease;
+      }
+
+      .btn:hover {
+        transform: scale(1.1); /* Zoom in */
+      }
+
+      .btn:active {
+        transform: scale(0.9); /* Zoom out on click */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="heading">
+        <h1>
+          Spring Boot Microservices Communication Example using RestTemplate
+        </h1>
+        <h6>Author: Sai K</h6>
+      </div>
+      <p>
+        In this tutorial, we will learn how to creaCte multiple Spring boot
+        microservices and how to use RestTemplate class to make Synchronous
+        communication between multiple microservices.
+      </p>
+
+      <p>There are two styles of Microservices Communications:</p>
+      <ol>
+        <li>Synchronous Communication</li>
+        <li>Asynchronous Communication</li>
+      </ol>
+      <h3>Synchronous Communication</h3>
+      <p>In the case of Synchronous Communication, the client sends a request and waits for a response from the service. The important point here is that the protocol (HTTP/HTTPS) is synchronous and the client code can only continue its task when it receives the HTTP server response.  <br><br>
+
+        For example,<b> Microservice1 acts as a client that sends a request and waits for a response from Microservice2</b>. <br><br>
+        
+        We can use RestTemplate or WebClient or Spring Cloud Open Feign library to make a Synchronous Communication multiple microservices.</p>
+        <h3>Asynchronous Communication</h3>
+        <p>In the case of Asynchronous Communication, The client sends a request and does not wait for a response from the service. The client will continue executing its task - It doesn’t wait for the response from the service. <br><br>
+
+            For example, <b>Microservice1 acts as a client that sends a request and doesn't wait for a response from Microservice2.</b> <br><br>
+            
+            We can use Message brokers such as RabbitMQ and Apache Kafka to make Asynchronous Communication between multiple microservices.</p>
+
+        <h3>What we will Build?
+        </h3>
+        <p>Well, we will create two microservices such as<span> department-service</span> and<span> user-service</span> and we will make a REST API call from<span> user-service</span> to <span>department-service</span> to fetch a particular user department.
+        </p>
+        <div class=" mt-2 mb-4">
+          <img src="../assets/microservices/Microservice 1.jpeg" alt="logo" class="img-fluid" />
+      </div>
+
+<p>We will create a separate MySQL database for each microservice.<br><br>
+
+    We will create and set up two Spring boot projects as two microservices in IntelliJ IDEA.
+    </p>
+    <h3>Creating DepartmentService Microservice
+</h3>
+<p>Let's first create and setup the<span>department-service </span> Spring boot project in IntelliJ IDEA
+</p>
+<h3>1. Create and setup spring boot project (department-service) in IntelliJ IDEA
+</h3>
+<p>Let's create a Spring boot project using the spring initializr.<br><br>
+
+    Refer to the below screenshot to enter details while creating the spring boot application using the spring initializr:
+    <div class=" mt-2 mb-4">
+      <img src="../assets/microservices/Microservice 2.png" alt="logo" class="img-fluid" />
+  </div>
+
+    </p>
+    <p>Click on Generate button to download the Spring boot project as a zip file. Unzip the zip file and import the Spring boot project in IntelliJ IDEA.<br><br>
+
+        Here is the <span>pom.xml</span> file for your reference:
+        </p>
+        <code><pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;parent&gt;
+		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+		&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+		&lt;version&gt;2.7.4&lt;/version&gt;
+		&lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+	&lt;/parent&gt;
+	&lt;groupId&gt;net.javaguides&lt;/groupId&gt;
+	&lt;artifactId&gt;department-service&lt;/artifactId&gt;
+	&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;department-service&lt;/name&gt;
+	&lt;description&gt;department-service&lt;/description&gt;
+	&lt;properties&gt;
+		&lt;java.version&gt;17&lt;/java.version&gt;
+	&lt;/properties&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;mysql&lt;/groupId&gt;
+			&lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+			&lt;scope&gt;runtime&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+			&lt;artifactId&gt;lombok&lt;/artifactId&gt;
+			&lt;optional&gt;true&lt;/optional&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+				&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+				&lt;configuration&gt;
+					&lt;excludes&gt;
+						&lt;exclude&gt;
+							&lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+							&lt;artifactId&gt;lombok&lt;/artifactId&gt;
+						&lt;/exclude&gt;
+					&lt;/excludes&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+
+&lt;/project&gt;
+        </pre></code>
+        <h3>DepartmentService - Configure MySQL Database
+        </h3>
+        <p>Since we’re using MySQL as our database, we need to configure the URL, username, and password so that our Spring boot can establish a connection with the database on startup.<br><br>
+
+            Open the <span>src/main/resources/application.properties</span> file and add the following properties to it:
+            </p>
+            <code><pre>
+spring.datasource.url=jdbc:mysql://localhost:3306/department_db
+spring.datasource.username=root
+spring.datasource.password=Mysql@123
+
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+spring.jpa.hibernate.ddl-auto=update
+            </pre></code>
+            <p>Don’t forget to change the <span>spring.datasource.username</span> and <span>spring.datasource.password </span> as per your MySQL installation. Also, create a database named <b>department_db</b> in MySQL before proceeding to the next section.<br><br>
+                You don’t need to create any tables. The tables will automatically be created by Hibernate from the <span>Department</span> that we will define in the next step. This is made possible by the property <span>spring.jpa.hibernate.ddl-auto = update.</span></p>
+<h3>DepartmentService - Create Department JPA Entity</h3>
+<code><pre>
+package net.javaguides.departmentservice.entity;
+
+import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "departments")
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
+public class Department {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String departmentName;
+    private String departmentAddress;
+    private String departmentCode;
+}
+</pre></code>
+<h3>DepartmentService - Create Spring Data JPA Repository</h3>
+<code><pre>
+package net.javaguides.departmentservice.repository;
+
+import net.javaguides.departmentservice.entity.Department;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface DepartmentRepository extends JpaRepository<Department, Long> {
+}
+</pre></code>
+<h3>DepartmentService - Create Service Layer
+</h3>
+<h6>DepartmentService Interface</h6>
+<code><pre>
+package net.javaguides.departmentservice.service;
+
+import net.javaguides.departmentservice.entity.Department;
+
+public interface DepartmentService {
+    Department saveDepartment(Department department);
+
+    Department getDepartmentById(Long departmentId);
+}
+</pre></code>
+<h6>DepartmentServiceImpl class
+</h6>
+<code><pre>
+package net.javaguides.departmentservice.service.impl;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.javaguides.departmentservice.entity.Department;
+import net.javaguides.departmentservice.repository.DepartmentRepository;
+import net.javaguides.departmentservice.service.DepartmentService;
+import org.springframework.stereotype.Service;
+    
+@Service
+@AllArgsConstructor
+@Slf4j
+public class DepartmentServiceImpl implements DepartmentService {
+    
+     private DepartmentRepository departmentRepository;
+    
+     @Override
+     public Department saveDepartment(Department department) {
+        return departmentRepository.save(department);
+     }
+    
+     @Override
+      public Department getDepartmentById(Long departmentId) {
+        return departmentRepository.findById(departmentId).get();
+     }
+ }
+    </pre></code>
+    <h3>DepartmentService - Create Controller Layer: DepartmentController</h3>
+<code><pre>
+package net.javaguides.departmentservice.controller;
+
+import lombok.AllArgsConstructor;
+import net.javaguides.departmentservice.entity.Department;
+import net.javaguides.departmentservice.service.DepartmentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("api/departments")
+@AllArgsConstructor
+public class DepartmentController {
+
+    private DepartmentService departmentService;
+
+    @PostMapping
+    public ResponseEntity<Department> saveDepartment(@RequestBody Department department){
+        Department savedDepartment = departmentService.saveDepartment(department);
+        return new ResponseEntity<>(savedDepartment, HttpStatus.CREATED);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Department> getDepartmentById(@PathVariable("id") Long departmentId){
+        Department department = departmentService.getDepartmentById(departmentId);
+        return ResponseEntity.ok(department);
+    }
+}
+</pre></code>
+<h3>DepartmentService - Start Spring Boot Application
+</h3>
+<p>Two ways we can start the standalone Spring boot application.</p>
+<ol>
+<li> From the root directory of the application and type the following command to run it -</li>
+<code><pre>
+ $ mvn spring-boot:run
+</pre></code>
+<li> From your IDE, run the <span>DepartmentServiceApplication.main()</span> method as a standalone Java class that will start the embedded Tomcat server on port 8080 and point the browser to http://localhost:8080/.
+</li>
+</ol>
+<h3>DepartmentService - Test REST APIs using Postman Client</h3><br><br>
+<h6>Save Department REST API:
+</h6>
+<div class=" mt-2 mb-4">
+  <img src="../assets/microservices/Microservice 3.png" alt="logo" class="img-fluid" />
+</div>
+<h6>Get Single Department REST API:
+</h6>
+<div class=" mt-2 mb-4">
+  <img src="../assets/microservices/Microservice 4.png" alt="logo" class="img-fluid" />
+</div>
+<h1>2. Creating UserService Microservice
+</h1>
+<p>Let's first create and setup the <span>user-service</span> Spring boot project in IntelliJ IDEA
+</p>
+<h3>1. Create and setup spring boot project (user-service) in IntelliJ IDEA
+</h3>
+
+<p>Let's create a Spring boot project using the spring initializr.<br><br>
+
+    Refer to the below screenshot to enter details while creating the spring boot application using the spring initializr:
+    </p><br><br>
+    <div class=" mt-2 mb-4">
+      <img src="../assets/microservices/Microservice 5.png" alt="logo" class="img-fluid" />
+  </div>
+    <p>Click on Generate button to download the Spring boot project as a zip file. Unzip the zip file and import the Spring boot project in IntelliJ IDEA.<br><br>
+
+        Here is the <span>pom.xml</span> file for your reference:
+        </p>
+<code><pre>
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;parent&gt;
+		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+		&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+		&lt;version&gt;2.7.4&lt;/version&gt;
+		&lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+	&lt;/parent&gt;
+	&lt;groupId&gt;net.javaguides&lt;/groupId&gt;
+	&lt;artifactId&gt;user-service&lt;/artifactId&gt;
+	&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;user-service&lt;/name&gt;
+	&lt;description&gt;user-service&lt;/description&gt;
+	&lt;properties&gt;
+		&lt;java.version&gt;17&lt;/java.version&gt;
+	&lt;/properties&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;mysql&lt;/groupId&gt;
+			&lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+			&lt;scope&gt;runtime&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+			&lt;artifactId&gt;lombok&lt;/artifactId&gt;
+			&lt;optional&gt;true&lt;/optional&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+				&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+				&lt;configuration&gt;
+					&lt;excludes&gt;
+						&lt;exclude&gt;
+							&lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+							&lt;artifactId&gt;lombok&lt;/artifactId&gt;
+						&lt;/exclude&gt;
+					&lt;/excludes&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+
+&lt;/project&gt;
+</pre></code>
+<h3>UserService - Configure MySQL Database</h3>
+<p>Open the<span> src/main/resources/application.properties</span> file and add the following properties to it:</p>
+<code><pre>
+spring.datasource.url=jdbc:mysql://localhost:3306/employee_db
+spring.datasource.username=root
+spring.datasource.password=Mysql@123
+
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+spring.jpa.hibernate.ddl-auto=update
+</pre></code>
+<p>Don’t forget to change the <span>spring.datasource.username</span> and<span>spring.datasource.password</span> as per your MySQL installation. Also, create a database named <b>employee_db</b> in MySQL before proceeding to the next section.<br><br>
+    You don’t need to create any tables. The tables will automatically be created by Hibernate from the<span>User</span>entity that we will define in the next step. This is made possible by the property <span>spring.jpa.hibernate.ddl-auto = update.</span>
+    </p>
+    <h3>UserService - Change the Server Port</h3>
+    <p>Note that the department service Spring boot project is running on the default tomcat server port 8080.<br><br>
+        For user service, we need to change the embedded tomcat server port to 8081 using the below property:
+        </p>
+    <code><pre>
+ server.port = 8081
+    </pre></code>
+    <h3>UserService - Create User JPA Entity
+    </h3>
+    <code><pre>
+package net.javaguides.userservice.entity;
+
+import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "users")
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String firstName;
+    private String lastName;
+    @Column(nullable = false, unique = true)
+    private String email;
+    private String departmentId;
+}
+    </pre></code>
+    <h3>UserService - Create Spring Data JPA Repository
+    </h3>
+    <code><pre>
+package net.javaguides.userservice.repository;
+
+import net.javaguides.userservice.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository< User, Long > {
+
+}
+    </pre></code>
+    <h3>UserService - Create DTO Classes
+    </h3>
+    <h5>DepartmentDto
+    </h5>
+    <code><pre>
+package net.javaguides.userservice.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class DepartmentDto {
+    private Long id;
+    private String departmentName;
+    private String departmentAddress;
+    private String departmentCode;
+}
+    </pre></code>
+    <h5>UserDto
+    </h5>
+    <code><pre>
+package net.javaguides.userservice.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserDto {
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+}
+    </pre></code>
+<h5>ResponseDto</h5>
+<code><pre>
+package net.javaguides.userservice.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class ResponseDto {
+    private DepartmentDto department;
+    private UserDto user;
+}
+</pre></code>
+<h3>UserService - Configure RestTemplate as Spring Bean
+</h3>
+<p>Let's configure RestTemplate class as Spring bean so that we can inject and use it.
+</p>
+<code><pre>
+package net.javaguides.userservice;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+
+@SpringBootApplication
+public class UserServiceApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(UserServiceApplication.class, args);
+    }
+
+    @Bean
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
+    }
+}
+</pre></code>
+<h3>UserService - Create Service Layer
+</h3>
+<h5>UserService Interface
+</h5>
+<code><pre>
+package net.javaguides.userservice.service;
+
+import net.javaguides.userservice.dto.ResponseDto;
+import net.javaguides.userservice.entity.User;
+
+public interface UserService {
+    User saveUser(User user);
+
+    ResponseDto getUser(Long userId);
+}
+</pre></code>
+<h5>UserServiceImpl class
+</h5>
+<code><pre>
+package net.javaguides.userservice.service.impl;
+
+import lombok.AllArgsConstructor;
+import net.javaguides.userservice.dto.DepartmentDto;
+import net.javaguides.userservice.dto.ResponseDto;
+import net.javaguides.userservice.dto.UserDto;
+import net.javaguides.userservice.entity.User;
+import net.javaguides.userservice.repository.UserRepository;
+import net.javaguides.userservice.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+@Service
+@AllArgsConstructor
+public class UserServiceImpl implements UserService {
+
+    private UserRepository userRepository;
+    private RestTemplate restTemplate;
+
+    @Override
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public ResponseDto getUser(Long userId) {
+
+        ResponseDto responseDto = new ResponseDto();
+        User user = userRepository.findById(userId).get();
+        UserDto userDto = mapToUser(user);
+
+        ResponseEntity<DepartmentDto> responseEntity = restTemplate
+                .getForEntity("http://localhost:8080/api/departments/" + user.getDepartmentId(),
+                DepartmentDto.class);
+
+        DepartmentDto departmentDto = responseEntity.getBody();
+
+        System.out.println(responseEntity.getStatusCode());
+
+        responseDto.setUser(userDto);
+        responseDto.setDepartment(departmentDto);
+
+        return responseDto;
+    }
+
+    private UserDto mapToUser(User user){
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setEmail(user.getEmail());
+        return userDto;
+    }
+}
+
+</pre></code>
+<p>Note that we are using <span>RestTemplate</span> to make a REST API call to department-service:
+</p>
+<code><pre>
+    ResponseEntity<DepartmentDto> responseEntity = restTemplate
+        .getForEntity("http://localhost:8080/api/departments/" + user.getDepartmentId(),
+        DepartmentDto.class);
+</pre></code>
+<h3>UserService - Create Controller Layer: UserController
+</h3>
+<code><pre>
+package net.javaguides.userservice.controller;
+
+import lombok.AllArgsConstructor;
+import net.javaguides.userservice.dto.ResponseDto;
+import net.javaguides.userservice.entity.User;
+import net.javaguides.userservice.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("api/users")
+@AllArgsConstructor
+public class UserController {
+
+    private UserService userService;
+
+    @PostMapping
+    public ResponseEntity<User> saveUser(@RequestBody User user){
+        User savedUser = userService.saveUser(user);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<ResponseDto> getUser(@PathVariable("id") Long userId){
+        ResponseDto responseDto = userService.getUser(userId);
+        return ResponseEntity.ok(responseDto);
+    }
+}
+</pre></code>
+<h3>UserService - Start Spring Boot Application</h3>
+<p>Two ways we can start the standalone Spring boot application. <br>
+    1. From the root directory of the application and type the following command to run it -
+    </p>
+    <code><pre>
+ $ mvn spring-boot:run
+    </pre></code>
+    <p>2. From your IDE, run the <span>UserServiceApplication.main()</span> method as a standalone Java class that will start the embedded Tomcat server on port 8080 and point the browser to http://localhost:8081/.
+    </p>
+    <h3>UserService - Test REST APIs using Postman Client</h3>
+    <h5>Save User REST API:</h5><br><br>
+    <div class=" mt-2 mb-4">
+      <img src="../assets/microservices/Microservice 6.png" alt="logo" class="img-fluid" />
+  </div>
+    <h5>Get User REST API: </h5>
+    <div class=" mt-2 mb-4">
+      <img src="../assets/microservices/Microservice 7.png" alt="logo" class="img-fluid" />
+  </div>
+    <p>Note that the response contains a Department for a User.  This demonstrates that we have successfully made a REST API call from UserService to DepartmentService.
+    </p>
+    <h1>Conclusion
+    </h1>
+    <p>In this tutorial, we learned how to create multiple Spring boot microservices and how to use <span>RestTemplate</span> class to make Synchronous communication between multiple microservices.<br><br>
+
+        As of 5.0, the <span>RestTemplate</span> class is in maintenance mode and soon will be deprecated. So the Spring team recommended using <span>org.springframework.web.reactive.client.WebClient </span> a modern API and supports sync, async, and streaming scenarios.<br><br>
+        
+        Check out Spring Boot Microservices Communication Example using WebClient
+        </p>
+        <h1>Related Tutorials
+        </h1>
+        <p>
+✅ Spring Boot Microservices Communication Example using RestTemplate<br><br>
+
+✅ Spring Boot Microservices Communication Example using WebClient<br><br>
+
+✅ Spring Boot Microservices Communication Example using Spring Cloud Open Feign<br><br>
+
+✅ Spring Boot Microservices - Spring Cloud Config Serverv<br><br>
+
+✅ Spring Boot Microservices - Spring Cloud Netflix Eureka-based Service Registry<br><br>
+
+✅ Spring Boot Microservices - Spring Cloud API Gateway<br><br>
+
+✅ Event-Driven Microservices using Spring Boot and Kafka<br><br>
+        </p>
+        <h1>Related Spring and Spring Boot Tutorials/Guides:
+        </h1>
+        <p>
+            <button type="button" class="btn btn-outline-primary">
+              Spring Boot Tutorials [500+]s
+            </button>
+            <button type="button" class="btn btn-outline-secondary">
+              Spring Boot Testing Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-success">
+              Spring Boot Microservice Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-danger">
+              Spring Boot Kafka Microservices
+            </button>
+            <button type="button" class="btn btn-outline-warning">
+              Spring Boot + Apache Kafka Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-info">
+              Spring Core Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-primary">
+              Spring MVC Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-secondary">
+              Spring Data JPA Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-success">
+              Spring Framework for Beginners
+            </button>
+            <button type="button" class="btn btn-outline-danger">
+              Spring AOP Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-warning">
+              Spring Security Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-info">
+              Spring Exceptions Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-primary">
+              Spring Boot Interview Questions
+            </button>
+            <button type="button" class="btn btn-outline-dark">
+              Spring Boot Microservices Interview Questions
+            </button>
+            <button type="button" class="btn btn-outline-primary">
+              Apache Kafka Tutorials
+            </button>
+            <button type="button" class="btn btn-outline-secondary">
+              Docker Tutorials and Guides
+            </button>
+            <button type="button" class="btn btn-outline-success">
+              Spring Boot RabbitMQ Tutorials
+            </button>
+            <button type="button" class="btn btn-outline-danger">
+              Angular CRUD Example with Spring Boot
+            </button>
+            <button type="button" class="btn btn-outline-warning">
+              Spring Boot + Angular 12 CRUD Full Stack
+            </button>
+            <button type="button" class="btn btn-outline-info">
+              Spring Boot + Angular 8 CRUD Full Stack
+            </button>
+            <button type="button" class="btn btn-outline-danger">
+              Spring Boot + Angular 10 CRUD Full Stack
+            </button>
+            <button type="button" class="btn btn-outline-primary">
+              React JS ( React Hooks) + Spring Boot
+            </button>
+            <button type="button" class="btn btn-outline-secondary">
+              Spring Boot + React JS CRUD Full Stack
+            </button>
+            <button type="button" class="btn btn-outline-success">
+              Spring Boot Thymeleaf CRUD Full Stack
+            </button>
+            <button type="button" class="btn btn-outline-danger">
+              Spring Boot User Registration and Login
+            </button>
+            <button type="button" class="btn btn-outline-warning">
+              Node Js + Express + MongoDB CRUDVue
+            </button>
+            <button type="button" class="btn btn-outline-info">
+              JS + Spring Boot REST API Tutorial
+            </button>
+          </p>
+    </div>
+  </body>
+</html>
