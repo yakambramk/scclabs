@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+      .container-fluid {
+        width: 100%;
+        background-color: rgb(105, 30, 225); /* Updated color */
+        padding: 0;
+        margin: 0;
+      }
+
+      .image {
+        display: flex;
+        justify-content: center; /* Centers the image horizontally */
+        align-items: center; /* Centers the image vertically */
+      }
+
+      .image img {
+        max-width: 60%; /* Ensures the image is responsive */
+        height: 40%; /* Maintains the aspect ratio */
+        border-radius: 1px; /* Optional: adds rounded corners to the image */
+      }
+
+      .heading {
+        color: rgb(204, 145, 9);
+      }
+
+      span {
+        background-color: rgb(224, 237, 235);
+        color: #d73a49;
+      }
+
+      pre {
+        background-color: #282c34;
+        color: #edf3f2;
+        padding: 20px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 18px;
+      }
+
+      code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        unicode-bidi: isolate;
+      }
+
+      .btn {
+        transition: transform 0.3s ease;
+      }
+
+      .btn:hover {
+        transform: scale(1.1); /* Zoom in */
+      }
+
+      .btn:active {
+        transform: scale(0.9); /* Zoom out on click */
+      }
+    </style>
+  </head>
+  <body>
+      <div class="container">
+        <div class="heading">
+          <h1>What are Microservices and How to Build Microservices in Java?</h1>
+          <h6>Author: Sai K</h6>
+        </div>
+        <p>In this short article, we will discuss What are Microservices really all about and How to build microservices using Java.</p>
+
+   <h3>What are Microservices or Microservice Architecture?</h3>
+
+   <p>Well, a microservice architecture enables large teams to build scalable applications that are composed of many loosely coupled services. </p>
+
+   <p> Here is what a typical microservice architecture looks like. For example, consider this microservice architecture for a simple shopping cart application. It has different services like product service, inventory service, and stock service, and these are the independent and loosely coupled services in the microservices projects. </p>
+   <div class=" mt-2 mb-4">
+    <img src="../assets/microservices/Microservice Architecture 1" alt="logo" class="img-fluid" />
+   </div>
+
+   <p>Each microservice has its own database. For example, product service has its own database, inventory service has its own database, and stock service has its own database. </p>
+
+    <p> In the microservices project, all the microservices are loosely coupled. So loosely coupled, meaning all the services in a microservices project are independent of each other and each microservice should be developed independently and each microservice should be deployed independently and each microservice should be scaled independently. </p>
+   
+        <p> So basically Microservice following characteristics:</p>
+        <ul>
+   
+  <li> Each microservice can have its own database. 
+    <li>  Each microservice should be developed independently
+        <li> Each microservice should be deployed independently 
+            <li> Each microservice should be scaled independently</li>
+</ul>
+   
+<p> In microservices projects, the services can communicate with each other. For example, product service can communicate with inventory service and inventory service can communicate with stock service.  Microservice can communicate with multiple services as well. </p>
+   
+    <p> Well, there are two types of communication styles. One is synchronous and another is asynchronous. </p>
+   
+        <p> In the case of synchronous, we can use the HTTP protocol to make an HTTP request from one microservice to the microservice. </p>
+   
+            <p> And in the case of asynchronous communication, we have to use a message broker for asynchronous communication between multiple microservices. For example, we can use a RabbitMQ or Apache Kafka as a message broker in order to make an asynchronous communication between multiple microservices and each microservice in a microservices project can expose REST API's.</p>
+   
+   <h3>Key Components in a Microservices Architecture</h3>
+
+   <p> Now let's take a look into the key components in a typical microservices architecture. </p>
+   
+    <p> Well, the key component is the API gateway. Well, whenever the client sends a request to the API gateway and then an API gateway will route that request to the relevant microservices All right. </p>
+   
+        <p> The client can be a web application, a mobile application, or a desktop application and whenever a client wants to consume the REST API's of backend services, the client has to first send a request to the API gateway, and then the API gateway will route that request to the relevant microservice.</p> 
+   
+            <p> Here one more key component is a service registry. Well, all the microservices in our microservice project will register to the service registry, and the API gateway will discover the particular microservice hostname and port using the service registry so that the API gateway can allow that request to a particular microservice. </p>
+   
+                <p> One more key component is the config server. So this config server component will basically externalize the configuration of microservices. </p>
+   
+                    <p> One more key component is distributed tracing. Well, in order to maintain the logs or complete log hierarchy for a particular HTTP call from start to end, we can use distributed tracing. </p>
+   
+                        <p> One more key component is Security. We can implement centralized security in API-Gateway.</p>
+   
+                            <p> So these are the few key components in a microservices architecture. </p>
+   
+   
+  <h3> How to Implement Microservices in Java?</h3>
+
+  <p>Spring Boot and Spring Cloud frameworks are the de-facto standards for building Microservices in Java.</p>
+
+    <p> Learn how to build Microservices in Java at Spring Boot Microservices Tutorial</p>
+  
+<h3> Conclusion</h3>
+
+<p>So just remember microservice architecture enables large teams to build scalable applications that compose of loosely coupled services. Each microservice has its own database, each microservice exposes the REST APIs, each microservice is loosely coupled, each microservice is developed independently, each microservice deployed independently and each microservice scaled independently. So these are the important characteristics of each microservice. All right, so this is all about microservices.</p>
+
+  <h3>Related Spring and Spring Boot Tutorials/Guides:</h3>
+   
+  <p>
+    <button type="button" class="btn btn-outline-primary">
+      Spring Boot Tutorials [500+]s
+    </button>
+    <button type="button" class="btn btn-outline-secondary">
+      Spring Boot Testing Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-success">
+      Spring Boot Microservice Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-danger">
+      Spring Boot Kafka Microservices
+    </button>
+    <button type="button" class="btn btn-outline-warning">
+      Spring Boot + Apache Kafka Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-info">
+      Spring Core Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-primary">
+      Spring MVC Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-secondary">
+      Spring Data JPA Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-success">
+      Spring Framework for Beginners
+    </button>
+    <button type="button" class="btn btn-outline-danger">
+      Spring AOP Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-warning">
+      Spring Security Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-info">
+      Spring Exceptions Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-primary">
+      Spring Boot Interview Questions
+    </button>
+    <button type="button" class="btn btn-outline-dark">
+      Spring Boot Microservices Interview Questions
+    </button>
+    <button type="button" class="btn btn-outline-primary">
+      Apache Kafka Tutorials
+    </button>
+    <button type="button" class="btn btn-outline-secondary">
+      Docker Tutorials and Guides
+    </button>
+    <button type="button" class="btn btn-outline-success">
+      Spring Boot RabbitMQ Tutorials
+    </button>
+    <button type="button" class="btn btn-outline-danger">
+      Angular CRUD Example with Spring Boot
+    </button>
+    <button type="button" class="btn btn-outline-warning">
+      Spring Boot + Angular 12 CRUD Full Stack
+    </button>
+    <button type="button" class="btn btn-outline-info">
+      Spring Boot + Angular 8 CRUD Full Stack
+    </button>
+    <button type="button" class="btn btn-outline-danger">
+      Spring Boot + Angular 10 CRUD Full Stack
+    </button>
+    <button type="button" class="btn btn-outline-primary">
+      React JS ( React Hooks) + Spring Boot
+    </button>
+    <button type="button" class="btn btn-outline-secondary">
+      Spring Boot + React JS CRUD Full Stack
+    </button>
+    <button type="button" class="btn btn-outline-success">
+      Spring Boot Thymeleaf CRUD Full Stack
+    </button>
+    <button type="button" class="btn btn-outline-danger">
+      Spring Boot User Registration and Login
+    </button>
+    <button type="button" class="btn btn-outline-warning">
+      Node Js + Express + MongoDB CRUDVue
+    </button>
+    <button type="button" class="btn btn-outline-info">
+      JS + Spring Boot REST API Tutorial
+    </button>
+  </p>
+
+</body>
+
+</html>

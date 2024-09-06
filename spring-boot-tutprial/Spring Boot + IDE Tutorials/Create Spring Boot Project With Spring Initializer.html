@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+      .container-fluid {
+        width: 100%;
+        background-color: rgb(105, 30, 225); /* Updated color */
+        padding: 0;
+        margin: 0;
+      }
+
+      .image {
+        display: flex;
+        justify-content: center; /* Centers the image horizontally */
+        align-items: center; /* Centers the image vertically */
+      }
+
+      .image img {
+        max-width: 60%; /* Ensures the image is responsive */
+        height: 40%; /* Maintains the aspect ratio */
+        border-radius: 1px; /* Optional: adds rounded corners to the image */
+      }
+
+      .heading {
+        color: rgb(204, 145, 9);
+      }
+
+      span {
+        background-color: rgb(224, 237, 235);
+        color: #d73a49;
+      }
+
+      pre {
+        background-color: #282c34;
+        color: #edf3f2;
+        padding: 20px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 18px;
+      }
+
+      code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        unicode-bidi: isolate;
+      }
+
+      .btn {
+        transition: transform 0.3s ease;
+      }
+
+      .btn:hover {
+        transform: scale(1.1); /* Zoom in */
+      }
+
+      .btn:active {
+        transform: scale(0.9); /* Zoom out on click */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="image mt-2 mb-4 mx-auto">
+      <img align="center"
+        src="../../assets/springboot images/spring initializr main.jpg"alt="logo" />
+    </div>
+    <div class="container">
+      <div class="heading">
+        <h3>Create Spring Boot Project With Spring Initializer</h3>
+        <h6>Author: Sai K</h6>
+      </div>
+      <p>
+        In this article, we will learn how to create a simple Spring boot
+        project with Spring Initializr.<br /><br />
+
+        Spring Initializr is a great tool developed by the spring team to
+        quickly bootstrap your Spring Boot projects.<br /><br />
+
+        There are many ways to create a Spring Boot application. The simplest
+        way is to use Spring Initializr at http://start.spring.io/, which is an
+        online Spring Boot application generator.<br /><br />
+
+        In this article, we will create a simple Spring boot hello world
+        tutorial project using the Spring Initializr tool and import it to
+        eclipse IDE.
+      </p>
+      <h4>Create Spring Boot Project With Spring initializer</h4>
+      <p>
+        The below gif image gives you step by step process to create a Spring
+        boot project using Spring Initializr.
+      </p>
+      <h3>1. Launch Spring Initializr</h3>
+      <p>
+        <a>Spring Initializr </a>is a great tool developed by the spring team to
+        quickly bootstrap your Spring Boot projects.<br /><br />
+
+        Use the <a>Spring Initializr</a> link to access its user interface.
+      </p>
+      <h3>2. Specify Project Details</h3>
+      <p>Look at the diagram, we have specified the project details:</p>
+      <div class=" mt-2 mb-4 mx-auto">
+        <img
+          src="../../assets/springboot images/spring initializr.png"
+          alt="logo"
+          class="img-fluid"
+        />
+      </div>
+      <p>
+        To add dependencies, click on Add Dependencies button. Next, choose the
+        dependencies:
+      </p>
+      <div class=" mt-2 mb-4 mx-auto">
+        <img
+          src="../../assets/springboot images/spring initializr 1.png"
+          alt="logo"
+          class="img-fluid"
+        />
+      </div>
+      <p>
+        Once, all the details are entered. Next, clicking on Generate Project
+        button will generate a spring boot project and downloads it. Next, Unzip
+        the downloaded zip file.
+      </p>
+      <h3>3. Import project in Eclipse</h3>
+      <p>
+        In Eclipse, Click File -> Import -> Existing Maven Project as shown
+        below.
+      </p>
+      <div class=" mt-2 mb-4 mx-auto">
+        <img
+          src="../../assets/springboot images/spring initializr 2.png "
+          alt="logo"
+          class="img-fluid"
+        />
+      </div>
+      jpg
+      <p>
+        Navigate or type in the path of the folder where you extracted the zip
+        file to the next screen.
+      </p>
+      <div class=" mt-2 mb-4 mx-auto">
+        <img
+          src="../../assets/springboot images/spring initializr 3.PNG"
+          alt="logo"
+          class="img-fluid"
+        />
+      </div>
+      <p>
+        Once you click Finish, Maven would take some time to download all the
+        dependencies and initialize the project.<br /><br />
+
+        That’s it. Your first Spring Project is Ready.<br /><br />
+
+        Check out the complete Spring boot tutorial at Master in Spring Boot
+        Tutorial.
+      </p>
+      <h1>Related Spring and Spring Boot Tutorials/Guides:</h1>
+
+      <p>
+        <button type="button" class="btn btn-outline-primary">
+          Spring Boot Tutorials [500+]s
+        </button>
+        <button type="button" class="btn btn-outline-secondary">
+          Spring Boot Testing Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-success">
+          Spring Boot Microservice Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-danger">
+          Spring Boot Kafka Microservices
+        </button>
+        <button type="button" class="btn btn-outline-warning">
+          Spring Boot + Apache Kafka Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-info">
+          Spring Core Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-primary">
+          Spring MVC Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-secondary">
+          Spring Data JPA Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-success">
+          Spring Framework for Beginners
+        </button>
+        <button type="button" class="btn btn-outline-danger">
+          Spring AOP Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-warning">
+          Spring Security Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-info">
+          Spring Exceptions Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-primary">
+          Spring Boot Interview Questions
+        </button>
+        <button type="button" class="btn btn-outline-dark">
+          Spring Boot Microservices Interview Questions
+        </button>
+        <button type="button" class="btn btn-outline-primary">
+          Apache Kafka Tutorials
+        </button>
+        <button type="button" class="btn btn-outline-secondary">
+          Docker Tutorials and Guides
+        </button>
+        <button type="button" class="btn btn-outline-success">
+          Spring Boot RabbitMQ Tutorials
+        </button>
+        <button type="button" class="btn btn-outline-danger">
+          Angular CRUD Example with Spring Boot
+        </button>
+        <button type="button" class="btn btn-outline-warning">
+          Spring Boot + Angular 12 CRUD Full Stack
+        </button>
+        <button type="button" class="btn btn-outline-info">
+          Spring Boot + Angular 8 CRUD Full Stack
+        </button>
+        <button type="button" class="btn btn-outline-danger">
+          Spring Boot + Angular 10 CRUD Full Stack
+        </button>
+        <button type="button" class="btn btn-outline-primary">
+          React JS ( React Hooks) + Spring Boot
+        </button>
+        <button type="button" class="btn btn-outline-secondary">
+          Spring Boot + React JS CRUD Full Stack
+        </button>
+        <button type="button" class="btn btn-outline-success">
+          Spring Boot Thymeleaf CRUD Full Stack
+        </button>
+        <button type="button" class="btn btn-outline-danger">
+          Spring Boot User Registration and Login
+        </button>
+        <button type="button" class="btn btn-outline-warning">
+          Node Js + Express + MongoDB CRUDVue
+        </button>
+        <button type="button" class="btn btn-outline-info">
+          JS + Spring Boot REST API Tutorial
+        </button>
+      </p>
+    </div>
+  </body>
+</html>

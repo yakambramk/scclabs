@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+      .container-fluid {
+        width: 100%;
+        background-color: rgb(105, 30, 225); /* Updated color */
+        padding: 0;
+        margin: 0;
+      }
+
+      .image {
+        display: flex;
+        justify-content: center; /* Centers the image horizontally */
+        align-items: center; /* Centers the image vertically */
+      }
+
+      .image img {
+        max-width: 60%; /* Ensures the image is responsive */
+        height: 40%; /* Maintains the aspect ratio */
+        border-radius: 1px; /* Optional: adds rounded corners to the image */
+      }
+
+      .heading {
+        color: rgb(204, 145, 9);
+      }
+
+      span {
+        background-color: rgb(224, 237, 235);
+        color: #d73a49;
+      }
+
+      pre {
+        background-color: #282c34;
+        color: #edf3f2;
+        padding: 20px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 18px;
+      }
+
+      code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        unicode-bidi: isolate;
+      }
+
+      .btn {
+        transition: transform 0.3s ease;
+      }
+
+      .btn:hover {
+        transform: scale(1.1); /* Zoom in */
+      }
+
+      .btn:active {
+        transform: scale(0.9); /* Zoom out on click */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="heading">
+        <h1>
+            Spring Boot Microservices - Spring Cloud Config Server
+        </h1>
+        <h6>Author: Sai K</h6>
+      </div>
+      <p>In this previous couple of tutorials, we have seen:<br><br>
+
+        Spring Boot Microservices Communication Example using RestTemplate<br><br>
+        
+        Spring Boot Microservices Communication Example using WebClient<br><br>
+        
+        Spring Boot Microservices Communication Example using Spring Cloud Open Feign<br><br>
+        
+        Spring Boot Microservices - Spring Cloud Netflix Eureka-based Service Registry<br><br>
+        
+        In this tutorial, we will learn how to create a Spring cloud config server to centralize configurations of the Spring boot microservices.</p>
+        <h1>Problem and Solution</h1>
+        <h3>Problem</h3>
+        <p>In the microservices project, there could be a large number of microservices and multiple instances of those microservices are running. Updating configuration properties and restarting all those instances manually or even with automated scripts may not be feasible. </p><br><br>
+        <h3>Solution</h3>
+        <p>Spring Cloud Config addresses this problem.<br><br>
+
+            We can create a Spring Cloud Config Server which provides the configuration values for all of our microservices. We can use git, svn, database, or Consul as a backend to store the configuration parameters. <br><br>
+            
+            Next, we can configure the location of the Spring Cloud Config server in our microservice so that it will load all the properties when we start the application. In addition to that, whenever we update the properties we can invoke the <span>actuator/refresh</span> the REST endpoint in our microservice so that it will reload the configuration changes without requiring us to restart the application.</p><br><br>
+            <h1>What we will build?</h1>
+            <p>Let's create Spring Cloud Config Server using Git as a backend to store the configurations. Spring Cloud Config Server is nothing but a SpringBoot project.
+            </p>
+            <div class=" mt-2 mb-4">
+              <img src="../assets/microservices/Spring Boot + Spring Cloud Open Feign Microservices 1.jpeg" alt="logo" class="img-fluid" />
+          </div>
+          <h2>Prerequisites</h2>
+          <p>Refer to the below tutorial to create<span> department-service</span>  and<span> user-service</span>  microservices:<br> 
+            Spring Boot Microservices Communication Example using RestTemplate.</p>
+            <h1>1. Create and Setup Spring Boot Project in IntelliJ IDEA</h1>
+            <p>Let's create a Spring boot project using the spring initializr.<br><br>
+
+              Refer to the below screenshot to enter details while creating the spring boot application using the spring initializr:
+              </p>
+              <div class=" mt-2 mb-4">
+                <img src="../assets/microservices/Spring Boot + Spring Cloud Open Feign Microservices 1.jpeg" alt="logo" class="img-fluid" />
+            </div>
+              <p>Click on Generate button to download the Spring boot project as a zip file. Unzip the zip file and import the Spring boot project in IntelliJ IDEA.<br><br>
+
+                Here is the <span>pom.xml</span> file for your reference:</p>
+                <code>
+                  <pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;parent&gt;
+		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+		&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+		&lt;version&gt;2.7.4&lt;/version&gt;
+		&lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+	&lt;/parent&gt;
+	&lt;groupId&gt;net.javaguides&lt;/groupId&gt;
+	&lt;artifactId&gt;config-server&lt;/artifactId&gt;
+	&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;config-server&lt;/name&gt;
+	&lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+	&lt;properties&gt;
+		&lt;java.version&gt;17&lt;/java.version&gt;
+		&lt;spring-cloud.version&gt;2021.0.4&lt;/spring-cloud.version&gt;
+	&lt;/properties&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-config-server&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+	&lt;dependencyManagement&gt;
+		&lt;dependencies&gt;
+			&lt;dependency&gt;
+				&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+				&lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
+				&lt;version&gt;${spring-cloud.version}&lt;/version&gt;
+				&lt;type&gt;pom&lt;/type&gt;
+				&lt;scope&gt;import&lt;/scope&gt;
+			&lt;/dependency&gt;
+		&lt;/dependencies&gt;
+	&lt;/dependencyManagement&gt;
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+				&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</pre>
+                </code>
+                <h1>2. Enable Config Server using @EnableConfigServer Annotation</h1>
+                <p>To make our Spring Boot application as a Spring Cloud Config Server, we just need to add the<span> @EnableConfigServer</span> annotation to the main entry point class:</p>
+                <code><pre>
+package net.javaguides.configserver;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.config.server.EnableConfigServer;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@EnableConfigServer
+@SpringBootApplication
+public class ConfigServerApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ConfigServerApplication.class, args);
+	}
+
+}
+                </pre></code>
+                <h1>3. Configure the Location of the Git repository</h1>
+                <p>On Github, create a Git repository named "microservices-config-repo".
+
+                  Now, let's configure the location of the git repository where we are going to store all our configuration files in the<span> application.properties</span> file.</p>
+                  <code><pre>
+spring.application.name=config-server
+server.port=8888
+
+spring.cloud.config.server.git.uri=https://github.com/RameshMF/microservices-config-repo.git
+spring.cloud.config.server.git.skipSslValidation=true
+spring.cloud.config.server.git.clone-on-start=true
+management.endpoints.web.exposure.include=*
+                  </pre></code>
+                  <p>That’s it. This is all you need to do to create Spring Cloud Config Server and you just need to add application-specific config files in the git repository.</p>
+                  <h1>4. Refactor department-service to use Config Server</h1>
+                  <p>Our <span>department-service</span> will become a client for Config Server. So, let us add Config Client starter dependency to the<span>department-service</span>:<br><br>
+
+                    In <span>department-service</span>, add the below dependencies to pom.xml:</p>
+                    <code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-config&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+&lt;/dependency&gt;
+                    </pre></code>
+                    <h1>5. Push department-service.properties File to the GitHub</h1>
+                    <p>Now we need to add all the properties of our<span> department-service</span> in<span> department-service.properties </span>and commit/push it to our git repo<b> microservices-config-repo</b>.<br><br>
+
+                      Create a new file<span> department-service.properties </span>on the GitHub repository, add the below content and commit it:</p>
+                      <code><pre>
+spring.datasource.url=jdbc:mysql://localhost:3306/department_db
+spring.datasource.username=root
+spring.datasource.password=Mysql@123
+
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+spring.jpa.hibernate.ddl-auto=update
+                      </pre></code>
+                      <h1>6. Configure Config Server in department-service</h1>
+                      <p>Next, change<span> resources/application.properties</span> with the config server</p>
+                      <code><pre>
+spring.application.name=department-service
+spring.config.import=optional:configserver:http://localhost:8888
+management.endpoints.web.exposure.include=*
+                      </pre></code>
+                      <p>Next, start the Config Server application and then the department-service application. This should work fine. You can check the console logs that department-service is fetching the properties from config server http://localhost:8888/ at startup.</p>
+                      <h1>7. Refactor the user-service to use Config Server</h1>
+                      <p>Our user-service will become a client for Config Server. So, let us add Config Client starter to user-service which will add the following dependency.<br><br>
+
+                        In user-service, add below dependencies to pom.xml:</p>
+                        <code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-config&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+&lt;/dependency&gt;
+                        </pre></code>
+                        <h1>8. Push user-service.properties File to the GitHub</h1>
+                        <p>Now we need to add all the properties of our<span>user-servicev</span>  in <span>user-service.properties </span> and commit/push it to our git repo <b>microservices-config-repo</b>.<br><br>
+
+                          Create a new file<span> user-service.properties</span>  on the GitHub repository, add the below content, and commit it:</p>
+<code><pre>
+spring.datasource.url=jdbc:mysql://localhost:3306/employee_db
+spring.datasource.username=root
+spring.datasource.password=Mysql@123
+
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+spring.jpa.hibernate.ddl-auto=update
+
+server.port = 8081
+</pre></code>
+<h1>9. Configure Config Server in user-service</h1>
+<p>Next, change <span>resources/application.properties</span> with the config server</p>
+<code><pre>
+spring.application.name=USER-SERVICE
+spring.config.import=optional:configserver:http://localhost:8888
+management.endpoints.web.exposure.include=*
+</pre></code>
+<p>Now first start the Config Server application and then the <span>user-service </span>application. This should work fine. You can check the console logs that the<span> user-service</span> is fetching the properties from config server http://localhost:8888/ at startup.</p>
+       <h1>10. Refresh Use case</h1>    
+       <p>We also want to enable the <span>/refresh</span> endpoint, to demonstrate dynamic configuration changes.<br><br>
+
+        The client can access any value in the Config Server by using traditional mechanisms (such as @ConfigurationProperties or @Value("${…​}") or through the Environment abstraction). Now you need to create a Spring MVC REST controller that returns the resolved message property’s value.<br><br>
+        
+        In department-service, create below REST API:</p> 
+<code><pre>
+package net.javaguides.departmentservice.controller;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RefreshScope
+@RestController
+class MessageRestController {
+
+    @Value("${message:Hello default}")
+    private String message;
+
+    @GetMapping("/message")
+    String getMessage() {
+        return this.message;
+    }
+}
+</pre></code>
+<p>By default, the configuration values are read on the client’s startup and not again. You can force a bean to refresh its configuration (that is, to pull updated values from the Config Server) by annotating the MessageRestController with the Spring Cloud Config <span>@RefreshScope</span> and then triggering a refresh event. </p>
+<h1>Test Refresh Use Case</h1><br>
+<p>You can test the end-to-end result by starting the Config Service first and then, once it is running, starting the client. Visit the client app in the browser at http://localhost:8080/message. There, you should see Hello world in the response.<br><br>
+
+  Change the message key in the <span>department-service.properties</span> file in the Git repository to something different (Hello, Ramesh!).<br><br>
+  
+  You need to invoke the <span>/refresh </span>Spring Boot Actuator endpoint in order to force the client to refresh itself and draw in the new value. Spring Boot’s Actuator exposes operational endpoints (such as health checks and environment information) about an application.<br><br>
+  
+  You can invoke the refresh Actuator endpoint by sending an empty HTTP POST to the client’s refresh endpoint: http://localhost:8080/actuator/refresh. Then you can confirm it worked by visiting the http://localhost:8080/message endpoint.</p>
+  <h1>11. Testing department-service and user-service</h1>
+  <p>First, start the config-server, and next, department-service, and user-service.<br><br>
+
+    If your  <span>department-service</span> able to connect to the MySQL database then you have successfully configured the Config server.<br><br>
+    
+    If your  <span>user-service</span> able to connect to the MySQL database then you have successfully configured the Config server.<br><br>
+    
+    Next, you can test the REST endpoints of <span> department-service </span>and <span>user-service</span> microservices.<br><br>
+    
+    Refer to Spring Boot Microservices Communication Example using RestTemplate for testing REST endpoints.
+    </p><br>
+    <h1>Conclusion</h1>
+    <p>In this tutorial, we learned how to create a Spring cloud config server with Git as a backend to centralize configurations of the Spring boot microservices.</p><br>
+    <h1>Related Tutorials</h1>
+    <p>✅ Spring Boot Microservices Communication Example using RestTemplate<br><br>
+
+      ✅ Spring Boot Microservices Communication Example using WebClient<br><br>
+      
+      ✅ Spring Boot Microservices Communication Example using Spring Cloud Open Feign<br><br>
+      
+      ✅ Spring Boot Microservices - Spring Cloud Config Server<br><br>
+      
+      ✅ Spring Boot Microservices - Spring Cloud Netflix Eureka-based Service Registry<br><br>
+      
+      ✅ Spring Boot Microservices - Spring Cloud API Gateway<br><br>
+      
+      ✅ Event-Driven Microservices using Spring Boot and Kafka</p><br>
+      <h1>Related Spring and Spring Boot Tutorials/Guides:</h1>
+      <p>
+        <button type="button" class="btn btn-outline-primary">
+          Spring Boot Tutorials [500+]s
+        </button>
+        <button type="button" class="btn btn-outline-secondary">
+          Spring Boot Testing Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-success">
+          Spring Boot Microservice Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-danger">
+          Spring Boot Kafka Microservices
+        </button>
+        <button type="button" class="btn btn-outline-warning">
+          Spring Boot + Apache Kafka Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-info">
+          Spring Core Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-primary">
+          Spring MVC Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-secondary">
+          Spring Data JPA Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-success">
+          Spring Framework for Beginners
+        </button>
+        <button type="button" class="btn btn-outline-danger">
+          Spring AOP Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-warning">
+          Spring Security Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-info">
+          Spring Exceptions Tutorial
+        </button>
+        <button type="button" class="btn btn-outline-primary">
+          Spring Boot Interview Questions
+        </button>
+        <button type="button" class="btn btn-outline-dark">
+          Spring Boot Microservices Interview Questions
+        </button>
+        <button type="button" class="btn btn-outline-primary">
+          Apache Kafka Tutorials
+        </button>
+        <button type="button" class="btn btn-outline-secondary">
+          Docker Tutorials and Guides
+        </button>
+        <button type="button" class="btn btn-outline-success">
+          Spring Boot RabbitMQ Tutorials
+        </button>
+        <button type="button" class="btn btn-outline-danger">
+          Angular CRUD Example with Spring Boot
+        </button>
+        <button type="button" class="btn btn-outline-warning">
+          Spring Boot + Angular 12 CRUD Full Stack
+        </button>
+        <button type="button" class="btn btn-outline-info">
+          Spring Boot + Angular 8 CRUD Full Stack
+        </button>
+        <button type="button" class="btn btn-outline-danger">
+          Spring Boot + Angular 10 CRUD Full Stack
+        </button>
+        <button type="button" class="btn btn-outline-primary">
+          React JS ( React Hooks) + Spring Boot
+        </button>
+        <button type="button" class="btn btn-outline-secondary">
+          Spring Boot + React JS CRUD Full Stack
+        </button>
+        <button type="button" class="btn btn-outline-success">
+          Spring Boot Thymeleaf CRUD Full Stack
+        </button>
+        <button type="button" class="btn btn-outline-danger">
+          Spring Boot User Registration and Login
+        </button>
+        <button type="button" class="btn btn-outline-warning">
+          Node Js + Express + MongoDB CRUDVue
+        </button>
+        <button type="button" class="btn btn-outline-info">
+          JS + Spring Boot REST API Tutorial
+        </button>
+      </p>
+    
+    </body>
+    
+    </html>
+    
+

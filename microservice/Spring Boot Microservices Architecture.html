@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+      .container-fluid {
+        width: 100%;
+        background-color: rgb(105, 30, 225); /* Updated color */
+        padding: 0;
+        margin: 0;
+      }
+
+      .image {
+        display: flex;
+        justify-content: center; /* Centers the image horizontally */
+        align-items: center; /* Centers the image vertically */
+      }
+
+      .image img {
+        max-width: 60%; /* Ensures the image is responsive */
+        height: 40%; /* Maintains the aspect ratio */
+        border-radius: 1px; /* Optional: adds rounded corners to the image */
+      }
+
+      .heading {
+        color: rgb(204, 145, 9);
+      }
+
+      span {
+        background-color: rgb(224, 237, 235);
+        color: #d73a49;
+      }
+
+      pre {
+        background-color: #282c34;
+        color: #edf3f2;
+        padding: 20px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 18px;
+      }
+
+      code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        unicode-bidi: isolate;
+      }
+
+      .btn {
+        transition: transform 0.3s ease;
+      }
+
+      .btn:hover {
+        transform: scale(1.1); /* Zoom in */
+      }
+
+      .btn:active {
+        transform: scale(0.9); /* Zoom out on click */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="heading">
+        <h1>
+          Spring Boot Microservices Architecture
+        </h1>
+        <h6>Author: Sai K</h6>
+      </div>
+       <p>In this tutorial, we will discuss how to create a typical microservices architecture using Spring boot and Spring cloud.</p> 
+
+       <p><b>Spring Boot </b>is a very popular Java framework for building Restful web services and microservices. The main goal of Spring Boot is to quickly create Spring-based applications without requiring developers to write the same boilerplate configuration again and again.</p> 
+
+       <p><b>Spring Cloud</b> provides various tools or modules for developers to build common design patterns to solve different infrastructural concerns in Microservices projects and focus on their main business problems.</p> 
+
+       <p>In the Java community, Spring Boot and Spring Cloud become a de-facto standard for building microservices architecture.</p> 
+
+<h2>What are Microservices or Microservices Architecture?</h2>
+
+<p>Well, a microservice architecture enables large teams to build scalable applications that are composed of many loosely coupled services.</p>
+
+<p>Here is what a typical microservice architecture looks like. For example, consider this microservice architecture for a simple shopping cart application. It has different services like<b> product service</b>,<b>inventory service</b>, and<b>stock service</b>, and these are the independent and loosely coupled services in the microservices projects</p>
+<div class=" mt-2 mb-4">
+  <img src="../assets/microservices/Microservice Architecture 11.png" alt="logo" class="img-fluid" />
+</div>
+
+<p>Each microservice has its own database. For example, <b>product service</b> has its own database, <b>inventory service</b> has its own database, and <b>stock service</b> has its own database.</p>
+
+<p>In the microservices project, all the microservices are loosely coupled. So loosely coupled, meaning all the services in a microservices project are independent of each other and each microservice should be developed independently and each microservice should be deployed independently and each microservice should be scaled independently.</p>
+
+<p>So basically Microservice following characteristics:</p>
+<ul>
+<li>Each microservice can have its own database.
+    <li>Each microservice should be developed independently
+        <li>Each microservice should be deployed independently
+            <li>Each microservice should be scaled independently</li>
+</ul>
+
+<h2>Microservices Architecture using Spring Boot and Spring Cloud</h2>
+
+<p>Well, we are going to use the <b>Employee Management</b> Project as an example to create a microservices architecture.</p>
+<div class=" mt-2 mb-4">
+  <img src="../assets/microservices/Microservice Architecture 22.png" alt="logo" class="img-fluid" />
+</div>
+<p>Well, you can take any example of any project. For example, you can take an e-commerce application or you can take any healthcare domain-related application. So you can take any project as an example, but follow the same steps to create a microservice architecture using Spring Boot and Spring Cloud.</p>
+
+<h3>Core Microservices</h3>
+
+<p>Consider we have developed three core backend Spring boot microservices such as <b>employee service</b>, <b>department service</b>, and <b>organization service</b>, and all these three microservices have their own databases. You can use a relational database or NoSQL database as a database for these microservices. So whenever you create a microservice in your project, make sure that each microservice should have its own database. All right.</p>
+
+<h3>Microservices Communication</h3>
+
+<p>nce we build these 3 microservices. Next, we'll see how these microservices communicate with each other. Well, there are different ways to make a REST API call from one microservice to another Microservice. For example, we can use a RestTemplate or WebClient or Spring cloud-provided open feign library. All right.</p>
+
+    <p>Well, there are two types of communication styles. One is synchronous and another is asynchronous.</p>
+
+        <p>In the case of synchronous, we can use the HTTP protocol to make an HTTP request from one microservice to the microservice.</p>
+
+            <p>And in the case of asynchronous communication, we have to use a message broker for asynchronous communication between multiple microservices. For example, we can use RabbitMQ or Apache Kafka as a message broker in order to make an asynchronous communication between multiple microservices and each microservice in a microservices project can expose REST APIs.</p>
+
+                <p>Here are my tutorials for your reference:</p>
+
+               <p> ✅ Spring Boot Microservices Communication Example using RestTemplate</p>
+
+                <p>✅ Spring Boot Microservices Communication Example using WebClient</p>
+
+                    <p>✅ Spring Boot Microservices Communication Example using Spring Cloud Open Feign</p>
+
+                        <p>✅  Event-Driven Microservices using Spring Boot and Kafka</p>
+
+<h3>Registry and Discovery Pattern</h3>
+
+<p>Well, once we know how microservices communicate with each other, next you need to know how to implement a service Registry and discovery pattern in our microservices project. </p>
+
+<p>Well, Spring Cloud provides a Spring Cloud Netflix Eureka Based Service Registry module that we can use to implement service registry and discovery patterns in our microservices project. Well, service Registry and discovery is a really essential pattern that we can use to avoid hard coding hostnames and ports.</p>
+
+<h3>onfig-Server to Externalize the Configurations</h3>
+
+<p>Next, we will implement a config server to externalize the configurations of all these three microservices into a central place which is the git repository. </p>
+
+<p>Well, Spring cloud provides a Spring cloud config module that we can use to implement a config server to externalize the configuration files of all these three microservices into a central place. We are going to use the git repository as storage for the config server.</p>
+
+<h3>API Gateway Pattern</h3>
+
+<p>Well, once we know how to use the config server to externalize the configuration files. Next, we have to implement an API gateway. </p>
+
+    <p>Well, API Gateway plays a very important role in our microservices architecture. So whenever a client wants to make a call to different microservices, the client has to remember the host names and ports of all these microservices. So there should be a solution where a client can send a request to the central component so that is where the API gateway comes into the picture. So whenever a client sends a request to the backend microservices, then the client has to send a request to the API gateway first, and then the API gateway based on the routing rules will route that request to the appropriate microservice. So this is how the API gateway plays an important role in a microservices architecture.</p>
+
+        <p>Well, Spring Cloud provides Spring Cloud Gateway module to implement API gateway patterns in a microservices architecture.</p>
+
+<h3>Distributed Tracing</h3>
+
+<p>Next, once you know how to implement an API gateway in a microservices project, next you can implement distributed tracing in a microservices architecture. Well, Spring Cloud provides a Spring Cloud sleuth module, which we can use to implement distributed tracing in our microservices project.</p>
+
+<p>Well, along with Spring Cloud Sleuth, we'll also use Zipkin to visualize the tracing log information in a user interface. Well, Zipkin provides a user interface to track and trace information through web applications.</p>
+
+<h3>React Front Service</h3>
+
+<p>Next, you can use React/Angular to create a client-side service that will make a call to backend microservices.</p>
+
+<h3>Circuit Breaker Pattern</h3>
+
+<p>Next, you can implement a circuit breaker pattern in an employee service because the employee service is internally calling department service, and let's say due to some reason, department service is down then employee service won't get a response from the department server, isn't it? And then again, employee service will send an internal server error to the API gateway and then API Gateway will send that response back to the client. All right. So in order to avoid this kind of issue, we can use a circuit breaker pattern.</p>
+
+<p>So this circuit breaker pattern helps the employee service to avoid continuous calls to the department service Whenever department service is done and this circuit breaker pattern will help employee service to return some default response back to the API Gateway and the API Gateway will send that default response to the client.</p>
+
+<p>All right. So this is a simple microservices architecture using Spring Boot and Spring Cloud.</p>
+
+<h2>Commonly used Spring Cloud Modules to Build Microservices Projects</h2>
+<ul>
+<li>Spring Cloud Config
+<li>Spring Cloud Circuit Breaker
+<li>Spring Cloud Gateway
+<li>Spring Cloud Stream
+<li>Spring Cloud Sleuth
+<li>Spring Cloud Bus
+<li>Spring Cloud OpenFeign
+<li>Spring Cloud Security</li>
+</ul>
+
+<p>Check out all Spring Cloud modules: https://spring.io/projects/spring-cloud</p>
+
+<h2>Related Microservices Tutorials/Guides</h2>
+
+<p>✅ What are Microservices and How to Build Microservices in Java?</p>
+
+<p>✅ What is Spring Cloud?</p>
+
+<p>✅ Spring Cloud Interview Questions</p>
+
+<p>✅ Spring Boot Microservices Communication Example using RestTemplate</p>
+
+<p>✅ Spring Boot Microservices Communication Example using WebClient</p>
+
+<p>✅ Spring Boot Microservices Communication Example using Spring Cloud Open Feign</p>
+
+<p>✅ Spring Boot Microservices - Spring Cloud Config Server</p>
+
+<p>✅ Spring Boot Microservices - Spring Cloud Netflix Eureka-based Service Registry</p>
+
+<p>✅ Spring Boot Microservices - Spring Cloud API Gateway</p>
+
+<p>✅  Event-Driven Microservices using Spring Boot and Kafka</p>
+
+<h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+
+<p>
+    <button type="button" class="btn btn-outline-primary">
+      Spring Boot Tutorials [500+]s
+    </button>
+    <button type="button" class="btn btn-outline-secondary">
+      Spring Boot Testing Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-success">
+      Spring Boot Microservice Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-danger">
+      Spring Boot Kafka Microservices
+    </button>
+    <button type="button" class="btn btn-outline-warning">
+      Spring Boot + Apache Kafka Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-info">
+      Spring Core Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-primary">
+      Spring MVC Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-secondary">
+      Spring Data JPA Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-success">
+      Spring Framework for Beginners
+    </button>
+    <button type="button" class="btn btn-outline-danger">
+      Spring AOP Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-warning">
+      Spring Security Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-info">
+      Spring Exceptions Tutorial
+    </button>
+    <button type="button" class="btn btn-outline-primary">
+      Spring Boot Interview Questions
+    </button>
+    <button type="button" class="btn btn-outline-dark">
+      Spring Boot Microservices Interview Questions
+    </button>
+    <button type="button" class="btn btn-outline-primary">
+      Apache Kafka Tutorials
+    </button>
+    <button type="button" class="btn btn-outline-secondary">
+      Docker Tutorials and Guides
+    </button>
+    <button type="button" class="btn btn-outline-success">
+      Spring Boot RabbitMQ Tutorials
+    </button>
+    <button type="button" class="btn btn-outline-danger">
+      Angular CRUD Example with Spring Boot
+    </button>
+    <button type="button" class="btn btn-outline-warning">
+      Spring Boot + Angular 12 CRUD Full Stack
+    </button>
+    <button type="button" class="btn btn-outline-info">
+      Spring Boot + Angular 8 CRUD Full Stack
+    </button>
+    <button type="button" class="btn btn-outline-danger">
+      Spring Boot + Angular 10 CRUD Full Stack
+    </button>
+    <button type="button" class="btn btn-outline-primary">
+      React JS ( React Hooks) + Spring Boot
+    </button>
+    <button type="button" class="btn btn-outline-secondary">
+      Spring Boot + React JS CRUD Full Stack
+    </button>
+    <button type="button" class="btn btn-outline-success">
+      Spring Boot Thymeleaf CRUD Full Stack
+    </button>
+    <button type="button" class="btn btn-outline-danger">
+      Spring Boot User Registration and Login
+    </button>
+    <button type="button" class="btn btn-outline-warning">
+      Node Js + Express + MongoDB CRUDVue
+    </button>
+    <button type="button" class="btn btn-outline-info">
+      JS + Spring Boot REST API Tutorial
+    </button>
+  </p>
+
+</body>
+
+</html>

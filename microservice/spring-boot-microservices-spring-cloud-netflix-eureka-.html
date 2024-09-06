@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+      .container-fluid {
+        width: 100%;
+        background-color: rgb(105, 30, 225); /* Updated color */
+        padding: 0;
+        margin: 0;
+      }
+
+      .image {
+        display: flex;
+        justify-content: center; /* Centers the image horizontally */
+        align-items: center; /* Centers the image vertically */
+      }
+
+      .image img {
+        max-width: 60%; /* Ensures the image is responsive */
+        height: 40%; /* Maintains the aspect ratio */
+        border-radius: 1px; /* Optional: adds rounded corners to the image */
+      }
+
+      .heading {
+        color: rgb(204, 145, 9);
+      }
+
+      span {
+        background-color: rgb(224, 237, 235);
+        color: #d73a49;
+      }
+
+      pre {
+        background-color: #282c34;
+        color: #edf3f2;
+        padding: 20px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 18px;
+      }
+
+      code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        unicode-bidi: isolate;
+      }
+
+      .btn {
+        transition: transform 0.3s ease;
+      }
+
+      .btn:hover {
+        transform: scale(1.1); /* Zoom in */
+      }
+
+      .btn:active {
+        transform: scale(0.9); /* Zoom out on click */
+      }
+    </style>
+  </head>
+  <body>
+      <div class="container">
+        <div class="heading">
+          <h1>Spring Boot Microservices - Spring Cloud Netflix Eureka based Service Registry</h1>
+          <h6>Author: Sai K</h6>
+        </div>
+        <p>In this previous couple of tutorials, we have seen:<br><br>
+
+            Spring Boot Microservices Communication Example using RestTemplate<br><br>
+            
+            Spring Boot Microservices Communication Example using WebClient<br><br>
+            
+            Spring Boot Microservices Communication Example using Spring Cloud Open Feign<br><br>
+            
+            In this tutorial, we will learn how to create a Service Registry using<b> Spring Cloud Netflix Eureka </b>in the Spring boot microservices project.</p>
+            <h1>Service Registry and Discovery Overview</h1>
+            <p>In the microservices projects, Service Registry and Discovery play an important role because we most likely run multiple instances of services and we need a mechanism to call other services without hardcoding their hostnames or port numbers. In addition to that, in Cloud environments service instances may come up and go down anytime. So we need some automatic service registration and discovery mechanism.<br><br>
+
+                <span>Spring Cloud addresses this problem</span> by providing<span> Spring Cloud Netflix Eureka</span> project to create Service Registry and Discovery. <br><br>
+                
+                In this tutorial, we will learn how to use <span>SpringCloud Netflix Eureka</span> for Service Registry and Discovery.</p>
+                <h1>What we will build?</h1>
+                <p>We can use Netflix Eureka Server to create a Service Registry and make our microservices (department-service and user-service) as Eureka Clients so that as soon as we start a microservice it will get registered with Eureka Server automatically with a logical Service ID. Then, the other microservices, which are also Eureka Clients, can use Service ID to invoke REST endpoints.
+                </p>
+                <div class=" mt-2 mb-4">
+                    <img src="../assets/microservices/Spring Boot + Spring Cloud Open Feign Microservices 1.jpeg" alt="logo" class="img-fluid" />
+                </div>
+                <p>Spring Cloud makes it very easy to create a Service Registry and discover other services using Load Balanced <span>RestTemplate:</span></p>
+<code><pre>
+    @Bean
+    @LoadBalanced
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
+    }
+</pre></code>
+<h1>Prerequisites</h1>
+<p>Refer to the below tutorial to create <span>department-service</span> and <span>user-service</span> microservices: <br><br>
+    Spring Boot Microservices Communication Example using RestTemplate.</p>
+    <h1>1. Create and Setup Spring boot project in IntelliJ IDEA</h1>
+    <p>Let us create a Service Registry using Netflix Eureka which is nothing but a SpringBoot application with a Eureka Server starter.</p>
+<code>
+<pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+</code>
+<p>Let's create a Spring boot project using the spring initializr.<br><br>
+
+    Refer to the below screenshot to enter details while creating the spring boot application using the spring initializr:
+    </p>
+    <div class=" mt-2 mb-4">
+        <img src="../assets/microservices/Spring Boot + Spring Cloud Open Feign Microservices 1.jpeg" alt="logo" class="img-fluid" />
+    </div>
+    <p>Click on Generate button to download the Spring boot project as a zip file. Unzip the zip file and import the Spring boot project in IntelliJ IDEA.<br><br>
+
+        Here is the pom.xml file for your reference:</p>
+<code><pre>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;2.7.4&lt;/version&gt;
+        &lt;relativePath /&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+    &lt;groupId&gt;net.javaguide&lt;/groupId&gt;
+    &lt;artifactId&gt;service-registry&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;service-registry&lt;/name&gt;
+    &lt;description&gt;service-registry&lt;/description&gt;
+    &lt;properties&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;spring-cloud.version&gt;2021.0.4&lt;/spring-cloud.version&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;dependencyManagement&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
+                &lt;version&gt;${spring-cloud.version}&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    &lt;/dependencyManagement&gt;
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+</project>
+</pre></code>
+<h1>2. Add @EnableEurekaServer annotation</h1>
+<p>We need to add<span> @EnableEurekaServer</span> annotation to make our SpringBoot application a Eureka Server-based Service Registry.</p>
+<code><pre>
+package net.javaguides.serviceregistry;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+
+@SpringBootApplication
+@EnableEurekaServer
+public class ServiceRegistryApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ServiceRegistryApplication.class, args);
+	}
+
+}
+</pre></code>
+<h1>3. Disable Eureka Server as Eureka Client</h1>
+<p>By default, each Eureka Server is also a Eureka client and needs at least one service URL to locate a peer. As we are going to have a single Eureka Server node (Standalone Mode), we are going to disable this client-side behavior by configuring the following properties in the <span>application.properties</span> file.
+</p>
+<code><pre>
+spring.application.name=service-registry
+server.port=8761
+eureka.client.register-with-eureka=false
+eureka.client.fetch-registry=false
+</pre></code>
+<h1>4. Launch Eureka Server (Demo)</h1>
+<p>Netflix Eureka Service provides UI where we can see all the details about registered services.
+
+  Now run <span>ServiceRegistryApplication</span> and access http://localhost:8761 which will display the UI similar to the below screenshot.</p>
+  <div class=" mt-2 mb-4">
+    <img src="../assets/microservices/Spring Boot + Spring Cloud Open Feign Microservices 1.jpeg" alt="logo" class="img-fluid" />
+</div>
+<h1>5. Registering Department-Service Microservice as Eureka Client</h1>
+<p>Refer to this tutorial to create department-service and user-service microservices: Spring Boot Microservices Communication Example using RestTemplate.
+
+  Let us make this department-service as a Eureka Client and register with the Eureka Server.<br><br>
+  
+  Add the Eureka Discovery starter to department-service:</p>
+  
+
+
+
+
+

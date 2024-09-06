@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+      .container-fluid {
+        width: 100%;
+        background-color: rgb(105, 30, 225); /* Updated color */
+        padding: 0;
+        margin: 0;
+      }
+
+      .image {
+        display: flex;
+        justify-content: center; /* Centers the image horizontally */
+        align-items: center; /* Centers the image vertically */
+      }
+
+      .image img {
+        max-width: 60%; /* Ensures the image is responsive */
+        height: 40%; /* Maintains the aspect ratio */
+        border-radius: 1px; /* Optional: adds rounded corners to the image */
+      }
+
+      .heading {
+        color: rgb(204, 145, 9);
+      }
+
+      span {
+        background-color: rgb(224, 237, 235);
+        color: #d73a49;
+      }
+
+      pre {
+        background-color: #282c34;
+        color: #edf3f2;
+        padding: 20px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 18px;
+      }
+
+      code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        unicode-bidi: isolate;
+      }
+
+      .btn {
+        transition: transform 0.3s ease;
+      }
+
+      .btn:hover {
+        transform: scale(1.1); /* Zoom in */
+      }
+
+      .btn:active {
+        transform: scale(0.9); /* Zoom out on click */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="heading">
+        <h1>
+            Spring Boot + Spring Cloud Open Feign Microservices Communication Example
+        </h1>
+        <h6>Author: Sai K</h6>
+      </div>
+      <P>In the previous couple of tutorials we have seen:<br><br>
+
+        Spring Boot Microservices Communication Example using RestTemplate.<br><br>
+        
+        Spring Boot Microservices Communication Example using WebClient<br><br>
+        
+        In this tutorial, we will learn how to use the <span>Spring Cloud Open Feign</span> library to make REST API calls (Synchronous communication) between multiple microservices.</P>
+        <h1>Spring Cloud Open Feign Overview</h1>
+        <p>Feign makes writing web service clients easier with pluggable annotation support, which includes Feign annotations and JAX-RS annotations. Also, Spring Cloud adds support for Spring MVC annotations and for using the same<b> HttpMessageConverters</b> as used in Spring Web.<br><br>
+
+            One great thing about using Feign is that we don't have to write any code for calling the service, other than an interface definition.</p>
+            <h5>For example:</h5>
+            <code><pre>
+package net.javaguides.userservice.service;
+
+import net.javaguides.userservice.dto.DepartmentDto;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+@FeignClient(value = "DEPARTMENT-SERVICE", url = "http://localhost:8080")
+public interface APIClient {
+    @GetMapping(value = "/api/departments/{id}")
+    DepartmentDto getDepartmentById(@PathVariable("id") Long departmentId);
+}
+            </pre></code>
+            <h1>What we will Build?</h1>
+            <p>Well, we will create two microservices such as <span>department-service</span> and <span>user-service</span> and we will make a REST API call using<span> Spring Cloud Open Feign</span> from<span> user-service</span> to<span> department-service</span> to fetch a particular user department.</p>
+            <div class=" mt-2 mb-4">
+                <img src="../assets/microservices/Spring Boot + Spring Cloud Open Feign Microservices 1.jpeg" alt="logo" class="img-fluid" />
+            </div>
+            <h1>Prerequisites</h1>
+            <p>Refer to the below tutorial to create<span> department-service </span>and<span>user-service</span>  microservices: <br><br>
+                Spring Boot Microservices Communication Example using RestTemplate.</p>
+                <h1>Step 1: Add Spring cloud open feign Maven dependency to User-Service</h1>
+                <p>Open the<span> pom.xml </span>file of the<span> user-service</span> project and add the below dependency:
+                </p>
+                <code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;
+&lt;/dependency&gt;
+    
+                </pre></code>
+                <p>Make sure to add spring cloud dependencies and their version.<br><br>
+
+                    Here is the complete<span> pom.xml</span> file after adding <b>Spring cloud open feign</b> dependency:</p>
+                    <code><pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;2.7.4&lt;/version&gt;
+        &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+    &lt;groupId&gt;net.javaguides&lt;/groupId&gt;
+    &lt;artifactId&gt;user-service&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;user-service&lt;/name&gt;
+    &lt;description&gt;user-service&lt;/description&gt;
+    &lt;properties&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;spring-cloud.version&gt;2021.0.4&lt;/spring-cloud.version&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;dependencyManagement&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
+                &lt;version&gt;${spring-cloud.version}&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    &lt;/dependencyManagement&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;excludes&gt;
+                        &lt;exclude&gt;
+                            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+                            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+                        &lt;/exclude&gt;
+                    &lt;/excludes&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+&lt;/project&gt;                       
+                    </pre></code>
+                    <h1>Step 2: Enable Feign Client using @EnableFeignClients</h1>
+                    <code><pre>
+package net.javaguides.userservice;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+
+@SpringBootApplication
+@EnableFeignClients
+public class UserServiceApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(UserServiceApplication.class, args);
+    }
+}
+                    </pre></code>
+                    <p>Note that<span> @EnableFeignClients</span> annotation enables component scanning for interfaces that declare they are Feign clients.</p>
+                        <h1>Step 3: Create feign API client</h1>
+                        <p>After that, we need to have a feign API client with the necessary methods, requests, and responses.<br><br>
+
+                            Let's create an interface named <span>APIClient</span> and add the following code:</p>
+                            <code><pre>
+package net.javaguides.userservice.service;
+
+import net.javaguides.userservice.dto.DepartmentDto;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+@FeignClient(value = "DEPARTMENT-SERVICE", url = "http://localhost:8080")
+public interface APIClient {
+    @GetMapping(value = "/api/departments/{id}")
+    DepartmentDto getDepartmentById(@PathVariable("id") Long departmentId);
+}
+                            </pre></code>
+                            <p>We declare a Feign client using the <span>@FeignClient</span> annotation:</p>
+                            <code><pre>
+@FeignClient(value = "DEPARTMENT-SERVICE")
+                            </pre></code>
+                            <p>The value argument passed in the<span> @FeignClient</span> annotation is a mandatory, arbitrary client name, while with the URL argument, we specify the API base URL.</p>
+                            <code><pre>
+@FeignClient(value = "DEPARTMENT-SERVICE", url = "http://localhost:8080")
+                            </pre></code>
+                            <p>Furthermore, since this interface is a Feign client, we can use the Spring Web annotations to declare the APIs that we want to reach out to.</p>
+                            <h1>Step 4: Change the getUser method to call APIClient</h1>
+                            <p>First, inject<span> APIClient </span> then use it:</p>
+                            <code><pre>
+                                DepartmentDto departmentDto = apiClient.getDepartmentById(user.getDepartmentId());
+                            </pre></code>
+                            <p>Here is the complete code of <span>UserServiceImpl</span> using Feign client for your reference:</p>
+                            <code><pre>
+package net.javaguides.userservice.service.impl;
+
+import lombok.AllArgsConstructor;
+import net.javaguides.userservice.dto.DepartmentDto;
+import net.javaguides.userservice.dto.ResponseDto;
+import net.javaguides.userservice.dto.UserDto;
+import net.javaguides.userservice.entity.User;
+import net.javaguides.userservice.repository.UserRepository;
+import net.javaguides.userservice.service.APIClient;
+import net.javaguides.userservice.service.UserService;
+import org.springframework.stereotype.Service;
+
+@Service
+@AllArgsConstructor
+public class UserServiceImpl implements UserService {
+
+    private UserRepository userRepository;
+
+    private APIClient apiClient;
+
+    @Override
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public ResponseDto getUser(Long userId) {
+
+        ResponseDto responseDto = new ResponseDto();
+        User user = userRepository.findById(userId).get();
+        UserDto userDto = mapToUser(user);
+
+        DepartmentDto departmentDto = apiClient.getDepartmentById(user.getDepartmentId());
+        responseDto.setUser(userDto);
+        responseDto.setDepartment(departmentDto);
+
+        return responseDto;
+    }
+
+    private UserDto mapToUser(User user){
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setEmail(user.getEmail());
+        return userDto;
+    }
+}
+                            </pre></code>
+                            <p>That's it. Now run both the Microservices and let's test.</p>
+                            <h1>Demo: Start Both Microservices</h1>
+                            <p>First, start the <span>department-service</span> project and then start a<span>user-service </span> project.<br><br>
+
+                                Once both the projects are up and running on different ports. Next, let's call the <b>Get User REST API</b> to test the<span> user-service</span> REST API call to the<span> department-service</span>.</p>
+                                <h5>Get User REST API: </h5>
+                                <div class=" mt-2 mb-4">
+                                    <img src="../assets/microservices/Spring Boot + Spring Cloud Open Feign Microservices 2.png" alt="logo" class="img-fluid" />
+                                </div>
+                                <p>Note that the response contains a Department for a User. This demonstrates that we have successfully made a REST API call from<span> user-service</span> to<span> department-service</span> using <span>WebClient</span>.</p>
+
+            <h1>Conclusion</h1>
+            <p>In this tutorial, we learned how to use the Spring Cloud Open Feign library to make REST API calls (Synchronous communication) between multiple microservices.</p>
+            <h1>Related Tutorials</h1>
+            <p>✅ Spring Boot Microservices Communication Example using RestTemplate<br><br>
+
+                ✅ Spring Boot Microservices Communication Example using WebClient<br><br>
+                
+                ✅ Spring Boot Microservices Communication Example using Spring Cloud Open Feign<br><br>
+                
+                ✅ Spring Boot Microservices - Spring Cloud Config Server<br><br>
+                
+                ✅ Spring Boot Microservices - Spring Cloud Netflix Eureka-based Service Registry<br><br>
+                
+                ✅ Spring Boot Microservices - Spring Cloud API Gateway<br><br>
+                
+                ✅ Event-Driven Microservices using Spring Boot and Kafka</p>
+           
+        <h1>Related Spring and Spring Boot Tutorials/Guides:
+        </h1>
+        <p>
+            <button type="button" class="btn btn-outline-primary">
+              Spring Boot Tutorials [500+]s
+            </button>
+            <button type="button" class="btn btn-outline-secondary">
+              Spring Boot Testing Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-success">
+              Spring Boot Microservice Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-danger">
+              Spring Boot Kafka Microservices
+            </button>
+            <button type="button" class="btn btn-outline-warning">
+              Spring Boot + Apache Kafka Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-info">
+              Spring Core Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-primary">
+              Spring MVC Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-secondary">
+              Spring Data JPA Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-success">
+              Spring Framework for Beginners
+            </button>
+            <button type="button" class="btn btn-outline-danger">
+              Spring AOP Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-warning">
+              Spring Security Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-info">
+              Spring Exceptions Tutorial
+            </button>
+            <button type="button" class="btn btn-outline-primary">
+              Spring Boot Interview Questions
+            </button>
+            <button type="button" class="btn btn-outline-dark">
+              Spring Boot Microservices Interview Questions
+            </button>
+            <button type="button" class="btn btn-outline-primary">
+              Apache Kafka Tutorials
+            </button>
+            <button type="button" class="btn btn-outline-secondary">
+              Docker Tutorials and Guides
+            </button>
+            <button type="button" class="btn btn-outline-success">
+              Spring Boot RabbitMQ Tutorials
+            </button>
+            <button type="button" class="btn btn-outline-danger">
+              Angular CRUD Example with Spring Boot
+            </button>
+            <button type="button" class="btn btn-outline-warning">
+              Spring Boot + Angular 12 CRUD Full Stack
+            </button>
+            <button type="button" class="btn btn-outline-info">
+              Spring Boot + Angular 8 CRUD Full Stack
+            </button>
+            <button type="button" class="btn btn-outline-danger">
+              Spring Boot + Angular 10 CRUD Full Stack
+            </button>
+            <button type="button" class="btn btn-outline-primary">
+              React JS ( React Hooks) + Spring Boot
+            </button>
+            <button type="button" class="btn btn-outline-secondary">
+              Spring Boot + React JS CRUD Full Stack
+            </button>
+            <button type="button" class="btn btn-outline-success">
+              Spring Boot Thymeleaf CRUD Full Stack
+            </button>
+            <button type="button" class="btn btn-outline-danger">
+              Spring Boot User Registration and Login
+            </button>
+            <button type="button" class="btn btn-outline-warning">
+              Node Js + Express + MongoDB CRUDVue
+            </button>
+            <button type="button" class="btn btn-outline-info">
+              JS + Spring Boot REST API Tutorial
+            </button>
+          </p>
+    </div>
+  </body>
+</html>
+
+
+           
+
+
+
+
