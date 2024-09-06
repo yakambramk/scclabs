@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/Spring Boot Exception Handling_1.png" alt="logo" />
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="heading">
+            <h3>Spring Boot Exception Handling Example</h3>
+            <h6>Author: SAI K</h6>
+        </div><br>
+        <p>In this tutorial, we will learn how to handle exceptions for  RESTful  Web Services developed using Spring Boot. <br><br>
+
+            We can handle exceptions in REST API in the same way we handle them in the Spring MVC based web application that is by using the <span>@ExceptionHandler</span> and <span>@ControllerAdvice</span> annotations. Instead of rendering a view, you can return <span>ResponseEntity</span> with the appropriate HTTP status code and exception details in JSON/XML format.<br><br>
+            
+            By default, Spring Boot provides a <span>/error</span> mapping that handles all errors in a sensible way, and it is registered as a “global” error page in the servlet container. Rest clients, it produces a JSON response with details of the error, the HTTP status, and the exception message.<br><br>
+            Instead of simply throwing an exception with the HTTP status code, it is better to provide more details about the issue, such as the error code, message, cause, etc. In this example, we define a class annotated with <span>@ControllerAdvice</span> to customize the JSON document to return for a particular controller and/or exception type.</p>
+
+            <h3>Spring Boot Exception Handling Workflow</h3>
+            <p>We will implement exception handling in Spring boot as per the below workflow:</p>
+            <div class="topImage mt-2 mb-4">
+                <img src="../../assets/springboot images/Slide5.PNG" alt="logo" class="img-fulied" />
+            </div><br>
+
+            <h3>Tools and Technologies Used</h3>
+
+            <ul>
+                <li> Spring Boot</li>
+                <li>JDK - 1.8 or later</li>
+                <li>Spring MVC</li>
+                <li>Hibernate</li>
+                <li>Maven</li>
+                <li>Spring Data JPA</li>
+                <li>IDE - Eclipse or Spring Tool Suite (STS) or Intellij IDEA // Any IDE works</li>
+                <li>MYSQL</li>
+            </ul>
+
+
+                <h3>1. Create Spring boot application</h3>
+                <p>Spring Boot provides a web tool called Spring Initializer to bootstrap an application quickly. Just go to https://start.spring.io/ and generate a new spring boot project. <br><br>
+
+                   <b> Use the below details in the Spring boot creation:</b><br><br>
+                    
+                    <b>Project Name:</b> springboot-blog-rest-api<br><br>
+                    
+                    <b>Project Type:</b> Maven<br><br>
+                    
+                    <b>Choose dependencies:</b> Spring Web, Lombok, Spring Data JPA, Spring Security, Dev Tools, and MySQL Driver<br><br>
+                    
+                    <b>Package name:</b> net.javaguides.springboot<br><br>
+                    
+                    <b>Packaging:</b> Jar<br><br>
+                    
+                    Download the Spring Boot project as a zip file, unzip it and import it in your favorite IDE.</p>
+
+                    <h3>2. Maven Dependencies</h3>
+                    <p>Here is the pom.xml file for your reference:</p>
+                    <code><pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;parent&gt;
+		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+		&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+		&lt;version&gt;3.0.0&lt;/version&gt;
+		&lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+	&lt;/parent&gt;
+	&lt;groupId&gt;com.springboot.blog&lt;/groupId&gt;
+	&lt;artifactId&gt;springboot-blog-rest-api&lt;/artifactId&gt;
+	&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;springboot-blog-rest-api&lt;/name&gt;
+	&lt;description&gt;Spring boot blog application rest api&apos;s&lt;/description&gt;
+	&lt;properties&gt;
+		&lt;java.version&gt;17&lt;/java.version&gt;
+	&lt;/properties&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+			&lt;scope&gt;runtime&lt;/scope&gt;
+			&lt;optional&gt;true&lt;/optional&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;mysql&lt;/groupId&gt;
+			&lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+			&lt;scope&gt;runtime&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+			&lt;artifactId&gt;lombok&lt;/artifactId&gt;
+			&lt;optional&gt;true&lt;/optional&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+				&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+				&lt;configuration&gt;
+					&lt;excludes&gt;
+						&lt;exclude&gt;
+							&lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+							&lt;artifactId&gt;lombok&lt;/artifactId&gt;
+						&lt;/exclude&gt;
+					&lt;/excludes&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+
+&lt;/project&gt;</pre></code><br>
+
+
+                    <h3>3. Configure MySQL Database</h3>
+                    <p>Let's first create a database in MySQL server using the below command:</p>
+                    <code><pre>create database myblog</pre></code><br>
+
+                    <p>Since we’re using MySQL as our database, we need to configure the database <b>URL</b>, <b>username</b>, and <b>password</b> so that Spring can establish a connection with the database on startup. Open <span>src/main/resources/application.properties</span> file and add the following properties to it:</p>
+                        <code><pre>
+spring.datasource.url = jdbc:mysql://localhost:3306/myblog?useSSL=false&serverTimezone=UTC
+spring.datasource.username = root
+spring.datasource.password = root
+
+# hibernate properties
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQLDialect
+
+# Hibernate ddl auto (create, create-drop, validate, update)
+spring.jpa.hibernate.ddl-auto = update
+
+logging.level.org.springframework.security=DEBUG</pre></code><br>
+
+                        <h3>4. Model Layer - Create JPA Entity</h3>
+                            <p>Let's create a Post JPA entity:</p>
+                            <code><pre>
+package com.springboot.blog.entity;
+
+import lombok.*;
+
+import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+
+@Entity
+@Table(
+        name = "posts", uniqueConstraints = {@UniqueConstraint(columnNames = {"title"})}
+)
+public class Post {
+
+    @Id
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
+    private Long id;
+
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "description", nullable = false)
+    private String description;
+
+    @Column(name = "content", nullable = false)
+    private String content;
+
+}</pre></code><br>
+
+                    <h3>5. Repository Layer</h3>
+                    <p>Let's create a PostRepository to retrieve and save post records in the MySQL database:</p>
+<code><pre>
+package com.springboot.blog.repository;
+
+import com.springboot.blog.entity.Post;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PostRepository extends JpaRepository<Post, Long> {
+
+}</pre></code><br>
+
+
+                <h3>6. Exception(Error) Handling for RESTful Services</h3>
+                <p>Spring Boot provides a good default implementation for exception handling for RESTful Services. <br><br>
+                    Let’s quickly look at the default Exception Handling features provided by Spring Boot. <br><br>
+                    If we try to <b>get a post by id</b> from the database and the post is not exist in the database with the given id then Spring boot will return the default error response as below:</p>
+<code><pre>
+{
+	"timestamp": "2021-02-28T14:15:18.250+00:00",
+	"status": 404,
+	"error": "Not Found",
+	"trace": "com.springboot.blog.exception.ResourceNotFoundEx
+	ception: Post not found with id : ’6’……...
+	"message": "Post not found with id : '6'",
+	"path": "/api/posts/6"
+}</pre></code><br>
+
+                    <p>The default error response provided by Spring Boot contains all the details that are typically needed. <br><br>
+                        However, you might want to create a framework-independent response structure for your organization. In that case, you can define a specific error response structure. For example:</p>
+<code><pre>
+{
+	"timestamp": "2021-02-28T14:13:47.572+00:00",
+	"message": "Post not found with id : '6'",
+	"details": "uri=/api/posts/6"
+}</pre></code><br>
+
+
+                <p>Let's write the code to customize the error response of the  Spring boot  REST API.</p>
+                <h3>ErrorDetails</h3>
+                <code><pre>
+package com.springboot.blog.payload;
+
+import java.util.Date;
+
+public class ErrorDetails {
+    private Date timestamp;
+    private String message;
+    private String details;
+
+    public ErrorDetails(Date timestamp, String message, String details) {
+        this.timestamp = timestamp;
+        this.message = message;
+        this.details = details;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+}</pre></code><br>
+                        <h3>ResourceNotFoundException</h3>
+                        <p>Let's create a ResourceNotFoundException.java class and add the following content to it:</p>
+<code><pre>
+package com.springboot.blog.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+public class ResourceNotFoundException extends RuntimeException{
+    private String resourceName;
+    private String fieldName;
+    private long fieldValue;
+
+    public ResourceNotFoundException(String resourceName, String fieldName, long fieldValue) {
+        super(String.format("%s not found with %s : '%s'", resourceName, fieldName, fieldValue)); // Post not found with id : 1
+        this.resourceName = resourceName;
+        this.fieldName = fieldName;
+        this.fieldValue = fieldValue;
+    }
+
+    public String getResourceName() {
+        return resourceName;
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public long getFieldValue() {
+        return fieldValue;
+    }
+}</pre></code><br>
+
+
+                <h3>Create GlobalExceptionHandler class</h3>
+                <p>To use <span>ErrorDetails</span> to return the error response, let’s create a <span>GlobalExceptionHandler</span> class annotated with <span>@ControllerAdvice</span> annotation. This class handles exception-specific and global exceptions in a single place.</p>
+<code><pre>
+package com.springboot.blog.exception;
+
+import com.springboot.blog.payload.ErrorDetails;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+
+import java.util.Date;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    // handle specific exceptions
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity< ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException exception,
+                                                                        WebRequest webRequest){
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity< >(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BlogAPIException.class)
+    public ResponseEntity< ErrorDetails> handleBlogAPIException(BlogAPIException exception,
+                                                                        WebRequest webRequest){
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity< >(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+    // global exceptions
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity< ErrorDetails> handleGlobalException(Exception exception,
+                                                               WebRequest webRequest){
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity< >(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+</pre></code><br>
+                    <h3>7. Service Layer</h3>
+                    <p>PostService</p>
+                    <code><pre>
+package com.springboot.blog.service;
+
+import com.springboot.blog.payload.PostDto;
+import com.springboot.blog.payload.PostResponse;
+
+import java.util.List;
+
+public interface PostService {
+    PostDto createPost(PostDto postDto);
+
+    PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir);
+
+    PostDto getPostById(long id);
+
+    PostDto updatePost(PostDto postDto, long id);
+
+    void deletePostById(long id);
+}</pre></code><br>
+                <h3>PostServiceImpl</h3>
+                <code><pre>
+package com.springboot.blog.service.impl;
+
+import com.springboot.blog.entity.Post;
+import com.springboot.blog.exception.ResourceNotFoundException;
+import com.springboot.blog.payload.PostDto;
+import com.springboot.blog.payload.PostResponse;
+import com.springboot.blog.repository.PostRepository;
+import com.springboot.blog.service.PostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class PostServiceImpl implements PostService {
+
+    private PostRepository postRepository;
+
+    public PostServiceImpl(PostRepository postRepository) {
+          this.postRepository = postRepository;
+    }
+
+    @Override
+    public PostDto createPost(PostDto postDto) {
+
+        // convert DTO to entity
+        Post post = mapToEntity(postDto);
+        Post newPost = postRepository.save(post);
+
+        // convert entity to DTO
+        PostDto postResponse = mapToDTO(newPost);
+        return postResponse;
+    }
+
+    @Override
+    public PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
+
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        // create Pageable instance
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+
+        Page< Post> posts = postRepository.findAll(pageable);
+
+        // get content for page object
+        List< Post> listOfPosts = posts.getContent();
+
+        List< PostDto> content= listOfPosts.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(content);
+        postResponse.setPageNo(posts.getNumber());
+        postResponse.setPageSize(posts.getSize());
+        postResponse.setTotalElements(posts.getTotalElements());
+        postResponse.setTotalPages(posts.getTotalPages());
+        postResponse.setLast(posts.isLast());
+
+        return postResponse;
+    }
+
+    @Override
+    public PostDto getPostById(long id) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        return mapToDTO(post);
+    }
+
+    @Override
+    public PostDto updatePost(PostDto postDto, long id) {
+        // get post by id from the database
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+
+        post.setTitle(postDto.getTitle());
+        post.setDescription(postDto.getDescription());
+        post.setContent(postDto.getContent());
+
+        Post updatedPost = postRepository.save(post);
+        return mapToDTO(updatedPost);
+    }
+
+    @Override
+    public void deletePostById(long id) {
+        // get post by id from the database
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        postRepository.delete(post);
+    }
+
+    // convert Entity into DTO
+    private PostDto mapToDTO(Post post){
+        PostDto postDto = new PostDto();
+        postDto.setId(post.getId());
+        postDto.setTitle(post.getTitle());
+        postDto.setDescription(post.getDescription());
+        postDto.setContent(post.getContent());
+        return postDto;
+    }
+
+    // convert DTO to entity
+    private Post mapToEntity(PostDto postDto){
+        Post post = new Post();
+        post.setTitle(postDto.getTitle());
+        post.setDescription(postDto.getDescription());
+        post.setContent(postDto.getContent());
+        return post;
+    }
+}</pre></code><br>
+
+
+                <h3>8. Controller Layer</h3>
+                <code><pre>
+package com.springboot.blog.controller;
+
+import com.springboot.blog.payload.PostDto;
+import com.springboot.blog.payload.PostResponse;
+import com.springboot.blog.service.PostService;
+import com.springboot.blog.utils.AppConstants;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/posts")
+public class PostController {
+
+    private PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
+
+    // create blog post rest api
+    @PostMapping
+    public ResponseEntity< PostDto> createPost(@RequestBody PostDto postDto){
+        return new ResponseEntity< >(postService.createPost(postDto), HttpStatus.CREATED);
+    }
+
+    // get all posts rest api
+    @GetMapping
+    public PostResponse getAllPosts(
+            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir
+    ){
+        return postService.getAllPosts(pageNo, pageSize, sortBy, sortDir);
+    }
+
+    // get post by id
+    @GetMapping("/{id}")
+    public ResponseEntity< PostDto> getPostById(@PathVariable(name = "id") long id){
+        return ResponseEntity.ok(postService.getPostById(id));
+    }
+
+    // update post by id rest api
+    @PutMapping("/{id}")
+    public ResponseEntity< PostDto> updatePost(@RequestBody PostDto postDto, @PathVariable(name = "id") long id){
+
+       PostDto postResponse = postService.updatePost(postDto, id);
+
+       return new ResponseEntity< >(postResponse, HttpStatus.OK);
+    }
+
+    // delete post rest api
+    @DeleteMapping("/{id}")
+    public ResponseEntity< String> deletePost(@PathVariable(name = "id") long id){
+
+        postService.deletePostById(id);
+
+        return new ResponseEntity< >("Post entity deleted successfully.", HttpStatus.OK);
+    }
+}</pre></code><br><br>
+
+
+                <h3>9. Demo</h3>
+
+                <div class="topImage mt-2 mb-4">
+                    <img src="../../assets/springboot images/post-exception-handling.PNG" alt="logo" class="img-fulied" />
+                </div><br>
+
+                <h3>Related Spring and Spring Boot Tutorials/Guides:</h3>
+
+            <p>
+                <button type="button" class="btn btn-outline-primary">Spring Boot Tutorials [500+]s</button>
+                <button type="button" class="btn btn-outline-secondary">Spring Boot Testing Tutorial</button>
+                <button type="button" class="btn btn-outline-success">Spring Boot Microservice Tutorial</button>
+                <button type="button" class="btn btn-outline-danger">Spring Boot Kafka Microservices </button>
+                <button type="button" class="btn btn-outline-warning">Spring Boot + Apache Kafka Tutorial</button>
+                <button type="button" class="btn btn-outline-info">Spring Core Tutorial</button>
+                <button type="button" class="btn btn-outline-primary">Spring MVC Tutorial </button>
+                <button type="button" class="btn btn-outline-secondary">Spring Data JPA Tutorial</button>
+                <button type="button" class="btn btn-outline-success">Spring Framework for Beginners</button>
+                <button type="button" class="btn btn-outline-danger">Spring AOP Tutorial</button>
+                <button type="button" class="btn btn-outline-warning">Spring Security Tutorial</button>
+                <button type="button" class="btn btn-outline-info">Spring Exceptions Tutorial</button>
+                <button type="button" class="btn btn-outline-primary">Spring Boot Interview Questions</button>
+                <button type="button" class="btn btn-outline-dark">Spring Boot Microservices Interview Questions</button>
+                <button type="button" class="btn btn-outline-primary">Apache Kafka Tutorials </button>
+                <button type="button" class="btn btn-outline-secondary">Docker Tutorials and Guides</button>
+                <button type="button" class="btn btn-outline-success">Spring Boot RabbitMQ Tutorials</button>
+                <button type="button" class="btn btn-outline-danger">Angular CRUD Example with Spring Boot </button>
+                <button type="button" class="btn btn-outline-warning">Spring Boot + Angular 12 CRUD Full Stack</button>
+                <button type="button" class="btn btn-outline-info">Spring Boot + Angular 8 CRUD Full Stack</button>
+                <button type="button" class="btn btn-outline-danger">Spring Boot + Angular 10 CRUD Full Stack </button>
+                <button type="button" class="btn btn-outline-primary">React JS ( React Hooks) + Spring Boot</button>
+                <button type="button" class="btn btn-outline-secondary">Spring Boot + React JS CRUD Full Stack</button>
+                <button type="button" class="btn btn-outline-success">Spring Boot Thymeleaf CRUD Full Stack </button>
+                <button type="button" class="btn btn-outline-danger">Spring Boot User Registration and Login</button>
+                <button type="button" class="btn btn-outline-warning">Node Js + Express + MongoDB CRUDVue</button>
+                <button type="button" class="btn btn-outline-info">JS + Spring Boot REST API Tutorial</button>
+            </p>
+
+
+
+
+    </div>
+</body>
+</html>
