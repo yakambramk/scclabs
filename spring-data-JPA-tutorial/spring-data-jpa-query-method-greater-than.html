@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA Query Method - Greater Than</h1>
+        <p>In this tutorial, we will learn how to write a query method for <b>GreaterThan</b> in the Spring Data JPA
+            repository.</p>
+        <p>Spring Data JPA query methods are the most powerful methods, we can create query methods to select the
+            records from the database without writing SQL queries. Behind the scenes, Spring Data JPA will create SQL
+            queries based on the query method and execute the query for us.</p>
+        <p>Let's follow the Spring Data JPA naming convention to write a query method for the <b>GreaterThan</b>
+            condition for
+            the Product entity class.</p>
+        <p>We need to create a method starting with the prefix <code style="color: red;">findBy</code> followed by the
+            field name and then the
+            <b>GreaterThan</b> suffix - <b>findBy[FieldName][GreaterThan]</b>
+        </p>
+        <p><b>Example: </b>Consider the <code style="color: red;">Product</code> entity class and if we want to retrieve
+            products whose price is greater than
+            the given price as a method parameter then here is the Spring Data JPA query method:</p>
+        <pre><code>List&lt;Product> findByPriceGreaterThan(BigDecimal price);</code></pre>
+        <p>Let's create a complete example to understand end-to-end.</p>
+        <h2>Maven Dependencies</h2>
+        <p>Add the following maven dependencies to your Spring Boot project:</p>
+        <pre><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+    &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;
+
+</code></pre>
+        <h2>Product Entity</h2>
+        <p>Let's first create a <code style="color: red;">Product</code> entity class and add the following content to
+            it:</p>
+        <pre><code>
+package net.javaguides.springdatajpacourse.entity;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.util.Date;
+
+@Entity
+@Table(name="products")
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "sku")
+    private String sku;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "price")
+    private BigDecimal price;
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "active")
+    private boolean active;
+
+    @Column(name = "date_created")
+    @CreationTimestamp
+    private Date dateCreated;
+
+    @Column(name = "last_updated")
+    @UpdateTimestamp
+    private Date lastUpdated;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", sku='" + sku + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", active=" + active +
+                ", dateCreated=" + dateCreated +
+                ", lastUpdated=" + lastUpdated +
+                '}';
+    }
+}
+
+</code></pre>
+        <h2>ProductRepository</h2>
+        <p>Let's create <code style="color: red;">ProductRepository</code> which extends <code
+                style="color: red;">JpaRepository</code> and add the following code to it:</p>
+        <pre><code>
+import java.math.BigDecimal;
+import java.util.List;
+
+import net.javaguides.springdatajpacourse.entity.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductRepository extends JpaRepository<Product, Long> {
+
+	/**
+	 * Return the products whose price is greater than given price as method parameter
+	 * @param price
+	 * @return
+	 */
+	List<Product> findByPriceGreaterThan(BigDecimal price);
+}
+
+</code></pre>
+        <p>Note that the below query method returns a list of products whose price is greater than the given price as a
+            method parameter:</p>
+        <pre><code>List&lt;Product> findByPriceGreaterThan(BigDecimal price);</code></pre>
+        <h2>Configure MySQL and Hibernate Properties</h2>
+        <p>Let's use the MySQL database to store and retrieve the data in this example and we gonna use Hibernate
+            properties to create and drop tables.</p>
+        </p>Open the <code style="color: red">application.properties</code> file and add the following configuration to
+        it:</p>
+        <pre><code>
+spring.datasource.url=jdbc:mysql://localhost:3306/ecommerce?useSSL=false
+spring.datasource.username=root
+spring.datasource.password=Mysql@123
+
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQLDialect
+
+spring.jpa.hibernate.ddl-auto = create-drop
+
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+        </code></pre>
+        <p>Make sure that you will create <b>ecommerce</b> database before running the Spring boot application.
+            Also, change the MySQL username and password as per your MySQL installation on your machine.</p>
+        <h2>Testing Spring Data JPA Query Method - Greater Than</h2>
+        <p>In order to test the <b>query method with greater than</b> that we have created, we gonna use
+            <code style="color: red;">CommandLineRunner.run()</code> method to execute the testing code while the Spring
+            boot application startup:
+        </p>
+        <pre><code>
+import net.javaguides.springdatajpacourse.entity.Product;
+import net.javaguides.springdatajpacourse.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+@SpringBootApplication
+public class SpringDataJpaCourseApplication implements CommandLineRunner{
+
+	public static void main(String[] args) throws Exception {
+		SpringApplication.run(SpringDataJpaCourseApplication.class, args);
+	}
+
+	@Autowired
+	private ProductRepository productRepository;
+
+	@Override
+	public void run(String... args) throws Exception {
+        Product product = new Product();
+        product.setName("product 1");
+        product.setDescription("product 1 desc");
+        product.setPrice(new BigDecimal(100));
+        product.setDateCreated(new Date());
+        product.setLastUpdated(new Date());
+        product.setSku("product 1 sku");
+        product.setActive(true);
+        product.setImageUrl("product1.png");
+
+        // save product
+        productRepository.save(product);
+
+        Product product2 = new Product();
+        product2.setName("product 2");
+        product2.setDescription("product 2 desc");
+        product2.setPrice(new BigDecimal(200));
+        product2.setDateCreated(new Date());
+        product2.setLastUpdated(new Date());
+        product2.setSku("product 2 sku");
+        product2.setActive(true);
+        product2.setImageUrl("product2.png");
+
+        // save product 2
+        productRepository.save(product2);
+
+        // test create query with greater than condition
+        List<Product> gProducts = productRepository.findByPriceGreaterThan(new BigDecimal(100));
+        gProducts.forEach((p) ->
+                System.out.println(p));
+	}
+}
+
+</code></pre>
+        <p>Once Spring boot application execution completes, you can able to see Spring Data JPA (uses Hibernate as JPA
+            provider) generated SQL statements in a console:</p>
+        <pre><code>
+Hibernate: 
+    insert 
+    into
+        products
+        (active, date_created, description, image_url, last_updated, name, price, sku) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        products
+        (active, date_created, description, image_url, last_updated, name, price, sku) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        product0_.id as id1_0_,
+        product0_.active as active2_0_,
+        product0_.date_created as date_cre3_0_,
+        product0_.description as descript4_0_,
+        product0_.image_url as image_ur5_0_,
+        product0_.last_updated as last_upd6_0_,
+        product0_.name as name7_0_,
+        product0_.price as price8_0_,
+        product0_.sku as sku9_0_ 
+    from
+        products product0_ 
+    where
+        product0_.price>?
+
+</code></pre>
+        <p>Note that the below SQL query with Greater Than (>) condition in where clause:</p>
+        <pre><code>
+    select
+        product0_.id as id1_0_,
+        product0_.active as active2_0_,
+        product0_.date_created as date_cre3_0_,
+        product0_.description as descript4_0_,
+        product0_.image_url as image_ur5_0_,
+        product0_.last_updated as last_upd6_0_,
+        product0_.name as name7_0_,
+        product0_.price as price8_0_,
+        product0_.sku as sku9_0_ 
+    from
+        products product0_ 
+    where
+        product0_.price>?
+
+</code></pre>
+    </div>
+</body>
+
+</html>
