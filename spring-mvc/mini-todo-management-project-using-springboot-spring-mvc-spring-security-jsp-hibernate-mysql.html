@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Todo Management Project using Spring Boot + Spring MVC + Spring Security + JSP + Hibernate + MySQL
+    </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Mini Todo Management Project using Spring Boot + Spring MVC + Spring Security + JSP + Hibernate + MySQL</h1>
+        <p>In this article, we will learn how to develop Spring MVC Todo Management web application using <b>Spring
+                Boot, Spring MVC, Spring Security, JSP, JPA and MySQL </b>as a database.</p>
+        <p> This mini project is mainly for beginners to learn how to develop Spring MVC web applications step by step
+            using Spring Boot.</p>
+        <p><b>The following features are implemented in this mini todo management project:</b></p>
+        <ul>
+            <li> Create Todo</li>
+            <li> Update Todo</li>
+            <li> Delete Todo</li>
+            <li> List Todo</li>
+            <li> Get Todo by id.</li>
+            <li> Simple Spring security</li>
+            <li> Webjars to manage client-side dependencies(CSS and JS).</li>
+            <li> JSP as view and common header, footer, and navigation bar.</li>
+            <li> Custom error page mapping</li>
+        </ul>
+        <p><b>You can implement the following features to this Todo Management project(take this is an exercise):</b>
+        </p>
+
+        <ul>
+            <li><span style="color: rgb(234, 75, 75);">Finish Todo feature: </span> Add finish button and save status
+                against each record in a database.
+            <li><span style="color: rgb(234, 75, 75);">logging:</span> </li>
+        </ul>
+        <p>Refer below article to implement logging effectively in this Todo management project Spring Boot 2 Logging
+            <a href="">Spring Boot 2 Logging
+                SLF4j Logback and LOG4j2 Example</a>
+        <ul>
+            <li><span style="color: rgb(234, 75, 75);">Role-based spring security:</span></li>
+        </ul>
+
+        <p>Refer below article to implement role-based Spring security effectively in this Todo management project
+            <a href="springboot-spring-mvc-role-based-spring-security-jpa-thymeleaf-mysql-tutorial.html"> Spring Boot +
+                Spring MVC + Role Based Spring Security + JPA + Thymeleaf + MySQL Tutorial</a>
+        </p>
+        <ul>
+            <li><span style="color: rgb(234, 75, 75);">Exception handling:</span></li>
+        </ul>
+
+        <p>Refer below article to implement exception handling effectively in this Todo management project <a
+                href="">Spring Boot 2 Exception Handling for REST APIs</a></p>
+        <ul>
+            <li><span style="color: rgb(234, 75, 75);">Validation:</span></li>
+        </ul>
+
+        <p>Refer below article to implement validation effectively in this Todo management project <a href="">Spring
+                Boot CRUD REST
+                APIs Validation Example</a></p>
+        <ul>
+            <li><span style="color: rgb(234, 75, 75);">Auditing:</span></li>
+        </ul>
+
+        <p>Refer below article to implement auditing effectively in this Todo management project <a href="">Spring Data
+                JPA
+                Auditing with Spring Boot 2 and MySQL Example</a></p>
+
+        <h2>What we’ll build</h2>
+        <p>We will develop step by step Spring MVC Todo management web application using <b>Spring Boot, Spring MVC,
+                Spring Security, JSP, JPA and MySQL</b> as a database.</p>
+        <img src="/assets/spring-mvc-image/list-doto.PNG" alt="" class="image-fluid">
+        <h2>Tools and Technologies Used</h2>
+        <ul>
+            <li> Spring Boot - 2.0.4.RELEASE</li>
+            <li> JDK - 1.8 or later</li>
+            <li> Spring Framework - 5.0.8 RELEASE</li>
+            <li> Hibernate - 5.2.17.Final</li>
+            <li> Maven - 3.2+</li>
+            <li> Spring Data JPA - 2.0.10 RELEASE</li>
+            <li> IDE - Eclipse or Spring Tool Suite (STS)</li>
+            <li> MYSQL - 5.1.47</li>
+            <li> Spring Security - 5.0.7 RELEASE</li>
+            <li> JSP</li>
+        </ul>
+        <h2>Creating and Importing a Project</h2>
+        <p>There are many ways to create a Spring Boot application. The simplest way is to use Spring Initializr at <a
+                href="http://start.spring.io/">http://start.spring.io/</a>, which is an online Spring Boot application
+            generator.</p>
+        <img src="/assets/spring-mvc-image/create-project.PNG" alt="" class="image-fluid">
+        <p>Look at the above diagram, we have specified the following details:</p>
+        <ul>
+            <li> Generate: Maven Project</li>
+            <li> Java Version: 1.8 (Default)</li>
+            <li> Spring Boot:2.0.4</li>
+            <li> Group: net.guides.todo</li>
+            <li> Artifact: todo-management-spring-boot</li>
+            <li> Name: todo-management-spring-boot</li>
+            <li> Description: todo-management-spring-boot</li>
+            <li> Package Name : net.guides.springboot.todomanagement</li>
+            <li> Packaging: jar (This is the default value)</li>
+            <li> Dependencies: Web, JPA, MySQL, DevTools, Security</li>
+        </ul>
+        <p>Once, all the details are entered, click on Generate Project button will generate a spring boot project and
+            downloads it. Next, Unzip the downloaded zip file and import it into your favorite IDE.</p>
+        <h2>Packaging Structure</h2>
+        <p>Following is the packing structure for your reference -</p>
+        <img src="/assets/spring-mvc-image/package-structure (1).PNG" alt="" class="image-fluid">
+        <h2>The pom.xml File</h2>
+        <pre>
+    &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+    &lt;project
+        xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+        xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+     xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+        &lt;groupId&gt;net.guides.springboot&lt;/groupId&gt;
+        &lt;artifactId&gt;todo-management-spring-boot&lt;/artifactId&gt;
+        &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;packaging&gt;jar&lt;/packaging&gt;
+        &lt;name&gt;todo-management-spring-boot&lt;/name&gt;
+        &lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+        &lt;parent&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+            &lt;version&gt;2.0.4.RELEASE&lt;/version&gt;
+            &lt;relativePath /&gt;
+            &lt;!-- lookup parent from repository --&gt;
+        &lt;/parent&gt;
+        &lt;properties&gt;
+            &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+            &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+            &lt;java.version&gt;1.8&lt;/java.version&gt;
+        &lt;/properties&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+                &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.webjars&lt;/groupId&gt;
+                &lt;artifactId&gt;bootstrap&lt;/artifactId&gt;
+                &lt;version&gt;3.3.6&lt;/version&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.webjars&lt;/groupId&gt;
+                &lt;artifactId&gt;bootstrap-datepicker&lt;/artifactId&gt;
+                &lt;version&gt;1.0.1&lt;/version&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.webjars&lt;/groupId&gt;
+                &lt;artifactId&gt;jquery&lt;/artifactId&gt;
+                &lt;version&gt;1.9.1&lt;/version&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+                &lt;artifactId&gt;tomcat-embed-jasper&lt;/artifactId&gt;
+                &lt;scope&gt;provided&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+                &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;mysql&lt;/groupId&gt;
+                &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+                &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.security&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-security-test&lt;/artifactId&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                    &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <p>Note that we have used Spring Data JPA starter to talk to MySQL database.</p>
+        <h2>Create the JPA Entity - Todo.java</h2>
+
+        <pre>package net.guides.springboot.todomanagement.model;
+
+    import java.util.Date;
+    
+    import javax.persistence.Entity;
+    import javax.persistence.GeneratedValue;
+    import javax.persistence.GenerationType;
+    import javax.persistence.Id;
+    import javax.persistence.Table;
+    import javax.validation.constraints.Size;
+    
+    /**
+     * @author Ramesh Fadatare
+     *
+     */
+    
+    @Entity
+    @Table(name = "todos")
+    public class Todo {
+    
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        private long id;
+    
+        private String userName;
+    
+        @Size(min = 10, message = "Enter at least 10 Characters...")
+        private String description;
+    
+        private Date targetDate;
+    
+        public Todo() {
+            super();
+        }
+    
+        public Todo(String user, String desc, Date targetDate, boolean isDone) {
+            super();
+            this.userName = user;
+            this.description = desc;
+            this.targetDate = targetDate;
+        }
+    
+        public long getId() {
+            return id;
+        }
+    
+        public void setId(long id) {
+            this.id = id;
+        }
+    
+        public String getUserName() {
+            return userName;
+        }
+    
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+    
+        public String getDescription() {
+            return description;
+        }
+    
+        public void setDescription(String description) {
+            this.description = description;
+        }
+    
+        public Date getTargetDate() {
+            return targetDate;
+        }
+    
+        public void setTargetDate(Date targetDate) {
+            this.targetDate = targetDate;
+        }
+    }</pre>
+        <p>Next, create the Spring Data JPA repository for the Todo entity.</p>
+        <h2>Spring Data JPA Repository Interface - TodoRepository.java</h2>
+        <pre>package net.guides.springboot.todomanagement.repository;
+
+    import java.util.List;
+    
+    import org.springframework.data.jpa.repository.JpaRepository;
+    
+    import net.guides.springboot.todomanagement.model.Todo;
+    
+    public interface TodoRepository extends JpaRepository < Todo, Long > {
+        List < Todo > findByUserName(String user);
+    }</pre>
+        <h2>Spring Security Configuration - SecurityConfiguration.java
+        </h2>
+        <pre>package net.guides.springboot.todomanagement.security;
+
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.context.annotation.Configuration;
+    import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+    import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+    import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+    import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+    
+    @Configuration
+    public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+        @Autowired
+        public void configureGlobalSecurity(AuthenticationManagerBuilder auth)
+        throws Exception {
+            auth.inMemoryAuthentication()
+                .passwordEncoder(NoOpPasswordEncoder.getInstance())
+                .withUser("admin").password("admin")
+                .roles("USER", "ADMIN");
+        }
+    
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.authorizeRequests().antMatchers("/login", "/h2-console/**").permitAll()
+                .antMatchers("/", "/*todo*/**").access("hasRole('USER')").and()
+                .formLogin();
+    
+            http.csrf().disable();
+            http.headers().frameOptions().disable();
+        }
+    }</pre>
+        <p>This class extends <b>WebSecurityConfigurerAdapter</b> and overrides a couple of its methods to set some
+            specifics of the web security configuration.</p>
+        <p> The <b>configure(HttpSecurity)</b> method defines which URL paths should be secured and which should not.
+            Specifically, the "/" and "/login" paths are configured to not require any authentication. All other paths
+            must be authenticated.</p>
+        <p> As for the method, it sets up <b>userDetailsService()</b>an in-memory user store with a single user. That
+            user is given a username of "admin", a password of "admin", and a role of "ADMIN".</p>
+
+        <h2>Controller Layer - TodoController.java</h2>
+        <p>This class contains request handling methods for create, update, delete and list of Todos.</p>
+        <pre>package net.guides.springboot.todomanagement.controller;
+
+    import java.text.SimpleDateFormat;
+    import java.util.Date;
+    
+    import javax.validation.Valid;
+    
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.beans.propertyeditors.CustomDateEditor;
+    import org.springframework.security.core.context.SecurityContextHolder;
+    import org.springframework.security.core.userdetails.UserDetails;
+    import org.springframework.stereotype.Controller;
+    import org.springframework.ui.ModelMap;
+    import org.springframework.validation.BindingResult;
+    import org.springframework.web.bind.WebDataBinder;
+    import org.springframework.web.bind.annotation.InitBinder;
+    import org.springframework.web.bind.annotation.RequestMapping;
+    import org.springframework.web.bind.annotation.RequestMethod;
+    import org.springframework.web.bind.annotation.RequestParam;
+    
+    import net.guides.springboot.todomanagement.model.Todo;
+    import net.guides.springboot.todomanagement.service.ITodoService;
+    
+    @Controller
+    public class TodoController {
+    
+        @Autowired
+        private ITodoService todoService;
+    
+        @InitBinder
+        public void initBinder(WebDataBinder binder) {
+            // Date - dd/MM/yyyy
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+        }
+    
+        @RequestMapping(value = "/list-todos", method = RequestMethod.GET)
+        public String showTodos(ModelMap model) {
+            String name = getLoggedInUserName(model);
+            model.put("todos", todoService.getTodosByUser(name));
+            // model.put("todos", service.retrieveTodos(name));
+            return "list-todos";
+        }
+    
+        private String getLoggedInUserName(ModelMap model) {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    
+            if (principal instanceof UserDetails) {
+                return ((UserDetails) principal).getUsername();
+            }
+    
+            return principal.toString();
+        }
+    
+        @RequestMapping(value = "/add-todo", method = RequestMethod.GET)
+        public String showAddTodoPage(ModelMap model) {
+            model.addAttribute("todo", new Todo());
+            return "todo";
+        }
+    
+        @RequestMapping(value = "/delete-todo", method = RequestMethod.GET)
+        public String deleteTodo(@RequestParam long id) {
+            todoService.deleteTodo(id);
+            // service.deleteTodo(id);
+            return "redirect:/list-todos";
+        }
+    
+        @RequestMapping(value = "/update-todo", method = RequestMethod.GET)
+        public String showUpdateTodoPage(@RequestParam long id, ModelMap model) {
+            Todo todo = todoService.getTodoById(id).get();
+            model.put("todo", todo);
+            return "todo";
+        }
+    
+        @RequestMapping(value = "/update-todo", method = RequestMethod.POST)
+        public String updateTodo(ModelMap model, @Valid Todo todo, BindingResult result) {
+    
+            if (result.hasErrors()) {
+                return "todo";
+            }
+    
+            todo.setUserName(getLoggedInUserName(model));
+            todoService.updateTodo(todo);
+            return "redirect:/list-todos";
+        }
+    
+        @RequestMapping(value = "/add-todo", method = RequestMethod.POST)
+        public String addTodo(ModelMap model, @Valid Todo todo, BindingResult result) {
+    
+            if (result.hasErrors()) {
+                return "todo";
+            }
+    
+            todo.setUserName(getLoggedInUserName(model));
+            todoService.saveTodo(todo);
+            return "redirect:/list-todos";
+        }
+    }</pre>
+        <h2>Controller Layer - WelcomeController.java</h2>
+        <p>after a user successfully authenticated will navigates to welcome page and this request handled by this
+            WelcomeController Class.</p>
+        <pre>package net.guides.springboot.todomanagement.controller;
+
+    import org.springframework.security.core.context.SecurityContextHolder;
+    import org.springframework.security.core.userdetails.UserDetails;
+    import org.springframework.stereotype.Controller;
+    import org.springframework.ui.ModelMap;
+    import org.springframework.web.bind.annotation.RequestMapping;
+    import org.springframework.web.bind.annotation.RequestMethod;
+    
+    @Controller
+    public class WelcomeController {
+    
+        @RequestMapping(value = "/", method = RequestMethod.GET)
+        public String showWelcomePage(ModelMap model) {
+            model.put("name", getLoggedinUserName());
+            return "welcome";
+        }
+    
+        private String getLoggedinUserName() {
+            Object principal = SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+    
+            if (principal instanceof UserDetails) {
+                return ((UserDetails) principal).getUsername();
+            }
+    
+            return principal.toString();
+        }
+    
+    }</pre>
+
+        <h2>Controller Layer - ErrorController.java</h2>
+        <p>ErrorController used to map custom error page.</p>
+
+        <pre>package net.guides.springboot.todomanagement.controller;
+
+    import javax.servlet.http.HttpServletRequest;
+    
+    import org.springframework.stereotype.Controller;
+    import org.springframework.web.bind.annotation.ExceptionHandler;
+    import org.springframework.web.servlet.ModelAndView;
+    
+    @Controller("error")
+    public class ErrorController {
+    
+        @ExceptionHandler(Exception.class)
+        public ModelAndView handleException(HttpServletRequest request, Exception ex) {
+            ModelAndView mv = new ModelAndView();
+    
+            mv.addObject("exception", ex.getLocalizedMessage());
+            mv.addObject("url", request.getRequestURL());
+    
+            mv.setViewName("error");
+            return mv;
+        }
+    
+    }</pre>
+        <h2>Controller Layer - LogoutController.java</h2>
+        <p>This Class handles, after logout successfully then navigate to a home page with a proper message.</p>
+        <pre>package net.guides.springboot.todomanagement.controller;
+
+    import javax.servlet.http.HttpServletRequest;
+    import javax.servlet.http.HttpServletResponse;
+    
+    import org.springframework.security.core.Authentication;
+    import org.springframework.security.core.context.SecurityContextHolder;
+    import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+    import org.springframework.stereotype.Controller;
+    import org.springframework.web.bind.annotation.RequestMapping;
+    import org.springframework.web.bind.annotation.RequestMethod;
+    
+    @Controller
+    public class LogoutController {
+    
+        @RequestMapping(value = "/logout", method = RequestMethod.GET)
+        public String logout(HttpServletRequest request,
+            HttpServletResponse response) {
+    
+            Authentication authentication = SecurityContextHolder.getContext()
+                .getAuthentication();
+    
+            if (authentication != null) {
+                new SecurityContextLogoutHandler().logout(request, response,
+                    authentication);
+            }
+    
+            return "redirect:/";
+        }
+    }</pre>
+        <h2>Service Layer - ITodoService.java</h2>
+        <p>Let's explore all the methods required to process Todo features in this interface.</p>
+
+        <pre>package net.guides.springboot.todomanagement.service;
+
+        import java.util.Date;
+        
+        import java.util.List;
+        import java.util.Optional;
+        
+        import net.guides.springboot.todomanagement.model.Todo;
+        
+        public interface ITodoService {
+        
+            List < Todo > getTodosByUser(String user);
+        
+            Optional < Todo > getTodoById(long id);
+        
+            void updateTodo(Todo todo);
+        
+            void addTodo(String name, String desc, Date targetDate, boolean isDone);
+        
+            void deleteTodo(long id);
+        
+            void saveTodo(Todo todo);
+        }</pre>
+        <h2>Service Layer - TodoService.java</h2>
+        <pre>package net.guides.springboot.todomanagement.service;
+
+            import java.util.Date;
+            import java.util.List;
+            import java.util.Optional;
+            
+            import org.springframework.beans.factory.annotation.Autowired;
+            import org.springframework.stereotype.Service;
+            
+            import net.guides.springboot.todomanagement.model.Todo;
+            import net.guides.springboot.todomanagement.repository.TodoRepository;
+            
+            @Service
+            public class TodoService implements ITodoService {
+            
+                @Autowired
+                private TodoRepository todoRepository;
+            
+                @Override
+                public List < Todo > getTodosByUser(String user) {
+                    return todoRepository.findByUserName(user);
+                }
+            
+                @Override
+                public Optional < Todo > getTodoById(long id) {
+                    return todoRepository.findById(id);
+                }
+            
+                @Override
+                public void updateTodo(Todo todo) {
+                    todoRepository.save(todo);
+                }
+            
+                @Override
+                public void addTodo(String name, String desc, Date targetDate, boolean isDone) {
+                    todoRepository.save(new Todo(name, desc, targetDate, isDone));
+                }
+            
+                @Override
+                public void deleteTodo(long id) {
+                    Optional < Todo > todo = todoRepository.findById(id);
+                    if (todo.isPresent()) {
+                        todoRepository.delete(todo.get());
+                    }
+                }
+            
+                @Override
+                public void saveTodo(Todo todo) {
+                    todoRepository.save(todo);
+                }
+            }</pre>
+        <h2>Configuring MySQL Database and JSP View Resolver</h2>
+        <p>Configure application.properties to connect to your MySQL database. Let's open an application.properties file
+            and add following database configuration to it.</p>
+            <pre>## Spring view resolver set up
+                spring.mvc.view.prefix=/WEB-INF/jsp/
+                spring.mvc.view.suffix=.jsp
+                
+                ## Spring DATASOURCE (DataSourceAutoConfiguration & DataSourceProperties)
+                spring.datasource.url = jdbc:mysql://localhost:3306/users_database?useSSL=false
+                spring.datasource.username = root
+                spring.datasource.password = root
+                
+                
+                ## Hibernate Properties
+                # The SQL dialect makes Hibernate generate better SQL for the chosen database
+                spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+                
+                # Hibernate ddl auto (create, create-drop, validate, update)
+                spring.jpa.hibernate.ddl-auto = update</pre>
+                <h2>Common JSP page fragments - footer.jspf, header.jspf and navigation.jspf</h2>
+<p><b>footer.jspf View</b></p>
+<pre>
+    &lt;script src=&quot;webjars/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;webjars/bootstrap/3.3.6/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;webjars/bootstrap-datepicker/1.0.1/js/bootstrap-datepicker.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(&#39;#targetDate&#39;).datepicker({
+            format: &#39;dd/mm/yyyy&#39;
+        });
+    &lt;/script&gt;
+    
+    &lt;div class=&quot;footer&quot;&gt;
+        Fixed Footer
+        &lt;h1&gt;
+            &lt;a href=&quot;http://www.javaguides.net/p/spring-boot-tutorial.html&quot;&gt;
+                Spring Boot Tutorial
+            &lt;/a&gt;
+        &lt;/h1&gt;
+    &lt;/div&gt;
+    &lt;/body&gt;
+    
+    &lt;/html&gt;
+    </pre>
+    <p><b>header.jspf</b></p>
+    <pre>
+        &lt;%@ taglib uri=&quot;http://java.sun.com/jsp/jstl/core&quot; prefix=&quot;c&quot;%&gt;
+        &lt;%@ taglib uri=&quot;http://java.sun.com/jsp/jstl/fmt&quot; prefix=&quot;fmt&quot;%&gt;
+        &lt;%@taglib uri=&quot;http://www.springframework.org/tags/form&quot; prefix=&quot;form&quot;%&gt;
+        
+        &lt;html&gt;
+        
+        &lt;head&gt;
+        &lt;title&gt;Todo Management&lt;/title&gt;
+        &lt;link href=&quot;webjars/bootstrap/3.3.6/css/bootstrap.min.css&quot;
+         rel=&quot;stylesheet&quot;&gt;
+        
+        &lt;style&gt;
+        .footer {
+         position: fixed;
+         left: 0;
+         bottom: 0;
+         width: 100%;
+         background-color: black;
+         color: white;
+         height: 100px;
+         text-align: center;
+        }
+        &lt;/style&gt;
+        
+        &lt;/head&gt;
+        
+        &lt;body&gt;
+        </pre>
+<p><b>navigation.jspf View</b></p>  
+<pre>
+    &lt;nav role=&quot;navigation&quot; class=&quot;navbar navbar-default&quot;&gt;
+     &lt;div class=&quot;&quot;&gt;
+      &lt;a href=&quot;http://www.javaguides.net&quot; class=&quot;navbar-brand&quot;&gt;Java Guides&lt;/a&gt;
+     &lt;/div&gt;
+     &lt;div class=&quot;navbar-collapse&quot;&gt;
+         &lt;ul class=&quot;nav navbar-nav&quot;&gt;
+              &lt;li class=&quot;active&quot;&gt;&lt;a href=&quot;/&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href=&quot;/list-todos&quot;&gt;Todos&lt;/a&gt;&lt;/li&gt;
+         &lt;/ul&gt;
+         &lt;ul class=&quot;nav navbar-nav navbar-right&quot;&gt;
+             &lt;li&gt;&lt;a href=&quot;/logout&quot;&gt;Logout&lt;/a&gt;&lt;/li&gt;
+         &lt;/ul&gt;
+     &lt;/div&gt;
+    &lt;/nav&gt;
+    </pre>
+<p>Now, we will include above page fragments into upcoming JSP pages.</p> 
+<h2>Welcome Page View</h2>   
+<pre>
+    &lt;%@ include file=&quot;common/header.jspf&quot; %&gt;
+    &lt;%@ include file=&quot;common/navigation.jspf&quot; %&gt;
+    &lt;div class=&quot;container&quot;&gt;
+    
+     &lt;div class=&quot;panel panel-primary&quot;&gt;
+         &lt;div class=&quot;panel-heading&quot;&gt;Home Page&lt;/div&gt;
+            &lt;div class=&quot;panel-body&quot;&gt;
+               Welcome ${name}!! &lt;a href=&quot;/list-todos&quot;&gt;Click here&lt;/a&gt; to manage your
+               todo&#39;s.
+            &lt;/div&gt;
+         &lt;/div&gt;
+     &lt;/div&gt;
+    &lt;%@ include file=&quot;common/footer.jspf&quot; %&gt;
+    </pre>
+<h2>Todo Page View</h2>  
+<pre>
+    &lt;%@ include file=&quot;common/header.jspf&quot; %&gt;
+    &lt;%@ include file=&quot;common/navigation.jspf&quot; %&gt;
+    &lt;div class=&quot;container&quot;&gt;
+     &lt;div class=&quot;row&quot;&gt;
+      &lt;div class=&quot;col-md-6 col-md-offset-3&quot;&gt;
+       &lt;div class=&quot;panel panel-primary&quot;&gt;
+        &lt;div class=&quot;panel-heading&quot;&gt;Add TODO&lt;/div&gt;
+        &lt;div class=&quot;panel-body&quot;&gt;
+         &lt;form:form method=&quot;post&quot; modelAttribute=&quot;todo&quot;&gt;
+          &lt;form:hidden path=&quot;id&quot; /&gt;
+          &lt;fieldset class=&quot;form-group&quot;&gt;
+           &lt;form:label path=&quot;description&quot;&gt;Description&lt;/form:label&gt;
+           &lt;form:input path=&quot;description&quot; type=&quot;text&quot; class=&quot;form-control&quot;
+            required=&quot;required&quot; /&gt;
+           &lt;form:errors path=&quot;description&quot; cssClass=&quot;text-warning&quot; /&gt;
+          &lt;/fieldset&gt;
+    
+          &lt;fieldset class=&quot;form-group&quot;&gt;
+           &lt;form:label path=&quot;targetDate&quot;&gt;Target Date&lt;/form:label&gt;
+           &lt;form:input path=&quot;targetDate&quot; type=&quot;text&quot; class=&quot;form-control&quot;
+            required=&quot;required&quot; /&gt;
+           &lt;form:errors path=&quot;targetDate&quot; cssClass=&quot;text-warning&quot; /&gt;
+          &lt;/fieldset&gt;
+    
+          &lt;button type=&quot;submit&quot; class=&quot;btn btn-success&quot;&gt;Save&lt;/button&gt;
+         &lt;/form:form&gt;
+        &lt;/div&gt;
+       &lt;/div&gt;
+      &lt;/div&gt;
+     &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;%@ include file=&quot;common/footer.jspf&quot; %&gt;
+    </pre>
+<h2>List Todo Page View</h2>    
+
+    
+    </div>
+</body>
+
+</html>
