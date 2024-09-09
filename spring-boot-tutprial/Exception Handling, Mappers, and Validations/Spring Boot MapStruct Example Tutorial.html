@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/Spring Boot Map_Struct.jpg" alt="logo" />
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="heading">
+            <h3>Spring Boot MapStruct Example</h3>
+            <h6>Author: SAI K</h6>
+        </div><br>
+        <p>In a previous couple of tutorials, we created a Spring boot project, built CRUD Restful web services with DTO, and used the ModelMapper library to convert the JPA entity into DTO and vice versa. <br><br>
+
+           <b> Refer to previous tutorials:</b> <br><br>
+            
+           <a href=""> Spring Boot 3 CRUD RESTful WebServices with MySQL Database</a> <br><br>
+            
+           <a href=""> Spring Boot DTO Example Tutorial</a> <br><br>
+            
+            <a href="">Spring Boot ModelMapper Example - Map Entity to DTO</a> <br><br>
+            
+            In this tutorial, we will learn how to use the MapStruct library to map the JPA entity into DTO and vice versa in the Spring boot application.</p><br>
+
+            <h3>MapStruct Library Overview</h3>
+            <p>The MapStruct is an annotation-based code generator/mapper which greatly simplifies the mapping implementations of Java Beans. It follows convention over configuration and uses plain method invocations. MapStruct operations are very fast, type-safe, and easy to understand. <br><br>
+
+                MapStruct automates the process of creating a mapper to map data objects with model objects using annotations. It creates a mapper implementation at compile time which helps the developer to figure out errors during development and makes it easy to understand. <br><br>
+                Check the official doc to read more about MapStruct at <a href="https://mapstruct.org/">https://mapstruct.org/</a></p>
+
+                <h3>Prerequisites</h3>
+                <p>This tutorial is a continuation of below three tutorials so first, create CRUD REST APIs using below tutorials: <br><br>
+
+                    <a href=""> Spring Boot 3 CRUD RESTful WebServices with MySQL Database</a> <br><br>
+            
+                    <a href=""> Spring Boot DTO Example Tutorial</a> <br><br>
+            
+                    <a href="">Spring Boot ModelMapper Example - Map Entity to DTO</a> <br><br>
+                    
+                    The complete source code of this tutorial is available on my GitHub repository at Spring Boot CRUD RESTful WebServices</p>
+
+
+
+                    <h3>Development Steps</h3>
+                    <p>If you want to use the MapStruct library in your existing Spring boot project then follow these simple steps: <br>
+                        1. Add Maven Dependencies <br>
+                        2. User and UserDto Classes <br>
+                        3. Create UserMapper <br>
+                        4. Use UserMapper in Service Class to map the JPA entity into DTO and vice versa. <br>
+                        5. Test CRUD REST APIs using the Postman client</p>
+
+
+                    <h3>1. Add Maven Dependencies</h3>
+                    <p>Open the pom.xml file and add below Maven dependency and plugin. <br><br>
+
+                        MapStruct maven dependency:
+                        </p>
+<code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.mapstruct&lt;/groupId&gt;
+    &lt;artifactId&gt;mapstruct&lt;/artifactId&gt;
+    &lt;version&gt;${org.mapstruct.version}&lt;/version&gt;
+&lt;/dependency&gt;</pre></code><br>
+
+
+                    <p>Let’s also add the annotationProcessorPaths section to the configuration part of the maven-compiler-plugin plugin.  <br><br>
+
+                        The mapstruct-processor is used to generate the mapper implementation during the build:</p>
+
+<code><pre>
+&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.8.1&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;source&gt;17&lt;/source&gt;
+        &lt;target&gt;17&lt;/target&gt;
+        &lt;annotationProcessorPaths&gt;
+            &lt;path&gt;
+                &lt;groupId&gt;org.mapstruct&lt;/groupId&gt;
+                &lt;artifactId&gt;mapstruct-processor&lt;/artifactId&gt;
+                &lt;version&gt;${org.mapstruct.version}&lt;/version&gt;
+            &lt;/path&gt;
+            &lt;path&gt;
+                &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+                &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+                &lt;version&gt;${org.projectlombok.version}&lt;/version&gt;
+            &lt;/path&gt;
+            &lt;path&gt;
+                &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+                &lt;artifactId&gt;lombok-mapstruct-binding&lt;/artifactId&gt;
+                &lt;version&gt;${lombok-mapstruct-binding.version}&lt;/version&gt;
+            &lt;/path&gt;
+        &lt;/annotationProcessorPaths&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;</pre></code><br>
+                <p>Note that we have added below annotation processor path to the above plugin to support MapStruct annotations with Lombok annotations:</p>
+
+<code><pre>
+&lt;path&gt;
+    &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+    &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+    &lt;version&gt;${org.projectlombok.version}&lt;/version&gt;
+&lt;/path&gt;
+&lt;path&gt;
+    &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+    &lt;artifactId&gt;lombok-mapstruct-binding&lt;/artifactId&gt;
+    &lt;version&gt;${lombok-mapstruct-binding.version}&lt;/version&gt;
+&lt;/path&gt;</pre></code><br>
+
+                    <p>Next, add the version properties to the properties section:</p>
+<code><pre>
+&lt;properties&gt;
+    &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;org.mapstruct.version&gt;1.5.3.Final&lt;/org.mapstruct.version&gt;
+    &lt;org.projectlombok.version&gt;1.18.20&lt;/org.projectlombok.version&gt;
+    &lt;lombok-mapstruct-binding.version&gt;0.2.0&lt;/lombok-mapstruct-binding.version&gt;
+&lt;/properties&gt;</pre></code><br>
+
+
+                    <h3>2. User JPA Entity and UserDto</h3>
+                    <p>Here is our User JPA entity:</p>
+                    <code><pre>
+package net.javaguides.springboot.entity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "users")
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = false)
+    private String firstName;
+    @Column(nullable = false)
+    private String lastName;
+    @Column(nullable = false, unique = true)
+    private String email;
+}</pre></code><br>
+<p>Here is our UserDto class:</p>
+
+<code><pre>
+package net.javaguides.springboot.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserDto {
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+}</pre></code> <br>
+
+
+                <h3>3. Create UserMapper</h3>
+                <p>Next, let's create a Mapper using MapStruct. Let's create an <span>AutoUserMapper</span> interface and define the mapping methods to map Entity to DTO and vice versa.</p>
+<code><pre>
+package net.javaguides.springboot.mapper;
+
+import net.javaguides.springboot.dto.UserDto;
+import net.javaguides.springboot.entity.User;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+
+@Mapper
+public interface AutoUserMapper {
+
+    AutoUserMapper MAPPER = Mappers.getMapper(AutoUserMapper.class);
+
+    UserDto mapToUserDto(User user);
+
+    User mapToUser(UserDto userDto);
+}</pre></code> <br>
+
+                <p>Notice we did not create an implementation class for our <span>AutoUserMapper</span> interface because MapStruct creates it for us during compilation time. <br><br>
+
+                    The @Mapper annotation marks the interface as a mapping interface and lets the MapStruct processor kick in during compilation. <br><br>
+                    
+                    We defined two mapping methods to convert JPA entity into DTO and vice versa:</p>
+                    <code><pre>
+ UserDto mapToUserDto(User user);
+
+User mapToUser(UserDto userDto);</pre></code><br>
+
+                        <p>An instance of the interface implementation can be retrieved from the Mappers class:</p>
+<code><pre>
+AutoUserMapper MAPPER = Mappers.getMapper(AutoUserMapper.class);</pre></code><br>
+
+
+<h4>Mapping Fields With Different Field Names</h4>
+
+<p>From our previous example, MapStruct was able to map our beans automatically because they have the same field names. So, what if a bean we are about to map has a different field name?. <br><br>
+
+    Consider email field name is different in both User and UserDto. For example:</p>
+    <code><pre>
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "users")
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = false)
+    private String firstName;
+    @Column(nullable = false)
+    private String lastName;
+    @Column(nullable = false, unique = true)
+    private String email;
+}</pre></code><br>
+
+                        <p>The email field name in UserDto is emailAddress:</p>
+<code><pre>
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserDto {
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String emailAddress;
+}</pre></code><br>
+                <p>When mapping different field names, we will need to configure its source field to its target field, and to do that, we will need to add @Mapping annotation for each field.  <br><br>
+
+                    For example:</p>
+
+<code><pre>
+@Mapper
+public interface AutoUserMapper {
+
+    AutoUserMapper MAPPER = Mappers.getMapper(AutoUserMapper.class);
+
+    @Mapping(source = "email", target = "emailAddress")
+    UserDto mapToUserDto(User user);
+
+    @Mapping(source = "emailAddress", target = "email")
+    User mapToUser(UserDto userDto);
+}</pre></code> <br>
+
+
+                    <h3>3. Use UserMapper in Service Class to map the JPA entity into DTO and vice versa</h3>
+<code><pre>
+package net.javaguides.springboot.service.impl;
+
+import lombok.AllArgsConstructor;
+import net.javaguides.springboot.dto.UserDto;
+import net.javaguides.springboot.entity.User;
+import net.javaguides.springboot.mapper.AutoUserMapper;
+import net.javaguides.springboot.mapper.UserMapper;
+import net.javaguides.springboot.repository.UserRepository;
+import net.javaguides.springboot.service.UserService;
+import org.apache.logging.log4j.util.Strings;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
+@AllArgsConstructor
+public class UserServiceImpl implements UserService {
+
+    private UserRepository userRepository;
+
+    private ModelMapper modelMapper;
+
+    @Override
+    public UserDto createUser(UserDto userDto) {
+
+        // Convert UserDto into User JPA Entity
+       // User user = UserMapper.mapToUser(userDto);
+
+        //User user = modelMapper.map(userDto, User.class);
+
+        User user = AutoUserMapper.MAPPER.mapToUser(userDto);
+
+        User savedUser = userRepository.save(user);
+
+        // Convert User JPA entity to UserDto
+        //UserDto savedUserDto = UserMapper.mapToUserDto(savedUser);
+
+        //UserDto savedUserDto = modelMapper.map(savedUser, UserDto.class);
+
+        UserDto savedUserDto = AutoUserMapper.MAPPER.mapToUserDto(savedUser);
+
+        return savedUserDto;
+    }
+
+    @Override
+    public UserDto getUserById(Long userId) {
+        User user = userRepository.findById(userId).get();
+        //return UserMapper.mapToUserDto(user);
+        //return modelMapper.map(user, UserDto.class);
+        return AutoUserMapper.MAPPER.mapToUserDto(user);
+    }
+
+    @Override
+    public List<UserDto> getAllUsers() {
+        List<User> users = userRepository.findAll();
+//        return users.stream().map(UserMapper::mapToUserDto)
+//                .collect(Collectors.toList());
+
+//        return users.stream().map((user) -> modelMapper.map(user, UserDto.class))
+//                .collect(Collectors.toList());
+
+        return users.stream().map((user) -> AutoUserMapper.MAPPER.mapToUserDto(user))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDto updateUser(UserDto user) {
+
+        User existingUser = userRepository.findById(user.getId()).get()
+
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setEmail(user.getEmail());
+        User updatedUser = userRepository.save(existingUser);
+        //return UserMapper.mapToUserDto(updatedUser);
+        //return modelMapper.map(updatedUser, UserDto.class);
+        return AutoUserMapper.MAPPER.mapToUserDto(updatedUser);
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+
+        userRepository.deleteById(userId);
+    }
+}</pre></code><br>
+
+                        <h3>4. Test CRUD REST APIs using the Postman Client</h3>
+                        <h4>Create User REST API:</h4>
+                        <p><b>Request URL:</b> <a href="">http://localhost:8080/api/users</a> <br>
+                            <b>HTTP Method:</b> POST <br>
+                            <b>Request Body:</b></p>
+<code><pre>
+{
+    "firstName": "ramesh",
+    "lastName":"fadatare",
+    "email": "ramesh@gmail.com"
+}</pre></code><br>
+
+                    <h5>Refer to this screenshot to test Create User REST API:</h5>
+                    <div class="topImage mt-2 mb-4">
+                        <img src="../../assets/springboot images/create user rest api_1.png" alt="logo" class="img-fluid" />
+                    </div><br>
+                    
+
+                    <h4>Get User REST API:</h4>
+                    <p><b>Request URL:</b> <a href=""> http://localhost:8080/api/users/1</a> <br>
+                        <b>HTTP Method: </b>GET <br><br>
+                        
+                        <b>Refer to this screenshot to test GET User REST API:</b></p>
+                        <div class="topImage mt-2 mb-4">
+                            <img src="../../assets/springboot images/test GET All User REST API_1.png" alt="logo" class="img-fluid" />
+                        </div><br>
+
+
+
+                        <h4>Update User REST API:</h4>
+                        <p><b>Request URL:</b> <a href="">http://localhost:8080/api/users/1</a> <br>
+                            <b>HTTP Method:</b> PUT <br>
+                            <b>Request Body:</b></p>
+<code><pre>
+{
+    "firstName": "ram",
+    "lastName":"fadatare",
+    "email": "ram@gmail.com"
+}</pre></code><br>
+                        <p>Refer to this screenshot to test the Update User REST API:</p>
+                        <div class="topImage mt-2 mb-4">
+                            <img src="../../assets/springboot images/test the Update User REST API_1.png" alt="logo" class="img-fluid" />
+                        </div><br>
+
+
+
+                        <h3>Get All Users REST API:</h3>
+                        <p><b>Request URL:</b> <a href="">http://localhost:8080/api/users</a> <br>
+                            <b>HTTP Method:</b> GET <br><br>
+                            
+                            <b>Refer to this screenshot to test GET All User REST API:</b></p>
+                            <div class="topImage mt-2 mb-4">
+                                <img src="../../assets/springboot images/test GET All User REST API_1.png" alt="logo" class="img-fluid" />
+                            </div><br>
+
+
+
+                            <h3>DELETE User REST API:</h3>
+                            <p><b>Request URL:</b> <a href="">http://localhost:8080/api/users/1</a> <br>
+                                <b>HTTP Method:</b> DELETE <br><br>
+                                
+                                <b>Refer to this screenshot to test Delete User REST API:</b></p>
+                                <div class="topImage mt-2 mb-4">
+                                    <img src="../../assets/springboot images/test Delete User REST API_1.png" alt="logo" class="img-fluid" />
+                                </div><br>
+
+
+                                <h3>Source Code on GitHub</h3>
+                                <p>The source code of this tutorial is available on my GitHub repository at Spring Boot CRUD RESTful WebServices</p>
+
+
+                                <h3>Conclusion</h3>
+                                <p>In this tutorial, we have seen how to use the MapStruct library to map the JPA entity into DTO and vice versa in the Spring boot application.</p><br>
+
+
+
+                                <h3>Related Spring and Spring Boot Tutorials/Guides:</h3>
+
+                                <p>
+                                    <button type="button" class="btn btn-outline-primary">Spring Boot Tutorials [500+]s</button>
+                                    <button type="button" class="btn btn-outline-secondary">Spring Boot Testing Tutorial</button>
+                                    <button type="button" class="btn btn-outline-success">Spring Boot Microservice Tutorial</button>
+                                    <button type="button" class="btn btn-outline-danger">Spring Boot Kafka Microservices </button>
+                                    <button type="button" class="btn btn-outline-warning">Spring Boot + Apache Kafka Tutorial</button>
+                                    <button type="button" class="btn btn-outline-info">Spring Core Tutorial</button>
+                                    <button type="button" class="btn btn-outline-primary">Spring MVC Tutorial </button>
+                                    <button type="button" class="btn btn-outline-secondary">Spring Data JPA Tutorial</button>
+                                    <button type="button" class="btn btn-outline-success">Spring Framework for Beginners</button>
+                                    <button type="button" class="btn btn-outline-danger">Spring AOP Tutorial</button>
+                                    <button type="button" class="btn btn-outline-warning">Spring Security Tutorial</button>
+                                    <button type="button" class="btn btn-outline-info">Spring Exceptions Tutorial</button>
+                                    <button type="button" class="btn btn-outline-primary">Spring Boot Interview Questions</button>
+                                    <button type="button" class="btn btn-outline-dark">Spring Boot Microservices Interview Questions</button>
+                                    <button type="button" class="btn btn-outline-primary">Apache Kafka Tutorials </button>
+                                    <button type="button" class="btn btn-outline-secondary">Docker Tutorials and Guides</button>
+                                    <button type="button" class="btn btn-outline-success">Spring Boot RabbitMQ Tutorials</button>
+                                    <button type="button" class="btn btn-outline-danger">Angular CRUD Example with Spring Boot </button>
+                                    <button type="button" class="btn btn-outline-warning">Spring Boot + Angular 12 CRUD Full Stack</button>
+                                    <button type="button" class="btn btn-outline-info">Spring Boot + Angular 8 CRUD Full Stack</button>
+                                    <button type="button" class="btn btn-outline-danger">Spring Boot + Angular 10 CRUD Full Stack </button>
+                                    <button type="button" class="btn btn-outline-primary">React JS ( React Hooks) + Spring Boot</button>
+                                    <button type="button" class="btn btn-outline-secondary">Spring Boot + React JS CRUD Full Stack</button>
+                                    <button type="button" class="btn btn-outline-success">Spring Boot Thymeleaf CRUD Full Stack </button>
+                                    <button type="button" class="btn btn-outline-danger">Spring Boot User Registration and Login</button>
+                                    <button type="button" class="btn btn-outline-warning">Node Js + Express + MongoDB CRUDVue</button>
+                                    <button type="button" class="btn btn-outline-info">JS + Spring Boot REST API Tutorial</button>
+                                </p>
+
+    </div>
+</body>
+
+</html>

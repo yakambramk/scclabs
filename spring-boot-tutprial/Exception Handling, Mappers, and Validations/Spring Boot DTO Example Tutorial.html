@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/Spring Boot DTO Validation.jpg" alt="logo" />
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="heading">
+            <h3>Spring Boot DTO Example</h3>
+            <h6>Author: SAI K</h6>
+        </div><br>
+        <p>In the previous tutorial, we created a Spring boot project and build CRUD RESTful Webservices using Spring
+            Boot 3, Spring Data JPA (Hibernate), and MySQL database. <br><br>
+
+            In this tutorial, we will see how to DTO (Data Transfer Object) pattern to transfer the data between the
+            Client and Server in the Spring boot application.</p><br>
+        <h3>DTO ( Data Transfer Object) Overview</h3>
+        <p>Data Transfer Object Design Pattern is a frequently used design pattern. It is basically used to pass data
+            with multiple attributes in one shot from client to server, to avoid multiple calls to a remote server.
+            <br><br>
+
+            Another advantage of using DTOs on RESTful APIs written in Java (and on Spring Boot), is that they can help
+            to hide implementation details of domain objects (JPA entities). Exposing entities through endpoints can
+            become a security issue if we do not carefully handle what properties can be changed through what
+            operations.</p>
+        <h3>Prerequisites</h3>
+        <p>This tutorial is a continuation of <a href="">Spring Boot 3 CRUD RESTful WebServices with MySQL Database</a>
+            tutorial so first, you need to create a Spring Boot project with CRUD REST API's using this tutorial:
+            <br><br>
+
+            <a href="">Spring Boot 3 CRUD RESTful WebServices with MySQL Database</a>
+        </p>
+
+        <h3>Development Steps</h3>
+        <p>1. Create UserDto Class <br>
+            2. Change CRUD REST API's to Return UserDTO to the Client <br>
+            3. Create UserMapper class <br>
+            4. Change Service Layer to use UserDto <br>
+            5. Test CRUD REST API's using Postman Client</p>
+
+        <h3>1. Create UserDto Class</h3>
+        <code><pre>
+package net.javaguides.springboot.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserDto {
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+}</pre></code><br>
+        <h3>2. Change CRUD REST API's to Return UserDTO to the Client</h3>
+        <code><pre>
+package net.javaguides.springboot.controller;
+
+import lombok.AllArgsConstructor;
+import net.javaguides.springboot.dto.UserDto;
+import net.javaguides.springboot.entity.User;
+import net.javaguides.springboot.exception.ErrorDetails;
+import net.javaguides.springboot.exception.ResourceNotFoundException;
+import net.javaguides.springboot.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@RestController
+@AllArgsConstructor
+@RequestMapping("api/users")
+public class UserController {
+
+    private UserService userService;
+
+    // build create User REST API
+    @PostMapping
+    public ResponseEntity< UserDto> createUser(@RequestBody UserDto user){
+        UserDto savedUser = userService.createUser(user);
+        return new ResponseEntity< >(savedUser, HttpStatus.CREATED);
+    }
+
+    // build get user by id REST API
+    // http://localhost:8080/api/users/1
+    @GetMapping("{id}")
+    public ResponseEntity< UserDto> getUserById(@PathVariable("id") Long userId){
+        UserDto user = userService.getUserById(userId);
+        return new ResponseEntity< >(user, HttpStatus.OK);
+    }
+
+    // Build Get All Users REST API
+    // http://localhost:8080/api/users
+    @GetMapping
+    public ResponseEntity< List< UserDto>> getAllUsers(){
+        List< UserDto> users = userService.getAllUsers();
+        return new ResponseEntity< >(users, HttpStatus.OK);
+    }
+
+    // Build Update User REST API
+    @PutMapping("{id}")
+    // http://localhost:8080/api/users/1
+    public ResponseEntity< UserDto> updateUser(@PathVariable("id") Long userId,
+                                           @RequestBody UserDto user){
+        user.setId(userId);
+        UserDto updatedUser = userService.updateUser(user);
+        return new ResponseEntity< >(updatedUser, HttpStatus.OK);
+    }
+
+    // Build Delete User REST API
+    @DeleteMapping("{id}")
+    public ResponseEntity< String> deleteUser(@PathVariable("id") Long userId){
+        userService.deleteUser(userId);
+        return new ResponseEntity< >("User successfully deleted!", HttpStatus.OK);
+    }
+}</pre></code><br>
+        <h3>3. Create UserMapper Class</h3>
+        <p>Let's create a UserMapper class to convert the User entity to UserDto and UserDto to the User entity:</p>
+        <code><pre>
+package net.javaguides.springboot.mapper;
+
+import net.javaguides.springboot.dto.UserDto;
+import net.javaguides.springboot.entity.User;
+
+public class UserMapper {
+
+    // Convert User JPA Entity into UserDto
+    public static UserDto mapToUserDto(User user){
+        UserDto userDto = new UserDto(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail()
+        );
+        return userDto;
+    }
+
+    // Convert UserDto into User JPA Entity
+    public static User mapToUser(UserDto userDto){
+        User user = new User(
+                userDto.getId(),
+                userDto.getFirstName(),
+                userDto.getLastName(),
+                userDto.getEmail()
+        );
+        return user;
+    }
+}</pre></code><br>
+
+        <h3>4. Change Service Layer to use UserDto</h3>
+        <h4>Change UserService Interface</h4>
+        <code><pre>
+package net.javaguides.springboot.service;
+
+import net.javaguides.springboot.dto.UserDto;
+import net.javaguides.springboot.entity.User;
+
+import java.util.List;
+
+public interface UserService {
+    UserDto createUser(UserDto user);
+
+    UserDto getUserById(Long userId);
+
+    List< UserDto> getAllUsers();
+
+    UserDto updateUser(UserDto user);
+
+    void deleteUser(Long userId);
+}</pre></code><br>
+
+
+        <h4>Change UserServiceImpl class</h4>
+        <code><pre>
+package net.javaguides.springboot.service.impl;
+
+import lombok.AllArgsConstructor;
+import net.javaguides.springboot.dto.UserDto;
+import net.javaguides.springboot.entity.User;
+import net.javaguides.springboot.mapper.UserMapper;
+import net.javaguides.springboot.repository.UserRepository;
+import net.javaguides.springboot.service.UserService;
+import org.apache.logging.log4j.util.Strings;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
+@AllArgsConstructor
+public class UserServiceImpl implements UserService {
+
+    private UserRepository userRepository;
+
+    @Override
+    public UserDto createUser(UserDto userDto) {
+
+        // Convert UserDto into User JPA Entity
+        User user = UserMapper.mapToUser(userDto);
+
+        User savedUser = userRepository.save(user);
+
+        // Convert User JPA entity to UserDto
+        UserDto savedUserDto = UserMapper.mapToUserDto(savedUser);
+
+        return savedUserDto;
+    }
+
+    @Override
+    public UserDto getUserById(Long userId) {
+        Optional< User> optionalUser = userRepository.findById(userId);
+        User user = optionalUser.get();
+        return UserMapper.mapToUserDto(user);
+    }
+
+    @Override
+    public List< UserDto> getAllUsers() {
+        List< User> users = userRepository.findAll();
+        return users.stream().map(UserMapper::mapToUserDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDto updateUser(UserDto user) {
+        User existingUser = userRepository.findById(user.getId()).get();
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setEmail(user.getEmail());
+        User updatedUser = userRepository.save(existingUser);
+        return UserMapper.mapToUserDto(updatedUser);
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
+}</pre></code> <br>
+
+        <h3>5. Test CRUD REST API's using Postman Client</h3>
+        <h4>Create User REST API:</h4>
+        <p><b>Request URL:</b> <a href="">http://localhost:8080/api/users</a> <br>
+            <b>HTTP Method:</b> POST <br>
+            <b>Request Body:</b>
+        </p>
+        <code><pre>
+{
+    "firstName": "ramesh",
+    "lastName":"fadatare",
+    "email": "ramesh@gmail.com"
+}</pre></code> <br>
+
+
+        <h5>Refer to this screenshot to test Create User REST API:</h5>
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/create user rest api_1.png" alt="logo" class="img-fluid" />
+        </div><br>
+
+
+        <h4>Get User REST API:</h4>
+        <p><b>Request URL:</b> <a href="">http://localhost:8080/api/users/1</a> <br>
+            <b>HTTP Method:</b> GET <br><br>
+
+            <b>Refer to this screenshot to test GET User REST API:</b>
+        </p>
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/test GET User REST API_1.png" alt="logo" class="img-fluid" />
+        </div><br>
+
+
+        <h4>Update User REST API:</h4>
+        <p><b>Request URL:</b> <a href="">http://localhost:8080/api/users/1</a> <br>
+            <b>HTTP Method:</b> PUT <br>
+            <b>Request Body:</b>
+        </p>
+        <code><pre>
+{
+    "firstName": "ram",
+    "lastName":"fadatare",
+    "email": "ram@gmail.com"
+}</pre></code><br>
+        <p>Refer to this screenshot to test the Update User REST API:</p>
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/test the Update User REST API_1.png" alt="logo" class="img-fluid" />
+        </div><br>
+
+
+        <h4>Get All Users REST API:</h4>
+        <p><b>Request URL:</b> <a href="">http://localhost:8080/api/users</a> <br>
+            <b>HTTP Method:</b> GET <br><br>
+
+            <b>Refer to this screenshot to test GET All User REST API:</b>
+        </p>
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/test GET All User REST API_1.png" alt="logo" class="img-fluid" />
+        </div><br>
+
+
+
+        <h4>DELETE User REST API:</h4>
+        <p><b>Request URL:</b> <a href="">http://localhost:8080/api/users/1</a> <br>
+            <b>HTTP Method:</b> DELETE <br><br>
+
+            <b>Refer to this screenshot to test Delete User REST API:</b>
+        </p>
+        <div class="topImage mt-2 mb-4">
+            <img src="../../assets/springboot images/test Delete User REST API_1.png" alt="logo" class="img-fluid" />
+        </div><br>
+
+
+
+        <h3>Source Code on GitHub</h3>
+        <p>The source code of this tutorial is available on my GitHub repository at Spring Boot CRUD RESTful WebServices
+        </p><br>
+
+        <h3>Conclusion</h3>
+        <p>In this tutorial, we have seen how to use DTO (Data Transfer Object) pattern to transfer the database between
+            the client and server in the Spring boot application.</p>
+
+
+        <h3>Related Spring and Spring Boot Tutorials/Guides:</h3>
+
+        <p>
+            <button type="button" class="btn btn-outline-primary">Spring Boot Tutorials [500+]s</button>
+            <button type="button" class="btn btn-outline-secondary">Spring Boot Testing Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Spring Boot Microservice Tutorial</button>
+            <button type="button" class="btn btn-outline-danger">Spring Boot Kafka Microservices </button>
+            <button type="button" class="btn btn-outline-warning">Spring Boot + Apache Kafka Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Spring Core Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Spring MVC Tutorial </button>
+            <button type="button" class="btn btn-outline-secondary">Spring Data JPA Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Spring Framework for Beginners</button>
+            <button type="button" class="btn btn-outline-danger">Spring AOP Tutorial</button>
+            <button type="button" class="btn btn-outline-warning">Spring Security Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Spring Exceptions Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Spring Boot Interview Questions</button>
+            <button type="button" class="btn btn-outline-dark">Spring Boot Microservices Interview Questions</button>
+            <button type="button" class="btn btn-outline-primary">Apache Kafka Tutorials </button>
+            <button type="button" class="btn btn-outline-secondary">Docker Tutorials and Guides</button>
+            <button type="button" class="btn btn-outline-success">Spring Boot RabbitMQ Tutorials</button>
+            <button type="button" class="btn btn-outline-danger">Angular CRUD Example with Spring Boot </button>
+            <button type="button" class="btn btn-outline-warning">Spring Boot + Angular 12 CRUD Full Stack</button>
+            <button type="button" class="btn btn-outline-info">Spring Boot + Angular 8 CRUD Full Stack</button>
+            <button type="button" class="btn btn-outline-danger">Spring Boot + Angular 10 CRUD Full Stack </button>
+            <button type="button" class="btn btn-outline-primary">React JS ( React Hooks) + Spring Boot</button>
+            <button type="button" class="btn btn-outline-secondary">Spring Boot + React JS CRUD Full Stack</button>
+            <button type="button" class="btn btn-outline-success">Spring Boot Thymeleaf CRUD Full Stack </button>
+            <button type="button" class="btn btn-outline-danger">Spring Boot User Registration and Login</button>
+            <button type="button" class="btn btn-outline-warning">Node Js + Express + MongoDB CRUDVue</button>
+            <button type="button" class="btn btn-outline-info">JS + Spring Boot REST API Tutorial</button>
+        </p>
+
+    </div>
+  </body>
+
+</html>
