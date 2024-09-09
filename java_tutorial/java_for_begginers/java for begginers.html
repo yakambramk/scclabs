@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+         position: fixed;
+         bottom: 20px; /* Adjust this value to position it higher or lower */
+         right: 20px;  /* Adjust this value to position it further left or right */
+         z-index: 1000; /* Ensures it stays on top of other elements */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../assets/springboot images/Introduction-to-Java.jpg" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h3>Java Tutorial | Learn Java Programming with Examples</h3>
+            <h6>Author: SAI K</h6>
+        </div><br>
+        <p>This is a complete in-depth core Java Tutorial for beginners. This core Java Tutorial contains the links of
+            all the tutorials in a systematic order starting from the beginner’s level to the advanced topics. <br><br>
+
+            The source code examples from this up-to-date tutorial are developed using JDK 8 or later and are
+            well-tested in our local development environment. This tutorial contains more than 300 + articles with
+            source code examples.</p><br>
+
+
+        <h3>Latest Java Articles</h3>
+        <ul>
+            <li><b><a href="">Java Text Blocks</a></b></li>
+            <li><b><a href="">How to Get the Last Record in Spring Data JPA</a></b></li>
+            <li><b><a href="">Convert String into List of Characters in Java</a></b></li>
+            <li><b><a href="">Convert String into List of Characters in Python</a></b></li>
+            <li><b><a href="">How to Find the Last Iteration of for Loop in Java</a></b></li>
+            <li><b><a href="">Difference Between Entity and DTO in Java</a></b></li>
+            <li><b><a href="">Deserializing JSON to Java Records</a></b></li>
+            <li><b><a href="">Converting a Byte Array to a Char Array in Java</a></b></li>
+            <li><b><a href="">Convert Positive Integer to Negative in Java</a></b></li>
+            <li><b><a href="">Convert Long to LocalDateTime in Java</a></b></li>
+            <li><b><a href="">Sorting LinkedHashMap by Keys in Java</a></b></li>
+            <li><b><a href="">Sorting LinkedHashMap by Values in Java</a></b></li>
+            <li><b><a href="">Retrieving the First Non-Null Value in Java</a></b></li>
+            <li><b><a href="">String isEmpty() vs isBlank() in Java</a></b></li>
+            <li><b><a href="">Parsing XML to HashMap in Java</a></b></li>
+            <li><b><a href="">Convert Timestamp to Long in Java</a></b></li>
+            <li><b><a href="">Convert Timestamp to LocalDateTime in Java</a></b></li>
+            <li><b><a href="">Iterating Over String Characters in Java</a></b></li>
+        </ul><br>
+
+
+
+        <div style="border-left: 10px solid rgb(237, 21, 21); height: 100px;"><br>
+            <p>&nbsp; &nbsp; &nbsp;&nbsp;Java programs for beginners at <a href="">
+                    https://www.ssclabs.in/p/java-programs-for-beginners.html</a></p>
+        </div><br>
+
+        <h3>Getting Started</h3>
+        <ol>
+            <li><b><a href="">Java Programming Language - Getting Started</a></b></li>
+            <li><b><a href="">Java JVM, JRE and JDK Explained with Diagrams</a></b></li>
+            <li><b><a href="">Java Buzzwords or Features of Java</a></b></li>
+            <li><b><a href="">Java First Hello World Program</a></b></li>
+        </ol>
+
+        <h3>Java Language Basics</h3>
+        <ol>
+            <li><b><a href="">Variables in Java</a></b></li>
+            <li><b><a href="">Java main() Method</a></b></li>
+            <li><b><a href="">Java Access Modifiers</a></b></li>
+            <li><b><a href="">Arithmetic Operators</a></b></li>
+            <li><b><a href="">Bitwise Operators</a></b></li>
+            <li><b><a href="">Equality, Relational, and Conditional Operators</a></b></li>
+            <li><b><a href="">Primitive Data Types in Java</a></b></li>
+            <li><b><a href="">Java if Statement</a></b></li>
+            <li><b><a href="">Java Switch Case Statement</a></b></li>
+            <li><b><a href="">Java for Loop</a></b></li>
+            <li><b><a href="">Java while Loop</a></b></li>
+            <li><b><a href="">Java do while Loop</a></b></li>
+            <li><b><a href="">Java continue Statement</a></b></li>
+            <li><b><a href="">Java break Statement</a></b></li>
+        </ol>
+
+        <h3>Java Array Tutorial</h3>
+        <ol>
+            <li><b><a href=""> Java Array Basics Guide</a></b></li>
+            <li><b><a href="">Two Dimensional Array in Java</a></b></li>
+            <li><b><a href="">Copying Arrays in Java</a></b></li>
+            <li><b><a href="">Convert Array to ArrayList</a></b></li>
+            <li><b><a href="">Convert ArrayList to Array</a></b></li>
+            <li><b><a href="">java.util.Arrays Class API Guide</a></b></li>
+        </ol>
+
+        <h3>Java Object-Oriented Programming</h3>
+        <ol>
+            <li><b><a href="">What Is Object in Java with Programming Examples</a></b></li>
+            <li><b><a href="">What is Class in Java with Programming Examples</a></b></li>
+            <li><b><a href="">What are All the Different Ways to Create an Object in Java?</a></b></li>
+            <li><b><a href="">java.lang.Object Class methods with Examples</a></b></li>
+            <li><b><a href="">Java Interface</a></b></li>
+            <li><b><a href="">Java Abstract Class</a></b></li>
+            <li><b><a href="">Abstraction in Java with Example</a></b></li>
+            <li><b><a href="">Encapsulation in Java with Example</a></b></li>
+            <li><b><a href="">Inheritance in Java with Example</a></b></li>
+            <li><b><a href="">Polymorphism in Java with Example</a></b></li>
+            <li><b><a href="">Composition in Java with Example</a></b></li>
+            <li><b><a href="">Aggregation in Java with Example</a></b></li>
+            <li><b><a href="">Association in Java with Example</a></b></li>
+            <li><b><a href="">Cohesion in Java with Example</a></b></li>
+            <li><b><a href="">Coupling in Java with Example</a></b></li>
+            <li><b><a href="">Delegation in Java with Example</a></b></li>
+            <li><b><a href="">Oops Concepts in Java</a></b></li>
+            <li><b><a href="">How to Make Immutable Class in Java</a></b></li>
+            <li><b><a href="">Packages in Java with Examples</a></b></li>
+            <li><b><a href="">Overloading Constructors in Java with Examples</a></b></li>
+            <li><b><a href="">Method Overloading in Java with Examples</a></b></li>
+            <li><b><a href="">Nested Classes in Java</a></b></li>
+        </ol>
+
+
+        <div style="border-left: 10px solid rgb(237, 21, 21); height: 100px;"><br>
+            <p>&nbsp; &nbsp; &nbsp;&nbsp; Learn more about Object Oriented Design on <a href="">Java Oops Tutorial</a>
+            </p>
+        </div><br>
+
+        <h3>Wrapper Classes Tutorial</h3>
+
+        <ol>
+            <li><b><a href="">Wrapper Classes in Java</a></b></li>
+            <li><b><a href="">Autoboxing and Unboxing in Java</a></b></li>
+            <li><b><a href="">Integer Wrapper Class in Java</a></b></li>
+            <li><b><a href="">Long Wrapper Class in Java</a></b></li>
+            <li><b><a href="">Float Wrapper Class in Java</a></b></li>
+            <li><b><a href="">Double Wrapper Class in Java</a></b></li>
+            <li><b><a href="">Boolean Wrapper Class in Java</a></b></li>
+            <li><b><a href="">Short Wrapper Class in Java</a></b></li>
+            <li><b><a href="">Byte Wrapper Class in Java</a></b></li>
+            <li><b><a href="">Character Wrapper Class in Java</a></b></li>
+        </ol>
+
+        <h3>String Handling Tutorial</h3>
+        <ol>
+            <li><b><a href="">Java String Class API Tutorial</a></b></li>
+            <li><b><a href="">Java StringBuffer Class API Tutorial</a></b></li>
+            <li><b><a href="">Java StringBuilder Class API Tutorial</a></b></li>
+            <li><b><a href="">Guide to Java String Constant Pool</a></b></li>
+            <li><b><a href="">Guide to String Best Practices in Java (Best Practice)</a></b></li>
+            <li><b><a href="">String Special Operations with Examples</a></b></li>
+            <li><b><a href="">String Comparison Methods with Examples</a></b></li>
+            <li><b><a href="">String Methods for Character Extraction</a></b></li>
+            <li><b><a href="">String Searching Methods with Examples</a></b></li>
+            <li><b><a href="">String Modifying Methods with Examples</a></b></li>
+        </ol>
+
+        <div style="border-left: 10px solid rgb(237, 21, 21); height: 100px;"><br>
+            <p>&nbsp; &nbsp; &nbsp;&nbsp; To know in-depth about String, StringBuilder, and StringBuffer on <a href="">
+                    Java String Handling Tutorial</a></p>
+        </div><br>
+
+        <h3>Exception Handling Tutorial</h3>
+        <ol>
+            <li><b><a href="">Java Exception Handling Guide</a></b></li>
+            <li><b><a href="">How the Exception Handling Works in Java</a></b></li>
+            <li><b><a href="">Three Types of Exceptions in Java</a></b></li>
+            <li><b><a href="">Exceptions Hierarchy in Java</a></b></li>
+            <li><b><a href="">Java Chained Exceptions</a></b></li>
+            <li><b><a href="">java.lang.Throwable Class in Java</a></b></li>
+            <li><b><a href="">Exception Handling Keywords in Java</a></b></li>
+            <li><b><a href="">Java try/catch Block</a></b></li>
+            <li><b><a href="">Java throw Keyword</a></b></li>
+            <li><b><a href="">Java throw Keyword</a></b></li>
+            <li><b><a href="">Java throws Keyword</a></b></li>
+            <li><b><a href="">Java finally Block</a></b></li>
+            <li><b><a href="">The try-with-resources Statement</a></b></li>
+            <li><b><a href="">Advantages of Java Exceptions</a></b></li>
+            <li><b><a href="">Java Exception Handling Best Practices</a></b></li>
+        </ol>
+        <div style="border-left: 10px solid rgb(237, 21, 21); height: 100px;"><br>
+            <p>&nbsp; &nbsp; &nbsp;&nbsp; To know in-depth about an exception handling on <a href="">Java Exception
+                    Handling Tutorial</a></p>
+        </div><br>
+
+
+
+        <h3>Collection Framework Tutorial</h3>
+        <ol>
+            <li><b><a href="">Collections Framework in Java</a></b></li>
+            <li><b><a href="">Collections Framework - The Collection Interface</a></b></li>
+            <li><b><a href="">Collections Framework - The Set Interface</a></b></li>
+            <li><b><a href="">Collections Framework - The SortedSet Interface</a></b></li>
+            <li><b><a href="">Collections Framework - The List Interface</a></b></li>
+            <li><b><a href="">Collections Framework - The Queue Interface</a></b></li>
+            <li><b><a href="">Collections Framework - The Deque Interface</a></b></li>
+            <li><b><a href="">Collections Framework - The Map Interface</a></b></li>
+            <li><b><a href="">Collections Framework - The SortedMap Interface</a></b></li>
+            <li><b><a href="">Collections Framework - ArrayList Class</a></b></li>
+            <li><b><a href="">Collections Framework - LinkedList Class</a></b></li>
+            <li><b><a href="">Collections Framework - CopyOnWriteArrayList</a></b></li>
+            <li><b><a href="">Collections Framework - HashSet Class</a></b></li>
+            <li><b><a href="">Collections Framework - LinkedHashSet Class</a></b></li>
+            <li><b><a href="">Collections Framework - TreeSet Class</a></b></li>
+            <li><b><a href="">Collections Framework - CopyOnWriteArraySet</a></b></li>
+            <li><b><a href="">Collections Framework - EnumSet</a></b></li>
+            <li><b><a href="">Collections Framework - HashMap Class</a></b></li>
+            <li><b><a href="">Collections Framework - LinkedHashMap Class</a></b></li>
+            <li><b><a href="">Collections Framework - TreeMap class</a></b></li>
+            <li><b><a href="">Collections Framework - EnumMap</a></b></li>
+            <li><b><a href="">Collections Framework - WeakHashMap</a></b></li>
+            <li><b><a href="">Collections Framework - IdentityHashMap</a></b></li>
+        </ol>
+
+        <div style="border-left: 10px solid rgb(237, 21, 21); height: 100px;"><br>
+            <p>&nbsp; &nbsp; &nbsp;&nbsp; Learn more about Java Collections on <a href="">Java Collections Tutorial</a>
+            </p>
+        </div><br>
+
+
+        <h3>Java Generics Tutorial</h3>
+        <ol>
+            <li><b><a href=""> Java Generics - Generics Basics</a></b></li>
+            <li><b><a href="">Java Generics - Benefits of Generics</a></b></li>
+            <li><b><a href="">Java Generics - Generic Types</a></b></li>
+            <li><b><a href="">Java Generics - Generic Methods in Java</a></b></li>
+            <li><b><a href="">Java Generics - Bounded Type Parameters</a></b></li>
+            <li><b><a href="">Java Generics - Wildcards</a></b></li>
+            <li><b><a href="">Java Generic Methods Examples</a></b></li>
+            <li><b><a href="">Java Generic Interface Examples</a></b></li>
+            <li><b><a href="">Java Generic Class Examples</a></b></li>
+            <li><b><a href="">Java Generics Multiple Type Parameters Example</a></b></li>
+        </ol>
+
+
+        <h3>Java Input/Output Tutorials</h3>
+        <ol>
+            <li><b><a href="">Create File</a></b></li>
+            <li><b><a href="">Write File</a></b></li>
+            <li><b><a href="">Delete File</a></b></li>
+            <li><b><a href="">Copy File</a></b></li>
+            <li><b><a href="">Move File</a></b></li>
+            <li><b><a href="">Rename File</a></b></li>
+            <li><b><a href="">Append to File</a></b></li>
+            <li><b><a href="">Read File using BufferReader</a></b></li>
+            <li><b><a href="">Read File using BufferInputStream</a></b></li>
+            <li><b><a href="">Read File using DataInputStream</a></b></li>
+            <li><b><a href="">Get File Size in Bytes KB MB GB TB</a></b></li>
+            <li><b><a href="">How to write an Object to file in Java</a></b></li>
+            <li><b><a href="">How to Read Object from File</a></b></li>
+            <li><b><a href="">Compress Files in ZIP format in Java</a></b></li>
+            <li><b><a href="">Decompress Files from a ZIP file in Java</a></b></li>
+            <li><b><a href="">Get the current working directory</a></b></li>
+            <li><b><a href="">Create a directory</a></b></li>
+            <li><b><a href="">Delete directory</a></b></li>
+            <li><b><a href="">Copy directory</a></b></li>
+            <li><b><a href="">Traverse /List a directory structure</a></b></li>
+            <li><b><a href="">Check if the directory is empty</a></b></li>
+
+        </ol>
+
+        <div style="border-left: 10px solid rgb(237, 21, 21); height: 100px;"><br>
+            <p>&nbsp; &nbsp; &nbsp;&nbsp; To know in-depth about File handling on <a href="">Java I/O Tutorial</a></p>
+        </div><br>
+
+        <h3>Java Multithreading Tutorial</h3>
+        <ol>
+            <li><b><a href=""> How to Create and Start a Thread in Java</a></b></li>
+            <li><b><a href="">Java Thread Sleep Example</a></b></li>
+            <li><b><a href="">Java Thread Join Example</a></b></li>
+            <li><b><a href="">Java Thread Set Name Example</a></b></li>
+            <li><b><a href="">Java Thread interrupt Example</a></b></li>
+            <li><b><a href="">Java Thread Priority Example</a></b></li>
+            <li><b><a href="">Java Thread isAlive Example</a></b></li>
+            <li><b><a href="">ThreadGroup class in Java</a></b></li>
+            <li><b><a href="">Thread Class in Java</a></b></li>
+            <li><b><a href="">Runnable Interface in Java</a></b></li>
+            <li><b><a href="">Synchronization in Multithreading Java</a></b></li>
+            <li><b><a href="">ThreadLocal class in Java</a></b></li>
+        </ol>
+
+        <div style="border-left: 10px solid rgb(237, 21, 21); height: 100px;"><br>
+            <p>&nbsp; &nbsp; &nbsp;&nbsp; To know in-depth about Java multi-threading on <a href="">Java Multithreading
+                    Tutorial</a></p>
+        </div><br>
+
+        <h3>Java Reflection Tutorial</h3>
+        <ol>
+            <li><b><a href="">Overview of Java Reflection API</a></b></li>
+            <li><b><a href="">Java Reflection for Classes</a></b></li>
+            <li><b><a href="">Java Reflection for Methods</a></b></li>
+            <li><b><a href="">Java Reflection for Fields</a></b></li>
+            <li><b><a href="">Java Reflection for Constructors</a></b></li>
+            <li><b><a href="">Java Reflection for Arrays</a></b></li>
+            <li><b><a href="">Java Reflection for Enums</a></b></li>
+            <li><b><a href="">Top Reflection Utility Methods</a></b></li>
+            <li><b><a href="">Java Reflection Utility Class</a></b></li>
+        </ol>
+
+        <h3>Serialization in Java</h3>
+        <ol>
+            <li><b><a href="">Guide to Serialization in Java</a></b></li>
+            <li><b><a href="">Java Transient Keyword</a></b></li>
+            <li><b><a href="">Guide to the understanding of serialVersionUID</a></b></li>
+            <li><b><a href="">Secure Coding Standards for Java Serialization</a></b></li>
+        </ol>
+
+        <h3>Java Annotations</h3>
+        <ol>
+            <li><b><a href="">Java @Override Annotation</a></b></li>
+            <li><b><a href="">Java @SafeVarargs Annotation</a></b></li>
+            <li><b><a href="">Java @Deprecated Annotation</a></b></li>
+            <li><b><a href="">Java @SuppressWarnings Annotation</a></b></li>
+            <li><b><a href="">Java @FunctionalInterface Annotation</a></b></li>
+            <li><b><a href="">All Java Built-In Annotations Examples</a></b></li>
+        </ol>
+
+
+        <h3>Java Records</h3>
+        <ul>
+            <li><b><a href="">Difference Between Class and Record in Java</a></b></li>
+            <li><b><a href="">Java Records</a></b></li>
+            <li><b><a href="">Java Record Class - 10 Examples with Output and Explanation</a></b></li>
+            <li><b><a href="">Using Java Records with Spring Boot</a></b></li>
+            <li><b><a href="">Java Records vs. Lombok</a></b></li>
+            <li><b><a href="">Java Record Getters</a></b></li>
+            <li><b><a href="">Java Record Constructors</a></b></li>
+            <li><b><a href="">Builder Pattern with Java Records</a></b></li>
+        </ul>
+
+        <h3> Java Language Keywords References</h3>
+        <p>Check out all 50 keywords in the Java programming language.:</p>
+        <ol>
+            <li><b><a href="">abstract Java Keyword</a></b></li>
+            <li><b><a href="">assert Java Keyword</a></b></li>
+            <li><b><a href="">boolean Java Keyword</a></b></li>
+            <li><b><a href="">break Java Keyword</a></b></li>
+            <li><b><a href="">byte Java Keyword</a></b></li>
+            <li><b><a href="">case Java Keyword</a></b></li>
+            <li><b><a href="">catch Java Keyword</a></b></li>
+            <li><b><a href="">char Java Keyword</a></b></li>
+            <li><b><a href="">class Java Keyword</a></b></li>
+            <li><b><a href="">continue Java Keyword</a></b></li>
+            <li><b><a href="">default Java Keyword</a></b></li>
+            <li><b><a href="">do Java Keyword</a></b></li>
+            <li><b><a href="">double Java Keyword</a></b></li>
+            <li><b><a href="">else Java Keyword</a></b></li>
+            <li><b><a href="">enum Java Keyword</a></b></li>
+            <li><b><a href="">extends Java Keyword</a></b></li>
+            <li><b><a href="">final Java Keyword</a></b></li>
+            <li><b><a href="">finally Java Keyword</a></b></li>
+            <li><b><a href="">float Java Keyword</a></b></li>
+            <li><b><a href="">for Java Keyword</a></b></li>
+            <li><b><a href="">if Java Keyword</a></b></li>
+            <li><b><a href="">implements Java Keyword</a></b></li>
+            <li><b><a href="">import Java Keyword</a></b></li>
+            <li><b><a href="">instanceof Java Keyword</a></b></li>
+            <li><b><a href="">int Java Keyword</a></b></li>
+            <li><b><a href="">interface Java Keyword</a></b></li>
+            <li><b><a href="">long Java Keyword</a></b></li>
+            <li><b><a href="">native Java Keyword</a></b></li>
+            <li><b><a href="">new Java Keyword</a></b></li>
+            <li><b><a href="">package Java Keyword</a></b></li>
+            <li><b><a href="">private Java Keyword</a></b></li>
+            <li><b><a href="">protected Java Keyword</a></b></li>
+            <li><b><a href="">public Java Keyword</a></b></li>
+            <li><b><a href="">return Java Keyword</a></b></li>
+            <li><b><a href="">short Java Keyword</a></b></li>
+            <li><b><a href="">static Java Keyword</a></b></li>
+            <li><b><a href="">strictfp Java Keyword</a></b></li>
+            <li><b><a href="">super Java Keyword</a></b></li>
+            <li><b><a href="">switch Java Keyword</a></b></li>
+            <li><b><a href="">synchronized Java Keyword</a></b></li>
+            <li><b><a href="">this Java Keyword</a></b></li>
+            <li><b><a href="">throw Java Keyword</a></b></li>
+            <li><b><a href="">throws Java Keyword</a></b></li>
+            <li><b><a href="">transient Java Keyword</a></b></li>
+            <li><b><a href="">try Java Keyword</a></b></li>
+            <li><b><a href="">void Java Keyword</a></b></li>
+            <li><b><a href="">volatile Java Keyword</a></b></li>
+            <li><b><a href="">while Java Keyword</a></b></li>
+            <li><b><a href="">goto Java Keyword</a></b></li>
+            <li><b><a href="">const Java Keyword</a></b></li>
+        </ol>
+
+        <h3>Java best practices</h3>
+        <ol>
+            <li><b><a href="">Java Enums and Annotations Best Practices</a></b></li>
+            <li><b><a href="">Java Generics Best Practices</a></b></li>
+            <li><b><a href="">JUnit Framework Best Practices</a></b></li>
+            <li><b><a href="">Single Responsibility Principle</a></b></li>
+            <li><b><a href="">Liskov's Substitution Principle</a></b></li>
+            <li><b><a href="">Interface Segregation Principle</a></b></li>
+            <li><b><a href="">Dependency Inversion Principle</a></b></li>
+            <li><b><a href="">Open Closed Principle</a></b></li>
+            <li><b><a href="">Oops principles in java</a></b></li>
+            <li><b><a href="">Restful API Best Practices</a></b></li>
+            <li><b><a href="">JSP Best Practices</a></b></li>
+            <li><b><a href="">JDBC Best Practices</a></b></li>
+            <li><b><a href="">Collection Best Practices</a></b></li>
+            <li><b><a href="">String Best Practices in Java</a></b></li>
+            <li><b><a href="">Exception Handling Best Practices</a></b></li>
+            <li><b><a href="">Synchronization Best Practices</a></b></li>
+            <li><b><a href="">Guide to JDBC Best Practices</a></b></li>
+            <li><b><a href="">Serialization Best Practices</a></b></li>
+        </ol>
+
+
+        <h3>100+ Java Programs</h3>
+        <ul>
+            <li><b><a href="">Java Programs with Output for Beginners</a></b></li>
+        </ul>
+
+        <h3>Java 8 Tutorials</h3>
+        <ul>
+            <li><b><a href="">Java 8 Tutorial</a></b></li>
+        </ul>
+
+        <h3>Java Quizzes</h3>
+        <ul>
+            <li><b><a href="">Java Quiz - MCQ - Multiple Choice Questions and Answers</a></b></li>
+        </ul>
+
+        <h3>Data Structures and Algorithms in Java</h3>
+        <ul>
+            <li><b><a href="">Data Structures and Algorithms in Java</a></b></li>
+        </ul>
+
+
+        <h3>Java Interview Q&A</h3>
+        <ul>
+            <li><b><a href="">Top Java Interview Questions and Answers - Java, Spring Boot, Microservices,
+                        Full-Stack</a></b></li>
+        </ul>
+
+        <div class="scrollup justify-content-end">
+            <a href="#">
+                <img class="scrollup-icon" src="../../assets/img/arrow.png" alt="Scroll to top">
+            </a>
+        </div>
+        
+    </div>
+    <div id="footer"></div>
+    <script>
+        fetch('../../footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer').innerHTML = html;
+            });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
+

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Java Tutorial</title>
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+         }
+        .navbar-brand img {
+            max-height: 80px;
+        }
+
+        .navbar-nav .nav-item.active .nav-link,
+        .navbar-nav .nav-item:hover .nav-link {
+            color: #1a59a7 !important;
+            font-weight: bold;
+        }
+
+        /* Add this style rule to highlight the dropdown menu item on hover */
+        .navbar-nav .nav-item.dropdown:hover .nav-link {
+            color: #1a59a7 !important;
+            font-weight: bold;
+        }
+
+        /* Add this style rule to highlight the active dropdown menu item */
+        .navbar-nav .nav-item.dropdown.active .nav-link {
+            color: #1a59a7 !important;
+            font-weight: bold;
+        }
+
+        /* Add this style rule to highlight the dropdown menu item on hover */
+        .navbar-nav .nav-item.dropdown:hover .nav-link {
+            color: #1a59a7 !important;
+            font-weight: bold;
+        }
+
+
+
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* Adjust the styling of the dropdown */
+        .nav-item.dropdown .dropdown-menu {
+            display: none;
+            margin-top: 0;
+            /* Ensure no margin is added when hovering */
+            transition: visibility 0.3s, opacity 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .nav-item.dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Optional: Add a background color to the dropdown items on hover */
+        .dropdown-item:hover {
+            background-color: #9387e1;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .side-panel {
+            width: 250px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h4 {
+            color: red;
+        }
+
+        .content {
+            flex-grow: 0.5;
+            padding: 20px;
+
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            text-align: left;
+            color: red;
+        }
+
+        p {
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .important {
+            color: black;
+            /* Color for "Important:" */
+            font-weight: bold;
+        }
+
+        .message {
+            color: red;
+            /* Color for the rest of the text */
+        }
+
+        .learn {
+            color: blue;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .overlap-container {
+            position: relative;
+            background: url('assets/media/components/b-title-page/bg-1.jpg') center/cover no-repeat;
+            color: #fff;
+            padding: 100px;
+            height: 100px;
+            width: 1000px;
+            overflow: visible;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .text-container {
+            position: absolute;
+            bottom: 0;
+            left: 60%;
+            transform: translateX(-40%);
+            text-align: center;
+            padding: 15px;
+
+        }
+
+        .text-container h3 {
+            font-size: 24px;
+        }
+
+        .text-container h1 {
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <!-- *********************************************** -->
+    <div class="container-fluid mt-3">
+
+        <nav class="navbar navbar-expand-lg navbar-white bg-white ms-auto">
+            <div class="container-fluid ">
+                <a class="navbar-brand" href="index.html">
+                    <img src="assets/media/general/logo.png" alt="logo" />
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse mx-auto" id="navbarNavDropdown">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="index.html">HOME</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="about.html">ABOUT</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link  dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">CAREERS</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li>
+                                    <a class="dropdown-item" href="internship.html" class="menu-link">Internship</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link  dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">SERVICES</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li>
+                                    <a href="web_application.html" class="dropdown-item">Web
+                                        Applications</a>
+                                </li>
+                                <li>
+                                    <a href="mobile_application.html" class="dropdown-item">Mobile
+                                        Applications</a>
+                                </li>
+                                <li>
+                                    <a href="data_analytics.html" class="dropdown-item">Data Analytics</a>
+                                </li>
+                                <li>
+                                    <a href="ai_ml.html" class="dropdown-item">AI &
+                                        ML Services</a>
+                                </li>
+                                <li>
+                                    <a href="tooldesign.html" class="dropdown-item">Tool Design</a>
+                                </li>
+
+                                <li>
+                                    <a href="product_engineering.html" class="dropdown-item">Product
+                                        Engineering</a>
+                                </li>
+                                <li>
+                                    <a href="digital_marketinig.html" class="dropdown-item">Digital
+                                        Marketing</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">TRAINING
+                                COURSES</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li>
+                                    <a href="spring_framework_tutorial.html" class="dropdown-item">Spring Framework
+                                        Tutorial</a>
+                                </li>
+                                <li>
+                                    <a href="java_tutorial.html" class="dropdown-item">Java Tutorial</a>
+                                </li>
+                                <li>
+                                    <a href="spring_boot_tutorial.html" class="dropdown-item">Spring Boot
+                                        Tutorial</a>
+                                </li>
+                                <li>
+                                    <a href="java_fullstack.html" class="dropdown-item">Java Fullstack</a>
+                                </li>
+                                <li>
+                                    <a href="mern_stack.html" class="dropdown-item">MERN Stack</a>
+                                </li>
+                                <li>
+                                    <a href="angular_CRUD_example_with_spring_boot.html" class="dropdown-item">Full
+                                        Stack</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="contact.html">CONTACT</a>
+                        </li>
+                    </ul>
+                </div>
+        </nav>
+        <div class="carousel-inner mb-4">
+            <div class="carousel-item active">
+              <img src="./assets/springboot images/Java image.jpg" alt="..." />            
+            </div>
+          </div> <br>
+        <h1>Java Tutorial</h1>
+        <h4>Author: Sai K</h4>
+        <h3><b>Introduction to Java</b></h3>
+        <p>Java is a <b>class-based, object-oriented programming language</b> that is designed to have as few implementation
+            dependencies as possible. It is intended to let application developers <b>write once, and run anywhere (WORA)</b>,
+            meaning that compiled Java code can run on all platforms that support Java without the need for
+            recompilation. <b>Java was first released in 1995</b> and is widely used for developing applications for desktop,
+            web, and mobile devices. Java is known for its <b>simplicity, robustness, and security features</b>, making it a
+            popular choice for <b>enterprise-level applications</b>. <br><br>
+
+            Java was developed by <b>James Gosling</b> at <b>Sun Microsystems Inc</b> in May 1995 and later acquired by <b>Oracle
+                Corporation</b>. It is a <b>simple programming language</b>. Java makes writing, compiling, and debugging programming
+            easy. It helps to create reusable code and modular programs. Java is a <b>class-based, object-oriented
+                programming language</b> and is designed to have as few implementation dependencies as possible. A
+            <b>general-purpose programming language</b> made for developers to <b>write once run anywhere</b> that is compiled Java
+            code can run on all platforms that <b>support Java. Java applications </b>are compiled to <b>byte code</b> that can run on
+            any <b>Java Virtual Machine</b>. The syntax of <b>Java</b> is similar to <b>C/C++</b>. <br><br>
+
+            <h5>Table of Content</h5></p>
+            <ul>
+                <li><b><a href="java_tutorial\java_for_begginers\java for begginers.html">Java for Begginers</a></b></li>
+                <li><b><a href="">Java OOPS Tutorial</a></b></li>
+                <li><b><a href="">Java Collections Tutorial</a></b></li>
+                <li><b><a href="">Java String Tutorial</a></b></li>
+                <li><b><a href="">Java Exceptions Tutorial</a></b></li>
+                <li><b><a href="">Java Multithreading</a></b></li>
+                <li><b><a href="">Java Generics Tutorial</a></b></li>
+                <li><b><a href="">Java IO Tutorial</a></b></li>
+                <li><b><a href="">JDBC Tutorial</a></b></li>
+                <li><b><a href="">Java 8 Tutorial</a></b></li>
+            </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+</body>
+
+</html>
