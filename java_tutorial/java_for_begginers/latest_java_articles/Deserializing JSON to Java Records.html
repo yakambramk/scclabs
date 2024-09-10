@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/JSON to JAVA Record.jpg" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h3>Deserializing JSON to Java Records</h3>
+            <h6>Author: SAI K</h6>
+        </div><br>
+        <p>In the world of Java programming, JSON (JavaScript Object Notation) is a widely used format for data
+            interchange. It's common to receive JSON data from a web service or API and then deserialize it into Java
+            objects. With the introduction of Java records in Java 16, the process of deserializing JSON data has become
+            more streamlined and efficient. In this blog post, we'll explore how to deserialize JSON into Java records,
+            a feature that greatly simplifies data handling in Java applications. </p>
+        <h3>Introduction to Java Records </h3>
+        <p>Java Records, introduced in Java 16, is a special type of data class in the Java language. They provide a
+            concise and straightforward way to declare classes that are primarily used to hold immutable data. <br><br>
+
+            Records automatically generate boilerplate code like constructors, getters, equals(), hashCode(), and
+            toString() methods based on the fields declared. A record is defined with the record keyword, followed by a
+            list of fields. This feature simplifies the creation of data transfer objects and value-based classes,
+            promoting cleaner and more readable code.</p>
+
+        <h4>Example of a Java Record:</h4>
+        <code><pre>
+public record User(Long id, String firstName, String lastName, String email) {}</pre></code><br>
+
+        <h4>Advantages of Using Java Records for JSON Deserialization</h4>
+        <p><b>Immutable Data:</b> Records ensure immutability, which is a good practice for data transfer objects.
+            <br><br>
+
+            <b>Less Boilerplate:</b> They reduce the boilerplate code required for defining POJOs (Plain Old Java
+            Objects). A record can declare fields, and the compiler automatically generates the corresponding
+            constructor, getters, toString(), equals(), and hashCode() methods. <br><br>
+
+            <b>Data Integrity:</b> Since records are immutable, they provide a higher level of data integrity.
+        </p>
+
+        <h3>Setting Up the Environment </h3>
+        <p>To deserialize JSON into a Java record, you'll need a JSON processing library. Jackson is a popular choice
+            for its ease of use and flexibility. </p>
+        <h4>Maven Dependency for Jackson</h4>
+        <p>Add the following dependencies to your pom.xml:</p>
+        <code><pre>
+&lt;!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+    &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+    &lt;version&gt;2.16.1&lt;/version&gt;
+&lt;/dependency&gt;</pre></code><br>
+        <h3>Deserializing JSON to Java Record </h3>
+        <p>Now, let's write a simple Java program to deserialize a JSON string into a User record. </p>
+        <code><pre>
+package net.javaguides.quizapp.automation;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+
+record User(Long id, String firstName, String lastName, String email) {}
+
+public class JsonToRecord {
+    public static void main(String[] args) {
+        String json = """
+                      {
+                          "id": 1,
+                          "firstName": "Ramesh",
+                          "lastName": "Fadatare",
+                          "email": "ramesh@example.com"
+                      }
+                      """;
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            User user = mapper.readValue(json, User.class);
+            System.out.println("Deserialized User Record: " + user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</pre></code><br>
+        <h3>Output:</h3>
+        <code><pre>
+Deserialized User Record: User[id=1, firstName=Ramesh, lastName=Fadatare, email=ramesh@example.com]</pre></code><br>
+
+        <h3>Java Records for Complex Structures </h3>
+        <p>Let's consider an example where we have a JSON structure representing a User and their associated Address.
+            The User record will have a reference to the Address record. </p>
+        <h4>Defining the Records </h4>
+        <p>First, define the Address record:</p>
+        <code><pre>
+public record Address(String street, String city, String zipCode, String country) {}</pre></code><br>
+        <p>Next, define the User record, which includes an Address:</p>
+        <code><pre>
+public record User(Long id, String firstName, String lastName, String email, Address address) {}</pre></code><br>
+
+        <h4>Deserializing Nested JSON</h4>
+        <p>Assume we have the following JSON:</p>
+        <code><pre>
+{
+    "id": 1,
+    "firstName": "Ramesh",
+    "lastName": "Fadatare",
+    "email": "ramesh@example.com",
+    "address": {
+        "street": "Main street",
+        "city": "Pune",
+        "zipCode": "12345",
+        "country": "India"
+    }
+}</pre></code><br>
+
+        <h3>The Deserialization Process </h3>
+        <p>Here’s how you can deserialize the above JSON into Java records: </p>
+        <code><pre>
+package net.javaguides.quizapp.automation;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+
+record Address(String street, String city, String zipCode, String country) {}
+
+record User(Long id, String firstName, String lastName, String email, Address address) {}
+public class ComplexJsonToRecord {
+    public static void main(String[] args) {
+        String json = """
+                        {
+                             "id": 1,
+                             "firstName": "Ramesh",
+                             "lastName": "Fadatare",
+                             "email": "ramesh@example.com",
+                             "address": {
+                                 "street": "Main street",
+                                 "city": "Pune",
+                                 "zipCode": "12345",
+                                 "country": "India"
+                             }
+                         }
+                      """;
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            User user = mapper.readValue(json, User.class);
+            System.out.println("Deserialized User Record: " + user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}</pre></code><br>
+
+        <h3>Output:</h3>
+        <code><pre>
+    Deserialized User Record: User[id=1, firstName=Ramesh, lastName=Fadatare, email=ramesh@example.com, address=Address[street=Main street, city=Pune, zipCode=12345, country=India]]</pre></code>
+
+        <h3>Conclusion </h3>
+        <p>Java records, combined with a library like Jackson, make the task of deserializing JSON into Java objects
+            much more straightforward and cleaner. This approach is particularly useful when dealing with data transfer
+            objects in APIs and web services. Records bring the benefits of immutability, less boilerplate, and data
+            integrity, making them an excellent choice for modern Java applications. <br><br>
+
+            Stay tuned for more insights on leveraging new features in Java for efficient and effective programming.
+            <br><br>
+
+            Happy coding!</p>
+        <h3>Related Java and Advanced Java Tutorials/Guides</h3>
+        <p>
+            <button type="button" class="btn btn-outline-primary">Java Programs</button>
+            <button type="button" class="btn btn-outline-secondary">Java For Beginners</button>
+            <button type="button" class="btn btn-outline-success">Java OOPS Tutorial</button>
+            <button type="button" class="btn btn-outline-danger">Java For Professional</button>
+            <button type="button" class="btn btn-outline-warning">Java Collections Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Java Spring Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Java Exceptions Tutorial </button>
+            <button type="button" class="btn btn-outline-secondary">Java Regex Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Java Multithreading</button>
+            <button type="button" class="btn btn-outline-danger">500+ Java MCQ</button>
+            <button type="button" class="btn btn-outline-warning">Java Generic Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Java IO Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">JDBC Tutorial</button>
+            <button type="button" class="btn btn-outline-dark">JavaFX Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Swing Tutorials </button>
+            <button type="button" class="btn btn-outline-secondary">Java 8 Date Time</button>
+            <button type="button" class="btn btn-outline-success">Interview Guides</button>
+            <button type="button" class="btn btn-outline-danger">Java 8 Tutorial </button>
+            <button type="button" class="btn btn-outline-warning">java 9 Tutorial</button>
+            <button type="button" class="btn btn-outline-info">DS And Algorithms</button>
+            <button type="button" class="btn btn-outline-danger">Head First Patters</button>
+            <button type="button" class="btn btn-outline-primary">Core JavaEE Patterns</button>
+            <button type="button" class="btn btn-outline-secondary">JSP Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Servlet Tutorial</button>
+            <button type="button" class="btn btn-outline-danger">JSP Servlet Project</button>
+            <button type="button" class="btn btn-outline-warning">Java JSON-P Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Maven Tutorial</button>
+        </p>
+        <div class="scrollup justify-content-end">
+            <a href="#">
+                <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+            </a>
+        </div>
+
+    </div>
+    <div id="footer"></div>
+    <script>
+        fetch('../../../footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer').innerHTML = html;
+            });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

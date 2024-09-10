@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/Byte Array to  Char Array in java.png" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h3>Converting a Byte Array to a Char Array in Java</h3>
+            <h6>Author: SAI K</h6>
+        </div><br>
+        <p>Working with various data types is a common task in Java programming, and sometimes you may need to convert
+            data from one type to another. A typical scenario is converting a byte array to a char array. This can be
+            necessary for various reasons, such as when dealing with file I/O, network communications, or encoding
+            conversions. In this blog post, we'll explore how to convert a byte array to a char array in Java. </p>
+        <h3>Understanding Byte and Char in Java</h3>
+        <p>Before diving into the conversion process, it's important to understand the difference between byte and char
+            data types in Java: <br><br>
+
+            <b>Byte:</b> The byte data type in Java is an 8-bit signed two's complement integer. It's primarily used for
+            raw data manipulation. <br><br>
+
+            <b>Char:</b> The char data type in Java is a single 16-bit Unicode character. It's used to represent
+            characters.
+        </p>
+
+        <h3>Conversion Method 1</h3>
+        <p>Using Standard Charset Java's Charset class can be used to convert a byte array to a char array by first
+            creating a String from the byte array and then converting this string to a char array. </p>
+        <h4>Example:</h4>
+        <code><pre>
+import java.nio.charset.StandardCharsets;
+
+public class ByteArrayToCharArray {
+    public static void main(String[] args) {
+        byte[] byteArray = { 72, 101, 108, 108, 111 }; // "Hello" in ASCII
+        String string = new String(byteArray, StandardCharsets.UTF_8);
+        char[] charArray = string.toCharArray();
+
+        System.out.println(charArray);
+    }
+}</pre></code><br>
+
+        <h4>Output:</h4>
+        <code><pre>
+Hello</pre></code><br>
+        <h3>Method 2: Using Character Encoding </h3>
+        <p>You can specify a character encoding explicitly when converting the byte array to a string. This is useful
+            when dealing with non-standard character encodings. </p>
+        <h4>Example:</h4>
+        <code><pre>
+import java.nio.charset.Charset;
+
+public class ByteArrayToCharArray {
+    public static void main(String[] args) {
+        byte[] byteArray = { 72, 101, 108, 108, 111 }; // "Hello" in ASCII
+        Charset encoding = Charset.forName("UTF-8");
+        String string = new String(byteArray, encoding);
+        char[] charArray = string.toCharArray();
+
+        System.out.println(charArray);
+    }
+}</pre></code><br>
+
+        <h4>Output:</h4>
+        <code><pre>
+Hello</pre></code><br>
+
+        <h3>Method 3: Manual Conversion </h3>
+        <p>For more control over the conversion process, you can manually convert each byte to a char. This method is
+            more complex and typically only necessary for specific use cases. </p>
+        <h4>Example:</h4>
+        <code><pre>
+public class ByteArrayToCharArray {
+    public static void main(String[] args) {
+        byte[] byteArray = { 72, 101, 108, 108, 111 }; // "Hello" in ASCII
+        char[] charArray = new char[byteArray.length];
+
+        for (int i = 0; i < byteArray.length; i++) {
+            charArray[i] = (char) byteArray[i];
+        }
+
+        System.out.println(charArray);
+    }
+}</pre></code><br>
+
+        <h4>Output:</h4>
+        <code><pre>
+Hello</pre></code><br>
+        <h3>Conclusion </h3>
+        <p>Converting a byte array to a char array in Java can be done in various ways, depending on your specific
+            requirements and the encoding of your data. Whether you use the built-in Charset class for convenience or
+            manually convert each byte for greater control, Java provides the tools necessary to accomplish this task
+            effectively. <br><br>
+
+            Understanding these conversion techniques is essential for Java developers, especially when dealing with
+            data processing and manipulation in applications. <br><br>
+
+            Stay tuned for more practical Java programming insights! Happy coding!</p>
+        <h3>Related Java and Advanced Java Tutorials/Guides</h3>
+        <p>
+            <button type="button" class="btn btn-outline-primary">Java Programs</button>
+            <button type="button" class="btn btn-outline-secondary">Java For Beginners</button>
+            <button type="button" class="btn btn-outline-success">Java OOPS Tutorial</button>
+            <button type="button" class="btn btn-outline-danger">Java For Professional</button>
+            <button type="button" class="btn btn-outline-warning">Java Collections Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Java Spring Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Java Exceptions Tutorial </button>
+            <button type="button" class="btn btn-outline-secondary">Java Regex Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Java Multithreading</button>
+            <button type="button" class="btn btn-outline-danger">500+ Java MCQ</button>
+            <button type="button" class="btn btn-outline-warning">Java Generic Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Java IO Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">JDBC Tutorial</button>
+            <button type="button" class="btn btn-outline-dark">JavaFX Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Swing Tutorials </button>
+            <button type="button" class="btn btn-outline-secondary">Java 8 Date Time</button>
+            <button type="button" class="btn btn-outline-success">Interview Guides</button>
+            <button type="button" class="btn btn-outline-danger">Java 8 Tutorial </button>
+            <button type="button" class="btn btn-outline-warning">java 9 Tutorial</button>
+            <button type="button" class="btn btn-outline-info">DS And Algorithms</button>
+            <button type="button" class="btn btn-outline-danger">Head First Patters</button>
+            <button type="button" class="btn btn-outline-primary">Core JavaEE Patterns</button>
+            <button type="button" class="btn btn-outline-secondary">JSP Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Servlet Tutorial</button>
+            <button type="button" class="btn btn-outline-danger">JSP Servlet Project</button>
+            <button type="button" class="btn btn-outline-warning">Java JSON-P Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Maven Tutorial</button>
+        </p>
+        <div class="scrollup justify-content-end">
+            <a href="#">
+                <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+            </a>
+        </div>
+
+    </div>
+    <div id="footer"></div>
+    <script>
+        fetch('../../../footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer').innerHTML = html;
+            });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/Screenshot 2024-09-10 165759.png" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h3>Difference Between Entity and DTO in Java</h3>
+            <h6>Author: SAI K</h6>
+        </div><br>
+        <p>In Java, particularly in the context of building web applications with frameworks like Spring, Hibernate, or
+            JPA, two common terms you often encounter are Entity and Data Transfer Object (DTO). Both play vital roles
+            but serve different purposes. In this blog post, we'll explore what entities and DTOs are and the key
+            differences between them. </p>
+        <h3>What is an Entity? </h3>
+        <p>An entity in Java represents a table in a database. It is a domain model that is typically mapped to a
+            database table. In frameworks like Hibernate and JPA, entities are used to define the structure of the
+            database and its relationships. </p>
+        <h3>Characteristics of an Entity: </h3>
+        <p><b>Persistence:</b>Entities are persistent data stored in a database. <br><br>
+
+            <b>Identity:</b> They have a unique identifier (like a primary key in a database). <br><br>
+
+            <b>Lifespan:</b> Entities exist independently of any specific application and can be modified and
+            manipulated over time.
+        </p>
+
+        <h3>Example of an Entity:</h3>
+        <code><pre>
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    private String email;
+    // Getters and setters omitted for brevity
+}</pre></code><br>
+
+        <h3>What is a Data Transfer Object (DTO)? </h3>
+        <p>A DTO is an object that carries data between processes. In the context of a web application, a DTO is often
+            used to transfer data from the server to a client. DTOs help to encapsulate data and can be serialized into
+            formats like JSON or XML. </p>
+
+        <h4>Characteristics of a DTO: </h4>
+        <p><b>Data Container:</b> DTOs are used to transfer data and do not contain any business logic. <br><br>
+
+            <b>Modeling the UI:</b> Often shaped to fit the data requirements of the UI. <br><br>
+
+            <b>Reduced Bandwidth:</b> They can carry only the necessary data, thus reducing the amount of data that
+            travels over the network.
+        </p>
+
+        <h3>Example of a DTO:</h3>
+        <code><pre>
+public class UserDTO {
+    private String name;
+    private String email;
+    // Getters and setters omitted for brevity
+}</pre></code><br>
+
+        <h3>Key Differences Between Entity and DTO</h3>
+        <p><b>Purpose:</b> Entities are used for defining the business model and are mapped to the database. DTOs are
+            used for transferring data between the client and server or between different layers of an application.
+            <br><br>
+
+            <b>Persistence:</b> Entities are persistent and reflect a database's state. DTOs are not persistent and are
+            used to pass data. <br><br>
+
+            <b>Content:</b> Entities can contain business logic, whereas DTOs are simple objects used for transferring
+            data without any logic. <br><br>
+
+            <b>Scope:</b> An entity's lifespan is typically longer as it reflects the data stored in a database. A DTO
+            exists within the scope of a method or a process and is discarded afterward.
+        </p>
+
+
+
+        <h3>When to Use DTOs Over Entities</h3>
+        <p><b>Security:</b> When you want to prevent exposing sensitive data from the entity. <br><br>
+
+            <b>Performance:</b> When you want to transfer a subset of an entity's data, thereby reducing payload size.
+            <br><br>
+
+            <b>Decoupling:</b> To avoid exposing the internal structure of your database to the client.
+        </p>
+
+        <h3>Conclusion</h3>
+        <p>Understanding the difference between entities and DTOs is crucial for any Java developer working with web
+            applications. While entities represent your domain model and are directly mapped to your database, DTOs are
+            used to transfer data between different layers or services. Employing DTOs can lead to more secure,
+            efficient, and maintainable applications. <br><br>
+
+            Stay tuned for more insights into Java best practices and design patterns. Happy coding!</p>
+
+        <h3>Related Java and Advanced Java Tutorials/Guides</h3>
+        <p>
+            <button type="button" class="btn btn-outline-primary">Java Programs</button>
+            <button type="button" class="btn btn-outline-secondary">Java For Beginners</button>
+            <button type="button" class="btn btn-outline-success">Java OOPS Tutorial</button>
+            <button type="button" class="btn btn-outline-danger">Java For Professional</button>
+            <button type="button" class="btn btn-outline-warning">Java Collections Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Java Spring Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Java Exceptions Tutorial </button>
+            <button type="button" class="btn btn-outline-secondary">Java Regex Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Java Multithreading</button>
+            <button type="button" class="btn btn-outline-danger">500+ Java MCQ</button>
+            <button type="button" class="btn btn-outline-warning">Java Generic Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Java IO Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">JDBC Tutorial</button>
+            <button type="button" class="btn btn-outline-dark">JavaFX Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Swing Tutorials </button>
+            <button type="button" class="btn btn-outline-secondary">Java 8 Date Time</button>
+            <button type="button" class="btn btn-outline-success">Interview Guides</button>
+            <button type="button" class="btn btn-outline-danger">Java 8 Tutorial </button>
+            <button type="button" class="btn btn-outline-warning">java 9 Tutorial</button>
+            <button type="button" class="btn btn-outline-info">DS And Algorithms</button>
+            <button type="button" class="btn btn-outline-danger">Head First Patters</button>
+            <button type="button" class="btn btn-outline-primary">Core JavaEE Patterns</button>
+            <button type="button" class="btn btn-outline-secondary">JSP Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Servlet Tutorial</button>
+            <button type="button" class="btn btn-outline-danger">JSP Servlet Project</button>
+            <button type="button" class="btn btn-outline-warning">Java JSON-P Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Maven Tutorial</button>
+        </p>
+        <div class="scrollup justify-content-end">
+            <a href="#">
+                <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+            </a>
+        </div>
+
+    </div>
+    <div id="footer"></div>
+    <script>
+        fetch('../../../footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer').innerHTML = html;
+            });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

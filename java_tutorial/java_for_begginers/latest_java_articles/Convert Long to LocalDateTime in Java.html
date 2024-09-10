@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/Conevert Long TimeStamp to LocalDateTime  in java.png" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h3>Convert Long to LocalDateTime in Java</h3>
+            <h6>Author: SAI K</h6>
+        </div><br>
+        <p>In Java, handling dates and times is a common task, often requiring conversions between different types. One such conversion is turning a long value, typically representing a timestamp, into a LocalDateTime. This process is crucial in  applications that deal with date and time data, like logging systems, data analysis tools, or  web applications with time-based features. In this blog post, we'll explore how to convert a long value to LocalDateTime in Java. </p>
+        <h3>Understanding Long and LocalDateTime </h3>
+        <p>Before diving into the conversion: <br><br>
+
+            Long: In Java, a long value representing time usually stands for the number of milliseconds since the Unix epoch (January 1, 1970, 00:00:00 GMT).  <br><br>
+            
+            LocalDateTime: Introduced in Java 8 as part of the java.time package, LocalDateTime represents a date-time without a time zone in the ISO-8601 calendar system. </p>
+
+            <h3>Convert Long to LocalDateTime in Java</h3>
+            <p>Java 8 and newer versions make this conversion straightforward through the java.time API. </p>
+            <h4>Method 1: Using Instant and LocalDateTime</h4>
+            <p>The Instant class represents an instantaneous point on the timeline, and LocalDateTime can be derived from it. </p>
+<code><pre>
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
+public class LongToLocalDateTime {
+    public static void main(String[] args) {
+        long timestamp = System.currentTimeMillis();
+
+        LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+
+        System.out.println("LocalDateTime: " + dateTime);
+    }
+}</pre></code><br>
+
+            <h4>Output:</h4>
+<code><pre>
+LocalDateTime: 2024-01-10T18:18:18.086</pre></code><br>
+<p>In this example, we convert the current system time (as a long value) to LocalDateTime. </p>
+                    <h3>Method 2: Using LocalDateTime.ofEpochSecond </h3>
+                    <p>Alternatively, if your long value represents seconds since the epoch, you can use LocalDateTime.ofEpochSecond. </p>
+<code><pre>
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
+public class LongToLocalDateTime {
+    public static void main(String[] args) {
+        long secondsSinceEpoch = System.currentTimeMillis() / 1000;
+
+        LocalDateTime dateTime = LocalDateTime.ofEpochSecond(secondsSinceEpoch, 0, ZoneOffset.UTC);
+
+        System.out.println("LocalDateTime: " + dateTime);
+    }
+}</pre></code><br>
+
+            <h4>Output:</h4>
+            <code><pre>
+LocalDateTime: 2024-01-10T12:49:08</pre></code><br>
+                    <p>This method is handy if your timestamp is in seconds rather than milliseconds. </p>
+
+
+                    <h3>Considerations </h3>
+                    <p><b>Time Zone: </b>LocalDateTime does not contain information about the time zone. It's essential to consider the time zone when converting timestamps, as the same point in time can represent different local times in different time zones. <br><br>
+
+                        <b>Precision:</b> Ensure that your long value's precision (milliseconds vs. seconds) matches the method you are using for conversion. 
+                        </p>
+
+                        <h3>Conclusion </h3>
+                        <p>Converting a long value to LocalDateTime in Java is a common requirement and can be easily accomplished using java.time API introduced in Java 8. Whether you're working with timestamps in milliseconds or seconds, Java provides robust tools to handle these conversions, allowing for clear and concise code. <br><br>
+
+                            Understanding how to work with date and time conversions is crucial for Java developers, especially in applications where time data is a core component. <br><br>
+                            
+                            Stay tuned for more posts covering various aspects of Java programming. Happy coding!</p><br>
+
+
+        <h3>Related Java and Advanced Java Tutorials/Guides</h3>
+        <p>
+            <button type="button" class="btn btn-outline-primary">Java Programs</button>
+            <button type="button" class="btn btn-outline-secondary">Java For Beginners</button>
+            <button type="button" class="btn btn-outline-success">Java OOPS Tutorial</button>
+            <button type="button" class="btn btn-outline-danger">Java For Professional</button>
+            <button type="button" class="btn btn-outline-warning">Java Collections Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Java Spring Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Java Exceptions Tutorial </button>
+            <button type="button" class="btn btn-outline-secondary">Java Regex Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Java Multithreading</button>
+            <button type="button" class="btn btn-outline-danger">500+ Java MCQ</button>
+            <button type="button" class="btn btn-outline-warning">Java Generic Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Java IO Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">JDBC Tutorial</button>
+            <button type="button" class="btn btn-outline-dark">JavaFX Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Swing Tutorials </button>
+            <button type="button" class="btn btn-outline-secondary">Java 8 Date Time</button>
+            <button type="button" class="btn btn-outline-success">Interview Guides</button>
+            <button type="button" class="btn btn-outline-danger">Java 8 Tutorial </button>
+            <button type="button" class="btn btn-outline-warning">java 9 Tutorial</button>
+            <button type="button" class="btn btn-outline-info">DS And Algorithms</button>
+            <button type="button" class="btn btn-outline-danger">Head First Patters</button>
+            <button type="button" class="btn btn-outline-primary">Core JavaEE Patterns</button>
+            <button type="button" class="btn btn-outline-secondary">JSP Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Servlet Tutorial</button>
+            <button type="button" class="btn btn-outline-danger">JSP Servlet Project</button>
+            <button type="button" class="btn btn-outline-warning">Java JSON-P Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Maven Tutorial</button>
+        </p>
+        <div class="scrollup justify-content-end">
+            <a href="#">
+                <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+            </a>
+        </div>
+
+    </div>
+    <div id="footer"></div>
+    <script>
+        fetch('../../../footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer').innerHTML = html;
+            });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
