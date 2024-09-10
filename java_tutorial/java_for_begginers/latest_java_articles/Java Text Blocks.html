@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/1520140122979.jpeg" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h3>Java Text Blocks</h3>
+            <h6>Author: SAI K</h6>
+        </div><br>
+        <h3>Introduction</h3>
+        <p>Text blocks, introduced in Java 13 as a preview feature and made a standard feature in Java 15, provide a way
+            to define multi-line string literals in a more readable and concise manner. Text blocks help improve code
+            readability, reduce the need for escape sequences, and make it easier to work with large text content, such
+            as HTML, JSON, or SQL queries.</p>
+
+        <h4>Key Points:</h4>
+        <ul>
+            <li><b>Multi-line Strings:</b> Easily define strings that span multiple lines.</li>
+            <li><b>Improved Readability:</b> No need for concatenation or excessive escape sequences.</li>
+            <li><b>Indentation Management:</b> Handles common leading whitespace automatically.</li>
+        </ul>
+        <h3>Table of Contents</h3>
+        <ol>
+            <li>Creating Text Blocks</li>
+            <li>Advantages of Text Blocks</li>
+            <li>Common Use Cases</li>
+            <li>Examples</li>
+            <li>Conclusion</li>
+        </ol>
+        <h3>1. Creating Text Blocks</h3>
+        <p>Text blocks are created using triple-double quotes ("""). The opening triple quotes can be followed by a new
+            line, and the closing triple quotes should be on their own line after the text content.</p>
+        <h4>Syntax:</h4>
+        <code><pre>
+String textBlock = """
+    This is a text block.
+    It can span multiple lines.
+    No need for concatenation or escape sequences.
+    """;</pre></code><br>
+        <h4>Example:</h4>
+        <code><pre>
+public class TextBlockExample {
+    public static void main(String[] args) {
+        String textBlock = """
+            This is a text block.
+            It can span multiple lines.
+            No need for concatenation or escape sequences.
+            """;
+
+        System.out.println(textBlock);
+    }</pre></code><br>
+
+        <h4>Output:</h4>
+        <code><pre>
+This is a text block.
+It can span multiple lines.
+No need for concatenation or escape sequences.</pre></code><br>
+        <h3>2. Advantages of Text Blocks</h3>
+        <h4>Improved Readability</h4>
+        <p>Text blocks make it easier to read and write multi-line strings without the need for concatenation or escape
+            sequences.</p>
+        <h4>Example:</h4>
+        <p>Without Text Blocks:</p>
+        <code><pre>
+String html = "< html>\n" +
+              "    < body>\n" +
+              "        < h1>Hello, World!< /h1>\n" +
+              "    < /body>\n" +
+              "< /html>";
+</pre></code><br>
+        <p>With Text Blocks:</p>
+        <code><pre>
+String html = """
+    < html>
+        < body>
+            < h1>Hello, World!< /h1>
+        < /body>
+    < /html>
+    """;
+</pre></code><br>
+        <h4>Reduced Need for Escape Sequences</h4>
+        <p>Text blocks handle common escape sequences automatically, making the code cleaner.</p>
+        <h4>Example:</h4>
+        <p>Without Text Blocks:</p>
+        <code><pre>
+String json = "{\n" +
+              "    \"name\": \"John\",\n" +
+              "    \"age\": 30\n" +
+              "}";</pre></code><br>
+        <p>With Text Blocks:</p>
+        <code><pre>
+String json = """
+    {
+        "name": "John",
+        "age": 30
+    }
+    """;</pre></code><br>
+
+        <h3>3. Common Use Cases</h3>
+        <h4>Use Case 1: Defining HTML Content</h4>
+        <p>Text blocks are useful for defining HTML content in a readable manner.</p>
+        <h3>Example:</h3>
+        <code><pre>
+public class HtmlExample {
+    public static void main(String[] args) {
+        String html = """
+            < html>
+                < body>
+                    < h1>Hello, World!< /h1>
+                < /body>
+            < /html>
+            """;
+
+        System.out.println(html);
+    }
+}
+</pre></code><br>
+        <h4>Use Case 2: Defining JSON Content</h4>
+        <p>Text blocks are useful for defining JSON content without the need for escape sequences.</p>
+        <h4>Example:</h4>
+        <code><pre>
+public class JsonExample {
+    public static void main(String[] args) {
+        String json = """
+            {
+                "name": "John",
+                "age": 30,
+                "city": "New York"
+            }
+            """;
+
+        System.out.println(json);
+    }
+}</pre></code><br>
+
+        <h3>Use Case 3: Defining SQL Queries</h3>
+        <p>Text blocks are useful for defining multi-line SQL queries in a readable manner.</p>
+        <h4>Example:</h4>
+        <code><pre>
+public class SqlExample {
+    public static void main(String[] args) {
+        String sql = """
+            SELECT id, name, age
+            FROM users
+            WHERE age > 18
+            ORDER BY name;
+            """;
+
+        System.out.println(sql);
+    }
+}</pre></code><br>
+        <h3>4. Examples</h3>
+        <h4>Example 1: Text Block with Indentation</h4>
+        <p>Text blocks automatically handle common leading whitespace.</p>
+        <code><pre>
+public class IndentationExample {
+    public static void main(String[] args) {
+        String indentedText = """
+            Line 1
+                Line 2
+                    Line 3
+            """;
+
+        System.out.println(indentedText);
+    }
+}</pre></code><br>
+
+        <h4>Example 2: Combining Text Blocks with Variables</h4>
+        <p>You can combine text blocks with variables using concatenation or formatted strings.</p>
+        <code><pre>
+public class VariableExample {
+    public static void main(String[] args) {
+        String name = "Alice";
+        String message = """
+            Hello, %s!
+            Welcome to the text block example.
+            """.formatted(name);
+
+        System.out.println(message);
+    }
+}</pre></code><br>
+        <h4>Example 3: Handling Escape Sequences</h4>
+        <p>Text blocks handle common escape sequences, such as newlines and tabs.</p>
+        <code><pre>
+public class EscapeSequenceExample {
+    public static void main(String[] args) {
+        String textBlock = """
+            This is a text block.
+            It can handle escape sequences like \n for newlines and \t for tabs.
+            """;
+
+        System.out.println(textBlock);
+    }
+}</pre></code><br>
+        <h4>Example 4: Multi-line Strings with Line Breaks</h4>
+        <p>Text blocks can include line breaks directly within the text.</p>
+        <code><pre>
+public class LineBreakExample {
+    public static void main(String[] args) {
+        String poem = """
+            Roses are red,
+            Violets are blue,
+            Text blocks are handy,
+            And so are you.
+            """;
+
+        System.out.println(poem);
+    }
+}</pre></code><br>
+        <h3>5. Conclusion</h3>
+        <p>Text blocks provide a powerful and convenient way to define multi-line string literals in Java. By leveraging
+            text blocks, you can improve the readability and maintainability of your code, especially when working with
+            large text content like HTML, JSON, and SQL queries. Understanding and using text blocks can significantly
+            enhance your Java programming experience.</p>
+        <h3>Related Java and Advanced Java Tutorials/Guides</h3>
+        <p>
+            <button type="button" class="btn btn-outline-primary">Java Programs</button>
+            <button type="button" class="btn btn-outline-secondary">Java For Beginners</button>
+            <button type="button" class="btn btn-outline-success">Java OOPS Tutorial</button>
+            <button type="button" class="btn btn-outline-danger">Java For Professional</button>
+            <button type="button" class="btn btn-outline-warning">Java Collections Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Java Spring Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Java Exceptions Tutorial </button>
+            <button type="button" class="btn btn-outline-secondary">Java Regex Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Java Multithreading</button>
+            <button type="button" class="btn btn-outline-danger">500+ Java MCQ</button>
+            <button type="button" class="btn btn-outline-warning">Java Generic Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Java IO Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">JDBC Tutorial</button>
+            <button type="button" class="btn btn-outline-dark">JavaFX Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Swing Tutorials </button>
+            <button type="button" class="btn btn-outline-secondary">Java 8 Date Time</button>
+            <button type="button" class="btn btn-outline-success">Interview Guides</button>
+            <button type="button" class="btn btn-outline-danger">Java 8 Tutorial </button>
+            <button type="button" class="btn btn-outline-warning">java 9 Tutorial</button>
+            <button type="button" class="btn btn-outline-info">DS And Algorithms</button>
+            <button type="button" class="btn btn-outline-danger">Head First Patters</button>
+            <button type="button" class="btn btn-outline-primary">Core JavaEE Patterns</button>
+            <button type="button" class="btn btn-outline-secondary">JSP Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Servlet Tutorial</button>
+            <button type="button" class="btn btn-outline-danger">JSP Servlet Project</button>
+            <button type="button" class="btn btn-outline-warning">Java JSON-P Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Maven Tutorial</button>
+        </p>
+        <div class="scrollup justify-content-end">
+            <a href="#">
+                <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+            </a>
+        </div>
+
+    </div>
+    <div id="footer"></div>
+    <script>
+        fetch('../../../footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer').innerHTML = html;
+            });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

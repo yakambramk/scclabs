@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/1_ZMhR47xlNY5BZ-FwiJMlIA.png" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h3>How to Get the Last Record in Spring Data JPA</h3>
+            <h6>Author: SAI K</h6>
+        </div><br>
+        <p>In this blog post, we will explore how to retrieve the last record from a  database using Spring Data JPA. Spring Data JPA is a part of the larger  Spring Data family that makes it easy to implement JPA-based repositories. This tutorial assumes you have a basic understanding of Spring Boot and JPA. </p>
+
+        <h3>Understanding the Requirement</h3>
+        <p>Retrieving the last record from a database is a common requirement in various applications, such as getting the most recent transaction or the last logged event. In databases, the "last record" can be interpreted in different ways, but it is typically considered as the most recently added record according to a specific column, often a timestamp or an auto-incremented id.</p>
+
+        <h3>Step 1: Setting Up Your Environment </h3>
+        <p>Ensure your Spring Boot project is set up correctly. Your pom.xml (for Maven) or build.gradle (for Gradle) should include the Spring Boot Starter Data JPA dependency. </p>
+
+        <h3>Maven Dependency</h3>
+<code><pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;</pre></code><br>
+                    <h3>Gradle Dependency</h3>
+<code><pre>
+implementation 'org.springframework.boot:spring-boot-starter-data-jpa'</pre></code><br>
+
+                <h3>Step 2: Define Your Entity </h3>
+                <p>For demonstration, let's assume we have an entity Transaction that represents a transaction in a system.</p>
+<code><pre>
+@Entity
+public class Transaction {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    private Date timestamp;
+    private Double amount;
+    // Getters and setters omitted for brevity
+}</pre></code><br>
+            <h3>Step 3: Creating a Repository </h3>
+            <p>Create a repository interface for your entity. This interface extends <span>JpaRepository</span>, which provides JPA-related methods for your entity.</p>
+<code><pre>
+public interface TransactionRepository extends JpaRepository< Transaction, Long> {
+}</pre></code><br>
+                <h3>Step 4: Querying the Last Record </h3>
+                <p>To fetch the last record, you need a method in your repository that can query based on the desired ordering criterion, usually by id or a timestamp. Here are two approaches: </p>
+                <h4>Approach 1: Using findFirstByOrderBy[Column]Desc </h4>
+                <p>This method is useful when you want to order by a specific column.</p>
+<code><pre>
+public interface TransactionRepository extends JpaRepository< Transaction, Long> {
+    Transaction findFirstByOrderByTimestampDesc();
+}</pre></code><br>
+
+            <h3>Approach 2: Using @Query Annotation </h3>
+            <p>If you need a more customized query, use the <b> @Query annotation</b>.</p>
+<code><pre>
+public interface TransactionRepository extends JpaRepository< Transaction, Long> {
+    @Query("SELECT t FROM Transaction t ORDER BY t.id DESC")
+    List< Transaction> findLatestTransaction(Pageable pageable);
+}
+</pre></code><br>
+                    <p>In your service layer, you can call this method with PageRequest.of(0, 1) to fetch only the latest record.</p>
+
+                    <h3>Step 5: Service Layer Implementation </h3>
+                    <p>Implement the service method to call the repository.</p>
+<code><pre>
+@Service
+public class TransactionService {
+
+    @Autowired
+    private TransactionRepository repository;
+
+    public Transaction getLastTransaction() {
+        return repository.findFirstByOrderByTimestampDesc();
+    }
+}</pre></code><br>
+            <h3>Conclusion </h3>
+            <p>Retrieving the last record from a database using Spring Data JPA is straightforward. By defining the appropriate query methods in your repository interface, you can easily fetch the most recent record based on your criteria. Remember to consider the performance implications of your chosen method, especially in tables with a large number of rows.  <br><br>
+
+                Stay tuned for more insights and tips on Spring Data JPA and other Spring modules!  <br><br>
+                
+                Happy coding!</p>
+
+                <div class="scrollup justify-content-end">
+                    <a href="#">
+                        <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+                    </a>
+                </div>
+        
+            </div>
+            <div id="footer"></div>
+            <script>
+                fetch('../../../footer.html')
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById('footer').innerHTML = html;
+                    });
+            </script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
