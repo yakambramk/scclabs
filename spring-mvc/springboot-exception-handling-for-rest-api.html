@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Exception Handling for REST APIs
+    </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Boot Exception Handling for REST APIs</h1>
+        <p>In this article, we will learn how to handle exceptions for RESTful Web Services developed using Spring Boot.
+        </p>
+        <p> We can handle exceptions in REST API in the same way we handle them in the SpringMVC-based web
+            application—by using the <b>@ExceptionHandler</b> and <b>@ControllerAdvice</b> annotations. Instead of
+            rendering a view,
+            you can return <b>ResponseEntity</b> with the appropriate HTTP status code and exception details.</p>
+        <p> By default, Spring Boot provides a <b>/error </b>mapping that handles all errors in a sensible way, and it
+            is
+            registered as a “global” error page in the servlet container. Rest clients, it produces a JSON response with
+            details of the error, the HTTP status, and the exception message.</p>
+        <p> Instead of simply throwing an exception with the HTTP status code, it is better to provide more details
+            about the issue, such as the error code, message, cause, etc. In this example, we define a class annotated
+            with <b>@ControllerAdvice</b> to customize the JSON document to return for a particular controller and/or
+            exception
+            type.</p>
+        <p> Let's develop CRUD REST APIs for the <b>Employee</b> resource using Spring Boot, Spring Data JPA
+            (Hibernate), and
+            MySQL database and we will look into exception handling for these REST services.</p>
+        <h2>Table of Contents</h2>
+        <ol>
+            <li> What we'll build?</li>
+            <li> Tools and Technologies Used</li>
+            <li> Creating and Importing a Project</li>
+            <li> The pom.xml File</li>
+            <li> Create JPA Entity - Employee.java</li>
+            <li> Create Spring JPA Repository - EmployeeRepository.java</li>
+            <li> Create Spring Rest Controller - EmployeeController.java</li>
+            <li> Exception(Error) Handling for RESTful Services</li>
+            <li> Running Application via Application.java</li>
+            <li> Testing via Postman Client</li>
+            <li> Source code on GitHub</li>
+        </ol>
+        <h2>1. What we'll build?</h2>
+        <p>We will develop a simple Spring Boot RESTful CRUD APIs for <b>Employee</b> resource and we will implement
+            Exception(Error) Handling for these RESTful Services.
+        </p>
+
+        <h2>2. Tools and Technologies Used</h2>
+
+        <ul>
+            <li> Spring Boot - 3+</li>
+            <li> JDK - 17 or later</li>
+            <li> Spring Framework - 6+</li>
+            <li> Hibernate - 6+</li>
+            <li> Maven - 3+</li>
+            <li> MySQL</li>
+            <li> IDE - Eclipse or Spring Tool Suite (STS)</li>
+        </ul>
+        <h2>3. Create and Set up Spring Boot Project</h2>
+        <p>There are many ways to create a Spring Boot application. The simplest way is to use Spring Initializr at <a
+                href="http://start.spring.io/">http://start.spring.io/</a>, which is an online Spring Boot application
+            generator.</p>
+        <h2>4. The pom.xml File</h2>
+        <p>Refer to the below <b>pom.xml </b>for your reference.</p>
+        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    
+        &lt;groupId&gt;net.guides.springboot2&lt;/groupId&gt;
+        &lt;artifactId&gt;springboot2-jpa-crud-example&lt;/artifactId&gt;
+        &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;packaging&gt;jar&lt;/packaging&gt;
+    
+        &lt;name&gt;springboot2-jpa-crud-example&lt;/name&gt;
+        &lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+    
+        &lt;parent&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+            &lt;version&gt;3.0.4&lt;/version&gt;
+            &lt;relativePath /&gt; &lt;!-- lookup parent from repository --&gt;
+        &lt;/parent&gt;
+    
+        &lt;properties&gt;
+            &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+            &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+            &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;/properties&gt;
+    
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+                &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+                &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                    &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <p>The next step is to create JPA Entity - <b>Employee.java</b></p>
+        <h2>5. Create JPA Entity - Employee.java</h2>
+        <pre>package net.guides.springboot2.springboot2jpacrudexample.model;
+
+    import jakarta.persistence.*;
+    
+    @Entity
+    @Table(name = "employees")
+    public class Employee {
+    
+        private long id;
+        private String firstName;
+        private String lastName;
+        private String emailId;
+     
+        public Employee() {
+      
+        }
+     
+        public Employee(String firstName, String lastName, String emailId) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.emailId = emailId;
+        }
+     
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        public long getId() {
+            return id;
+        }
+        public void setId(long id) {
+            this.id = id;
+        }
+     
+        @Column(name = "first_name", nullable = false)
+           public String getFirstName() {
+               return firstName;
+        }
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+     
+        @Column(name = "last_name", nullable = false)
+        public String getLastName() {
+            return lastName;
+        }
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+     
+        @Column(name = "email_address", nullable = false)
+        public String getEmailId() {
+            return emailId;
+        }
+        public void setEmailId(String emailId) {
+            this.emailId = emailId;
+        }
+    
+        @Override
+        public String toString() {
+            return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", emailId=" + emailId
+            + "]";
+        }
+    }</pre>
+        <p>Next, we will create a Spring Data JPA repository - <b>EmployeeRepository.java</b></p>
+        <h2>6. Create Spring JPA Repository - EmployeeRepository.java</h2>
+        <pre>package net.guides.springboot2.springboot2jpacrudexample.model.repository;
+
+        import org.springframework.data.jpa.repository.JpaRepository;
+        import org.springframework.stereotype.Repository;
+        
+        import net.guides.springboot2.springboot2jpacrudexample.model.Employee;
+        
+        @Repository
+        public interface EmployeeRepository extends JpaRepository<Employee, Long>{
+        
+        }</pre>
+        <p>Once the entity and repository are in place then we will create Spring Rest Controller -
+            <b>EmployeeController.java</b>
+        </p>
+        <h2>7. Create Spring Rest Controller - EmployeeController.java</h2>
+        <pre>package net.guides.springboot2.springboot2jpacrudexample.model.controller;
+
+    import java.util.HashMap;
+    import java.util.List;
+    import java.util.Map;
+    
+    import jakarta.validation.Valid;
+    
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.web.bind.annotation.DeleteMapping;
+    import org.springframework.web.bind.annotation.GetMapping;
+    import org.springframework.web.bind.annotation.PathVariable;
+    import org.springframework.web.bind.annotation.PostMapping;
+    import org.springframework.web.bind.annotation.PutMapping;
+    import org.springframework.web.bind.annotation.RequestBody;
+    import org.springframework.web.bind.annotation.RequestMapping;
+    import org.springframework.web.bind.annotation.RestController;
+    
+    import net.guides.springboot2.springboot2jpacrudexample.model.Employee;
+    import net.guides.springboot2.springboot2jpacrudexample.model.exception.ResourceNotFoundException;
+    import net.guides.springboot2.springboot2jpacrudexample.model.repository.EmployeeRepository;
+    
+    @RestController
+    @RequestMapping("/api/v1")
+    public class EmployeeController {
+        @Autowired
+        private EmployeeRepository employeeRepository;
+    
+        @GetMapping("/employees")
+        public List&lt;Employee> getAllEmployees() {
+            return employeeRepository.findAll();
+        }
+    
+        @GetMapping("/employees/{id}")
+        public ResponseEntity&lt;Employee> getEmployeeById(@PathVariable(value = "id") Long employeeId)
+            throws ResourceNotFoundException {
+            Employee employee = employeeRepository.findById(employeeId)
+            .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+            return ResponseEntity.ok().body(employee);
+        }
+    
+        @PostMapping("/employees")
+        public Employee createEmployee(@Valid @RequestBody Employee employee) {
+            return employeeRepository.save(employee);
+        }
+    
+        @PutMapping("/employees/{id}")
+        public ResponseEntity&lt;Employee> updateEmployee(@PathVariable(value = "id") Long employeeId,
+             @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
+             Employee employee = employeeRepository.findById(employeeId)
+            .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+    
+            employee.setEmailId(employeeDetails.getEmailId());
+            employee.setLastName(employeeDetails.getLastName());
+            employee.setFirstName(employeeDetails.getFirstName());
+            final Employee updatedEmployee = employeeRepository.save(employee);
+            return ResponseEntity.ok(updatedEmployee);
+        }
+    
+        @DeleteMapping("/employees/{id}")
+        public Map&lt;String, Boolean> deleteEmployee(@PathVariable(value = "id") Long employeeId)
+            throws ResourceNotFoundException {
+            Employee employee = employeeRepository.findById(employeeId)
+            .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+    
+           employeeRepository.delete(employee);
+           Map&lt;String, Boolean> response = new HashMap<>();
+           response.put("deleted", Boolean.TRUE);
+           return response;
+        }
+    }</pre>
+        <p>So far we have developed CRUD RESTful APIs for the <b>Employee</b> resource. Now we will look into how to
+            handle
+            exceptions or errors for the above RESTFul APIs.</p>
+        <h2>8. Exception(Error) Handling for RESTful Services</h2>
+        <p>Spring Boot provides a good default implementation for exception handling for RESTful Services.</p>
+        <p> Let’s quickly look at the default Exception Handling features provided by Spring Boot.</p>
+        <p><b>Resource Not Present</b></p>
+        <p>Here's what happens when you fire a request to a resource not found:
+            <b>http://localhost:8080/some-dummy-url</b>
+        </p>
+        <pre>{
+                "timestamp": 1512713804164,
+                "status": 404,
+                "error": "Not Found",
+                "message": "No message available",
+                "path": "/some-dummy-url"
+              }</pre>
+        <p>That's a cool error response. It contains all the details that are typically needed.</p>
+        <p><b>What happens when we throw an Exception?</b></p>
+        <p>Let’s see what Spring Boot does when an exception is thrown from a Resource. we can specify the Response
+            Status for a specific exception along with the definition of the Exception with @ResponseStatus annotation.
+        </p>
+        <p> Let's create a ResourceNotFoundException.java class.</p>
+        <pre>package com.companyname.springbootcrudrest.exception;
+
+                import org.springframework.http.HttpStatus;
+                import org.springframework.web.bind.annotation.ResponseStatus;
+                
+                @ResponseStatus(value = HttpStatus.NOT_FOUND)
+                public class ResourceNotFoundException extends Exception{
+                
+                    private static final long serialVersionUID = 1L;
+                
+                    public ResourceNotFoundException(String message){
+                        super(message);
+                    }
+                }</pre>
+        <p><b>Customizing Error Response Structure</b></p>
+        <p>The default error response provided by Spring Boot contains all the details that are typically needed.</p>
+        <p> However, you might want to create a framework-independent response structure for your organization. In that
+            case, you can define a specific error response structure.</p>
+        <p> Let’s define a simple error response bean.</p>
+        <pre>package com.companyname.springbootcrudrest.exception;
+
+                    import java.util.Date;
+                    
+                    public class ErrorDetails {
+                        private Date timestamp;
+                        private String message;
+                        private String details;
+                    
+                        public ErrorDetails(Date timestamp, String message, String details) {
+                            super();
+                            this.timestamp = timestamp;
+                            this.message = message;
+                            this.details = details;
+                        }
+                    
+                        public Date getTimestamp() {
+                            return timestamp;
+                        }
+                    
+                        public String getMessage() {
+                            return message;
+                       }
+                    
+                        public String getDetails() {
+                           return details;
+                       }
+                    }</pre>
+        <p><b>Create GlobalExceptionHandler class
+            </b></p>
+        <p>To use <b>ErrorDetails</b> to return the error response, let’s create a <b>GlobalExceptionHandler</b> class
+            annotated with
+            <b> @ControllerAdvice</b> annotation. This class handles exception-specific and global exceptions in a
+            single place.
+        </p>
+        <pre>package com.companyname.springbootcrudrest.exception;
+
+            import java.util.Date;
+            
+            import org.springframework.http.HttpStatus;
+            import org.springframework.http.ResponseEntity;
+            import org.springframework.web.bind.annotation.ControllerAdvice;
+            import org.springframework.web.bind.annotation.ExceptionHandler;
+            import org.springframework.web.context.request.WebRequest;
+            
+            @ControllerAdvice
+            public class GlobalExceptionHandler {
+                @ExceptionHandler(ResourceNotFoundException.class)
+                public ResponseEntity<?> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+                    ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+                    return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+                }
+            
+                @ExceptionHandler(Exception.class)
+                public ResponseEntity<?> globleExcpetionHandler(Exception ex, WebRequest request) {
+                    ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+                    return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }</pre>
+        <p>We are done with developing CRUD REST APIs and exception handling for REST APIs. Now it's time to run this
+            Spring boot application.</p>
+        <h2>9. Running Application via Application.java</h2>
+        <p>This spring boot application has an entry point Java class called <b>Application.java</b> with the public
+            static
+            void main(String[] args) method, which you can run to start the application.</p>
+        <pre>package net.guides.springboot2.springboot2jpacrudexample;
+
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+    
+    @SpringBootApplication
+    public class Application {
+        public static void main(String[] args) {
+            SpringApplication.run(Application.class, args);
+        }
+    }</pre>
+
+        <h2>10. Testing via Postman Client</h2>
+
+        <img src="/assets/spring-mvc-image/exception-handling-resource-not-found.PNG" alt="" class="image-fluid">
+        <p>Note that in the above screenshot, we have done exception handling successfully with an expected response
+            from REST APIs.</p>
+
+
+    </div>
+</body>
+
+</html>

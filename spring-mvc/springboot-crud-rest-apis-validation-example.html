@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot CRUD REST APIs Validation Example
+    </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Boot CRUD REST APIs Validation Example</h1>
+        <p>In this article, we will discuss how to customize the validation for REST API and we will use Hibernate
+            Validator, which is one of the implementations of the bean validation API. We get Hibernate Validator for
+            free when we use <b>Spring Boot Starter Web</b>.</p>
+        <p> Spring Boot provides a default implementation for handling errors and validations but sometimes we should
+            return a proper error/validation response as per consumer requirement such as</p>
+        <ul>
+            <li> A clear message indicating what went wrong? Which field has an error and what are the accepted values?
+                What can the consumer do to fix the error?</li>
+            <li> Proper Response Status Bad Request.</li>
+            <li> Do not include sensitive information in the response.</li>
+            <li> Field validations/Bean validations</li>
+        </ul>
+        <h2>Steps to use Validation</h2>
+        <ol>
+            <li> Hibernate Validator available on the classpath when we use Spring Boot Starter Web.</li>
+            <li> Apply validation annotations to a bean. For example, @NotNull, @Email, @NotBlank, and @Size
+                validations.</li>
+            <li> Enable validation on Spring Rest Controller by adding @Valid annotation in addition to @RequestBody.
+            </li>
+            <li> To customize response validation we need to extend ResponseEntityExceptionHandler class and override
+                handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status,
+                WebRequest request) method.</li>
+        </ol>
+        <p><b>Important Note:</b></p>
+        <p>Starting with Boot 2.3, we also need to explicitly add the spring-boot-starter-validation dependency:</p>
+        <pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+        <p>If you are using Spring boot 2.3 +, make sure that you will use the above dependency to work with Hibernate
+            validator.</p>
+
+        <p> In this example, we are using Spring boot 2.0.5 RELEASE so we get Hibernate Validator for free when we use
+            Spring Boot Starter Web.</p>
+        <h2>Table of Contents</h2>
+        <ol>
+            <li> What we'll build?</li>
+            <li> Tools and Technologies Used</li>
+            <li> Creating and Importing a Project</li>
+            <li> The pom.xml File</li>
+            <li> Create JPA Entity and Implementing Validations on the Bean - Employee.java</li>
+            <li> Create Spring JPA Repository - EmployeeRepository.java</li>
+            <li> Create Spring Rest Controller and Enable Validation on Controller - EmployeeController.java</li>
+            <li> Exception(Error) Handling for RESTful Services</li>
+            <li> Running Application via Application.java</li>
+            <li> Testing via Postman Client</li>
+            <li> Source code on GitHub</li>
+        </ol>
+        <h2>1. What we'll build?
+        </h2>
+        <p>We will develop a simple Spring Boot RESTful CRUD APIs for the Employee resource and we will implement bean
+            validation using <b>Hibernate Validator</b>.</p>
+        <h2>2. Tools and Technologies Used</h2>
+        <ul>
+            <li> Spring Boot - 3+</li>
+            <li> JDK - 17 or later</li>
+            <li> Spring Framework - 6+</li>
+            <li> Maven - 3.2+</li>
+            <li> MySQL </li>
+            <li> IDE - Eclipse or Spring Tool Suite (STS)</li>
+        </ul>
+        <h2>3. Create a Spring Boot Project</h2>
+        <p>There are many ways to create a Spring Boot application. The simplest way is to use Spring Initializr at <a
+                href="http://start.spring.io/">http://start.spring.io/</a>, which is an online Spring Boot application
+            generator.
+        </p>
+        <p>Create project packaging structure as per the below diagram:</p>
+        <img src="/assets/spring-mvc-image/project-structure (7).PNG" alt="" class="image-fluid">
+        <h2>4. The pom.xml File</h2>
+        <p>Refer to the below pom.xml for your reference.</p>
+        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    
+        &lt;groupId&gt;net.guides.springboot&lt;/groupId&gt;
+        &lt;artifactId&gt;springboot-crud-rest-api-validation&lt;/artifactId&gt;
+        &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;packaging&gt;jar&lt;/packaging&gt;
+    
+        &lt;name&gt;springboot-crud-rest-api-validation&lt;/name&gt;
+        &lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+    
+        &lt;parent&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+            &lt;version&gt;3.0.4&lt;/version&gt;
+            &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+        &lt;/parent&gt;
+    
+        &lt;properties&gt;
+            &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+            &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+            &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;/properties&gt;
+    
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+                &lt;artifactId&gt;h2&lt;/artifactId&gt;
+                &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+                &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+                &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                    &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <p>The next step is to create JPA Entity and apply validations on it - <b>Employee.java</b></p>
+
+        <h2>5. Create JPA Entity and Implementing Validations on the Bean - Employee.java</h2>
+        <p>Let’s add a few validations to the employee bean. Note that we are using <b>@NotNull, @Email, @NotBlank, and
+                @Size</b> validations.</p>
+        <pre>package net.guides.springboot.springbootcrudrestapivalidation.model;
+ 
+    import jakarta.persistence.*;
+    import jakarta.validation.constraints.Email;
+    import jakarta.validation.constraints.NotBlank;
+    import jakarta.validation.constraints.NotNull;
+    import jakarta.validation.constraints.Size;
+    
+    @Entity
+    @Table(name = "employees")
+    public class Employee {
+    
+        private long id;
+    
+        @NotNull
+        @Size(min = 2, message = "First Name should have atleast 2 characters")
+        private String firstName;
+     
+        @NotNull
+        @Size(min = 2, message = "Last Name should have atleast 2 characters")
+        private String lastName;
+     
+        @Email
+        @NotBlank
+        private String emailId;
+     
+        @NotNull
+        @Size(min = 2, message = "Passport should have atleast 2 characters")
+        private String passportNumber;
+    
+        public Employee() {
+    
+        }
+    
+        public Employee(String firstName, String lastName, String emailId) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.emailId = emailId;
+        }
+    
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        public long getId() {
+            return id;
+        }
+    
+        public void setId(long id) {
+            this.id = id;
+        }
+    
+        @Column(name = "first_name", nullable = false)
+        public String getFirstName() {
+            return firstName;
+        }
+      
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+    
+        @Column(name = "last_name", nullable = false)
+        public String getLastName() {
+            return lastName;
+        }
+    
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+    
+        @Column(name = "email_address", nullable = false)
+        public String getEmailId() {
+            return emailId;
+        }
+    
+        public void setEmailId(String emailId) {
+            this.emailId = emailId;
+        }
+    
+        @Column(name = "passport_number", nullable = false)
+        public String getPassportNumber() {
+            return passportNumber;
+        }
+    
+        public void setPassportNumber(String passportNumber) {
+            this.passportNumber = passportNumber;
+        }
+    
+    }</pre>
+        <p>Next, we will create a Spring Data JPA repository - <b>EmployeeRepository.java</b></p>
+        <h2>6. Create Spring JPA Repository - EmployeeRepository.java</h2>
+        <pre>package net.guides.springboot.springbootcrudrestapivalidation.repository;
+ 
+        import org.springframework.data.jpa.repository.JpaRepository;
+        import org.springframework.stereotype.Repository;
+        
+        import net.guides.springboot.springbootcrudrestapivalidation.model.Employee;
+        
+        @Repository
+        public interface EmployeeRepository extends JpaRepository&lt;Employee, Long>{
+        
+        }</pre>
+        <p>Let's configure MySQL properties in an <b>application.properties</b></p>
+        <p><b>application.properties</b></p>
+        <pre>spring.datasource.url = jdbc:mysql://localhost:3306/employees?useSSL=false
+    spring.datasource.username = root
+    spring.datasource.password = root
+    
+    spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQLDialect
+    spring.jpa.hibernate.ddl-auto = update</pre>
+        <h2>7. Create and Enable Validation on Spring Rest Controller - EmployeeController.java</h2>
+        <p><b>Enabling Validation on the Resource</b></p>
+        <p>Add <b>@Valid</b> in addition to <b>@RequestBody</b>.</p>
+        <pre> @PostMapping("/employees")
+    public Employee createEmployee(@Valid @RequestBody Employee employee) {
+     return employeeRepository.save(employee);
+    }</pre>
+        <p>
+            <b>@Valid </b>annotation enables the hibernate validation.
+            Let's create a complete <b>EmployeeController class</b>.
+        </p>
+        <pre> package net.guides.springboot.springbootcrudrestapivalidation.controller;
+ 
+            import java.util.HashMap;
+            import java.util.List;
+            import java.util.Map;
+            
+            import jakarta.validation.Valid;
+            
+            import org.springframework.beans.factory.annotation.Autowired;
+            import org.springframework.http.ResponseEntity;
+            import org.springframework.web.bind.annotation.DeleteMapping;
+            import org.springframework.web.bind.annotation.GetMapping;
+            import org.springframework.web.bind.annotation.PathVariable;
+            import org.springframework.web.bind.annotation.PostMapping;
+            import org.springframework.web.bind.annotation.PutMapping;
+            import org.springframework.web.bind.annotation.RequestBody;
+            import org.springframework.web.bind.annotation.RequestMapping;
+            import org.springframework.web.bind.annotation.RestController;
+            
+            import net.guides.springboot.springbootcrudrestapivalidation.exception.ResourceNotFoundException;
+            import net.guides.springboot.springbootcrudrestapivalidation.model.Employee;
+            import net.guides.springboot.springbootcrudrestapivalidation.repository.EmployeeRepository;
+            
+            @RestController
+            @RequestMapping("/api/v1")
+            public class EmployeeController {
+                @Autowired
+                private EmployeeRepository employeeRepository;
+            
+                @GetMapping("/employees")
+                public List&lt;Employee> getAllEmployees() {
+                    return employeeRepository.findAll();
+                }
+            
+                @GetMapping("/employees/{id}")
+                public ResponseEntity&lt;Employee> getEmployeeById(@PathVariable(value = "id") Long employeeId)
+                  throws ResourceNotFoundException {
+                    Employee employee = employeeRepository.findById(employeeId)
+                      .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+                    return ResponseEntity.ok().body(employee);
+                }
+            
+                @PostMapping("/employees")
+                public Employee createEmployee(@Valid @RequestBody Employee employee) {
+                    return employeeRepository.save(employee);
+                }
+            
+                @PutMapping("/employees/{id}")
+                public ResponseEntity&lt;Employee> updateEmployee(@PathVariable(value = "id") Long employeeId,
+                 @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
+                    Employee employee = employeeRepository.findById(employeeId)
+                      .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+            
+                    employee.setEmailId(employeeDetails.getEmailId());
+                    employee.setLastName(employeeDetails.getLastName());
+                    employee.setFirstName(employeeDetails.getFirstName());
+                    final Employee updatedEmployee = employeeRepository.save(employee);
+                    return ResponseEntity.ok(updatedEmployee);
+                }
+            
+                @DeleteMapping("/employees/{id}")
+                public Map&lt;String, Boolean> deleteEmployee(@PathVariable(value = "id") Long employeeId)
+                  throws ResourceNotFoundException {
+                    Employee employee = employeeRepository.findById(employeeId)
+                      .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+            
+                    employeeRepository.delete(employee);
+                    Map&lt;String, Boolean> response = new HashMap<>();
+                    response.put("deleted", Boolean.TRUE);
+                    return response;
+                }
+            }</pre>
+        <h2>8. Exception(Error) Handling for RESTful Services
+        </h2>
+        <p>Spring Boot provides a good default implementation for exception handling for RESTful Services.</p>
+        <p> Let’s quickly look at the default Exception Handling features provided by Spring Boot.</p>
+        <p><b>Resource Not Present</b></p>
+        <p>Here is what happens when you fire a request to a resource not found: <a
+                href="">http://localhost:8080/some-dummy-url</a></p>
+        <pre>{
+    "timestamp": 1512713804164,
+    "status": 404,
+    "error": "Not Found",
+    "message": "No message available",
+    "path": "/some-dummy-url"
+  }</pre>
+        <p>That's a cool error response. It contains all the details that are typically needed.</p>
+        <p><b>What happens when we throw an Exception?</b></p>
+        <p>Let’s see what Spring Boot does when an exception is thrown from a Resource. we can specify the Response
+            Status for a specific exception along with the definition of the Exception with @ResponseStatus annotation.
+        </p>
+        <p> Let's create a <b> ResourceNotFoundException.java</b> class.</p>
+        <pre> package net.guides.springboot.springbootcrudrestapivalidation.exception;
+ 
+    import org.springframework.http.HttpStatus;
+    import org.springframework.web.bind.annotation.ResponseStatus;
+    
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public class ResourceNotFoundException extends Exception{
+    
+     private static final long serialVersionUID = 1L;
+    
+        public ResourceNotFoundException(String message){
+            super(message);
+        }
+    }</pre>
+        <p><b>Customizing Validation Response</b></p>
+        <p>Let’s define a simple validation response bean.</p>
+        <pre>package net.guides.springboot.springbootcrudrestapivalidation.exception;
+
+    import java.util.Date;
+    
+    public class ErrorDetails {
+        private Date timestamp;
+        private String message;
+        private String details;
+    
+        public ErrorDetails(Date timestamp, String message, String details) {
+            super();
+            this.timestamp = timestamp;
+            this.message = message;
+            this.details = details;
+        }
+    
+        public Date getTimestamp() {
+            return timestamp;
+        }
+    
+        public String getMessage() {
+            return message;
+        }
+    
+        public String getDetails() {
+            return details;
+        }
+    }</pre>
+        <p><b>Create GlobalExceptionHandler class</b></p>
+        <p>Let’s now define a <b>@ControllerAdvice</b> to handle validation errors. We do that by overriding the
+            <b> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status,
+                WebRequest request)</b> method in the <b>ResponseEntityExceptionHandler</b>.
+        </p>
+        <pre> @Override
+    protected ResponseEntity&lt;Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+           HttpHeaders headers, HttpStatus status, WebRequest request) {
+           ErrorDetails errorDetails = new ErrorDetails(new Date(), "Validation Failed",
+               ex.getBindingResult().toString());
+           return new ResponseEntity(errorDetails, HttpStatus.BAD_REQUEST);
+    } </pre>
+        <p>Let's put together global exception handling, a resource is not found exception handling and field
+            validations logic in <b>GlobalExceptionHandler.java</b> file.</p>
+        <pre>package net.guides.springboot.springbootcrudrestapivalidation.exception;
+ 
+    import java.util.Date;
+    
+    import org.springframework.http.HttpHeaders;
+    import org.springframework.http.HttpStatus;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.web.bind.MethodArgumentNotValidException;
+    import org.springframework.web.bind.annotation.ControllerAdvice;
+    import org.springframework.web.bind.annotation.ExceptionHandler;
+    import org.springframework.web.context.request.WebRequest;
+    import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+    
+    @ControllerAdvice
+    public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+        @ExceptionHandler(ResourceNotFoundException.class)
+        public ResponseEntity<?> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+            ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+            return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+        }
+    
+        @ExceptionHandler(Exception.class)
+        public ResponseEntity<?> globleExcpetionHandler(Exception ex, WebRequest request) {
+            ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+            return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+     
+        @Override
+        protected ResponseEntity&lt;Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+               HttpHeaders headers, HttpStatus status, WebRequest request) {
+               ErrorDetails errorDetails = new ErrorDetails(new Date(), "Validation Failed",
+                   ex.getBindingResult().toString());
+               return new ResponseEntity(errorDetails, HttpStatus.BAD_REQUEST);
+        } 
+    }
+   </pre>
+        <h2>9. Running Application</h2>
+        <p>This spring boot application has an entry point Java class called
+            <b>SpringbootCrudRestApiValidationApplication.java</b> with the public static void <b>main(String[]
+                args)</b> method,
+            which you can run to start the application.
+        </p>
+        <pre> package net.guides.springboot.springbootcrudrestapivalidation;
+ 
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+    
+    @SpringBootApplication
+    public class SpringbootCrudRestApiValidationApplication {
+    
+        public static void main(String[] args) {
+             SpringApplication.run(SpringbootCrudRestApiValidationApplication.class, args);
+        }
+    }</pre>
+        <h2>10. Testing via Postman Client</h2>
+        <p><b>Employee firstName field validation</b></p>
+        <img src="/assets/spring-mvc-image/name-validation.PNG" alt="" class="image-fluid">
+
+        <p><b>Employee emailId field validation</b></p>
+        <img src="/assets/spring-mvc-image/email-validation.PNG" alt="" class="image-fluid">
+        <p><b>Employee passportNumber field validation</b></p>
+        <img src="/assets/spring-mvc-image/passport-number-validation.PNG" alt="" class="image-fluid">
+
+    </div>
+</body>
+
+</html>

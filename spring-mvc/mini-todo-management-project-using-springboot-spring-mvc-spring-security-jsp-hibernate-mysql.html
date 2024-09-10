@@ -184,7 +184,7 @@
             <li><span style="color: rgb(234, 75, 75);">logging:</span> </li>
         </ul>
         <p>Refer below article to implement logging effectively in this Todo management project Spring Boot 2 Logging
-            <a href="">Spring Boot 2 Logging
+            <a href="springboot-logging-SLF4J-logback-and-LOG4j2-example.html   ">Spring Boot 2 Logging
                 SLF4j Logback and LOG4j2 Example</a>
         <ul>
             <li><span style="color: rgb(234, 75, 75);">Role-based spring security:</span></li>
@@ -199,19 +199,20 @@
         </ul>
 
         <p>Refer below article to implement exception handling effectively in this Todo management project <a
-                href="">Spring Boot 2 Exception Handling for REST APIs</a></p>
+                href="springboot-exception-handling-for-rest-api.html">Spring Boot 2 Exception Handling for REST
+                APIs</a></p>
         <ul>
             <li><span style="color: rgb(234, 75, 75);">Validation:</span></li>
         </ul>
 
-        <p>Refer below article to implement validation effectively in this Todo management project <a href="">Spring
-                Boot CRUD REST
-                APIs Validation Example</a></p>
+        <p>Refer below article to implement validation effectively in this Todo management project <a
+                href="springboot-crud-rest-apis-validation-example.html">Spring Boot CRUD REST APIs Validation
+                Example</a></p>
         <ul>
             <li><span style="color: rgb(234, 75, 75);">Auditing:</span></li>
         </ul>
 
-        <p>Refer below article to implement auditing effectively in this Todo management project <a href="">Spring Data
+        <p>Refer below article to implement auditing effectively in this Todo management project <a href="spring-data-jpa-auditing-with-spring-boot-and-mysql-example.html">Spring Data
                 JPA
                 Auditing with Spring Boot 2 and MySQL Example</a></p>
 
@@ -752,7 +753,7 @@
         <h2>Configuring MySQL Database and JSP View Resolver</h2>
         <p>Configure application.properties to connect to your MySQL database. Let's open an application.properties file
             and add following database configuration to it.</p>
-            <pre>## Spring view resolver set up
+        <pre>## Spring view resolver set up
                 spring.mvc.view.prefix=/WEB-INF/jsp/
                 spring.mvc.view.suffix=.jsp
                 
@@ -768,9 +769,9 @@
                 
                 # Hibernate ddl auto (create, create-drop, validate, update)
                 spring.jpa.hibernate.ddl-auto = update</pre>
-                <h2>Common JSP page fragments - footer.jspf, header.jspf and navigation.jspf</h2>
-<p><b>footer.jspf View</b></p>
-<pre>
+        <h2>Common JSP page fragments - footer.jspf, header.jspf and navigation.jspf</h2>
+        <p><b>footer.jspf View</b></p>
+        <pre>
     &lt;script src=&quot;webjars/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;
     &lt;script src=&quot;webjars/bootstrap/3.3.6/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
     &lt;script src=&quot;webjars/bootstrap-datepicker/1.0.1/js/bootstrap-datepicker.js&quot;&gt;&lt;/script&gt;
@@ -792,8 +793,8 @@
     
     &lt;/html&gt;
     </pre>
-    <p><b>header.jspf</b></p>
-    <pre>
+        <p><b>header.jspf</b></p>
+        <pre>
         &lt;%@ taglib uri=&quot;http://java.sun.com/jsp/jstl/core&quot; prefix=&quot;c&quot;%&gt;
         &lt;%@ taglib uri=&quot;http://java.sun.com/jsp/jstl/fmt&quot; prefix=&quot;fmt&quot;%&gt;
         &lt;%@taglib uri=&quot;http://www.springframework.org/tags/form&quot; prefix=&quot;form&quot;%&gt;
@@ -822,8 +823,8 @@
         
         &lt;body&gt;
         </pre>
-<p><b>navigation.jspf View</b></p>  
-<pre>
+        <p><b>navigation.jspf View</b></p>
+        <pre>
     &lt;nav role=&quot;navigation&quot; class=&quot;navbar navbar-default&quot;&gt;
      &lt;div class=&quot;&quot;&gt;
       &lt;a href=&quot;http://www.javaguides.net&quot; class=&quot;navbar-brand&quot;&gt;Java Guides&lt;/a&gt;
@@ -839,9 +840,9 @@
      &lt;/div&gt;
     &lt;/nav&gt;
     </pre>
-<p>Now, we will include above page fragments into upcoming JSP pages.</p> 
-<h2>Welcome Page View</h2>   
-<pre>
+        <p>Now, we will include above page fragments into upcoming JSP pages.</p>
+        <h2>Welcome Page View</h2>
+        <pre>
     &lt;%@ include file=&quot;common/header.jspf&quot; %&gt;
     &lt;%@ include file=&quot;common/navigation.jspf&quot; %&gt;
     &lt;div class=&quot;container&quot;&gt;
@@ -856,8 +857,8 @@
      &lt;/div&gt;
     &lt;%@ include file=&quot;common/footer.jspf&quot; %&gt;
     </pre>
-<h2>Todo Page View</h2>  
-<pre>
+        <h2>Todo Page View</h2>
+        <pre>
     &lt;%@ include file=&quot;common/header.jspf&quot; %&gt;
     &lt;%@ include file=&quot;common/navigation.jspf&quot; %&gt;
     &lt;div class=&quot;container&quot;&gt;
@@ -891,9 +892,98 @@
     &lt;/div&gt;
     &lt;%@ include file=&quot;common/footer.jspf&quot; %&gt;
     </pre>
-<h2>List Todo Page View</h2>    
-
+        <h2>List Todo Page View</h2>
+        <pre>&lt;%@ include file="common/header.jspf"%&gt;
+    &lt;%@ include file="common/navigation.jspf"%&gt;
     
+    &lt;div class="container"&gt;
+     &lt;pre&gt;
+      &lt;div&gt;
+       &lt;a type="button" class="btn btn-primary btn-md" href="/add-todo"&gt;Add Todo&lt;/a&gt;
+      &lt;/div&gt;
+      &lt;br&gt;
+      &lt;div class="panel panel-primary"&gt;
+       &lt;div class="panel-heading"&gt;
+        &lt;h3&gt;List of TODO's&lt;/h3&gt;
+       &lt;/div&gt;
+       &lt;div class="panel-body"&gt;
+        &lt;table class="table table-striped"&gt;
+         &lt;thead&gt;
+          &lt;tr&gt;
+           &lt;th width="40%"&gt;Description&lt;/th&gt;
+           &lt;th width="40%"&gt;Target Date&lt;/th&gt;
+           &lt;th width="20%"&gt;&lt;/th&gt;
+          &lt;/tr&gt;
+         &lt;/thead&gt;
+         &lt;tbody&gt;
+          &lt;c:forEach items="${todos}" var="todo"&gt;
+           &lt;tr&gt;
+            &lt;td&gt;${todo.description}&lt;/td&gt;
+            &lt;td&gt;&lt;fmt:formatDate value="${todo.targetDate}"
+              pattern="dd/MM/yyyy" /&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;a type="button" class="btn btn-success"
+             href="/update-todo?id=${todo.id}"&gt;Update&lt;/a&gt;
+            &lt;a type="button" class="btn btn-warning"
+             href="/delete-todo?id=${todo.id}"&gt;Delete&lt;/a&gt;&lt;/td&gt;
+           &lt;/tr&gt;
+          &lt;/c:forEach&gt;
+         &lt;/tbody&gt;
+        &lt;/table&gt;
+       &lt;/div&gt;
+      &lt;/div&gt;
+     &lt;/pre&gt;
+    &lt;/div&gt;
+    
+    &lt;%@ include file="common/footer.jspf"%&gt;
+    </pre>
+        <h2>Simple Error Page View</h2>
+        <pre>&lt;%@ include file="common/header.jspf"%&gt;
+        &lt;%@ include file="common/navigation.jspf"%&gt;
+        &lt;div class="container"&gt;
+        &lt;pre&gt;
+        An exception occurred! Please contact Support!
+        &lt;/pre&gt;
+        &lt;/div&gt;
+        &lt;%@ include file="common/footer.jspf"%&gt;
+        </pre>
+        <h2>Running the Application</h2>
+        <p>We have successfully developed the Mini Todo Management web application. Now it's time to deploy our
+            application in a servlet container(embedded tomcat). Two ways we can start the standalone Spring boot
+            application.</p>
+        <p>1.From the root directory of the application and type the following command to run it -</p>
+        <pre>$ mvn spring-boot:run</pre>
+        <p>2.From your IDE, run the TodoManagementSpringBoot2Application.main() method as a standalone Java class that
+            will start the embedded Tomcat server on port 8080 and point the browser to <b> http://localhost:8080/</b>.
+        </p>
+        <img src="/assets/spring-mvc-image/running-spring-boot-application.gif" alt="" class="image-fluid">
+        <h2>Demo</h2>
+        <p><b>1. Login Page</b></p>
+        <p>URL : http://localhost:8080/login </p>
+        <p> Username: admin</p>
+        <p> Password: admin</p>
+        <img src="/assets/spring-mvc-image/login-page (1).PNG" alt="" class="image-fluid">
+        <p>This is simple Spring Security provided login page. You can also create a custom login page.</p>
+        <p><b>2. Home Page</b></p>
+        <p>After successfully user logged in navigate to a home page.</p>
+        <img src="/assets/spring-mvc-image/home-page (1).PNG" alt="" class="image-fluid">
+        <p><b>3. List Todos
+            </b></p>
+        <p>URL:<b> http://localhost:8080/list-todos</b></p>
+        <img src="/assets/spring-mvc-image/list-doto (1).PNG" alt="" class="image-fluid">
+        <p><b>4. Create Todo</b></p>
+        <p>URL:<b> http://localhost:8080/add-todo</b></p>
+        <img src="/assets/spring-mvc-image/create-todo.PNG" alt=" " class="image-fluid">
+
+        <p><b>5. Update Todo</b></p>
+        <p>URL:<b> http://localhost:8080/update-todo?id=28</b></p>
+        <img src="/assets/spring-mvc-image/update-todo.PNG" alt="" class="image-fluid">
+
+        <p><b>6. Logout Page</b></p>
+        <p>URL:<b> http://localhost:8080/login?logout</b></p>
+        <img src="/assets/spring-mvc-image/logout-page.PNG" alt="" class="image-fluid">
+        <p>I am done with developing mini Todo Management Spring MVC web application.</p>
+
+
     </div>
 </body>
 
