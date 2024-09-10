@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot with Apache Kafka Using Docker Compose: A Step-by-Step Tutorial</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Boot with Apache Kafka Using Docker Compose: A Step-by-Step Tutorial</h1>
+                <h4>author : Sai K</h4>
+                <p>Docker Compose is a powerful tool that allows you to define and run multi-container Docker
+                    applications. In this <br><br> tutorial, we will set up a Spring Boot application that interacts
+                    with Apache
+                    Kafka using Docker Compose. This<br><br> will enable us to run Kafka and Zookeeper containers along
+                    with our
+                    Spring Boot application container.</p><br>
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li>JDK 17 or later</li><br>
+                    <li>Maven </li><br>
+                    <li>Spring Web, Spring for Apache Kafka</li><br>
+                    <li>IDE (IntelliJ IDEA, Eclipse, etc.)</li><br>
+                </ul>
+                <h3>1.1 Create a New Spring Boot Project</h3>
+                <p>Use <a href="https://start.spring.io/">Spring Initializr</a> to create a new project with the
+                    following configuration:</p>
+                <ul>
+                    <li>Project: Maven Project</li><br>
+                    <li>Language: Java</li><br>
+                    <li>Spring Boot: 3.2.x</li><br>
+                    <li>Dependencies: Spring Web, Spring for Apache Kafka</li><br>
+                </ul>
+                <p>Download and unzip the project, then open it in your IDE. </p>
+                <h3>Example Spring Boot Application</h3>
+                <p>Create a simple Spring Boot application that interacts with Kafka.</p>
+                <h3>1.1 Application Class</h3>
+                <pre><code>
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}</code></pre>
+                <h3>1.2 Kafka Producer Configuration</h3>
+                <p>Create a configuration class for the Kafka producer in the com.example.demo.config package.</p>
+                <pre><code>
+package com.example.demo.config;
+
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.JsonSerializer;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Configuration
+public class KafkaProducerConfig {
+
+    @Bean
+    public ProducerFactory<String, String> producerFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        return new DefaultKafkaProducerFactory<>(configProps);
+    }
+
+    @Bean
+    public KafkaTemplate<String, String> kafkaTemplate() {
+        return new KafkaTemplate<>(producerFactory());
+    }
+}
+</code></pre>
+                <h3>1.3 Kafka Consumer Configuration</h3>
+                <p>Create a configuration class for the Kafka consumer in the com.example.demo.config package.</p>
+                <pre><code>
+package com.example.demo.config;
+
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@EnableKafka
+@Configuration
+public class KafkaConsumerConfig {
+
+    @Bean
+    public ConsumerFactory<String, String> consumerFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+        configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, "group_id");
+        configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
+        configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
+        configProps.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
+        configProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        return new DefaultKafkaConsumerFactory<>(configProps);
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory());
+        return factory;
+    }
+}
+</code></pre>
+                <h3>1.4 Kafka Producer Service</h3>
+                <p>Create a service class for the Kafka producer in the com.example.demo.service package.</p>
+                <pre><code>
+package com.example.demo.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+
+@Service
+public class KafkaProducerService {
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    private static final String TOPIC = "test_topic";
+
+    public void sendMessage(String message) {
+        kafkaTemplate.send(TOPIC, message);
+    }
+}
+</code></pre>
+                <h3>1.5 Kafka Consumer Service</h3>
+                <p>Create a service class for the Kafka consumer in the com.example.demo.service package.</p>
+                <pre><code>
+package com.example.demo.service;
+
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
+
+@Service
+public class KafkaConsumerService {
+
+    @KafkaListener(topics = "test_topic", groupId = "group_id")
+    public void consume(String message) {
+        System.out.println("Consumed message: " + message);
+    }
+}
+</code></pre>
+                <h3>1.6 REST Controller</h3>
+                <p>Create a MessageController class in the com.example.demo.controller package to send messages to
+                    Kafka.</p>
+                <pre><code>
+package com.example.demo.controller;
+
+import com.example.demo.service.KafkaProducerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class MessageController {
+
+    @Autowired
+    private KafkaProducerService kafkaProducerService;
+
+    @PostMapping("/send")
+    public String sendMessage(@RequestParam("message") String message) {
+        kafkaProducerService.sendMessage(message);
+        return "Message sent to Kafka successfully";
+    }
+}</code></pre>
+                <h3>1.7 application.properties Configuration</h3>
+                <p>Configure your application to use Kafka. In the src/main/resources directory, create or update the<br><br>
+                    application.properties file.</p><br>
+                <pre><code>
+# src/main/resources/application.properties
+
+spring.kafka.bootstrap-servers=localhost:9092
+spring.kafka.consumer.group-id=group_id
+spring.kafka.consumer.auto-offset-reset=earliest
+spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.consumer.value-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.value-serializer=org.apache.kafka.common.serialization.StringSerializer
+</code></pre>
+                <h2>Step 2: Create Docker Compose Configuration</h2>
+                <p>Docker Compose allows you to define and run multi-container Docker applications. You will create a
+                    docker-<br><br>compose.yml file to define the services for Kafka, Zookeeper, and your Spring Boot
+                    application.</p><br>
+                <h3>2.1 Create docker-compose.yml</h3>
+                <p>Create a docker-compose.yml file in the root directory of your project.</p>
+                <pre><code>
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.0.1
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  app:
+    image: demo-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    depends_on:
+      - kafka
+</code></pre>
+                <h3>Explanation:</h3>
+                <li>zookeeper: Defines the Zookeeper service required by Kafka.</li><br>
+                <li>kafka: Defines the Kafka service.</li><br>
+                <ul>
+                    <li>depends_on: Ensures the Zookeeper service is started before Kafka.</li><br>
+                    <li>environment: Sets the environment variables for Kafka.</li><br>
+                </ul>
+                <li>app: Defines the Spring Boot application service.</li><br>
+                <ul>
+                    <li>depends_on: Ensures the Kafka service is started before the Spring Boot application.</li><br>
+                    <li>environment: Sets the Kafka bootstrap server for the Spring Boot application.</li><br>
+                </ul>
+                <h3>2.2 Create a Dockerfile</h3>
+                <p>Create a Dockerfile in the root directory of your project.</p>
+                <pre><code>
+# Use the official OpenJDK base image
+FROM openjdk:17-jdk-alpine
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the built jar file into the container
+COPY target/demo-0.0.1-SNAPSHOT.jar app.jar
+
+# Expose port 8080
+EXPOSE 8080
+
+# Run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
+</code></pre>
+                <h2>Step 3: Build and Run the Application</h2>
+                <h3>3.1 Build the Jar File</h3>
+                <p>Run the following command to build the jar file of your Spring Boot application:</p>
+                <pre><code>./mvnw clean package</code></pre>
+                <h3>3.2 Build and Run Docker Compose</h3>
+                <p>Run the following command to build and start the Docker Compose services:</p>
+                <pre><code>docker-compose up --build</code></pre>
+                <h3>3.3 Verify the Application</h3>
+                <p>Open a web browser or a tool like Postman and navigate to the following URL to test the
+
+                    endpoints:</p>
+                <p>1. <b>Send a message to Kafka: </b></p>
+                <ul>
+                    <li>URL: http://localhost:8080/send?message=HelloKafka</li><br>
+                    <li> Method: POST</li><br>
+                </ul>
+                <p>Check the console output to see the consumed message:</p>
+                <pre><code>Consumed message: HelloKafka</code></pre>
+                <h2>Conclusion</h2>
+                <p>In this tutorial, you have learned how to set up and run a Spring Boot application with Apache Kafka
+                    using <br><br> Docker Compose. We covered:</p><br>
+                <ul>
+                    <li>Setting up a Spring Boot project with Kafka.</li><br>
+                    <li>Creating Kafka producer and consumer configurations.</li><br>
+                    <li>Creating services to produce and consume Kafka messages.</li><br>
+                    <li>Creating a Dockerfile for the Spring Boot application.</li><br>
+                    <li>Creating a docker-compose.yml file to define the services.</li><br>
+                    <li>Building and running the application using Docker Compose.</li><br>
+                </ul>
+                <p>By following these steps, you can easily manage and deploy your Spring Boot application and its
+                    dependencies <br><br>using Docker Compose, enabling seamless interaction with Apache Kafka.88 </p><br>
+                <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
