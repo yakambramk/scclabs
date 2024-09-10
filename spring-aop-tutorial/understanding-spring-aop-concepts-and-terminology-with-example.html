@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring AOP Tutorial for Beginners - Step by Step with Example
+    </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring AOP Tutorial for Beginners - Step by Step with Example</h1>
+        <p>In this Spring AOP for Beginners tutorial, we will understand Spring AOP concepts and terminology with
+            step-by-step examples. </p>
+
+        <p> AOP is a programming paradigm that aims to increase modularity by allowing the separation of cross-cutting
+            concerns. It does so by adding additional behavior to existing code without modification of the code itself.
+            Instead, we declare separately which code is to modify.</p>
+        <h2>1. What is a cross-cutting concern?</h2>
+        <p><b>A cross-cutting concern</b> is a functionality that is tangled with business code, which usually cannot be
+            separated from the business logic. <b>Auditing, security,</b> and <b>transaction management</b> are good
+            examples of
+            cross-cutting concerns. They are mingled with the business code, heavily coupled with the functionality that
+            might be affected if they fail. These are good candidates for separation using aspects because there is no
+            design pattern that would allow writing the code in such a way that they would be separated from the
+            business logic.</p>
+        <p> Basically, the business or base code is not actually changed; you can imagine aspects as plugins. They
+            modify the behavior, not the actual implementation.</p>
+
+        <p> Below diagram shows how the concerns like logging, <b>security</b>, and <b>transaction management</b> are
+            cutting across
+            different layers here:</p>
+
+        <img src="/assets/spring-aop-images/spring-aop-cross-cuttin-concerns.png" alt="" class="image-fluid">
+
+        <p><b>Examples of cross-cutting concerns:</b></p>
+        <p>AOP is a complement of OOP (Object Oriented Programming) and they can be used together to write powerful
+            applications because both provide different ways of structuring your code. OOP is focused on making
+            everything an object, while AOP introduces the aspect, which is a special type of object that injects and
+            wraps its behavior to complement the behavior of other objects.</p>
+        <p> Examples of cross-cutting concerns:</p>
+        <ul>
+            <li> Logging</li>
+            <li> Security</li>
+            <li> Transaction management</li>
+            <li> Auditing,</li>
+            <li> Caching</li>
+            <li> Internationalization</li>
+            <li> Error detection and correction</li>
+            <li> Memory management</li>
+            <li> Performance monitoring</li>
+            <li> Synchronization</li>
+        </ul>
+        <h2>2. Note on AspectJ</h2>
+        <p>AspectJ is an original library that provided components for creating aspects is named AspectJ. It was
+            developed by the Xerox PARC company and released in 1995. It defined a standard for AOP because of its
+            simplicity and usability. The language syntax used to define aspects was similar to Java and allowed
+            developers to define special constructs called aspects. The aspects developed in AspectJ are processed at
+            compile-time, so they directly affect the generated bytecode.</p>
+        <p> Read more about AspectJ at <a href="https://eclipse.org/aspectj/">https://eclipse.org/aspectj/</a>
+        </p>
+        <h2>3. AOP Concepts and Terminology</h2>
+        <p>Unfortunately, AOP terminology is not very intuitive so I will start with creating an example application and
+            then relate the terminology with usage in the example.</p>
+        <p><b>Spring AOP + AspectJ Example</b></p>
+        <p>Let's quickly create a spring boot application with spring AOP.</p>
+        <p> There are many ways to create a Spring Boot application. You can refer to the below articles to create a
+            Spring Boot application.</p>
+        <p><a href="/spring-mvc/create-springboot-project-with-spring-intializer.html">>> Create Spring Boot Project
+                With Spring Initializer</a></p>
+        <p><a href="/spring-mvc/create-springboot-project-in-spring-tool-suite.html">>> Create Spring Boot Project in
+                Spring Tool Suite [STS]</a></p>
+        <p>Let's add Spring AOP starter to maven project pom.xml:</p>
+        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+        &lt;groupId&gt;net.guides.springboot2&lt;/groupId&gt;
+        &lt;artifactId&gt;springboot2-springaop-example&lt;/artifactId&gt;
+        &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;packaging&gt;jar&lt;/packaging&gt;
+        &lt;name&gt;springboot2-springaop-example&lt;/name&gt;
+        &lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+        &lt;parent&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+            &lt;version&gt;3.0.4&lt;/version&gt;
+            &lt;relativePath /&gt;
+            &lt;!-- lookup parent from repository --&gt;
+        &lt;/parent&gt;
+        &lt;properties&gt;
+            &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+            &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+            &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;/properties&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-aop&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                    &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <h2>Employee.java</h2>
+        <p>Create a simple <b>Employee</b> POJO class (You can use it as a JPA entity for database operations):</p>
+        <pre>package net.guides.springboot2.springaop.model;
+
+    public class Employee {
+    
+        private long id;
+        private String firstName;
+        private String lastName;
+        private String emailId;
+    
+        public Employee() {
+    
+        }
+    
+        public Employee(long id, String firstName, String lastName, String emailId) {
+            this.id = id;
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.emailId = emailId;
+        }
+    
+        public long getId() {
+            return id;
+        }
+        public void setId(long id) {
+            this.id = id;
+        }
+    
+        public String getFirstName() {
+            return firstName;
+        }
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+    
+        public String getLastName() {
+            return lastName;
+        }
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+    
+        public String getEmailId() {
+            return emailId;
+        }
+        public void setEmailId(String emailId) {
+            this.emailId = emailId;
+        }
+    
+        @Override
+        public String toString() {
+            return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", emailId=" + emailId +
+                "]";
+        }
+    }
+    </pre>
+        <h2>EmployeeService.java</h2>
+        <p>To keep it simple, I will create an EmployeeService and manage in-memory objects:</p>
+        <pre>package net.guides.springboot2.springaop.service;
+
+    import java.util.ArrayList;
+    import java.util.List;
+    
+    import org.springframework.stereotype.Service;
+    
+    import net.guides.springboot2.springaop.model.Employee;
+   
+    @Service
+    public class EmployeeService {
+    
+        private List < Employee > employees = new ArrayList < > ();
+    
+        public List < Employee > getAllEmployees() {
+            System.out.println("Method getAllEmployees() called");
+            return employees;
+        }
+    
+        public Employee getEmployeeById(Long employeeId) {
+            System.out.println("Method getEmployeeById() called");
+            for (Employee employee: employees) {
+                if (employee.getId() == Long.valueOf(employeeId)) {
+                    return employee;
+                }
+            }
+            return null;
+        }
+    
+        public void addEmployee(Employee employee) {
+            System.out.println("Method addEmployee() called");
+            employees.add(employee);
+        }
+    
+        public void updateEmployee(Employee employeeDetails) {
+            System.out.println("Method updateEmployee() called");
+            for (Employee employee: employees) {
+                if (employee.getId() == Long.valueOf(employeeDetails.getId())) {
+                    employees.remove(employee);
+                    employees.add(employeeDetails);
+                }
+            }
+        }
+    
+        public void deleteEmployee(Long employeeId) {
+            System.out.println("Method deleteEmployee() called");
+            for (Employee employee: employees) {
+                if (employee.getId() == Long.valueOf(employeeId)) {
+                    employees.remove(employee);
+                }
+            }
+        }
+    }</pre>
+        <h2>LoggingAspect.java</h2>
+        <p>Now, let's create a <b>LogginAspect</b> class:</p>
+        <pre>package net.guides.springboot2.springaop.aspect;
+
+        import org.aspectj.lang.JoinPoint;
+        import org.aspectj.lang.annotation.After;
+        import org.aspectj.lang.annotation.Aspect;
+        import org.aspectj.lang.annotation.Before;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+        import org.springframework.stereotype.Component;
+        
+       
+        @Aspect
+        @Component
+        public class LoggingAspect {
+        
+            private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+        
+            @Before("execution(* net.guides.springboot2.springaop.service.EmployeeService.*(..))")
+            public void logBeforeAllMethods(JoinPoint joinPoint) {
+          LOGGER.debug("****LoggingAspect.logBeforeAllMethods() : " + joinPoint.getSignature().getName());
+            }
+        
+            @Before("execution(* net.guides.springboot2.springaop.service.EmployeeService.getEmployeeById(..))")
+            public void logBeforeGetEmployee(JoinPoint joinPoint) {
+          LOGGER.debug("****LoggingAspect.logBeforeGetEmployee() : " + joinPoint.getSignature().getName());
+            }
+        
+            @Before("execution(* net.guides.springboot2.springaop.service.EmployeeService.createEmployee(..))")
+            public void logBeforeAddEmployee(JoinPoint joinPoint) {
+          LOGGER.debug("****LoggingAspect.logBeforeCreateEmployee() : " + joinPoint.getSignature().getName());
+            }
+         
+            @After("execution(* net.guides.springboot2.springaop.service.EmployeeService.*(..))")
+            public void logAfterAllMethods(JoinPoint joinPoint) 
+            {
+          LOGGER.debug("****LoggingAspect.logAfterAllMethods() : " + joinPoint.getSignature().getName());
+            }
+            
+            @After("execution(* net.guides.springboot2.springaop.service.EmployeeService.getEmployeeById(..))")
+            public void logAfterGetEmployee(JoinPoint joinPoint) 
+            {
+             LOGGER.debug("****LoggingAspect.logAfterGetEmployee() : " + joinPoint.getSignature().getName());
+            }
+            
+            @After("execution(* net.guides.springboot2.springaop.service.EmployeeService.addEmployee(..))")
+            public void logAfterAddEmployee(JoinPoint joinPoint) 
+            {
+             LOGGER.debug("****LoggingAspect.logAfterCreateEmployee() : " + joinPoint.getSignature().getName());
+            }
+        }</pre>
+        <h2>Application.java</h2>
+        <p>Now test the AOP configuration and other stuff with the main() method:</p>
+        <pre>package net.guides.springboot2.springaop;
+
+            import org.springframework.boot.SpringApplication;
+            import org.springframework.boot.autoconfigure.SpringBootApplication;
+            import org.springframework.context.ApplicationContext;
+            
+            import net.guides.springboot2.springaop.model.Employee;
+            import net.guides.springboot2.springaop.service.EmployeeService;
+            
+            @SpringBootApplication
+            public class Application {
+             
+             public static void main(String[] args) {
+              ApplicationContext applicationContext =  SpringApplication.run(Application.class, args);
+              EmployeeService employeeService = applicationContext.getBean(EmployeeService.class);
+              employeeService.addEmployee(new Employee(100L, "ramesh", "fadatare", "ramesh@gmail.com"));
+              employeeService.getEmployeeById(100L);
+              employeeService.getAllEmployees();
+             }
+            }
+            </pre>
+        <h2>Output</h2>
+        <img src="/assets/spring-aop-images/spring-aop-advice-console-output.PNG" alt="" class="image-fluid">
+        <p>Great, AOP is configured successfully. Now move on to learn AOP terminology.</p>
+        <h2>4. Understanding AOP Concepts and Terminology with the Above Example</h2>
+
+        <p>Let us now define some central AOP concepts and terminology and relate them to the above example.</p>
+
+        <p><b>Aspect</b></p>
+        <p>Aspect is the modularization of a concern that cuts across multiple classes. Transaction management is a good
+            example of a crosscutting concern in enterprise Java applications. In Spring AOP, aspects are implemented by
+            using regular classes (the schema-based approach) or regular classes annotated with the <b>@Aspect</b>
+            annotation
+            (the @AspectJ style).</p>
+        <p> In our example, we have created a <b>LoggingAspect</b> using a Java-based configuration. To create an
+            aspect, you
+            need to apply <b>@Aspect</b> annotation on the Spring component:</p>
+        <pre>@Aspect
+    @Component
+    public class LoggingAspect {
+        ...
+    }</pre>
+        <p><b>Join point</b></p>
+        <p>Advice is an action taken by an aspect at a particular join point. </p>
+        <p> In our example, <b>logBeforeAllMethods(), logBeforeGetEmployee(), logBeforeAddEmployee(),
+                logAfterAllMethods(),
+                logAfterGetEmployee(), and logAfterAddEmployee()</b> methods are advices.</p>
+
+        <p>Spring AOP includes the following types of advice.</p>
+
+        <p><b>1.Before advice:</b> Advice that runs before a join point but that does not have the ability to prevent
+            execution flow from proceeding to the join point (unless it throws an exception).</p>
+        <p>Understand Before advice with an example at <a href="spring-aop-aspectj-before-annotation.html">Spring AOP AspectJ @Before Annotation</a></p>
+        <p><b>2.After returning advice:</b> Advice to be run after a join point completes normally (for example, if a
+            method returns without throwing an exception).</p>
+        <p>Understand After returning with an example at <a href="spring-aop-aspectj-after-returning-annotation-example.html">Spring AOP AspectJ @AfterReturning Annotation
+                Example</a></p>
+        <p><b>3.After throwing advice:</b> Advice to be executed if a method exists by throwing an exception.</p>
+        <p> Understand After throwing advice with an example at <a href="spring-aop-aspectj-after-throwing-example.html">Spring AOP AspectJ @AfterThrowing</a> </p>
+        <p><b>4.After (finally) advice:</b> Advice to be executed regardless of the means by which a join point exits
+            (normal or exceptional return).</p>
+        <p>Understand After advice with an example at <a href="spring-aop-aspectj-after-advice-example-using-after-annotation.html">Spring AOP AspectJ After Advice Example using @After
+                Annotation</a>
+        </p>
+        <p><b>5.Around advice:</b> Advice that surrounds a join point such as a method invocation. This is the most
+            powerful kind of advice. Around advice can perform custom behavior before and after the method invocation.
+            It is also responsible for choosing whether to proceed to the join point or to shortcut the advised method
+            execution by returning its own return value or throwing an exception.</p>
+        <p>Understand Around advice with an example at <a href="spring-aop-aspectj-around-annotation-example.html">Spring AOP AspectJ @Around Annotation Example</a></p>
+        <p><b>Pointcut
+            </b></p>
+        <p>A Pointcut is a predicate that helps match Advice to be applied by an Aspect at a particular JoinPoint. The
+            Advice is often associated with a Pointcut expression and runs at any Joinpoint matched by the Pointcut.</p>
+        <p> In our example, the expressions passed in <b>@Before</b> and <b>@After</b> annotations are pointcuts. For
+            example:</p>
+        <pre>@Before("execution(* net.guides.springboot2.springaop.service.EmployeeService.*(..))")</pre>
+        <pre>@After("execution(* net.guides.springboot2.springaop.service.EmployeeService.*(..))")</pre>
+        <p><b>Target object</b></p>
+        <p>An object being advised by one or more aspects. Also referred to as the “advised object”. Since Spring AOP is
+            implemented by using runtime proxies, this object is always a proxied object.</p>
+        <p> In our example, <b>EmployeeService</b> is an advised object hence it is the target object.</p>
+
+        <p><b>AOP proxy</b></p>
+
+        <p>An object created by the AOP framework in order to implement the aspect contracts (advise method executions
+            and so on). In the Spring Framework, an AOP proxy is a JDK dynamic proxy or a CGLIB proxy.</p>
+        <p> In our example, a proxy object is created when we ask for the bean reference for <b>EmployeeService</b>
+            class.</p>
+        <h2>5. Enabling @AspectJ Support</h2>
+
+        <p>The AspectJ support can be enabled with XML or Java-based configuration. In either case, you will also need
+            to ensure that AspectJ’s <b>aspectjweaver.jar</b> library is on the classpath of your application (version
+            1.8 or later).</p>
+        <p><b>Enabling @AspectJ Support with Java Configuration</b></p>
+        <p>To enable <b>@AspectJ</b> support with Java <b>@Configuration,</b> add the <b>@EnableAspectJAutoProxy
+                annotation</b>, as the following example shows:</p>
+        <pre>@Configuration
+    @EnableAspectJAutoProxy
+    public class AppConfig {
+    
+    }</pre>
+        <p><b>Enabling @AspectJ Support with XML Configuration</b></p>
+        <p>To enable @AspectJ support with XML-based configuration, use the <b>aop:aspectj-autoproxy</b> element, as the
+            following example shows:</p>
+        <pre>&lt;aop:aspectj-autoproxy/></pre>
+        <h2>6. Declaring an Aspect</h2>
+        <p>With @AspectJ support enabled, any bean defined in your application context with a class that is an @AspectJ
+            aspect (has the @Aspect annotation) is automatically detected by Spring and used to configure Spring AOP.
+        </p>
+        <p><b>Using XML Configuration</b></p>
+
+        <p>Below XML bean shows a regular bean definition in the application context that points to a bean class that
+            has the @Aspect annotation:</p>
+
+        <pre>&lt;bean id="myAspect" class="org.xyz.NotVeryUsefulAspect">
+    <!-- configure properties of the aspect here -->
+</bean></pre>
+
+        <pre>package org.xyz;
+    import org.aspectj.lang.annotation.Aspect;
+    @Aspect
+    public class LoggingAspect {
+    
+    }</pre>
+        <h2>Related Spring AOP Tutorials and Examples</h2>
+        <ul>
+            <li><a href="">Spring Boot + Spring AOP Logging Example Tutorial</a></li>
+            <li><a href=""> Spring AOP + AspectJ @Before, @After, @AfterReturning, @AfterThrowing, and @Around
+                    Example</a></li>
+        </ul>
+
+
+    </div>
+</body>
+
+</html>

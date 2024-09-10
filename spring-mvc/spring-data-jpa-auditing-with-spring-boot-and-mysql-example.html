@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Data JPA Auditing with Spring Boot and MySQL Example
+    </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA Auditing with Spring Boot and MySQL Example
+        </h1>
+        <p>In this article, we will discuss how can we configure JPA to automatically persist the <b>CreatedBy,
+                CreatedDate, LastModifiedBy, and LastModifiedDate </b>columns for any entity. We will create a simple
+            Spring
+            Boot CRUD REST APIs and we implement auditing using spring data JPA.</p>
+        <p><b> This tutorial is upgraded to Spring Boot 3+ and Java 17.</b></p>
+        <p> In any business application, auditing simply means tracking and logging every change we do in our persisted
+            records, which simply means tracking every insert, update, and delete operation and storing it. Basically,
+            auditing helps us in maintaining history records, which can later help us in tracking user activities.</p>
+        <p> Instead of writing code manually on each save, update, or delete operation why do not we use a third-party
+            library to do it automatically for us. Spring Data provides sophisticated support to transparently keep
+            track of who created or changed an entity and the point in time this happened. To benefit from that
+            functionality you have to equip your entity classes with auditing metadata that can be defined either using
+            annotations or by implementing an interface.</p>
+        <p> In this example, we will create a common generic <b>Auditable</b> abstract class with audit fields so that
+            any
+            entity can extend it to use auditing.</p>
+        <h2>Table of Contents</h2>
+        <ol>
+            <li> What we’ll build</li>
+            <li> Tools and Technologies Used</li>
+            <li> Creating and Importing a Project</li>
+            <li> Packaging Structure</li>
+            <li> The pom.xml File</li>
+            <li> Configuring MySQL Database</li>
+            <li> Create Generic Auditable Class with Spring Data Annotations @CreatedBy, @CreatedDate, @LastModifiedBy,
+                and @LastModifiedDate</li>
+            <li> Create a JPA Entity which extends Auditable Class - User.java</li>
+            <li> Auditing Author Using AuditorAware and Spring Security</li>
+            <li> Enable JPA Auditing by Using @EnableJpaAuditing </li>
+            <li> Create Spring Data JPA Repository - UserRepository.java</li>
+            <li> Creating UserController(Contains REST APIs)</li>
+            <li> Running the Application</li>
+            <li> Source code on GitHub</li>
+        </ol>
+        <h2>1. What we’ll build</h2>
+        <p>We are building a simple Spring boot CRUD Rest APIs to demonstrate the usage of Spring Data JPA auditing with
+            MySQL as a database.</p>
+
+        <h2>2. Tools and Technologies Used</h2>
+        <ul>
+            <li> Spring Boot - 3</li>
+            <li> JDK - 17 or later</li>
+            <li> Spring Framework - 6+</li>
+            <li> Maven - 3.2+</li>
+            <li> IDE - Eclipse or Spring Tool Suite (STS)</li>
+            <li> MYSQL</li>
+        </ul>
+        <h2>3. Create and Set up Spring Boot Project
+        </h2>
+        <p>There are many ways to create a Spring Boot application. The simplest way is to use Spring Initializr at <a
+                href="http://start.spring.io/">http://start.spring.io/</a>, which is an online Spring Boot application
+            generator.</p>
+        <p> Use the following details while generating a Spring Boot project using Spring Initializr:</p>
+
+        <ul>
+            <li> Generate: Maven Project</li>
+            <li> Java Version: 17 (Default)</li>
+            <li> Spring Boot: 30.4</li>
+            <li> Group: net.guides.springboot</li>
+            <li> Artifact: springboot2-jpa-auditing</li>
+            <li> Name: springboot2-jpa-auditing</li>
+            <li> Package Name: net.guides.springboot.springboot2jpaauditing</li>
+            <li> Packaging: jar (This is the default value)</li>
+            <li> Dependencies: Web, JPA, MySQL, DevTools</li>
+        </ul>
+        <p>Once, all the details are entered, then click on Generate Project button will generate a spring boot project
+            and downloads it. Next, Unzip the downloaded zip file and import it into your favorite IDE.</p>
+        <h2>4. Packaging Structure</h2>
+        <p>Following is the project structure for your reference - </p>
+        <img src="/assets/spring-mvc-image/project-structure (8).PNG" alt="" class="image-fluid">
+
+        <h2>5. The pom.xml File</h2>
+        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    
+        &lt;groupId&gt;net.guides.springboot&lt;/groupId&gt;
+        &lt;artifactId&gt;springboot2-jpa-auditing&lt;/artifactId&gt;
+        &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;packaging&gt;jar&lt;/packaging&gt;
+    
+        &lt;name&gt;springboot2-jpa-auditing&lt;/name&gt;
+        &lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+    
+        &lt;parent&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+            &lt;version&gt;3.0.4&lt;/version&gt;
+            &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+        &lt;/parent&gt;
+    
+        &lt;properties&gt;
+            &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+            &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+            &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;/properties&gt;
+    
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+                &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+                &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+                &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                    &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <h2>6. Configuring MySQL Database</h2>
+        <p>Configure application.properties to connect to your MySQL database. </p>
+        <p> Let's open an <b>application.properties </b>file and add the following database configuration to it.</p>
+        <pre>spring.datasource.url = jdbc:mysql://localhost:3306/users_database?useSSL=false
+    spring.datasource.username = root
+    spring.datasource.password = root
+    
+    
+    ## Hibernate Properties
+    # The SQL dialect makes Hibernate generate better SQL for the chosen database
+    spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQLDialect
+    
+    # Hibernate ddl auto (create, create-drop, validate, update)
+    spring.jpa.hibernate.ddl-auto = update</pre>
+        <p>Change the above configuration such as JDBC URL, username, and password as per your environment.</p>
+        <h2>7. Create Generic Auditable Class with Spring Data Annotations @CreatedBy, @CreatedDate, @LastModifiedBy,
+            and @LastModifiedDate</h2>
+        <p>If you are auditing multiple entities then it is common practice to extract common fields with an abstract
+            class and extend it. So instead of creating <b>createdBy, createdDate, lastModifiedBy, and
+                lastModifiedDate</b>
+            properties in each entity, we can move the <b>createdBy, createdDate, lastModifiedBy, lastModifiedDate</b>
+            properties to a base class, Auditable, and annotate this base class with <b>@MappedSuperClass</b>. Later, we
+            can
+            use the <b>Auditable</b> class in other audited entities.</p>
+        <pre>package net.guides.springboot.springboot2jpaauditing.audit;
+
+                import static jakarta.persistence.TemporalType.TIMESTAMP;
+                
+                import java.util.Date;
+                
+                import jakarta.persistence.EntityListeners;
+                import jakarta.persistence.MappedSuperclass;
+                import jakarta.persistence.Temporal;
+                
+                import org.springframework.data.annotation.CreatedBy;
+                import org.springframework.data.annotation.CreatedDate;
+                import org.springframework.data.annotation.LastModifiedBy;
+                import org.springframework.data.annotation.LastModifiedDate;
+                import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+                
+                @MappedSuperclass
+                @EntityListeners(AuditingEntityListener.class)
+                public abstract class Auditable&lt;U> {
+                
+                    @CreatedBy
+                    protected U createdBy;
+                
+                    @CreatedDate
+                    @Temporal(TIMESTAMP)
+                    protected Date createdDate;
+                
+                    @LastModifiedBy
+                    protected U lastModifiedBy;
+                
+                    @LastModifiedDate
+                    @Temporal(TIMESTAMP)
+                    protected Date lastModifiedDate;
+                
+                    public U getCreatedBy() {
+                        return createdBy;
+                    }
+                
+                    public void setCreatedBy(U createdBy) {
+                        this.createdBy = createdBy;
+                    }
+                
+                    public Date getCreatedDate() {
+                        return createdDate;
+                    }
+                
+                    public void setCreatedDate(Date createdDate) {
+                        this.createdDate = createdDate;
+                    }
+                
+                    public U getLastModifiedBy() {
+                        return lastModifiedBy;
+                    }
+                
+                    public void setLastModifiedBy(U lastModifiedBy) {
+                        this.lastModifiedBy = lastModifiedBy;
+                    }
+                
+                    public Date getLastModifiedDate() {
+                        return lastModifiedDate;
+                    }
+                
+                    public void setLastModifiedDate(Date lastModifiedDate) {
+                        this.lastModifiedDate = lastModifiedDate;
+                    }
+                }</pre>
+        <h2>8. Create a JPA Entity which extends Auditable Class - User.java</h2>
+        <pre>package net.guides.springboot.springboot2jpaauditing.model;
+
+                    import jakarta.persistence.*;
+                    
+                    import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+                    
+                    import net.guides.springboot.springboot2jpaauditing.audit.Auditable;
+                    
+                    @Entity
+                    @Table(name = "users")
+                    @EntityListeners(AuditingEntityListener.class)
+                    public class User extends Auditable&lt;String> {
+                    
+                        @Id
+                        @GeneratedValue(strategy = GenerationType.AUTO)
+                        private long id;
+                     
+                        @Column(name = "first_name", nullable = false)
+                        private String firstName;
+                     
+                        @Column(name = "last_name", nullable = false)
+                        private String lastName;
+                    
+                        @Column(name = "email_address", nullable = false)
+                        private String emailId;
+                    
+                    
+                        public long getId() {
+                            return id;
+                        }
+                    
+                        public void setId(long id) {
+                            this.id = id;
+                        }
+                    
+                        public String getFirstName() {
+                            return firstName;
+                        }
+                    
+                        public void setFirstName(String firstName) {
+                            this.firstName = firstName;
+                        }
+                    
+                        public String getLastName() {
+                            return lastName;
+                        }
+                    
+                        public void setLastName(String lastName) {
+                            this.lastName = lastName;
+                        }
+                    
+                        public String getEmailId() {
+                            return emailId;
+                        }
+                    
+                        public void setEmailId(String emailId) {
+                            this.emailId = emailId;
+                        }
+                    }</pre>
+        <p>Let's understand important JPA Auditing annotations:</p>
+        <p>1. <b>@CreatedDate</b> - Declares a field as the one representing the date the entity containing the field
+            was created.</p>
+        <p> 2. <b>@LastModifiedDate</b> - Declares a field as the one representing the date the entity containing the
+            field was recently modified.</p>
+        <p> 3. <b>@CreatedBy</b> - Declares a field as the one representing the principal that created the entity
+            containing the field.</p>
+        <p> 4. <b>@LastModifiedBy</b> - Declares a field as the one representing the principal that recently modified
+            the entity containing the field.</p>
+        <p>The Spring Data JPA approach abstracts working with JPA callbacks and provides us these fancy annotations to
+            automatically save and update auditing entities.</p>
+        <p><b>Using the AuditingEntityListener Class With @EntityListeners</b></p>
+        <p>Spring Data JPA provides a JPA entity listener class, <b>AuditingEntityListener</b>, which contains the
+            callback methods (annotated with the <b>@PrePersist</b> and <b>@PreUpdate</b> annotations), which will be
+            used to persist and update these properties when we will persist or update our entity.</p>
+        <p> JPA provides the <b>@EntityListeners</b> annotation to specify callback listener classes, which we use to
+            register our <b>AuditingEntityListener</b> class.</p>
+        <p> However, we can also define our own callback listener classes if we want to and specify them using the
+            <b>@EntityListeners</b> annotation.
+        </p>
+        <h2>9. Auditing Author Using AuditorAware and Spring Security</h2>
+
+        <p>JPA can analyze <b>createdDate</b> and <b>lastModifiedDate</b> using the current system time, but what about
+            the createdBy
+            and lastModifiedBy fields? How will JPA recognize what to store in them?</p>
+        <p> To tell JPA about currently logged-in users, we will need to provide an implementation of AuditorAware and
+            override the getCurrentAuditor() method. And inside getCurrentAuditor(), we will need to fetch a currently
+            logged-in user.</p>
+        <p> As of now, I have provided a hard-coded user, but if you are using Spring Security, then use it to find the
+            currently logged-in user.</p>
+
+        <pre>package net.guides.springboot.springboot2jpaauditing.audit;
+
+    import java.util.Optional;
+    
+    import org.springframework.data.domain.AuditorAware;
+    
+    public class AuditorAwareImpl implements AuditorAware<String> {
+    
+        @Override
+        public Optional<String> getCurrentAuditor() {
+            return Optional.of("Ramesh");
+            // Use below commented code when will use Spring Security.
+        }
+    }
+    
+    // ------------------ Use below code for spring security --------------------------
+    
+    /*class SpringSecurityAuditorAware implements AuditorAware&lt;User> {
+    
+     public User getCurrentAuditor() {
+    
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    
+      if (authentication == null || !authentication.isAuthenticated()) {
+       return null;
+      }
+    
+      return ((MyUserDetails) authentication.getPrincipal()).getUser();
+     }
+    }*/</pre>
+
+        <h2>10. Enable JPA Auditing by Using @EnableJpaAuditing</h2>
+        <p>Now, we want to enable JPA auditing by specifying <b>@EnableJpaAuditing</b> on one of our configuration
+            classes, in
+            this example, I have specified <b>@EnableJpaAuditing</b> on the main
+            <b>Springboot2JpaAuditingApplication</b> class.
+            <b> @EnableJpaAuditing</b> accepts one argument, auditorAwareRef, where we need to pass the name of the
+            AuditorAware
+            bean.
+        </p>
+        <pre>package net.guides.springboot.springboot2jpaauditing;
+
+                import org.springframework.boot.SpringApplication;
+                import org.springframework.boot.autoconfigure.SpringBootApplication;
+                import org.springframework.context.annotation.Bean;
+                import org.springframework.data.domain.AuditorAware;
+                import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+                
+                import net.guides.springboot.springboot2jpaauditing.audit.AuditorAwareImpl;
+                
+                @SpringBootApplication
+                @EnableJpaAuditing(auditorAwareRef = "auditorAware")
+                public class Springboot2JpaAuditingApplication {
+                
+                    @Bean
+                    public AuditorAware&lt;String> auditorAware() {
+                        return new AuditorAwareImpl();
+                    }
+                
+                    public static void main(String[] args) {
+                        SpringApplication.run(Springboot2JpaAuditingApplication.class, args);
+                    }
+                }
+                </pre>
+        <p>Now, we completed all JPA auditing set up so let's see other files as well and then we will see a demo of it.
+        </p>
+        <h2>11. Create Spring Data JPA Repository - UserRepository.java</h2>
+        <pre>import org.springframework.data.jpa.repository.JpaRepository;
+    import org.springframework.stereotype.Repository;
+    
+    import com.companyname.springbootcrudrest.model.User;
+    
+    @Repository
+    public interface UserRepository extends JpaRepository&lt;User, Long>{
+    
+    }</pre>
+        <p>Note that, we have annotated the interface with <b>@Repository</b> annotation. This tells Spring to bootstrap
+            the repository during a component scan.</p>
+        <h2>12. Creating UserController(Contains REST APIs)</h2>
+        <p>Now, it's time to create CRUD Rest APIs for the User model.</p>
+        <pre>package net.guides.springboot.springboot2jpaauditing.controller;
+
+                import java.util.Date;
+                import java.util.HashMap;
+                import java.util.List;
+                import java.util.Map;
+                
+                import jakarta.validation.Valid;
+                
+                import org.springframework.beans.factory.annotation.Autowired;
+                import org.springframework.http.ResponseEntity;
+                import org.springframework.web.bind.annotation.DeleteMapping;
+                import org.springframework.web.bind.annotation.GetMapping;
+                import org.springframework.web.bind.annotation.PathVariable;
+                import org.springframework.web.bind.annotation.PostMapping;
+                import org.springframework.web.bind.annotation.PutMapping;
+                import org.springframework.web.bind.annotation.RequestBody;
+                import org.springframework.web.bind.annotation.RequestMapping;
+                import org.springframework.web.bind.annotation.RestController;
+                
+                import net.guides.springboot.springboot2jpaauditing.exception.ResourceNotFoundException;
+                import net.guides.springboot.springboot2jpaauditing.model.User;
+                import net.guides.springboot.springboot2jpaauditing.repository.UserRepository;
+                
+                @RestController
+                @RequestMapping("/api/v1")
+                public class UserController {
+                 
+                    @Autowired
+                    private UserRepository userRepository;
+                
+                 
+                    @GetMapping("/users")
+                    public List&lt;User> getAllUsers() {
+                         return userRepository.findAll();
+                    }
+                
+                    @GetMapping("/users/{id}")
+                    public ResponseEntity&lt;User> getUserById(
+                      @PathVariable(value = "id") Long userId) throws ResourceNotFoundException {
+                         User user = userRepository.findById(userId)
+                            .orElseThrow(() -> new ResourceNotFoundException("User not found :: " + userId));
+                        return ResponseEntity.ok().body(user);
+                    }
+                
+                    @PostMapping("/users")
+                    public User createUser(@Valid @RequestBody User user) {
+                        return userRepository.save(user);
+                    }
+                
+                    @PutMapping("/users/{id}")
+                    public ResponseEntity&lt;User> updateUser(
+                      @PathVariable(value = "id") Long userId,
+                      @Valid @RequestBody User userDetails) throws ResourceNotFoundException {
+                        User user = userRepository.findById(userId)
+                          .orElseThrow(() -> new ResourceNotFoundException("User not found :: " + userId));
+                  
+                        user.setEmailId(userDetails.getEmailId());
+                        user.setLastName(userDetails.getLastName());
+                        user.setFirstName(userDetails.getFirstName());
+                        user.setLastModifiedDate(new Date());
+                        final User updatedUser = userRepository.save(user);
+                        return ResponseEntity.ok(updatedUser);
+                    }
+                
+                    @DeleteMapping("/users/{id}")
+                    public Map&lt;String, Boolean> deleteUser(
+                         @PathVariable(value = "id") Long userId) throws ResourceNotFoundException {
+                         User user = userRepository.findById(userId)
+                          .orElseThrow(() -> new ResourceNotFoundException("User not found :: " + userId));
+                
+                        userRepository.delete(user);
+                         Map&lt; String, Boolean> response = new HashMap<>();
+                         response.put("deleted", Boolean.TRUE);
+                         return response;
+                    }
+                }</pre>
+        <p>Let's understand all the annotations used in the UserController</p>
+        <ul>
+            <li><b> @RequestMapping("/api/v1")</b> - annotation declares that the url for all the apis in this
+                controller will start with /api/v1</li>
+            <li> <b> @RestController </b>- annotation is a combination of Spring’s @Controller and @ResponseBody
+                annotations.</li>
+            <li> <b> @GetMapping("/users") </b>- annotation is a short form of @RequestMapping(value="/users",
+                method=RequestMethod.GET).</li>
+            <li> <b> @GetMapping("/users/{id}")</b> - annotation is a short form of @RequestMapping(value="/users/{id}",
+                method=RequestMethod.GET).</li>
+            <li> <b>@PostMapping("/users")</b> - annotation is a short form of @RequestMapping(value="/users",
+                method=RequestMethod.POST).</li>
+            <li> <b>@PutMapping("/users/{id}")</b> - annotation is a short form of @RequestMapping(value="/users/{id}",
+                method=RequestMethod.PUT).</li>
+            <li> <b>@DeleteMapping("/user/{id}") </b>- annotation is a short form of
+                @RequestMapping(value="/users/{id}", method=RequestMethod.DELETE).</li>
+            <li> <b> @PathVariable</b> - annotation is used to bind a path variable with a method parameter.
+            </li>
+        </ul>
+        <h2>13. Running the Application with a Demo
+        </h2>
+        <p>From your IDE, run the Springboot2JpaAuditingApplication.main() method as a standalone Java class that will
+            start the embedded Tomcat server on port 8080 and point the browser to <a
+                href="">http://localhost:8080/</a>.</p>
+
+        <p> Let's test auditing with Postman Rest Client.</p>
+
+        <h4>1. Create User REST API</h2>
+            <p><b>HTTP Method:</b> POST</p>
+            <p><b> RequestURL: </b>http://localhost:8080/api/v1/users</p>
+            <p><b> Response:</b></p>
+            <img src="/assets/spring-mvc-image/post-request (1).PNG" alt="" class="image-fluid">
+            <p>Note that in the above diagram, the response contains audit fields.
+            </p>
+            <p><b>1. Get all Users REST API</b></p>
+            <p><b>HTTP Method:</b></p>
+            <p><b> RequestURL:</b> http://localhost:8080/api/v1/users</p>
+            <p><b> Response:</b></p>
+            <img src="/assets/spring-mvc-image/getall-request.PNG" alt="" class="image-fluid">
+
+    </div>
+</body>
+
+</html>

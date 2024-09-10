@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Logging Example - SLF4j, Logback and LOG4j2
+    </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Boot Logging Example - SLF4j, Logback and LOG4j2</h1>
+        <p>In this article, we learn how to log effectively with Spring Boot. We will look at Spring Boot Starter for
+            Logging. We will look at the defaults in Spring Boot for Logging - Logback, and SLF4J. We will also be
+            looking at the Spring Boot starter for log4j2.</p>
+
+        <p> First, we will discuss a few important points about the Spring Boot logging feature and then we will create
+            a simple example to demonstrate the same.</p>
+
+        <h2>Spring Boot Logging Feature Overview</h2>
+        <p>Logging is a very important part of any application and it helps with debugging issues. Spring Boot, by
+            default, includes <b>spring-boot-starter-logging </b>as a transitive dependency for the
+            <b>spring-boot-starter</b> module. By default, <b>Spring Boot includes SLF4J along with Logback
+                implementations</b>.
+        </p>
+
+        <p>If Logback is available, Spring Boot will choose it as the logging handler. You can easily configure logging
+            levels within the <b>application.properties</b> file without having to create logging provider-specific
+            configuration files such as logback.xml or log4j.properties.</p>
+
+        <pre>logging.level.org.springframework.web=INFO
+    logging.level.org.hibernate=ERROR
+    logging.level.net.guides=DEBUG</pre>
+        <p>If you want to log the data into a file in addition to the console, specify the filename as follows</p>
+
+        <pre>logging.path=/var/logs/app.log
+    or
+    logging.file=myapp.log</pre>
+        <p>If you want to have more control over the logging configuration, create the logging provider-specific
+            configuration files in their default locations, which Spring Boot will automatically use.
+            For example, if you place the logback.xml file in the root classpath, Spring Boot will automatically use it
+            to configure the logging system </p>
+        <h2>The logback.xml File</h2>
+        <p>Here is the sample <b> logback.xml</b> file for your reference:</p>
+        <pre>&lt;configuration&gt;
+    &lt;appender name="STDOUT"
+        class="ch.qos.logback.core.ConsoleAppender"&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+    &lt;appender name="FILE" class="ch.qos.logback.core.FileAppender"&gt;
+        &lt;file&gt;app.log&lt;/file&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;%date %level [%thread] %logger{10} [%file:%line] %msg%n &lt;/pattern&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+    &lt;logger name="com.apress" level="DEBUG" additivity="false"&gt;
+        &lt;appender-ref ref="STDOUT" /&gt;
+        &lt;appender-ref ref="FILE" /&gt;
+    &lt;/logger&gt;
+    &lt;root level="INFO"&gt;
+        &lt;appender-ref ref="STDOUT" /&gt;
+        &lt;appender-ref ref="FILE" /&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;
+</pre>
+        <h2>Using Log4j2 for logging with Spring Boot</h2>
+        <p>If you want to use other logging libraries, such as Log4J or Log4j2, instead of Logback, you can exclude
+            <b>spring-boot-starter-logging </b>and include the respective logging starter, as follows:
+        </p>
+        <pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt;
+    &lt;exclusions&gt;
+        &lt;exclusion&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-logging&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+    &lt;/exclusions&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-log4j&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+        <p>Now you can add the <b>log4j.properties</b> file to the root classpath, which Spring Boot will automatically
+            use for logging. </p>
+        <h2>Log Format</h2>
+        <p>The default log output from Spring Boot resembles the following example:</p>
+        <pre>2014-03-05 10:57:51.112  INFO 45469 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/7.0.52
+    2014-03-05 10:57:51.253  INFO 45469 --- [ost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+    2014-03-05 10:57:51.253  INFO 45469 --- [ost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1358 ms
+    2014-03-05 10:57:51.698  INFO 45469 --- [ost-startStop-1] o.s.b.c.e.ServletRegistrationBean        : Mapping servlet: 'dispatcherServlet' to [/]
+    2014-03-05 10:57:51.702  INFO 45469 --- [ost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]</pre>
+
+        <h2>Console Output
+        </h2>
+        <p>The default log configuration echoes messages to the console as they are written. By default, <b>ERROR-level,
+                WARN-level</b>, and <b>INFO-level</b> messages are logged. You can also enable a “debug” mode by
+            starting your
+            application with a --debug flag.</p>
+        <pre>$ java -jar myapp.jar --debug</pre>
+        <p>You can also specify <b>debug=true</b> in your <b>application.properties.</b></p>
+        <h2>File Output</h2>
+        <p>By default, Spring Boot logs only to the console and does not write log files. If you want to write log files
+            in addition to the console output, you need to set a logging.file or logging.path property (for example, in
+            your application.properties).</p>
+        <p> So far we understood, how logging works in Spring Boot and default configurations. Now it's time to use
+            Spring Boot 2 logging feature in our project so let's create an example to demonstrate how to use Spring
+            Boot 2 logging feature.</p>
+
+        <h2>Simple Spring Boot Logging Application </h2>
+
+        <p>Let's develop a simple in-memory Spring Boot logging application to demonstrate the usage of Logback and
+            log4j.</p>
+
+        <h2>1. Create Spring Boot Project</h2>
+
+        <p>There are many ways to create a Spring Boot application. The simplest way is to use Spring Initializr at <a
+                href="http://start.spring.io/">http://start.spring.io/</a>, which is an online Spring Boot application
+            generator.</p>
+
+        <h2>2. Maven pom.xml File</h2>
+        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+     &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    
+        &lt;groupId&gt;net.guides.springboot2&lt;/groupId&gt;
+        &lt;artifactId&gt;springboot2-logging&lt;/artifactId&gt;
+        &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;packaging&gt;jar&lt;/packaging&gt;
+    
+        &lt;name&gt;springboot2-logging&lt;/name&gt;
+        &lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+    
+        &lt;parent&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+            &lt;version&gt;3.0.4&lt;/version&gt;
+            &lt;relativePath /&gt; &lt;!-- lookup parent from repository --&gt;
+        &lt;/parent&gt;
+    
+        &lt;properties&gt;
+            &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+            &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+            &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;/properties&gt;
+    
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+            &lt;/dependency&gt;  
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt; 
+        &lt;/dependencies&gt;
+    
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                    &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <h2>3. Packaging Structure</h2>
+        <img src="/assets/spring-mvc-image/packaging-structure (2).PNG" alt="" class="image-fluid">
+        <h2>4. Create Simple POJO Class - Article.java</h2>
+        <pre>package net.guides.springboot2.springboot2logging;
+
+    public class Article {
+        private int id;
+        private String name;
+     
+     
+        public Article(int id, String name) {
+            super();
+            this.id = id;
+            this.name = name;
+        }
+     
+        public int getId() {
+            return id;
+        }
+        public void setId(int id) {
+            this.id = id;
+        }
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+    </pre>
+        <h2>5. Create Simple Service Class - ArticleService.java</h2>
+        <pre>package net.guides.springboot2.springboot2logging;
+
+        import java.util.Arrays;
+        import java.util.List;
+        
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+        import org.springframework.stereotype.Service;
+        
+        @Service
+        public class ArticleService {
+            private static final Logger logger = LoggerFactory.getLogger(ArticleService.class);
+            public List&lt;Article> getArticles(){
+                logger.debug("inside getArticles() method");
+                return Arrays.asList(new Article(100, "article"),new Article(200, "article2"));
+            }
+        }</pre>
+        <p>Note that we have added the slf4j Logger and also added debug statements:</p>
+        <pre>private static final Logger logger = LoggerFactory.getLogger(ArticleService.class);</pre>
+
+        <h2>6. Create Simple Rest Controller - ArticleController.java</h2>
+        <pre>package net.guides.springboot2.springboot2logging;
+
+    import java.util.List;
+    
+    import org.slf4j.Logger;
+    import org.slf4j.LoggerFactory;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.web.bind.annotation.GetMapping;
+    import org.springframework.web.bind.annotation.RestController;
+    
+    @RestController
+    public class ArticleController {
+        private static final Logger logger = LoggerFactory.getLogger(ArticleService.class);
+        @Autowired
+        private ArticleService articleService;
+        @GetMapping("/articles")
+        public List&lt;Article> getArticles() {
+            logger.debug("inside ArticleController.getArticles() method");
+            return articleService.getArticles();
+        }
+    }</pre>
+        <h2>7. The application.properties File</h2>
+        <p>Let's configure logging properties in an application.properties file. </p>
+
+        <p> Open an application.properties file and add the following logging configuration to it.</p>
+        <pre>logging.level.org.springframework.web=INFO
+        logging.level.org.hibernate=ERROR
+        logging.level.net.guides=DEBUG
+        
+        logging.file=myapp.log</pre>
+        <h2>8. Running an Application</h2>
+        <p>Now run the Spring boot application and call the REST API: <a href=""> http://localhost:8080/articles</a>.
+            You should see the list of articles in JSON format.</p>
+        <pre>[{"id":100,"name":"article"},{"id":200,"name":"article2"}]</pre>
+        <p>Note that the myapp.log file is created at your correct project location.</p>
+        <img src="/assets/spring-mvc-image/output-json.PNG" alt="" class="image-fluid">
+        <img src="/assets/spring-mvc-image/logging.PNG" alt="" class="image-fluid">
+
+        <p>Note that we have added the slf4j Logger and also added debug statements. These debug statements are printed
+            in a console.
+        </p>
+
+
+    </div>
+</body>
+
+</html>

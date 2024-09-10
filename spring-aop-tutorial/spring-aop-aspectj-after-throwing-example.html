@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring AOP AspectJ @AfterThrowing Example </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring AOP AspectJ @AfterThrowing Example</h1>
+        <p>In this Spring AOP example, we will learn to use AspectJ <b>@AfterThrowing</b> annotation in Spring-based
+            applications. <b>@AfterThrowing</b> annotated methods run after the method (matching with pointcut
+            expression)
+            exits by throwing an exception.</p>
+        <p> In this example, We will create a simple spring boot application, add a logging aspect and then invoke
+            aspect methods based on pointcuts information passed in a <b>@AfterThrowing</b> annotation.</p>
+
+        <h2>AspectJ @AfterThrowing Annotation Quick Example</h2>
+        <p>The below snippet shows the usage of @AfterThrowing annotation:</p>
+        <pre>@Aspect
+    @Component
+    public class LoggingAspect {
+    
+        private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+    
+        @Around("execution(* net.guides.springboot2.springaop.service.EmployeeService.*(..))")
+        public void logAroundAllMethods(ProceedingJoinPoint joinPoint) throws Throwable {
+            LOGGER.debug("****LoggingAspect.logAroundAllMethods() : " + joinPoint.getSignature().getName() + ": Before Method Execution");
+            try {
+                joinPoint.proceed();
+            } finally {
+                //Do Something useful, If you have
+            }
+            LOGGER.debug("****LoggingAspect.logAroundAllMethods() : " + joinPoint.getSignature().getName() + ": After Method Execution");
+        }
+    
+        @Around("execution(* net.guides.springboot2.springaop.service.EmployeeService.getEmployeeById(..))")
+        public void logAroundGetEmployee(ProceedingJoinPoint joinPoint) throws Throwable {
+            LOGGER.debug("****LoggingAspect.logAroundGetEmployee() : " + joinPoint.getSignature().getName() + ": Before Method Execution");
+            try {
+                joinPoint.proceed();
+            } finally {
+                //Do Something useful, If you have
+            }
+            LOGGER.debug("****LoggingAspect.logAroundGetEmployee() : " + joinPoint.getSignature().getName() + ": After Method Execution");
+        }
+    
+        @Around("execution(* net.guides.springboot2.springaop.service.EmployeeService.addEmployee(..))")
+        public void logAroundAddEmployee(ProceedingJoinPoint joinPoint) throws Throwable {
+            LOGGER.debug("****LoggingAspect.logAroundAddEmployee() : " + joinPoint.getSignature().getName() + ": Before Method Execution");
+            try {
+                joinPoint.proceed();
+            } finally {
+                //Do Something useful, If you have
+            }
+            LOGGER.debug("****LoggingAspect.logAroundAddEmployee() : " + joinPoint.getSignature().getName() + ": After Method Execution");
+        }
+    }</pre>
+        <p>Let's demonstrate the usage of <b>@AfterThrowing</b> annotation with a complete step-by-step example.</p>
+        <h2>1. Creating a Spring Boot Application</h2>
+        <p>There are many ways to create a Spring Boot application. You can refer below articles to create a Spring Boot
+            application.
+        </p>
+        <p><a href="/spring-mvc/create-springboot-project-with-spring-intializer.html">>> Create Spring Boot Project
+                With Spring Initializer</a></p>
+        <p><a href="/spring-mvc/create-springboot-project-in-spring-tool-suite.html">>> Create Spring Boot Project in
+                Spring Tool Suite [STS]</a></p>
+        <p>Refer next step to create a project packaging structure.</p>
+        <h2>Project Structure</h2>
+        <p>Below project structure for your reference - </p>
+
+        <img src="/assets/spring-aop-images/after-throwing-project-structure.PNG" alt="" class="image-fluid">
+        <h2>Maven Dependencies</h2>
+        <pre>
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+        &lt;groupId&gt;net.guides.springboot2&lt;/groupId&gt;
+        &lt;artifactId&gt;springboot2-springaop-example&lt;/artifactId&gt;
+        &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;packaging&gt;jar&lt;/packaging&gt;
+        &lt;name&gt;springboot2-springaop-example&lt;/name&gt;
+        &lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+        &lt;parent&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+            &lt;version&gt;3.0.4&lt;/version&gt;
+            &lt;relativePath /&gt;
+            &lt;!-- lookup parent from repository --&gt;
+        &lt;/parent&gt;
+        &lt;properties&gt;
+            &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+            &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+            &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;/properties&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-aop&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                    &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <h2>Create an Aspect - LogginAspect.java</h2>
+        <pre>@Aspect
+    @Component
+    public class LoggingAspect {
+    
+        private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+    
+        @AfterThrowing(pointcut = "execution(* net.guides.springboot2.springaop.service.EmployeeService.*(..))", throwing = "ex")
+        public void logAfterThrowingAllMethods(Exception ex) throws Throwable {
+            LOGGER.debug("****LoggingAspect.logAfterThrowingAllMethods() " + ex);
+        }
+    }</pre>
+
+        <h2>Create a Java POJO - Employee.java</h2>
+        <pre>package net.guides.springboot2.springaop.model;
+
+    public class Employee {
+    
+     private long id;
+     private String firstName;
+     private String lastName;
+     private String emailId;
+     
+     public Employee() {
+      
+     }
+     
+     public Employee(long id, String firstName, String lastName, String emailId) {
+      this.id = id;
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.emailId = emailId;
+     }
+     
+     public long getId() {
+      return id;
+     }
+     public void setId(long id) {
+      this.id = id;
+     }
+     
+     public String getFirstName() {
+      return firstName;
+     }
+     public void setFirstName(String firstName) {
+      this.firstName = firstName;
+     }
+     
+     public String getLastName() {
+      return lastName;
+     }
+     public void setLastName(String lastName) {
+      this.lastName = lastName;
+     }
+     
+     public String getEmailId() {
+      return emailId;
+     }
+     public void setEmailId(String emailId) {
+      this.emailId = emailId;
+     }
+    
+     @Override
+     public String toString() {
+      return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", emailId=" + emailId
+        + "]";
+     } 
+    }</pre>
+
+        <h2>Create service methods - EmployeeService.java</h2>
+
+        <p>Let's create a few service methods for <b>Employee</b> on which aspects need to be executed.</p>
+        <pre>package net.guides.springboot2.springaop.service;
+
+    import java.util.ArrayList;
+    import java.util.List;
+    
+    import org.springframework.stereotype.Service;
+    
+    import net.guides.springboot2.springaop.model.Employee;
+    
+    /**
+     * Employee Service
+     * 
+     * @author Ramesh
+     *
+     */
+    @Service
+    public class EmployeeService {
+    
+        private List < Employee > employees = new ArrayList < > ();
+    
+        public List < Employee > getAllEmployees() {
+            System.out.println("Method getAllEmployees() called");
+            return employees;
+        }
+    
+        public Employee getEmployeeById(Long employeeId) {
+            System.out.println("Method getEmployeeById() called");
+            for (Employee employee: employees) {
+                if (employee.getId() == Long.valueOf(employeeId)) {
+                    return employee;
+                }
+            }
+            return null;
+        }
+    
+        public void addEmployee(Employee employee) {
+            System.out.println("Method addEmployee() called");
+            employees.add(employee);
+        }
+    
+        public void updateEmployee(Employee employeeDetails) {
+            System.out.println("Method updateEmployee() called");
+            for (Employee employee: employees) {
+                if (employee.getId() == Long.valueOf(employeeDetails.getId())) {
+                    employees.remove(employee);
+                    employees.add(employeeDetails);
+                }
+            }
+        }
+    
+        public void deleteEmployee(Long employeeId) {
+            System.out.println("Method deleteEmployee() called");
+            for (Employee employee: employees) {
+                if (employee.getId() == Long.valueOf(employeeId)) {
+                    employees.remove(employee);
+                }
+            }
+        }
+    }</pre>
+        <h2>Test Spring AspectJ Configuration and Execution</h2>
+        <p>Now let’s test whether the above-configured aspects execute on given pointcut information using Spring boot
+            Application:</p>
+        <pre>package net.guides.springboot2.springaop;
+
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+    import org.springframework.context.ApplicationContext;
+    
+    import net.guides.springboot2.springaop.model.Employee;
+    import net.guides.springboot2.springaop.service.EmployeeService;
+    
+    @SpringBootApplication
+    public class Application {
+    
+        public static void main(String[] args) {
+            ApplicationContext applicationContext = SpringApplication.run(Application.class, args);
+            EmployeeService employeeService = applicationContext.getBean(EmployeeService.class);
+            employeeService.addEmployee(new Employee(100 L, "ramesh", "fadatare", "ramesh@gmail.com"));
+            employeeService.getEmployeeById(100 L);
+            employeeService.getAllEmployees();
+        }
+    }</pre>
+
+        <p><b>Output: </b></p>
+        <img src="/assets/spring-aop-images/after-throwing-output.PNG" alt="" class="image-fluid">
+
+        <p>From the above diagram, it clears that aspect advice executed on relevant joinpoints.</p>
+        <p> To learn more about Spring AOP then check out the complete Spring AOP Tutorial.</p>
+
+    </div>
+</body>
+
+</html>
