@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot React JS File Download Example</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Boot React JS File Download Example</h1>
+                <h4>author : Sai K</h4>
+                <p>In this tutorial, we will create a full-stack application using Spring Boot for the backend and React
+                    (using <br><br> functional components and hooks) for the frontend. We will implement user
+                    registration and login functionalities<br><br> using Spring Security 6+ and React 18. The tutorial
+                    will cover setting up the project, configuring Spring Security,<br><br> creating a Spring Boot REST
+                    API for user registration and login, and building a React application for the same.<br><br> We will
+                    also use Bootstrap for styling.</p><br>
+
+                <h2>Prerequisites</h2>
+                <p>Before we start, ensure you have the following:</p>
+                <ul>
+                    <li>Java Development Kit (JDK) installed</li><br>
+                    <li>Apache Maven installed</li><br>
+                    <li>Node.js and npm installed</li><br>
+                    <li>An IDE (such as IntelliJ IDEA, Eclipse, or VS Code) installed</li><br>
+                </ul>
+                <h2>Step 1: Setting Up the Spring Boot Project</h2>
+                <h3>1.1 Create a Spring Boot Project</h3>
+                <p>1. <b>Open Spring Initializr:</b></p>
+                <li>
+                    <p>Go to <a href="https://start.spring.io/">Spring Initializr</a> in your web browser.</p>
+                </li>
+                <p>2. <b>Configure Project Metadata:</b></p>
+                <ul>
+                    <li><b>Project:</b> Maven Project</li><br>
+                    <li><b>Language:</b> Java</li><br>
+                    <li><b>Spring Boot:</b> Select the latest version of Spring Boot 3</li><br>
+                    <li><b>Group:</b> com.example</li><br>
+                    <li><b>Artifact:</b> spring-boot-react-file-download</li><br>
+                    <li><b>Name:</b>  spring-boot-react-file-download</li><br>
+                    <li><b>Description:</b>Full Stack Application with Spring Boot and React for File Download</li><br>
+                    <li><b>Package Name:</b>com.example.springbootreactfiledownload</li><br>
+                    <li><b>Packaging:</b> Jar</li><br>
+                    <li><b>Java Version:</b> 17 (or your preferred version)</li><br>
+                    <li> Click Next.</li> <br>
+                </ul>
+                <p>3. <b>Select Dependencies:</b></p>
+                <li>On the Dependencies screen, select the dependencies you need</li>
+                <ul>
+                    <li> Spring Web</li><br>
+                    <li>Spring Boot DevTools</li><br>
+                </ul>
+                <li>Click Next. </li>
+                <p>4. <b>Generate the Project:</b></p>
+                <ul>
+                    <li>
+                        Click Generate to download the project zip file.</li><br>
+                    <li>Extract the zip file to your desired location.</li><br>
+                </ul>
+                <p>5. <b>Open the Project in Your IDE:</b></p>
+                <ul>
+                    <li>Open your IDE and import the project as a Maven project.</li>
+                </ul>
+                <h3>1.2 Project Structures</h3>
+                <p>After importing the project, you will see the following structure in your IDE:</p>
+                <pre><code>
+    spring-boot-react-auth
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── com
+│   │   │       └── example
+│   │   │           └── springbootreactauth
+│   │   │               ├── SpringBootReactAuthApplication.java
+│   │   │               ├── config
+│   │   │               ├── controller
+│   │   │               ├── model
+│   │   │               ├── repository
+│   │   │               └── service
+│   ├── main
+│   │   └── resources
+│   │       ├── application.properties
+│   └── test
+│       └── java
+│           └── com
+│               └── example
+│                   └── springbootreactauth
+│                       └── SpringBootReactAuthApplicationTests.java
+└── pom.xml
+</code></pre>
+                <h2>Step 2: Creating the Backend</h2>
+                <h3>2.1 Create the File Download Service</h3>
+                <p>This service will handle retrieving the files from the server.</p>
+                <p>In the service package, create a new Java class named FileDownloadService:</p>
+                <pre><code>
+                    package com.example.springbootreactfiledownload.service;
+
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Service;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+@Service
+public class FileDownloadService {
+
+    private final Path fileStorageLocation = Paths.get("uploads").toAbsolutePath().normalize();
+
+    public Resource loadFileAsResource(String fileName) {
+        try {
+            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+            if (resource.exists()) {
+                return resource;
+            } else {
+                throw new RuntimeException("File not found " + fileName);
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException("File not found " + fileName, ex);
+        }
+    }
+
+}</code>  </pre>
+<h3>Explanation:</h3>
+<ul>
+    <li><b>Path Initialization: </b>The fileStorageLocation is initialized to the "uploads" directory in the project root. This<br><br> is where the files will be stored.</li><br>
+    <li><b>Load File Method:</b> The loadFileAsResource method loads a file as a resource by its name. If the file <br><br>exists, it returns the resource; otherwise, it throws an exception.</li><br>
+</ul>
+<h3>2.2 Create the File Download Controller</h3>
+<p>This controller will expose the REST API endpoint to handle file downloads.</p>
+<p>In the controller package, create a new Java class named FileDownloadController:</p>
+<pre><code>
+    package com.example.springbootreactfiledownload.controller;
+
+import com.example.springbootreactfiledownload.service.FileDownloadService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/files")
+public class FileDownloadController {
+
+    private final FileDownloadService fileDownloadService;
+
+    @Autowired
+    public FileDownloadController(FileDownloadService fileDownloadService) {
+        this.fileDownloadService = fileDownloadService;
+    }
+
+    @GetMapping("/download/{fileName:.+}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
+        Resource resource = fileDownloadService.loadFileAsResource(fileName);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
+}
+</code></pre>
+<h3>Explanation:</h3>
+<ul>
+    <li><b>File Download Endpoint:</b> The /download/{fileName} endpoint handles GET requests to download files. It<br><br> receives the file name as a path variable and loads the file as a resource using the FileDownloadService.</li><br>
+    <li><b>Response:</b> It returns the file as an attachment in the response.</li><br>
+</ul>
+<h3>2.3 Update application.properties</h3>
+<p>Ensure the application.properties file is set up correctly:</p>
+<pre><code>
+    # File upload properties
+spring.servlet.multipart.max-file-size=2MB
+spring.servlet.multipart.max-request-size=2MB
+</code></pre>
+<h2>Step 3: Creating the Frontend with React</h2>
+<h3>3.1 Set Up React Project</h3>
+<p>1.Open a terminal and navigate to your workspace directory.</p>
+<p>2.Create a new React project using Create React App:</p>
+<pre><code>npx create-react-app react-frontend</code></pre>
+<p>3.Navigate to the project directory:</p>
+<pre><code>cd react-frontend</code></pre>
+<h3>3.2 Install Axios</h3>
+<p>Install Axios to make HTTP requests:</p>
+<pre><code>
+    npm install axios
+</code></pre>
+<h3>3.3 Install Bootstrap</h3>
+<p>Install Bootstrap for styling:</p>
+<pre><code>npm install bootstrap</code></pre>
+<h3>3.4 Create Components</h3>
+<p>Create the necessary components for the file download functionality.</p>
+<h3>3.4.1 Create FileDownloadService.js</h3>
+<p>Create a new file FileDownloadService.js in the src directory to handle API requests:</p>
+<pre><code>
+    import axios from 'axios';
+
+const API_BASE_URL = "http://localhost:8080/api/files";
+
+class FileDownloadService {
+    downloadFile(fileName) {
+        return axios.get(`${API_BASE_URL}/download/${fileName}`, {
+            responseType: 'blob',
+        });
+    }
+}
+
+export default new FileDownloadService();
+</code></pre>
+<h3>Explanation:</h3>
+
+ 
+<ul></ul>
+    <li><b>API Base URL: </b>  The base URL for the API endpoints.</li><br>
+    <li><b>downloadFile Method:</b>This method takes a file name as input and sends a GET request to the backend API <br><br> to download the file.</li><br>
+</ul>
+<h3>3.4.2 Create FileDownloadComponent.js</h3>
+<p>Create a new file FileDownloadComponent.js in the src/components directory:</p>
+<pre><code>
+    import React, { useState } from 'react';
+import FileDownloadService from '../FileDownloadService';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const FileDownloadComponent = () => {
+    const [fileName, setFileName] = useState('');
+    const [message, setMessage] = useState('');
+
+    const handleFileChange = (e) => {
+        setFileName(e.target.value);
+    };
+
+    const handleFileDownload = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await FileDownloadService.downloadFile(fileName);
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+            setMessage('File downloaded successfully!');
+        } catch (error) {
+            setMessage('File download failed!');
+        }
+    };
+
+    return (
+        < div className="container mt-5">
+            < div className="row justify-content-center">
+                < div className="col-md-6">
+                    < div className="card">
+                        < div className="card-header">File Download< /div>
+                        < div className="card-body">
+                            {message && < div className="alert alert-info">{message}< /div>}
+                            < form onSubmit={handleFileDownload}>
+                                < div className="form-group">
+                                    < label>Enter file name< /label>
+                                    < input
+                                        type="text"
+                                        className="form-control"
+                                        value={fileName}
+                                        onChange={handleFileChange}
+                                    />
+                                < /div>
+                                < button type="submit" className="btn btn-primary mt-3
+
+">Download< /button>
+                            < /form>
+                        < /div>
+                    < /div>
+                < /div>
+            < /div>
+        < /div>
+    );
+};
+
+export default FileDownloadComponent;
+</code></pre>
+<h3>Explanation:</h3>
+<ul>
+    <li><b>File Name Input: </b>The handleFileChange method sets the file name to the component's state when a file<br><br> name is entered.</li><br>
+    <li><b>File Download:</b> The handleFileDownload method sends the file name to the backend API using<br><br> FileDownloadService and handles the response or error messages. If the download is successful, it creates<br><br> a link to download the file and triggers a click event to download it.</li><br>
+    <li><b>UI:</b> The component renders a form with an input for the file name and a submit button. It displays<br><br> messages based on the file download result.</li><br>
+</ul>
+<h3>3.4.3 Create App.js</h3>
+<p>Modify the App.js file to include the file download component:</p>
+<pre><code>
+import React from 'react';
+import FileDownloadComponent from './components/FileDownloadComponent';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const App = () => {
+    return (
+        < div className="container">
+            < FileDownloadComponent />
+        < /div>
+    );
+};
+
+export default App;
+</code></pre>
+<h3>3.4.4 Update index.js</h3>
+<p>Ensure the index.js file is set up correctly:</p>
+<pre><code>
+    import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+    < React.StrictMode>
+        < App />
+    < /React.StrictMode>
+);
+</code></pre>
+<h2>Step 4: Running the Application</h2>
+<h3>4.1 Run the Spring Boot Application</h3>
+<p>1.Open the SpringBootReactFileDownloadApplication class in the src/main/java/com/example/springbootreactfiledownload directory.</p>
+<p>Click the green Run button in your IDE or use the terminal to run the application:</p>
+<pre><code>./mvnw spring-boot:run</code></pre>
+<h3>4.2 Run the React Application</h3>
+<p>1.Open a terminal and navigate to the react-frontend directory.</p>
+<p>2.Start the React application:</p>
+<pre><code>npm start</code></pre>
+<p>3.Open your web browser and navigate to http://localhost:3000.</p>
+<p>You can now use the file download functionality provided by the React frontend and Spring Boot backend.</p>
+<h2>Conclusion</h2>
+<p>In this tutorial, we created a full-stack application using Spring Boot for the backend and React (with functional <br><br> components and hooks) for the frontend. We implemented a file download functionality and created a simple file<br><br> download form with React. This setup provides a solid foundation for developing more complex full-stack<br><br> applications with file download capabilities.</p><br>
+<h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+</div>
+        </div>
+    </div>
+</body>
+
+</html>

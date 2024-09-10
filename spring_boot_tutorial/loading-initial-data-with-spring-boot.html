@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Initial Data with Spring Boot </title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Loading Initial Data with Spring Boot</h1>
+                <h4>author : Sai K</h4>
+                <p>Loading initial data into your database is a common requirement for many applications, whether it's
+                    for setting up <br><br>a development environment or for ensuring certain data is present in production.
+                    Spring Boot provides several<br><br> ways to load initial data into your database. This guide will cover the
+                    most common methods, including using <br><br>.sql, schema.sql, and import.sql files, as well as using
+                    JPA's @PostConstruct annotation.</p><br>
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li>JDK 17 or later</li><br>
+                    <li>Maven or Gradle </li><br>
+                    <li>IDE (IntelliJ IDEA, Eclipse, etc.)</li><br>
+                </ul>
+                <h2>Step 1: Set Up a Spring Boot Project</h2>
+                <h3>1.1 Create a New Spring Boot Project</h3>
+                <p>Use <a href="https://start.spring.io/">Spring Initializr</a> to create a new project with the
+                    following dependencies: </p>
+                <ul>
+                    <li>Spring Web</li><br>
+                    <li>Spring Data JPA</li><br>
+                    <li>H2 Database (or any other database of your choice)</li><br>
+                </ul>
+                <p>Download and unzip the project, then open it in your IDE. </p>
+                <h2>Step 2: Configure the Database</h2>
+                <h3>2.1 Configure application.properties </h3>
+                <p>Set up your database configuration in the src/main/resources/application.properties file. For this
+                    guide, we'll use <br><br>an in-memory H2 database.</p>
+                <pre><code>
+# src/main/resources/application.properties
+
+# H2 Database configuration
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.datasource.platform=h2
+
+# Hibernate configuration
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+</code></pre>
+<h2>Step 3: Define Your Entity</h2>
+<p>Create a simple Student entity in the com.example.demo.entity package.</p>
+<pre><code>
+package com.example.demo.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String email;
+
+    // Getters and setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+}
+</code></pre>
+<h2>Step 4: Load Initial Data Using data.sql</h2>
+<h3>4.1 Create data.sql File</h3>
+<p>Create a data.sql file in the src/main/resources directory. This file will be executed after the schema is created.</p>
+<pre><code>
+-- src/main/resources/data.sql
+
+INSERT INTO student (name, email) VALUES ('Ramesh Fadatare', 'ramesh.fadatare@example.com');
+INSERT INTO student (name, email) VALUES ('Ram Jadhav', 'ram.jadhav@example.com');
+</code></pre>
+<h3>Explanation:</h3>
+<p>The data.sql file contains SQL statements to insert initial data into the student table.</p>
+<h3>4.2 Verify Data Loadings</h3>
+<p>Run the Spring Boot application and verify that the data has been loaded by querying the database or by<br><br> creating a simple controller to fetch the data.</p>
+<pre><code>
+package com.example.demo.controller;
+
+import com.example.demo.entity.Student;
+import com.example.demo.repository.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+public class StudentController {
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @GetMapping("/students")
+    public List<Student> getStudents() {
+        return studentRepository.findAll();
+    }
+}
+</code></pre>
+<h2>Step 5: Load Initial Data Using JPA's @PostConstruct</h2>
+<p>Another way to load initial data is to use the @PostConstruct annotation in a service or component class.</p>
+<h3>5.1 Create a Service to Load Initial Data</h3>
+<p>Create a service class named DataLoader in the com.example.demo.service package.</p>
+<pre><code>
+package com.example.demo.service;
+
+import com.example.demo.entity.Student;
+import com.example.demo.repository.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import jakarta.annotation.PostConstruct;
+
+@Service
+public class DataLoader {
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @PostConstruct
+    public void loadData() {
+        studentRepository.save(new Student(null, "Ramesh Fadatare", "ramesh.fadatare@example.com"));
+        studentRepository.save(new Student(null, "Ram Jadhav", "ram.jadhav@example.com"));
+    }
+}
+</code></pre>
+<h3>Explanation:</h3>
+<p>
+    @PostConstruct: Annotates a method to be executed after the bean's initialization. This method loads initial data <br><br>into the database.
+</p><br>
+<h2>Step 6: Using schema.sql for Schema Creation</h2>
+<p>If you need to create the schema explicitly, you can use the schema.sql file.</p>
+<h3>6.1 Create schema.sql File</h3>
+<p>Create a schema.sql file in the src/main/resources directory.</p>
+<pre><code>
+    -- src/main/resources/schema.sql
+
+    CREATE TABLE IF NOT EXISTS student (
+        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL
+    );
+</code></pre>
+<h3>Explanation:</h3>
+<p>The schema.sql file contains SQL statements to create the schema.</p>
+<h2>Step 7: Using import.sql with Hibernate</h2>
+<p>If you're using Hibernate, you can use the import.sql file to load data. This file will be executed by Hibernate after <br><br>the schema is created.</p><br>
+<h3>7.1 Create import.sql File</h3>
+<p>Create an import.sql file in the src/main/resources directory.</p>
+<pre><code>
+    -- src/main/resources/import.sql
+
+INSERT INTO student (name, email) VALUES ('Ramesh Fadatare', 'ramesh.fadatare@example.com');
+INSERT INTO student (name, email) VALUES ('Ram Jadhav', 'ram.jadhav@example.com');
+</code></pre>
+<h3>Explanation:</h3>
+<p>The import.sql file contains SQL statements to insert initial data into the student table.</p>
+<h2>Conclusion:</h2>
+<p>In this guide, you have learned several methods to load initial data in a Spring Boot application:</p>
+<ul>
+    <li>Using data.sql</li><br>
+    <li>  Using JPA's @PostConstruct</li><br>
+    <li>Using schema.sql for schema creation</li><br>
+    <li>Using import.sql with Hibernate</li><br>
+</ul>
+<p>By following these steps, you can ensure that your database is populated with the necessary initial data for <br><br>development or production environments.</p><br>
+<h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

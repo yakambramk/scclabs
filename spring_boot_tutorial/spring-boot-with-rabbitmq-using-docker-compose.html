@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot with MongoDB Using Docker Compose: A Step-by-Step Tutorial</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Boot with MongoDB Using Docker Compose: A Step-by-Step Tutorial</h1>
+                <h4>author : Sai K</h4>
+                <P>Docker Compose is a powerful tool that allows you to define and run multi-container Docker
+                    applications. In this<br><br> tutorial, we will set up a Spring Boot application that interacts with
+                    MongoDB
+                    using Docker Compose. This will <br><br>enable us to run MongoDB and our Spring Boot application in
+                    separate
+                    containers.</P><br>
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li>JDK 17 or later</li><br>
+                    <li>Maven </li><br>
+                    <li>Docker and Docker Compose installed on your machine</li><br>
+                    <li>IDE (IntelliJ IDEA, Eclipse, etc.)</li><br>
+                </ul>
+                <h3>1.1 Create a New Spring Boot Project</h3>
+                <p>Use <a href="https://start.spring.io/">Spring Initializr</a> to create a new project with the
+                    following configuration:</p>
+                <ul>
+                    <li>Project: Maven Project</li><br>
+                    <li>Language: Java</li><br>
+                    <li>Spring Boot: 3.2.x</li><br>
+                    <li>Dependencies: Spring Web, Spring Data MongoDB</li><br>
+                </ul>
+                <p>Download and unzip the project, then open it in your IDE. </p>
+                <h3>Example Spring Boot Application</h3>
+                <p>Create a simple Spring Boot application that interacts with RabbitMQ.</p>
+                <h3>1.1 Application Class</h3>
+                <pre><code>
+                    package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+} </code></pre>
+                <h3>1.2 RabbitMQ Configuration</h3>
+                <p>Create a configuration class for RabbitMQ in the com.example.demo.config package.</p>
+                <pre><code>
+package com.example.demo.config;
+
+import org.springframework.amqp.core.Queue;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class RabbitMQConfig {
+
+    public static final String QUEUE_NAME = "test_queue";
+
+    @Bean
+    public Queue queue() {
+        return new Queue(QUEUE_NAME, false);
+    }
+}
+</code></pre>
+                <h3>1.3 RabbitMQ Producer Service</h3>
+                <p>Create a service class for the RabbitMQ producer in the com.example.demo.service package.</p>
+                <pre><code>
+    package com.example.demo.service;
+
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class RabbitMQProducerService {
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    private static final String QUEUE_NAME = "test_queue";
+
+    public void sendMessage(String message) {
+        rabbitTemplate.convertAndSend(QUEUE_NAME, message);
+    }
+}
+</code></pre>
+                <h3>1.4 RabbitMQ Consumer Service</h3>
+                <p>Create a service class for the RabbitMQ consumer in the com.example.demo.service package.</p>
+                <pre><code>
+    package com.example.demo.service;
+
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.stereotype.Service;
+
+@Service
+public class RabbitMQConsumerService {
+
+    @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
+    public void receiveMessage(String message) {
+        System.out.println("Received message: " + message);
+    }
+}
+</code></pre>
+                <h3>1.5 REST Controller</h3>
+                <p>Create a MessageController class in the com.example.demo.controller package to send messages to
+                    RabbitMQ.</p>
+                <pre><code>
+    package com.example.demo.controller;
+
+import com.example.demo.service.RabbitMQProducerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class MessageController {
+
+    @Autowired
+    private RabbitMQProducerService rabbitMQProducerService;
+
+    @PostMapping("/send")
+    public String sendMessage(@RequestParam("message") String message) {
+        rabbitMQProducerService.sendMessage(message);
+        return "Message sent to RabbitMQ successfully";
+    }
+}
+</code></pre>
+                <h3>1.6 application.properties Configuration</h3>
+                <p>Configure your application to use RabbitMQ. In the src/main/resources directory, create or update the
+                    application.properties file.</p>
+                <pre><code>
+    # src/main/resources/application.properties
+
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+</code></pre>
+                <h2>Step 2: Create Docker Compose Configuration</h2>
+                <p>Docker Compose allows you to define and run multi-container Docker applications. You will create a
+                    docker-<br><br>compose.yml file to define the services for your Spring Boot application and RabbitMQ.</p><br>
+                <h3>2.1 Create docker-compose.yml</h3>
+                <p>Create a docker-compose.yml file in the root directory of your project.</p>
+                <pre><code>
+    version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  app:
+    image: demo-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    depends_on:
+      - rabbitmq
+
+volumes:
+  rabbitmq_data:
+</code></pre>
+                <h3>Explanation:</h3>
+                <li>rabbitmq: Defines the RabbitMQ service.</li><br>
+                <ul>
+                    <li>image: Specifies the Docker image to use.</li><br>
+                    <li>ports: Maps the container ports to the host ports.</li><br>
+                    <li>volumes: Persists the RabbitMQ data. </li><br>
+                </ul>
+                <li>app: Defines the Spring Boot application service.</li><br>
+                <ul>
+                    <li>depends_on: Ensures the RabbitMQ service is started before the Spring Boot application.
+                    </li><br>
+                    <li> environment: Sets the RabbitMQ host, port, username, and password for the Spring Boot
+                        application.</li><br>
+                </ul>
+                <h3>2.2 Create a Dockerfile </h3>
+                <p>Create a Dockerfile in the root directory of your project.</p>
+                <pre><code>
+# Use the official OpenJDK base image
+FROM openjdk:17-jdk-alpine
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the built jar file into the container
+COPY target/demo-0.0.1-SNAPSHOT.jar app.jar
+
+# Expose port 8080
+EXPOSE 8080
+
+# Run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
+                </code></pre>
+                <h2>Step 3: Build and Run the Application</h2>
+                <h3>3.1 Build the Jar File</h3>
+                <p>Run the following command to build the jar file of your Spring Boot application:</p>
+                <pre><code>./mvnw clean package</code></pre>
+                <h3>3.2 Build and Run Docker Compose</h3>
+                <p>Run the following command to build and start the Docker Compose services:</p>
+                <pre><code>
+            docker-compose up --build
+           </code></pre>
+                <h3>3.3 Verify the Application</h3>
+                <p>Open a web browser or a tool like Postman and navigate to the following URL to test the endpoints:
+                </p>
+                <p>1. <b>Send a message to RabbitMQ: </b></p>
+                <ul>
+                    <li>URL: http://localhost:8080/send?message=HelloRabbitMQ</li><br>
+                    <li>Method: POST</li><br>
+                </ul>
+                <p>Check the console output to see the consumed message:</p>
+                <pre><code>Received message: HelloRabbitMQ</code></pre>
+
+                <h2>Conclusion</h2>
+                <p>In this tutorial, you have learned how to set up and run a Spring Boot application with RabbitMQ
+                    using<br><br> Docker Compose. We covered:</p><br>
+                <ul>
+                    <li>Setting up a Spring Boot project with RabbitMQ.</li><br>
+                    <li> Creating RabbitMQ producer and consumer services.</li><br>
+                    <li> Creating a REST controller to send messages to RabbitMQ.</li><br>
+                    <li> Creating a Dockerfile for the Spring Boot application.</li><br>
+                    <li>Creating a docker-compose.yml file to define the services.</li><br>
+                    <li> Building and running the application using Docker Compose.</li><br>
+                </ul>
+                <p>By following these steps, you can easily manage and deploy your Spring Boot application and its
+                    dependencies <br><br>using Docker Compose, enabling seamless interaction with RabbitMQ.</p><br>
+                <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

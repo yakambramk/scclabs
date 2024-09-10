@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot React JWT Authentication Example</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Boot React JWT Authentication Example</h1>
+                <h4>author : Sai K</h4>
+                <P>In this tutorial, we will create a full-stack application using Spring Boot for the backend and React
+                    (using functional components and hooks) for the frontend. We will implement JWT-based authentication
+                    using Spring Security 6+ and React 18. The tutorial will cover setting up the project, configuring
+                    Spring Security, creating a Spring Boot REST API for user authentication with JWT, and building a
+                    React application for the same. We will also use Bootstrap for styling.
+                </P><br>
+                <h2>Prerequisites</h2>
+                <p>Before we start, ensure you have the following:</p>
+                <ul>
+                    <li>Java Development Kit (JDK) installed</li><br>
+                    <li>Apache Maven installed</li><br>
+                    <li>Node.js and npm installed</li><br>
+                    <li>An IDE (such as IntelliJ IDEA, Eclipse, or VS Code) installed</li><br>
+                </ul>
+                <h1>Step 1: Setting Up the Spring Boot Project</h1>
+                <h3>1.1 Create a Spring Boot Project</h3>
+                <p>Go to <a href="https://start.spring.io/">Spring Initializr</a> n your web browser.
+                </p>
+                <p>2.Configure Project Metadata:</p>
+                <ul>
+                    <li><b>Project:</b> Maven Project</li><br>
+                    <li><b>Language:</b> Java</li><br>
+                    <li><b>Spring Boot:</b> Select the latest version of Spring Boot</li><br>
+                    <li><b>Group:</b> com.example</li><br>
+                    <li><b>Artifact:</b> spring-boot-react-jwt</li><br>
+                    <li><b>Name:</b> spring-boot-react-jwt</li><br>
+                    <li><b>Description:</b> Full Stack Application with Spring Boot and React for JWT Authentication
+                    </li><br>
+                    <li><b>Package Name:</b> com.example.springbootreactjwt</li><br>
+                    <li><b>Packaging:</b> Jar</li><br>
+                    <li><b>Java Version:</b> 17 (or your preferred version)</li><br>
+                    <li>Click Next. </li>
+                </ul>
+                <p>3.Select Dependencies:</p>
+                <li>On the Dependencies screen, select the dependencies you need. For user authentication, you can start
+                    with: </li>
+                <ul>
+                    <li><b>Spring Web</b></li><br>
+                    <li><b>Spring Security</b></li><br>
+                    <li><b>Spring Data JPA</b></li><br>
+                    <li><b>H2 Database</b></li><br>
+                    <li><b>Spring Boot DevTools</b></li><br>
+                    <li><b>JSON Web Token (JWT)</b></li><br>
+                </ul>
+                <li>Click Next.<br></li>
+                <p>4.Generate the Project:</p>
+                <ul>
+                    <li>Click Generate to download the project zip file.</li><br>
+                    <li>Extract the zip file to your desired location.</li><br>
+                </ul>
+                <p>5.Open the Project in Your IDE:</p>
+                <ul>
+                    <li>Open your IDE and import the project as a Maven project.</li><br>
+                </ul>
+                <h3>1.2 Maven Dependencies</h3>
+                <p>Here's a pom.xml file for the Spring Boot and JWT authentication tutorial:</p>
+                <pre><code>
+    < ?xml version="1.0" encoding="UTF-8"?>
+< project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    < modelVersion>4.0.0< /modelVersion>
+
+    < groupId>com.example< /groupId>
+    < artifactId>spring-boot-react-jwt< /artifactId>
+    < version>0.0.1-SNAPSHOT< /version>
+    < name>spring-boot-react-jwt< /name>
+    < description>Full Stack Application with Spring Boot and React for JWT Authentication</description>
+    < packaging>jar< /packaging>
+
+    < parent>
+        < groupId>org.springframework.boot< /groupId>
+        < artifactId>spring-boot-starter-parent< /artifactId>
+        < version>3.0.6< /version>
+        < relativePath/> <!-- lookup parent from repository -->
+    < /parent>
+
+    < properties>
+        < java.version>17< /java.version>
+        < jjwt.version>0.11.5< /jjwt.version>
+    < /properties>
+
+    < dependencies>
+        <!-- Spring Boot dependencies -->
+        < dependency>
+            < groupId>org.springframework.boot< /groupId>
+            < artifactId>spring-boot-starter-web< /artifactId>
+        < /dependency>
+        < dependency>
+            < groupId>org.springframework.boot< /groupId>
+            < artifactId>spring-boot-starter-data-jpa< /artifactId>
+        < /dependency>
+        < dependency>
+            < groupId>org.springframework.boot< /groupId>
+            < artifactId>spring-boot-starter-security< /artifactId>
+        < /dependency>
+        < dependency>
+            < groupId>org.springframework.boot< /groupId>
+            < artifactId>spring-boot-devtools< /artifactId>
+            < scope>runtime< /scope>
+            < optional>true< /optional>
+        < /dependency>
+
+        <!-- H2 Database -->
+        < dependency>
+            < groupId>com.h2database< /groupId>
+            < artifactId>h2< /artifactId>
+            < scope>runtime< /scope>
+        < /dependency>
+
+        <!-- JWT dependencies -->
+        < dependency>
+            < groupId>io.jsonwebtoken< /groupId>
+            < artifactId>jjwt-api< /artifactId>
+            < version>${jjwt.version}< /version>
+        < /dependency>
+        < dependency>
+            < groupId>io.jsonwebtoken< /groupId>
+            < artifactId>jjwt-impl< /artifactId>
+            < version>${jjwt.version}< /version>
+            < scope>runtime< /scope>
+        < /dependency>
+        < dependency>
+            < groupId>io.jsonwebtoken< /groupId>
+            < artifactId>jjwt-jackson< /artifactId> <!-- or jjwt-gson if preferred -->
+            < version>${jjwt.version}< /version>
+            < scope>runtime< /scope>
+        < /dependency>
+    < /dependencies>
+
+    < build>
+        < plugins>
+            < plugin>
+                < groupId>org.springframework.boot< /groupId>
+                < artifactId>spring-boot-maven-plugin< /artifactId>
+            < /plugin>
+        < /plugins>
+    < /build>
+< /project>
+</code></pre>
+                <p>I suggest using the same JWT dependency versions as the ones used in this tutorial.</p>
+                <h3>1.3 Project Structure</h3>
+                <p>After importing the project, you will see the following structure in your IDE:</p>
+                <pre><code>
+    spring-boot-react-jwt
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── com
+│   │   │       └── example
+│   │   │           └── springbootreactjwt
+│   │   │               ├── SpringBootReactJwtApplication.java
+│   │   │               ├── config
+│   │   │               ├── controller
+│   │   │               ├── model
+│   │   │               ├── repository
+│   │   │               ├── security
+│   │   │               └── service
+│   ├── main
+│   │   └── resources
+│   │       ├── application.properties
+│   └── test
+│       └── java
+│           └── com
+│               └── example
+│                   └── springbootreactjwt
+│                       └── SpringBootReactJwtApplicationTests.java
+└── pom.xml
+</code></pre>
+                <h2>Step 2: Creating the Backend</h2>
+                <h3>2.1 Configure H2 Database</h3>
+                <p>Open the application.properties file located in the src/main/resources directory and add the
+                    following <br><br>configuration:</p><br>
+                <pre><code>
+ # H2 Database configuration
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+
+# JPA settings
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# JWT configuration
+jwt.secret=your_jwt_secret_key
+jwt.expiration=3600000
+</code></pre>
+                <h3>2.2 Create the User Entity</h3>
+                <p>In the model package, create a new Java class named User:</p>
+                <pre><code>
+    package com.example.springbootreactjwt.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String username;
+    private String password;
+    private String role;
+
+    // Getters and Setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+}
+</code></pre>
+                <h3>2.3 Create the UserRepository Interface</h3>
+                <p>In the repository package, create a new Java interface named UserRepository:</p>
+                <pre><code>
+    package com.example.springbootreactjwt.repository;
+
+import com.example.springbootreactjwt.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findByUsername(String username);
+}
+</code></pre>
+                <h3>2.4 Create the UserService Interface</h3>
+                <p>In the service package, create a new Java interface named UserService:</p>
+                <pre><code>
+    package com.example.springbootreactjwt.service;
+
+import com.example.springbootreactjwt.model.User;
+
+public interface UserService {
+    User findByUsername(String username);
+    User saveUser(User user);
+}
+</code></pre>
+                <h3>2.5 Implement the UserService Interface</h3>
+                <p>In the service package, create a new Java class named UserServiceImpl:</p>
+                <pre><code>
+    package com.example.springbootreactjwt.service;
+
+import com.example.springbootreactjwt.model.User;
+import com.example.springbootreactjwt.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+}
+</code></pre>
+                <h3>2.6 Create JWT Utility Class</h3>
+                <p>In the security package, create a new Java class named JwtTokenUtil:</p>
+                <pre><code>
+    package com.example.springbootreactjwt.security;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+import java.util.function.Function;
+
+@Component
+public class JwtTokenUtil {
+
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.expiration}")
+    private Long expiration;
+
+    public String generateToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
+    }
+
+    public Boolean validateToken(String token, String username) {
+        final String tokenUsername = getUsernameFromToken(token);
+        return (tokenUsername.equals(username) && !isTokenExpired(token));
+    }
+
+    public String getUsernameFromToken(String token) {
+        return getClaimFromToken(token, Claims::getSubject);
+    }
+
+    public Date getExpirationDateFromToken(String token) {
+        return getClaimFromToken(token, Claims::getExpiration);
+    }
+
+    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = getAllClaimsFromToken(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims getAllClaimsFromToken(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+    }
+
+    private Boolean isTokenExpired(String token) {
+        final Date expiration = getExpirationDateFromToken(token);
+        return expiration.before(new Date());
+    }
+}
+</code></pre>
+                <h3>2.7 Create JWT Authentication Filter</h3>
+                <p>In the security package, create a new Java class named JwtAuthenticationFilter:</p>
+                <pre><code>
+    package com.example.springbootreactjwt.security;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private UserDetailsService userDetailsService
+
+;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
+        String jwt = getJwtFromRequest(request);
+        if (jwt != null && jwtTokenUtil.validateToken(jwt, jwtTokenUtil.getUsernameFromToken(jwt))) {
+            String username = jwtTokenUtil.getUsernameFromToken(jwt);
+            var userDetails = userDetailsService.loadUserByUsername(username);
+            var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+        chain.doFilter(request, response);
+    }
+
+    private String getJwtFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+}
+</code></pre>
+                <h3>2.8 Configure Spring Security</h3>
+                <p>Create a new Java class named SecurityConfig in the config package:</p>
+                <pre><code>
+    package com.example.springbootreactjwt.config;
+
+import com.example.springbootreactjwt.security.JwtAuthenticationFilter;
+import com.example.springbootreactjwt.service.UserServiceImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    private final UserServiceImpl userService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public SecurityConfig(UserServiceImpl userService, JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.userService = userService;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> {
+            var user = userService.findByUsername(username);
+            if (user == null) {
+                throw new UsernameNotFoundException("User not found");
+            }
+            return org.springframework.security.core.userdetails.User
+                    .withUsername(user.getUsername())
+                    .password(user.getPassword())
+                    .roles(user.getRole())
+                    .build();
+        };
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(authorizeRequests ->
+                authorizeRequests.requestMatchers("/api/login").permitAll()
+                    .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
+}
+</code></pre>
+                <h3>2.9 Create the AuthController Class</h3>
+                <p>In the controller package, create a new Java class named AuthController:</p>
+                <pre><code>
+    package com.example.springbootreactjwt.controller;
+
+import com.example.springbootreactjwt.model.User;
+import com.example.springbootreactjwt.security.JwtTokenUtil;
+import com.example.springbootreactjwt.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api")
+public class AuthController {
+
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final UserService userService;
+
+    @Autowired
+    public AuthController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, UserService userService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.userService = userService;
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody User user) {
+        try {
+            var authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+            var authentication = authenticationManager.authenticate(authenticationToken);
+            var jwt = jwtTokenUtil.generateToken(authentication.getName());
+            return jwt;
+        } catch (AuthenticationException e) {
+            return "Invalid credentials";
+        }
+    }
+}
+</code></pre>
+                <h2>Step 3: Creating the Frontend with React</h2>
+                <h3>3.1 Set Up React Project</h3>
+                <p>1.Open a terminal and navigate to your workspace directory.</p>
+                <p>2.Create a new React project using Create React App:</p>
+                <pre><code>npx create-react-app react-frontend</code></pre>
+                <p>3.Navigate to the project directory:</p>
+                <pre><code>cd react-frontend</code></pre>
+                <h3>3.2 Install Axios and React Router DOM</h3>
+                <p>Install Axios to make HTTP requests and React Router DOM for routing:</p>
+                <pre><code>npm install axios react-router-dom@6</code></pre>
+                <h3>3.3 Install Bootstrap</h3>
+                <p>Install Bootstrap for styling:</p>
+                <pre><code>npm install bootstrap</code></pre>
+                <h3>3.4 Create Components</h3>
+                <p>Create the necessary components for the user login functionality.</p>
+                <h3>3.4.1 Create AuthService.js</h3>
+                <p>Create a new file AuthService.js in the src directory to handle API requests:</p>
+                <pre><code>
+ import axios from 'axios';
+
+const API_BASE_URL = "http://localhost:8080/api";
+
+class AuthService {
+    login(credentials) {
+        return axios.post(`${API_BASE_URL}/login`, credentials);
+    }
+}
+
+export default new AuthService();
+</code></pre>
+                <h3>3.4.2 Create LoginComponent.js</h3>
+                <p>Create a new file LoginComponent.js in the src/components directory:</p>
+                <h3>3.4.3 Create DashboardComponent.js</h3>
+                <p>Create a new file DashboardComponent.js in the src/components directory:</p>
+                <pre><code>
+    import React from 'react';
+
+const DashboardComponent = () => {
+    return (
+         < div className="container mt-5">
+            < h2>Dashboard< /h2>
+            < p>Welcome to the dashboard!< /p>
+        < /div>
+    );
+};
+
+export default DashboardComponent;
+
+</code></pre>
+                <h3>3.4.4 Create App.js</h3>
+                <p>Modify the App.js file to set up routing for the application:</p>
+                <pre><code>
+    import React from 'react';
+    import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+    import LoginComponent from './components/LoginComponent';
+    import DashboardComponent from './components/DashboardComponent';
+    
+    const App = () => {
+       return(
+            < Router>
+                < div className="container">
+                    < Routes>
+                        < Route path="/" element={< LoginComponent />} />
+                        < Route path="/login" element={< LoginComponent />} />
+                        < Route path="/dashboard" element={< DashboardComponent />} />
+                    < /Routes>
+                < /div>
+            < /Router>
+       ):
+    };
+    
+    export default App;
+    </code></pre>
+                <h3>3.4.5 Update index.js</h3>
+                <pre><code>
+        Ensure the index.js file is set up correctly:
+    </code></pre>
+    <pre><code>
+        import React from 'react';
+        import ReactDOM from 'react-dom/client';
+        import './index.css';
+        import App from './App';
+        import 'bootstrap/dist/css/bootstrap.min.css';
+        
+        const root
+        
+         = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(
+            < React.StrictMode>
+                < App />
+            < /React.StrictMode>
+        );
+        </code></pre>
+                <h2>Step 4: Running the Application</h2>
+                <h3>4.1 Run the Spring Boot Application</h3>
+                <p>1.Open the SpringBootReactJwtApplication class in the src/main/java/com/example/springbootreactjwt
+                    directory.</p>
+                <p>2.Click the green Run button in your IDE or use the terminal to run the application: </p>
+                <pre><code>./mvnw spring-boot:run</code></pre>
+                <h3>4.2 Run the React Application</h3>
+                <p>1.Open a terminal and navigate to the react-frontend directory.</p>
+                <p>2.Start the React application:</p>
+                <pre><code>
+                    npm start
+                </code></pre>
+                <p>3.Open your web browser and navigate to http://localhost:3000.</p>
+                <p>You can now use the login functionality provided by the React frontend and Spring Boot backend.</p>
+                <h2>Conclusion</h2>
+                <p>
+                    In this tutorial, we created a full-stack application using Spring Boot for the backend and React
+                    (with functional <br><br> components and hooks) for the frontend. We implemented JWT-based authentication
+                    using Spring Security 6+<br><br> and created a simple login page with React. This setup provides a solid
+                    foundation for developing more complex<br><br> full-stack applications with JWT authentication.
+                </p><br>
+                <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

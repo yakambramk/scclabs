@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot React User Registration and Login Example Tutorial</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Boot React User Registration and Login Example Tutorial</h1>
+                <h4>author : Sai K</h4>
+                <p>In this tutorial, we will create a full-stack application using Spring Boot for the backend and React
+                    (using <br><br> functional components and hooks) for the frontend. We will implement user
+                    registration and login functionalities<br><br> using Spring Security 6+ and React 18. The tutorial
+                    will cover setting up the project, configuring Spring Security,<br><br> creating a Spring Boot REST
+                    API for user registration and login, and building a React application for the same.<br><br> We will
+                    also use Bootstrap for styling.</p><br>
+
+                <h2>Prerequisites</h2>
+                <p>Before we start, ensure you have the following:</p>
+                <ul>
+                    <li>Java Development Kit (JDK) installed</li><br>
+                    <li>Apache Maven installed</li><br>
+                    <li>Node.js and npm installed</li><br>
+                    <li>An IDE (such as IntelliJ IDEA, Eclipse, or VS Code) installed</li><br>
+                </ul>
+                <h2>Step 1: Setting Up the Spring Boot Project</h2>
+                <h3>1.1 Create a Spring Boot Project</h3>
+                <p>1. <b>Open Spring Initializr:</b></p>
+                <li>
+                    <p>Go to <a href="https://start.spring.io/">Spring Initializr</a> in your web browser.</p>
+                </li>
+                <p>2. <b>Configure Project Metadata:</b></p>
+                <ul>
+                    <li><b>Project:</b> Maven Project</li><br>
+                    <li><b>Language:</b> Java</li><br>
+                    <li><b>Spring Boot:</b> Select the latest version of Spring Boot</li><br>
+                    <li><b>Group:</b> com.example</li><br>
+                    <li><b>Artifact:</b> spring-boot-react-auth</li><br>
+                    <li><b>Name:</b> spring-boot-react-auth</li><br>
+                    <li><b>Description:</b> Full Stack Application with Spring Boot and React for User Registration and
+                        Login</li><br>
+                    <li><b>Package Name:</b> com.example.springbootreactauth</li><br>
+                    <li><b>Packaging:</b> Jar</li><br>
+                    <li><b>Java Version:</b> 17 (or your preferred version)</li><br>
+                    <li> Click Next.</li> <br>
+                </ul>
+                <p>3. <b>Select Dependencies:</b></p>
+                <li>On the Dependencies screen, select the dependencies you need. For user authentication, you can start
+                    with:</li>
+                <ul>
+                    <li> Spring Web</li><br>
+                    <li>Spring Security</li><br>
+                    <li>Spring Data JPA</li><br>
+                    <li>H2 Database</li><br>
+                    <li>Spring Boot DevTools</li><br>
+                </ul>
+                <li>Click Next. </li>
+                <p>4. <b>Generate the Project:</b></p>
+                <ul>
+                    <li>
+                        Click Generate to download the project zip file.</li><br>
+                    <li>Extract the zip file to your desired location.</li><br>
+                </ul>
+                <p>5. <b>Open the Project in Your IDE:</b></p>
+                <ul>
+                    <li>Open your IDE and import the project as a Maven project.</li>
+                </ul>
+                <h3>1.2 Project Structures</h3>
+                <p>After importing the project, you will see the following structure in your IDE:</p>
+                <pre><code>
+    spring-boot-react-auth
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── com
+│   │   │       └── example
+│   │   │           └── springbootreactauth
+│   │   │               ├── SpringBootReactAuthApplication.java
+│   │   │               ├── config
+│   │   │               ├── controller
+│   │   │               ├── model
+│   │   │               ├── repository
+│   │   │               └── service
+│   ├── main
+│   │   └── resources
+│   │       ├── application.properties
+│   └── test
+│       └── java
+│           └── com
+│               └── example
+│                   └── springbootreactauth
+│                       └── SpringBootReactAuthApplicationTests.java
+└── pom.xml
+</code></pre>
+                <h2>Step 2: Creating the Backend</h2>
+                <h3>2.1 Configure H2 Database</h3>
+                <p>Open the application.properties file located in the src/main/resources directory and add the
+                    following <br><br> configuration:</p>
+                <pre><code>
+# H2 Database configuration
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+
+# JPA settings
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+</code></pre>
+                <h3>2.2 Create the User Entity</h3>
+                <p>In the model package, create a new Java class named User:</p>
+                <pre><code>
+    package com.example.springbootreactauth.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private String role;
+
+    // Getters and Setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+}
+</code></pre>
+                <h3>2.3 Create the UserRepository Interface</h3>
+                <p>In the repository package, create a new Java interface named UserRepository:</p>
+                <pre><code>
+    package com.example.springbootreactauth.repository;
+
+import com.example.springbootreactauth.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findByEmail(String email);
+}
+</code></pre>
+                <h3>2.4 Create the UserService Interface</h3>
+                <p>In the service package, create a new Java interface named UserService:</p>
+                <pre><code>
+    package com.example.springbootreactauth.service;
+
+import com.example.springbootreactauth.model.User;
+
+public interface UserService {
+    User findByEmail(String email);
+    User saveUser(User user);
+}
+</code></pre>
+                <h3>2.5 Implement the UserService Interface</h3>
+                <p>In the service package, create a new Java class named UserServiceImpl:</p>
+                <pre><code>
+    package com.example.springbootreactauth.service;
+
+import com.example.springbootreactauth.model.User;
+import com.example.springbootreactauth.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+}
+</code></pre>
+                <h3>2.6 Configure Spring Security</h3>
+                <p>Create a new Java class named SecurityConfig in the config package:</p>
+                <pre><code>
+    package com.example.springbootreactauth.config;
+
+import com.example.springbootreactauth.model.User;
+import com.example.springbootreactauth.service.UserServiceImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    private final UserServiceImpl userService;
+
+    public SecurityConfig(UserServiceImpl userService) {
+        this.userService = userService;
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return email -> {
+            User user = userService.findByEmail(email);
+            if (user == null) {
+                throw new UsernameNotFoundException("User not found");
+            }
+            return org.springframework.security.core.userdetails.User
+                    .withUsername(user.getEmail())
+                    .password(user.getPassword())
+                    .roles(user.getRole())
+                    .build();
+        };
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(authorizeRequests ->
+                authorizeRequests.requestMatchers("/api/register", "/api/login").permitAll()
+                    .anyRequest().authenticated()
+            )
+            .httpBasic();
+        return http.build();
+    }
+}
+</code></pre>
+                <h3>2.7 Create the UserController Class</h3>
+                <p>In the controller package, create a new Java class named UserController:</p>
+                <pre><code>
+    package com.example.springbootreactauth.controller;
+
+import com.example.springbootreactauth.model.User;
+import com.example.springbootreactauth.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+
+
+@RequestMapping("/api")
+public class UserController {
+
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @PostMapping("/register")
+    public String register(@RequestBody User user) {
+        User existingUser = userService.findByEmail(user.getEmail());
+        if (existingUser != null) {
+            return "Email already exists";
+        }
+        userService.saveUser(user);
+        return "User registered successfully";
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody User user) {
+        User existingUser = userService.findByEmail(user.getEmail());
+        if (existingUser != null && passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
+            return "Login successful";
+        } else {
+            return "Invalid credentials";
+        }
+    }
+}
+</code></pre>
+                <h2>Step 3: Creating the Frontend with React</h2>
+                <h3>3.1 Set Up React Project</h3>
+                <p>1.Open a terminal and navigate to your workspace directory.</p>
+                <p>2.Create a new React project using Create React App:</p>
+                <pre><code>npx create-react-app react-frontend</code></pre>
+                <p>3.Navigate to the project directory:</p>
+                <pre><code>cd react-frontend</code></pre>
+                <h3>3.2 Install Axios and React Router DOM</h3>
+                <p>Install Axios to make HTTP requests and React Router DOM for routing:</p>
+                <pre><code>npm install axios react-router-dom@6</code></pre>
+                <h3>3.3 Install Bootstrap</h3>
+                <p>Install Bootstrap for styling:</p>
+                <pre><code>npm install bootstrap</code></pre>
+                <h3>3.4 Create Components</h3>
+                <p>Create the necessary components for the user registration and login functionalities.</p>
+                <h3>3.4.1 Create AuthService.js</h3>
+                <p>Create a new file AuthService.js in the src directory to handle API requests:</p>
+                <pre><code>
+import axios from 'axios';
+
+const API_BASE_URL = "http://localhost:8080/api";
+
+class AuthService {
+    register(user) {
+        return axios.post(`${API_BASE_URL}/register`, user);
+    }
+
+    login(credentials) {
+        return axios.post(`${API_BASE_URL}/login`, credentials);
+    }
+}
+
+export default new AuthService();
+ </code></pre>
+                <h3>3.4.2 Create RegisterComponent.js</h3>
+                <p>Create a new file RegisterComponent.js in the src/components directory:</p>
+                <h3>3.4.3 Create LoginComponent.js</h3>
+                <p>Create a new file LoginComponent.js in the src/components directory:</p>
+                <h3>3.4.4 Create DashboardComponent.js</h3>
+                <p>Create a new file DashboardComponent.js in the src/components directory:</p>
+                <pre><code>
+import React from 'react';
+
+const DashboardComponent = () => {
+    return (
+        <div className="container mt-5">
+            <h2>Dashboard</h2>
+            <p>Welcome to the dashboard!</p>
+        </div>
+    );
+};
+export default DashboardComponent;
+</code></pre>
+<h3>3.4.5 Create App.js</h3>
+<p>Modify the App.js file to set up routing for the application:</p>
+<h2>Step 4: Running the Application</h2>
+<h3>4.1 Run the Spring Boot Application</h3>
+<p>1.Open the SpringBootReactAuthApplication class in the src/main/java/com/example/springbootreactauth <br><br> directory.</p><br>
+  <p> Click the green Run button in your IDE or use the terminal to run theapplication:</p> 
+  <pre><code>./mvnw spring-boot:run</code></pre>
+  <h3>4.2 Run the React Application</h3>
+  <p>1.Open a terminal and navigate to the react-frontend directory.</p>
+  <p>2.Start the React application:</p>
+  <pre><code>npm start</code></pre>
+  <p>3.Open your web browser and navigate to http://localhost:3000.</p>
+  <p>You can now use the registration and login functionalities provided by the React frontend and Spring Boot <br><br> backend.</p><br>
+  <h2>Conclusion</h2>
+  <p>In this tutorial, we created a full-stack application using Spring Boot for the backend and React (with functional  <br><br> components and hooks) for the frontend. We implemented user registration and login functionalities using Spring <br><br>Security 6+ and created a simple registration and login page with React. This setup provides a solid foundation <br><br> for developing more complex full-stack applications with user authentication.</p><br>
+  <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
