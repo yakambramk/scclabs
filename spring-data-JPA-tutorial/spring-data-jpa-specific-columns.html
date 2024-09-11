@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Data JPA - JPQL and DTO Projections</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1,
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA Specific Columns using JPQL and DTO Projections</h1>
+        <p>Selecting specific columns (or a subset of columns) in <a
+                href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> can
+            be achieved using multiple ways,
+            but one of the most common approaches is using JPQL in combination with DTO projections. In this guide, I'll
+            demonstrate how to select specific columns using this approach.</p>
+
+        <h2>1. Setting up the project</h2>
+        <p>Make sure you have the required dependencies in your <code style="color: red;">pom.xml</code>:</p>
+
+        <pre><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;
+        </code></pre>
+
+        <h2>2. Define the Entity</h2>
+        <p>For this example, let's use a <code style="color: red;">Person</code> entity:</p>
+
+        <pre><code>
+@Entity
+public class Person {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private Date dateOfBirth;
+    // getters, setters, etc.
+}
+
+</code></pre>
+
+        <h2>3. Create a DTO Projection</h2>
+        <p>This DTO will represent the subset of columns we wish to retrieve. For instance, if we only want the
+            <code style="color: red;">firstName</code> and <code style="color: red;">lastName</code>:
+        </p>
+
+        <pre><code>
+public class PersonNameDto {
+    private final String firstName;
+    private final String lastName;
+
+    public PersonNameDto(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    // getters
+}
+
+</code></pre>
+        <p>Note the <code style="color: red;">final</code> keyword for fields and the constructor to initialize these fields.</p>
+
+        <h2>4. Create the Repository</h2>
+        <p>Define a custom query using JPQL in the repository:</p>
+
+        <pre><code>
+public interface PersonRepository extends JpaRepository&lt;Person, Long&gt; {
+
+    @Query("SELECT new com.yourpackage.PersonNameDto(p.firstName, p.lastName) FROM Person p")
+    List&lt;PersonNameDto&gt; findAllNames();
+}
+
+</code></pre>
+        <p>The above query selects only the <code style="color: red;">firstName</code> and <code style="color: red;">lastName</code> from the
+            <code style="color: red;">Person</code> entity and maps them to the <code style="color: red;">PersonNameDto</code>. </p>
+        <h2>5. Use the Repository in a Service</h2>
+        <p>Now, you can retrieve the specific columns in your service layer:</p>
+
+        <pre><code>
+@Service
+public class PersonService {
+
+    @Autowired
+    private PersonRepository personRepository;
+
+    public List&lt;PersonNameDto&gt; getPersonNames() {
+        return personRepository.findAllNames();
+    }
+}
+
+</code></pre>
+
+        <h2>6. Test the Service</h2>
+        <p>You can create a test to ensure the specific columns are being retrieved:</p>
+
+        <pre><code>
+@SpringBootTest
+public class PersonServiceTest {
+
+    @Autowired
+    private PersonService personService;
+
+    @Test
+    public void testFetchNames() {
+        List&lt;PersonNameDto&gt; names = personService.getPersonNames();
+        for (PersonNameDto name : names) {
+            assertNotNull(name.getFirstName());
+            assertNotNull(name.getLastName());
+        }
+    }
+}
+
+</code></pre>
+
+        <h2>Notes</h2>
+        <p>This approach uses DTO projections to map specific columns, providing a type-safe way of retrieving partial
+            entities.</p>
+        <p>This is useful for performance, especially when the full entity contains many columns or large content (like
+            blobs). It's also possible to achieve similar functionality using native SQL queries, the JPA Criteria API,
+            or other third-party libraries like Querydsl.</p>
+        <p>Always ensure that the DTO's constructor parameters match the order of columns in your custom query to ensure
+            the correct mapping.</p>
+    </div>
+</body>
+
+</html>

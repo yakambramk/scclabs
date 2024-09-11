@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Data JPA Sorting Example</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1,
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA Sorting Example</h1>
+        <p>In this tutorial, we will learn how to implement sorting using Spring Data JPA.</p>
+
+        <h2>Spring Data JPA Sorting Overview</h2>
+        <p>To use paging and sorting APIs provided by Spring Data JPA, your repository interface must extend the
+            <code style="color: red;">PagingAndSortingRepository</code> interface.
+        </p>
+        <p><code style="color: red;">PagingAndSortingRepository</code> is an extension of the <code style="color: red;">CrudRepository</code> to provide
+            additional methods to retrieve entities using the pagination and sorting abstraction. It provides two
+            methods :</p>
+        <ul>
+            <li><code style="color: red;">Page findAll(Pageable pageable)</code> – returns a Page of entities meeting the paging restriction
+                provided in the Pageable object.</li>
+            <li><code style="color: red;">Iterable findAll(Sort sort)</code> – returns all entities sorted by the given options. No paging
+                is applied here.</li>
+            <p>Here is the internal source code of the <code style="color: red;">PagingAndSortingRepository</code> interface:</p>
+        </ul>
+        <pre><code>
+@NoRepositoryBean
+public interface PagingAndSortingRepository&lt;T, ID&gt; extends CrudRepository&lt;T, ID&gt; {
+
+    /**
+     * Returns all entities sorted by the given options.
+     *
+     * @param sort
+     * @return all entities sorted by the given options
+     */
+    Iterable&lt;T&gt; findAll(Sort sort);
+
+    /**
+     * Returns a {@link Page} of entities meeting the paging restriction provided in the {@code Pageable} object.
+     *
+     * @param pageable
+     * @return a page of entities
+     */
+    Page&lt;T&gt; findAll(Pageable pageable);
+}
+        </code></pre>
+        <p><code style="color: red;">JpaRepository</code> interface extends the <code style="color: red;">PagingAndSortingRepository</code> interface so if your
+            repository interface is of type <code style="color: red;">JpaRepository</code>, you don’t have to make a change to it.</p>
+        <p>For sorting, we are going to use the below method from the <code style="color: red;">PagingAndSortingRepository</code> interface:
+        </p>
+        <pre><code>Iterable &lt; T > findAll(Sort sort);</code></pre>
+        <p><b>Note: </b>Spring Data JPA has <code style="color: red;">SimpleJPARepository</code> class which implements
+            <code style="color: red;">PagingAndSortingRepository</code> interface methods so we don't have to write a code to implement
+            <code style="color: red;">PagingAndSortingRepository</code> interface methods.
+        </p>
+        <p><b>Let's create a Spring boot project from the scratch and let's implement sorting using Spring Data JPA.</b>
+        </p>
+        <h2>Creating Spring Boot Project</h2>
+        <p>Spring Boot provides a web tool called <a href="https://start.spring.io/">https://start.spring.io</a> to bootstrap an application
+            quickly. Just go to <a href="https://start.spring.io/">https://start.spring.io</a> and generate a new spring boot project.</p>
+        <p><b>Use the below details in the Spring boot creation:</b></p>
+        <ul>
+            <li><strong>Project Name:</strong> spring-data-jpa-course</li>
+            <li><strong>Project Type:</strong> Maven</li>
+            <li><strong>Dependencies:</strong> Spring Data JPA, MySQL Driver, Lombok</li>
+            <li><strong>Package Name:</strong> net.javaguides.springboot</li>
+        </ul>
+
+        <h2>Maven Dependencies</h2>
+        <p>Here is the complete <code style="color: red;">pom.xml</code> for your reference:</p>
+        <pre><code>
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;3.0.4&lt;/version&gt;
+        &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+    &lt;groupId&gt;net.javaguides&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-data-jpa-course&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;spring-data-jpa-course&lt;/name&gt;
+    &lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+    &lt;properties&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+&lt;/project&gt;
+        </code></pre>
+
+        <h2>Configure MySQL Database</h2>
+        <p>Let's use the MySQL database to store and retrieve the data in this example and we gonna use Hibernate
+            properties to create and drop tables.</p>
+        <p>Open <code style="color: red;">application.properties</code> and add the following configuration:</p>
+        <pre><code>
+spring.datasource.url=jdbc:mysql://localhost:3306/demo?useSSL=false
+spring.datasource.username=root
+spring.datasource.password=Mysql@123
+
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQLDialect
+
+spring.jpa.hibernate.ddl-auto = create-drop
+        </code></pre>
+        <p>Make sure that you will create a <b>demo</b> database before running the Spring boot application.
+            Also, change the MySQL username and password as per your MySQL installation on your machine.</p>
+        <h2>Create JPA Entity - Product.java</h2>
+        <p>Let's create an <code style="color: red;">entity</code> package inside a base package "net.javaguides.springboot".
+
+            Within the <code style="color: red;">entity</code> package, create a <code style="color: red;">Product</code> class with the following content:</p>
+        <pre><code>
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Table(
+        name = "products",
+        schema = "ecommerce",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "sku_unique",
+                        columnNames = "stock_keeping_unit"
+                )
+        }
+)
+public class Product {
+
+    @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "product_generator"
+    )
+    @SequenceGenerator(
+            name = "product_generator",
+            sequenceName = "product_sequence_name",
+            allocationSize = 1
+    )
+    private Long id;
+
+    @Column(name = "stock_keeping_unit", nullable = false)
+    private String sku;
+
+    @Column(nullable = false)
+    private String name;
+
+    private String description;
+    private BigDecimal price;
+    private boolean active;
+    private String imageUrl;
+
+    @CreationTimestamp
+    private LocalDateTime dateCreated;
+
+    @UpdateTimestamp
+    private LocalDateTime lastUpdated;
+}
+        </code></pre>
+        <p>Note that we are using Lombok annotations to reduce the boilerplate code.</p>
+        <h2>Create Spring Data JPA Repository</h2>
+        <p>Create the <code style="color: red;">ProductRepository</code> interface:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductRepository extends JpaRepository<Product, Long> {
+
+}
+        </code></pre>
+
+        <h2>Spring Data JPA Sorting Implementation</h2>
+        <p>Write a JUnit test to implement sorting:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Product;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
+
+import java.util.List;
+
+@SpringBootTest
+public class PaginationAndSortingTest {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Test
+    void sorting() {
+
+        String sortBy = "price";
+        String sortDir = "desc";
+
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        List<Product> products = productRepository.findAll(sort);
+
+        products.forEach(System.out::println);
+    }
+}
+        </code></pre>
+
+        
+        <p>To apply only sorting in the result set, we need to create a <code style="color: red;">Sort</code> object and pass it to the
+            <code style="color: red;">findAll()</code> method</p>
+            <pre><code>
+Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())?
+Sort.by(sortBy).ascending(): Sort.by(sortBy).descending();
+
+List<Product> products = productRepository.findAll(sort);
+            </code></pre>
+            <h2>Output:</h2>
+                <p>Once you run the JUnit test, you will get the below output:</p>
+                <img src="../assets/spring-data-jpa-tutorial-images/Spring Data JPA - Sorting Example.png" style="width: 100%;">
+                <p><b>Note that  Spring Data JPA behind scenes uses Hibernate to generate the below SQL query for sorting:</b></p>
+            <p>Spring Data JPA uses Hibernate to generate SQL queries for sorting:</p>
+        <pre><code>
+select
+    product0_.id as id1_0_,
+    product0_.active as active2_0_,
+    product0_.date_created as date_cre3_0_,
+    product0_.description as descript4_0_,
+    product0_.image_url as image_ur5_0_,
+    product0_.last_updated as last_upd6_0_,
+    product0_.name as name7_0_,
+    product0_.price as price8_0_,
+    product0_.stock_keeping_unit as stock_ke9_0_
+from
+    products product0_
+order by
+    product0_.price desc
+        </code></pre>
+    </div>
+</body>
+
+</html>

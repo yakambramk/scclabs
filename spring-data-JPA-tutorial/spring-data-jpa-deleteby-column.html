@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA findBy Multiple IDs</h1>
+        <p> Spring Data JPA is designed to make database operations more streamlined and intuitive. One common
+            requirement in many applications is fetching multiple records based on a list of identifiers. Spring Data
+            JPA offers an out-of-the-box solution for this through the <code style="color: red;">findAllById</code>
+            method. Let's dive into how you can
+            use this method and what you need to consider.</p>
+        <h2>1. Set up a Spring Boot project</h2>
+        <p>Let's launch <a href="https://start.spring.io/" target="_blank">Spring Initializr</a> and fill up the
+            following project details:</p>
+        <p><b>Project: </b>Maven Project (or Gradle)</p>
+        <p><b>Language: </b>Java</p>
+        <p><b>Packaging: </b>Jar</p>
+        <p><b>Java version: </b>17</p>
+        <p><b>Dependencies: </b>Spring Data JPA, MySQL Driver, and Lombok</p>
+        <p>Download, extract the project, and import it to your favorite IDE.</p>
+        <h2>2. Configure the MySQL database</h2>
+        <p>Let's open the src/main/resources/application.properties file and add the MySQL configuration properties:</p>
+        <pre><code>
+spring.datasource.url=jdbc:mysql://localhost:3306/demo
+spring.datasource.username=root
+spring.datasource.password=Mysql@123
+spring.jpa.hibernate.ddl-auto=update
+    </code></pre>
+        <p>Make sure that you change the MySQL database username and password as per your MySQL installation on your
+            machine.</p>
+        <p>The <code style="color: red;">spring.jpa.hibernate.ddl-auto=update</code> line ensures that tables and
+            columns get automatically created or
+            updated based on your JPA entities.</p>
+        <h2>3. Create JPA Entity - Employee</h2>
+        <p>Let's create a simple <code style="color: red;">Employee</code> JPA entity that will map to the database
+            table - <code style="color: red;">employees</code>:</p>
+        <pre><code>
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.Date;
+
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "employees")
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+}
+
+</code></pre>
+        <p>We are using below Lombok annotations to reduce the boilerplate code such as getter/setter methods:</p>
+        <p><b>@Getter: </b>Generates getter methods for the fields of the class.</p>
+        <p><b>@Setter: </b>Generates setter methods for the fields of the class. </p>
+        <h2>3. Create Spring Data JPA Repository - EmployeeRepository</h2>
+        <p>Let's create an <code style="color: red;">EmployeeRepository</code> interface that extends the <code
+                style="color: red;">JpaRepository</code> interface from Spring Data JPA:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long> {
+}
+
+</code></pre>
+        <h3>Deleting by Column Value</h3>
+        <p>To delete a employee based on their email (a unique field in our example), you'd define a method in the
+            repository:</p>
+        <pre><code>void deleteByEmail(String email);</code></pre>
+        <p>With just this method declaration, Spring Data JPA will generate the necessary code to delete a customer
+            record where the <code style="color: red;">email</code> column matches the provided email.</p>
+        <h2>4. Service Layer Integration</h2>
+        <p>It's good practice to keep your business logic separate from your repository layer. Let's create a service
+            class that leverages our repository:</p>
+        <pre><code>
+import com.springdatajpa.springboot.repository.EmployeeRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class EmployeeService {
+
+    private final EmployeeRepository employeeRepository;
+
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
+
+    @Transactional
+    public void deleteEmployeeByEmail(String email) {
+        employeeRepository.deleteByEmail(email);
+    }
+}
+
+</code></pre>
+        <p>The <a href="/spring-core-tutorial/spring-service-annotation.html" target="_blank">@Service annotation</a> marks this class as a Spring service component, making it eligible for
+            component
+            scanning. The <code style="color: red;">@Transactional</code> annotation ensures that the delete operation
+            is wrapped within a transaction,
+            which is crucial for database consistency.</p>
+        <h3>Using @Transactional</h3>
+        <p>When executing a delete operation, it's essential to ensure that the operation is part of a transaction. You
+            can annotate your service method (which calls the delete method) with @Transactional annotation:</p>
+        <pre><code>
+    @Transactional
+    public void deleteEmployeeByEmail(String email) {
+        employeeRepository.deleteByEmail(email);
+    }
+
+</code></pre>
+        <p>Or you can annotate the delete method directly in the repository:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long> {
+      @Transactional
+      void deleteByEmail(String email);
+}
+
+</code></pre>
+        <h2>Conclusion</h2>
+        <p>Spring Data JPA simplifies the process of deleting records based on specific column values, allowing you to
+            focus on your application logic rather than writing and maintaining SQL or JPQL queries. Always ensure you
+            understand the implications of deleting records, especially regarding database constraints and
+            relationships.</p>
+    </div>
+</body>
+
+</html>

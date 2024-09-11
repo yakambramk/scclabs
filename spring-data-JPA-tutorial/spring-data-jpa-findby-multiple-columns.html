@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA findBy Multiple Columns</h1>
+        <p><a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> is all
+            about simplifying the way we interact with databases. One of the areas
+            where it shines
+            the most is in its ability to generate SQL queries from method names. These methods can be based on simple
+            entity attributes or even on multiple columns. In this post, we will explore the <code
+                style="color: red;">findBy</code> methods using
+            multiple columns.</p>
+        <p>Before we dive into multiple columns, let's get a quick understanding of the basics. <a
+                href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data
+                JPA</a>
+            analyzes repository method names and creates SQL queries accordingly. If your entity has an attribute named
+            name and your repository has a method <code style="color: red;">findByName(String name)</code>, <a
+                href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> would
+            generate SQL to find
+            records by the name column.</p>
+        <h2>Spring Data JPA findBy Multiple Columns</h2>
+        <p>Real-world scenarios often require querying based on multiple attributes.</p>
+        <h3>JPA Entity - Employee</h3>
+        <p>Let's create an <code style="color: red;">Employee</code> entity:</p>
+        <pre><code>
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "employees")
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String department;
+}
+
+</code></pre>
+        <h3>Spring Data JPA Repository - EmployeeRepository</h3>
+        <p>Let's create an <code style="color: red;">EmployeeRepository</code> interface that extends <code
+                style="color: red;">JpaRepository</code> interface from <a
+                href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a>:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long> {
+}
+
+</code></pre>
+        <h3>Using <span style="color: red;">And</span> for Multiple Conditions </h3>
+        <p>If you want to find an employee by both first name and last name, you can create a method in your repository
+            like:</p>
+        <pre><code>Employee findByFirstNameAndLastName(String firstName, String lastName);</code></pre>
+        <p>This method translates into a SQL query that fetches employees where both the first name and last name match
+            the given parameters. </p>
+        <h3>Using <span style="color: red;">Or</span> for Alternative Conditions </h3>
+        <p>Similarly, if you want to fetch employees by either their first name or last name:</p>
+        <pre><code>List&lt;Employee> findByFirstNameOrLastName(String firstName, String lastName);</code></pre>
+        <p>This will retrieve employees where either the first name or the last name matches the given parameters. </p>
+        <h3>Combining <span style="color: red;">And</span> & <span style="color: red;">Or</span></h3>
+        <p>It's possible to combine both:</p>
+        <pre><code>List&lt;Employee> findByFirstNameOrLastNameAndDepartment(String firstName, String lastName, String department);</code></pre>
+        <p>This will fetch employees where either the first name matches or the last name matches and belongs to a
+            specific department.</p>
+        <p>Here is the complete code for EmployeeRepository:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+
+    Employee findByFirstNameAndLastName(String firstName, String lastName);
+
+    List&lt;Employee> findByFirstNameOrLastName(String firstName, String lastName);
+
+    List&lt;Employee> findByFirstNameOrLastNameAndDepartment(String firstName, String lastName, String department);
+
+}
+
+</code></pre>
+        <h3>Testing - EmployeeRepository</h3>
+        <p>Let's write the JUnit test cases to all the above query methods:</p>
+        <p><b>Test findByFirstNameAndLastName() query method:</b></p>
+        <pre><code>
+    @Test
+    void findByFirstNameAndLastNameTest(){
+        Employee employee = employeeRepository.findByFirstNameAndLastName("Ramesh", "Fadatare");
+
+        System.out.println(employee.toString());
+    }
+
+</code></pre>
+        <p>Output:</p>
+        <pre><code>
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.department,
+        e1_0.first_name,
+        e1_0.last_name 
+    from
+        employees e1_0 
+    where
+        e1_0.first_name=? 
+        and e1_0.last_name=?
+
+</code></pre>
+        <p><b>Test findByFirstNameOrLastName() query method:</b></p>
+        <pre><code>
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.department,
+        e1_0.first_name,
+        e1_0.last_name 
+    from
+        employees e1_0 
+    where
+        e1_0.first_name=? 
+        or e1_0.last_name=?
+
+</code></pre>
+        <p><b>Test findByFirstNameOrLastNameAndDepartment() query method:</b></p>
+        <pre><code>
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.department,
+        e1_0.first_name,
+        e1_0.last_name 
+    from
+        employees e1_0 
+    where
+        e1_0.first_name=? 
+        or e1_0.last_name=? 
+        and e1_0.department=?
+
+</code></pre>
+        <p>Here is the complete code for your reference:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
+
+@SpringBootTest
+public class EmployeeRepositoryTests {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @BeforeEach
+    public void setUp() {
+        Employee e1 = new Employee();
+        e1.setFirstName("Ramesh");
+        e1.setLastName("Fadatare");
+        e1.setDepartment("IT");
+        employeeRepository.save(e1);
+
+        Employee e2 = new Employee();
+        e2.setFirstName("John");
+        e2.setLastName("Cruise");
+        e2.setDepartment("IT");
+        employeeRepository.save(e2);
+    }
+
+    @Test
+    void findByFirstNameAndLastNameTest(){
+        Employee employee = employeeRepository.findByFirstNameAndLastName("Ramesh", "Fadatare");
+
+        System.out.println(employee.toString());
+    }
+
+    @Test
+    void findByFirstNameOrLastNameTest(){
+        List<Employee> employees = employeeRepository.findByFirstNameOrLastName("Ramesh", "Fadatare");
+        employees.forEach((employee) -> {
+            System.out.println(employee.toString());
+        });
+    }
+
+    @Test
+    void findByFirstNameOrLastNameAndDepartmentTest(){
+        List<Employee> employees = employeeRepository
+                .findByFirstNameOrLastNameAndDepartment("Ramesh",
+                "Fadatare",
+                "IT");
+
+        employees.forEach((employee) -> {
+            System.out.println(employee.toString());
+        });
+    }
+
+    @AfterEach
+    public void clean(){
+        employeeRepository.deleteAll();
+    }
+}
+
+</code></pre>
+        <h2>Conclusion</h2>
+        <p><a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA's</a>
+            ability to work with multiple columns using method names significantly reduces boilerplate
+            code, making the development process faster and cleaner. Whether you're searching using a single column,
+            combining multiple columns, or setting up more complex conditions, the framework provides intuitive ways to
+            get it done. Always be aware of the actual queries being generated, especially in more intricate scenarios,
+            to ensure both the correctness and performance of your operations. Happy querying!</p>
+    </div>
+</body>
+
+</html>

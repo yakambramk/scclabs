@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>JPA @OneToOne Annotation</h1>
+        <p>In this blog post, we will explore the JPA <code style="color: red;">@OneToOne</code> annotation, understand
+            how it works, and see practical
+            examples of mapping one-to-one relationships in JPA.</p>
+        <p>In Jakarta Persistence API (JPA), relationships between entities play a crucial role in modeling real-world
+            scenarios. One of the most common relationships is the one-to-one relationship, where one entity is
+            associated with another entity. JPA provides the <code style="color: red;">@OneToOne</code> annotation to
+            establish such relationships.</p>
+        <h2>Understanding @OneToOne Annotation</h2>
+        <p>The <code style="color: red;">@OneToOne</code> annotation is used to map a one-to-one relationship between
+            two entities. It defines a
+            relationship between the owning entity (source) and the target entity (dependent). In this type of
+            relationship, each instance of the owning entity is associated with exactly one instance of the target
+            entity, and vice versa.</p>
+        <p><b>The <code style="color: red;">@OneToOne</code> annotation supports the following attributes:</b></p>
+        <p><b>cascade: </b>Specifies the operations that should be cascaded to the target entity. In the example,
+            CascadeType.ALL indicates that all operations (e.g., persist, merge, remove) performed on User should be
+            cascaded to UserProfile.</p>
+        <p><b>fetch: </b>Defines how the target entity is fetched from the database. Common options are FetchType.EAGER
+            (loaded immediately with the owning entity) and FetchType.LAZY (loaded on-demand when accessed).</p>
+        <p><b>mappedBy: </b>Used for bidirectional relationships. It establishes the owner of the relationship. If not
+            specified, it is considered unidirectional.</p>
+        <p><b>optional: </b>Indicates whether the relationship is optional (default is true). If false, the target
+            entity must
+            always exist.</p>
+        <p><b>orphanRemoval: </b>Whether to apply the remove operation to entities that have been removed from the
+            relationship and to cascade the remove operation to those entities.</p>
+        <p><b>targetEntity: </b> entity class that is the target of the association.</p>
+        <h2>@OneToOne Annotation Example</h2>
+        <p>In this example, we create <code style="color: red;">Instructor</code> and <code
+                style="color: red;">InstructorDetail</code> entities and we make a one-to-one mapping between them.</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/one-to-one-ERD.png">
+        <p>To demonstrate the @OneToOne annotation, consider the following JPA entities.</p>
+        <h3>Instructor JPA Entity</h3>
+        <pre><code>
+ import javax.persistence.*;
+
+@Entity
+@Table(name = "instructor")
+public class Instructor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "email")
+    private String email;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "instructor_detail_id")
+    private InstructorDetail instructorDetail;
+
+     // getter/setter methods
+}
+                    </code></pre>
+        <h3>InstructorDetail JPA Entity</h3>
+        <pre><code>
+import jakart.persistence.&;
+
+@Entity
+@Table(name = "instructor_detail")
+public class InstructorDetail {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "youtube_channel")
+    private String youtubeChannel;
+
+    @Column(name = "hobby")
+    private String hobby;
+
+    // getter/setter methods
+}
+                    </code></pre>
+        <p>In this example, the <code style="color: red;">Instructor</code> entity has a one-to-one relationship with
+            the <code style="color: red;">InstructorDetail</code> entity,
+            represented by the <code style="color: red;">@OneToOne</code> annotation. The relationship is established
+            through the <code style="color: red;">instructorDetail</code> field
+            in the <code style="color: red;">Instructor</code> entity, which is annotated with <code
+                style="color: red;">@OneToOne</code>.</p>
+        <p>In the example, <code style="color: red;">CascadeType.ALL</code> indicates that all operations (e.g.,
+            persist, merge, remove) performed on
+            <code style="color: red;">Instructor</code> should be cascaded to <code
+                style="color: red;">InstructorDetail</code>.
+        </p>
+        <h3>Unidirectional vs. Bidirectional One-to-One</h3>
+        <p>In the example above, we have a unidirectional one-to-one relationship, where <code
+                style="color: red;">Instructor</code> owns the
+            relationship with <code style="color: red;">InstructorDetail</code>. If we want a bidirectional
+            relationship, we can add a reference back
+            from <code style="color: red;">InstructorDetail</code> to <code style="color: red;">Instructor</code> using
+            the <code style="color: red;">mappedBy</code> attribute:</p>
+        <pre><code>
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "instructor_detail")
+public class InstructorDetail {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "youtube_channel")
+    private String youtubeChannel;
+
+    @Column(name = "hobby")
+    private String hobby;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "instructorDetails")
+    @JoinColumn(name = "instructor_id")
+    private Instructor instructor;
+
+    // getters and setters
+}
+            </code></pre>
+        <p>In this bidirectional relationship, both <code style="color: red;">Instructor</code> and <code
+                style="color: red;">InstructorDetails</code> entities are aware of each other.</p>
+        <h2>Complete One-to-One Mapping Examples</h2>
+        <p><a href="/spring-data-JPA-tutorial/jpa-hibernate-one-to-one-mapping-annotation-example.html" target="_blank">JPA/Hibernate One-to-One Mapping Annotation Example</a></p>
+        <p><a href="/spring-data-JPA-tutorial/jpahibernate-one-to-one-bidirectional-mapping-annotation-example.html" target="_blank">JPA/Hibernate One-to-One Bidirectional Mapping Annotation Example</a></p>
+        <h2>Conclusion</h2>
+        <p>The <code style="color: red;">@OneToOne</code> annotation in JPA is a powerful tool for mapping one-to-one
+            relationships between entities.
+            Whether you require a unidirectional or bidirectional relationship, the @OneToOne annotation offers
+            flexibility and control over how entities are associated with one another.</p>
+        <p>By understanding how to use this annotation effectively, you can model complex relationships in your
+            JPA-powered applications and achieve better data organization and management.</p>
+    </div>
+</body>
+
+</html>

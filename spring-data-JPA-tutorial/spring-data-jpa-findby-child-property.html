@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA findBy Child Property</h1>
+        <p>A common requirement is to query an entity based on the properties of its associated child entities. In this
+            post, we will explore how to perform such queries using <a
+                href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a>.</p>
+        <h2>Spring Data JPA findBy Child Property Example</h2>
+        <p>To demonstrate this use case, consider an <code style="color: red;">Author</code> entity having a one-to-many
+            relationship with a <code style="color: red;">Book</code> entity:</p>
+        <h3>Author Entity:</h3>
+        <pre><code>
+@Entity
+public class Author {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    @OneToMany(mappedBy = "author")
+    private List<Book> books;
+
+    // getters, setters, constructors, etc.
+}
+
+</code></pre>
+        <h3>Book Entity:</h3>
+        <pre><code>
+@Entity
+public class Book {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+    private String genre;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Author author;
+
+    // getters, setters, constructors, etc.
+}
+
+</code></pre>
+        <p>In the above JPA entities, an <code style="color: red;">Author</code> can have multiple <code
+                style="color: red;">Book</code> entities associated with them.</p>
+        <h3>Querying by Child's Property</h3>
+        <p>Now, let's assume you want to fetch all authors who have written a book of a certain genre. Here's how you
+            can accomplish that with <a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html"
+                target="_blank">Spring Data JPA</a>:</p>
+        <pre><code>
+public interface AuthorRepository extends JpaRepository&lt;Author, Long> {
+
+    List&lt;Author> findByBooks_Genre(String genre);
+}
+            </code></pre>
+        <p>In the <code style="color: red;">findByBooks_Genre</code> method, the underscore (_) enables property
+            expressions, signifying traversal into
+            the books association of the <code style="color: red;">Author</code> entity and then filtering by the <code
+                style="color: red;">genre</code> property of the <code style="color: red;">Book</code> entity.</p>
+        <h3>More Examples </h3>
+        <p><b>Using Multiple Conditions: </b>To find authors based on multiple properties of their books:</p>
+        <pre><code>List&lt;Author> findByBooks_TitleAndBooks_Genre(String title, String genre);</code></pre>
+        <p><b>Using In Clause: </b>If you want to find authors who have written books in any of a list of genres:</p>
+        <pre><code>List&lt;Author> findByBooks_GenreIn(List&lt;String> genres);</code></pre>
+        <p><b>Using Distinct: </b>To ensure that the results do not have duplicate authors, you can leverage distinct:
+        </p>
+        <pre><code>List&lt;Author> findDistinctByBooks_Genre(String genre);</code></pre>
+        <h3>Tips and Best Practices </h3>
+        <p><b>Optimize Queries: </b>While the above methods are concise and easy to implement, be aware of the SQL
+            generated
+            underneath. Depending on your database schema and relationships, some queries might lead to the N+1 problem.
+            Utilize tools like Hibernate's <code style="color: red;">@Fetch</code> annotation or join fetch clauses to
+            optimize such queries. </p>
+        <p><b>Maintain Readability: </b>While <a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html"
+                target="_blank">Spring Data JPA</a>'s method-based queries are powerful, they
+            can become quite long
+            and unreadable. If the method name becomes too cumbersome, consider using the <a
+                href="/spring-data-JPA-tutorial/spring-data-jpa-creating-database-queries-using-query-annotation.html" target="_blank">@Query</a>
+            annotation to provide a
+            JPQL or SQL query. </p>
+        <p><b>Indexing: </b>Ensure that the child properties you are querying on are indexed, especially for large
+            datasets,
+            to avoid performance issues.</p>
+        <h2>Conclusion</h2>
+        <p><a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a>'s
+            ability to query by child entity properties greatly simplifies data fetching
+            tasks,
+            especially when dealing with complex entity relationships. By leveraging its conventions, developers can
+            quickly implement a wide range of queries without having to manually write SQL or JPQL. As always, while the
+            tools provided are powerful, care should be taken to ensure queries are optimized and the code remains
+            maintainable.</p>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Data JPA Delete Native Query</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2,
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA Delete Native Query</h1>
+        <p>In this tutorial, we will learn how to use native SQL query to perform delete operations using Spring Data
+            JPA.</p>
+        <h2>Create JPA Entity</h2>
+        <pre><code>
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDate;
+
+@Setter
+@Getter
+@Entity
+@Table(name = "persons")
+public class Person {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String city;
+    private LocalDate birthdate;  // Assuming you have this field
+}
+
+</code></pre>
+
+        <h2>Create Spring Data JPA Repository - PersonRepository</h2>
+        <p>Let's create a <code style="color: red;">PersonRepository</code> interface that extends the <code
+                style="color: red;">JpaRepository</code> interface
+            from Spring Data JPA:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Person;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PersonRepository extends JpaRepository&lt;Person, Long> {
+}
+
+</code></pre>
+
+        <h2>Native Query Deletion in Repository</h2>
+        <p>Spring Data JPA's <code style="color: red;">@Query</code> annotation is a gateway to native SQL operations
+            when its
+            <code style="color: red;">nativeQuery</code> attribute is set to true.
+        </p>
+
+        <h3>Delete a Person by City</h3>
+        <pre><code>
+@Modifying
+@Query(value = "DELETE FROM Person WHERE city = ?1", nativeQuery = true)
+void deleteByCity(String city);
+
+</code></pre>
+        <p><b>@Modifying: </b>Informs Spring Data JPA that this query modifies data.</p>
+
+        <p><b>nativeQuery=true: </b>Indicates that the provided query is a native SQL statement.</p>
+        <h3>Delete by a Date Range (Assuming a birthdate column)</h3>
+        <pre><code>
+@Modifying
+@Query(value = "DELETE FROM Person WHERE birthdate BETWEEN ?1 AND ?2", nativeQuery = true)
+void deleteByBirthdateBetween(LocalDate startDate, LocalDate endDate);
+
+</code></pre>
+
+        <h3>Delete by Name Pattern (Using SQL's LIKE)</h3>
+        <pre><code>
+@Modifying
+@Query(value = "DELETE FROM Person WHERE name LIKE ?1", nativeQuery = true)
+void deleteByNamePattern(String namePattern);
+
+</code></pre>
+
+        <h3>Delete by ID Less Than a Given Value</h3>
+        <pre><code>
+@Modifying
+@Query(value = "DELETE FROM Person WHERE id &lt; ?1", nativeQuery = true)
+void deleteByIdLessThan(Long id);
+
+</code></pre>
+
+        <h3>Delete All Records</h3>
+        <pre><code>
+@Modifying
+@Query(value = "DELETE FROM Person WHERE id &lt; ?1", nativeQuery = true)
+void deleteByIdLessThan(Long id);
+
+</code></pre>
+        <p><b>Note: </b>Native queries skip the ORM layer, so they're generally faster but lack the safety checks that come
+            with using the ORM. Always ensure you understand the implications of your native queries, especially
+            deletions, and thoroughly test them before deploying to a production environment.</p>
+
+        <h3>Service Layer</h3>
+        <p>Let's see how to use one of the <code style="color: red;">deleteByCity</code> query method in the service
+            layer:</p>
+        <pre><code>
+@Service
+public class PersonService {
+
+    @Autowired
+    private PersonRepository personRepository;
+
+    @Transactional
+    public void removePersonsByCity(String city) {
+        personRepository.deleteByCity(city);
+    }
+}
+
+</code></pre>
+        <p>The <code style="color: red;">@Transactional</code> annotation is crucial, ensuring atomic operations. If the
+            deletion process encounters an
+            error, the transaction will be automatically rolled back.</p>
+        <h2>Testing the Deletion Logic</h2>
+        <p>Spring Boot's integrated testing support makes it convenient to validate our implementation:</p>
+        <pre></code>
+@SpringBootTest
+public class PersonServiceTest {
+
+    @Autowired
+    private PersonService personService;
+    @Autowired
+    private PersonRepository personRepository;
+
+    @Test
+    public void testDeleteByCity() {
+        // Given: Initial data setup
+        personRepository.save(new Person("John", "New York"));
+        personRepository.save(new Person("Jane", "Los Angeles"));
+
+        // When: Deleting persons by city
+        personService.removePersonsByCity("New York");
+
+        // Then: Assert that only persons from New York are deleted
+        List&lt;Person> remainingPersons = personRepository.findAll();
+        assertTrue(remainingPersons.stream().noneMatch(person -> "New York".equals(person.getCity())));
+    }
+}
+
+</code></pre>
+
+        <h2>Conclusion</h2>
+        <p>In this tutorial, we have learned how to use native SQL query to perform delete operations using Spring Data
+            JPA. Remember, native queries skip the ORM layer, so they're generally faster but lack the safety checks
+            that come with using the ORM. Always ensure you understand the implications of your native queries,
+            especially deletions, and thoroughly test them before deploying to a production environment.</p>
+    </div>
+</body>
+
+</html>

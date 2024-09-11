@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Data JPA @Query Inner Join</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Spring Data JPA @Query Inner Join</h1>
+        <p>In Spring Data JPA, you can use the <a href="/spring-data-JPA-tutorial/spring-data-jpa-creating-database-queries-using-query-annotation.html" target="_blank">@Query</a> annotation to define custom JPQL queries. When working with relationships between entities, you often need to use JOINs (e.g., INNER JOIN, LEFT JOIN) in your queries.</p>
+        
+        <h2>Create JPA Entities - User and Role</h2>
+        <p>Suppose you have two entities, <code style="color: red;">User</code> and <code style="color: red;">Role</code>, and there's a many-to-many relationship between them:</p>
+
+        <h3>User</h3>
+        <pre><code>
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    @ManyToMany
+    @JoinTable(
+      name = "user_role", 
+      joinColumns = @JoinColumn(name = "user_id"), 
+      inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set&lt;Role&gt; roles;
+
+    // getters, setters, etc.
+}
+        </code></pre>
+
+        <h3>Role</h3>
+        <pre><code>
+@Entity
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String roleName;
+
+    @ManyToMany(mappedBy = "roles")
+    private Set&lt;User&gt; users;
+
+    // getters, setters, etc.
+}
+        </code></pre>
+
+        <h2>Create Repository</h2>
+        <p>Now, if you want to retrieve users with a specific role using a custom query with an inner join, you can do something like this:</p>
+
+        <pre><code>
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+
+    @Query("SELECT u FROM User u INNER JOIN u.roles r WHERE r.roleName = :roleName")
+    List&lt;User&gt; findUsersByRoleName(@Param("roleName") String roleName);
+}
+        </code></pre>
+        
+        <p>In the <a href="/spring-data-JPA-tutorial/spring-data-jpa-creating-database-queries-using-query-annotation.html" target="_blank">@Query</a>, we've used an inner join between the <code style="color: red;">User</code> entity and its roles attribute (which is a collection of Role entities). The <code style="color: red;">:roleName</code> is a named parameter that you can pass to the query method.</p>
+        
+        <p>You can then call this method in your service or controller to get users by a specific role:</p>
+
+        <pre><code>List&lt;User&gt; admins = userRepository.findUsersByRoleName("ADMIN");</code></pre>
+
+        <p>This approach allows you to write custom queries using JPQL and leverage the power of joins, making it easy to fetch related data from the database.</p>
+    </div>
+</body>
+</html>

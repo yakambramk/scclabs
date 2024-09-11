@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Data JPA deleteBy List of IDs</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA deleteBy List of IDs</h1>
+        <p>When building applications, there might be scenarios where you need to delete multiple entities based on a
+            list of their identifiers. Using Spring Data JPA, this can be achieved seamlessly, and in this blog post,
+            we'll explore how.</p>
+        <h2>Create JPA Entity</h2>
+        <pre><code>
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+@Entity
+@Table(name = "persons")
+public class Person {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String email;
+}
+        </code></pre>
+
+        <h2>Create Spring Data JPA Repository - PersonRepository</h2>
+        <p>Let's create an <code style="color: red;">PersonRepository</code> interface that extends the <code
+                style="color: red;">JpaRepository</code> interface
+            from Spring Data JPA:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Person;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PersonRepository extends JpaRepository&lt;Person, Long&gt; {
+}
+        </code></pre>
+
+        <h2>Deleting Entities by List of IDs</h2>
+        <p>With the repository in place, Spring Data JPA provides a convention-based method to delete entities by their
+            IDs:</p>
+        <pre><code>void deleteByIdIn(List&lt;Long&gt; ids);</code></pre>
+        <p>It's that simple! The <code style="color: red;">deleteByIdIn</code> is a derived delete query, which means
+            that Spring Data JPA
+            automatically creates the necessary query for deleting multiple entities based on their IDs.</p>
+
+        <h2>Implementing in the Service Layer</h2>
+        <p>To ensure transactional integrity and separation of concerns, wrap your data operations inside a service:</p>
+        <pre><code>
+@Service
+public class PersonService {
+
+    @Autowired
+    private PersonRepository personRepository;
+
+    @Transactional
+    public void deletePersonsByListOfIds(List&lt;Long&gt; ids) {
+        personRepository.deleteByIdIn(ids);
+    }
+}
+        </code></pre>
+        <p>The <code style="color: red;">@Transactional</code> annotation ensures that all deletion operations in the
+            list occur within a
+            single transaction. If an error arises with any of the deletions, the entire operation will be rolled back,
+            maintaining data consistency.</p>
+
+        <h2>Safety Considerations</h2>
+        <ul>
+            <li><strong>Validation:</strong> Always ensure that the list of IDs passed is valid. Null or invalid values
+                can cause unexpected behaviors.</li>
+            <li><strong>Database Constraints:</strong> Be wary of database constraints that might prevent deletions,
+                such as foreign key constraints. Handling such exceptions and providing meaningful feedback is
+                essential.</li>
+            <li><strong>Soft Deletion:</strong> If the possibility of data recovery is essential, consider implementing
+                a soft deletion mechanism where records are marked as deleted without physically removing them from the
+                database.</li>
+        </ul>
+
+        <h2>Testing the Implementation</h2>
+        <p>With Spring Boot, it's straightforward to test the deletion logic:</p>
+        <pre><code>
+@SpringBootTest
+public class PersonServiceTest {
+
+    @Autowired
+    private PersonService personService;
+    @Autowired
+    private PersonRepository personRepository;
+
+    @Test
+    public void testDeleteByListOfIds() {
+        // Given: Initial data
+        Person john = personRepository.save(new Person("John", "123 Elm Street"));
+        Person jane = personRepository.save(new Person("Jane", "456 Maple Avenue"));
+
+        List&lt;Long&gt; idsToDelete = Arrays.asList(john.getId(), jane.getId());
+
+        // When: Deleting persons by IDs
+        personService.deletePersonsByListOfIds(idsToDelete);
+
+        // Then: Assert that the persons are deleted
+        assertTrue(personRepository.findById(john.getId()).isEmpty());
+        assertTrue(personRepository.findById(jane.getId()).isEmpty());
+    }
+}
+        </code></pre>
+
+        <h2>Conclusion</h2>
+        <p>Spring Data JPA's out-of-the-box capabilities are a boon for developers. It simplifies many database
+            operations, allowing developers to focus more on the business logic. When deleting entities using a list of
+            IDs, it is not just about the simplicity but also about the performance gains, as the framework can optimize
+            the deletion process.</p>
+    </div>
+</body>
+
+</html>

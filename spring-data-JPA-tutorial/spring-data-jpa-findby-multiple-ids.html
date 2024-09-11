@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA findBy Multiple IDs</h1>
+        <p> Spring Data JPA is designed to make database operations more streamlined and intuitive. One common
+            requirement in many applications is fetching multiple records based on a list of identifiers. Spring Data
+            JPA offers an out-of-the-box solution for this through the <code style="color: red;">findAllById</code>
+            method. Let's dive into how you can
+            use this method and what you need to consider.</p>
+        <h2>1. Set up a Spring Boot project</h2>
+        <p>Let's launch <a href="https://start.spring.io/" target="_blank">Spring Initializr</a> and fill up the following project details:</p>
+        <p><b>Project: </b>Maven Project (or Gradle)</p>
+        <p><b>Language: </b>Java</p>
+        <p><b>Packaging: </b>Jar</p>
+        <p><b>Java version: </b>17</p>
+        <p><b>Dependencies: </b>Spring Data JPA, MySQL Driver, and Lombok</p>
+        <p>Download, extract the project, and import it to your favorite IDE.</p>
+        <h2>2. Configure the MySQL database</h2>
+        <p>Let's open the src/main/resources/application.properties file and add the MySQL configuration properties:</p>
+        <pre><code>
+spring.datasource.url=jdbc:mysql://localhost:3306/demo
+spring.datasource.username=root
+spring.datasource.password=Mysql@123
+spring.jpa.hibernate.ddl-auto=update
+    </code></pre>
+        <p>Make sure that you change the MySQL database username and password as per your MySQL installation on your
+            machine.</p>
+        <p>The <code style="color: red;">spring.jpa.hibernate.ddl-auto=update</code> line ensures that tables and
+            columns get automatically created or
+            updated based on your JPA entities.</p>
+        <h2>3. Create JPA Entity - Employee</h2>
+        <p>Let's create a simple <code style="color: red;">Employee</code> JPA entity that will map to the database
+            table - <code style="color: red;">employees</code>:</p>
+        <pre><code>
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "employees")
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String department;
+}
+
+</code></pre>
+        <p>We are using below Lombok annotations to reduce the boilerplate code such as getter/setter methods:
+            <b>@Getter: </b>Generates getter methods for the fields of the class.
+            <b>@Setter: </b>Generates setter methods for the fields of the class.
+        </p>
+        <h2>3. Create Spring Data JPA Repository - EmployeeRepository</h2>
+        <p>Let's create an <code style="color: red;">EmployeeRepository</code> interface that extends the <code
+                style="color: red;">JpaRepository</code> interface from Spring Data JPA:
+        </p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long> {
+}
+
+</code></pre>
+        <h3>Fetching Multiple Entities by IDs</h3>
+        <p>To fetch multiple Employee entities by a list of IDs, you can use the <code
+                style="color: red;">findAllById</code> method provided by
+            <code style="color: red;">JpaRepository</code>:
+        </p>
+        <pre><code>
+List&lt;Long> ids = Arrays.asList(1L, 2L, 3L);
+
+List&lt;Employee> employees = employeeRepository.findAllById(ids);
+
+employees.forEach((employee) -> {
+    System.out.println(employee.getId());
+});
+
+</code></pre>
+        <p>Once you run the above code, Spring Data JPA generates the below SQL statement for the <code
+                style="color: red;">findAllById</code> method:</p>
+        <pre><code>
+select
+    e1_0.id,
+    e1_0.first_name,
+    e1_0.last_name 
+from
+    employees e1_0 
+where
+    e1_0.id in(?,?,?)
+
+</code></pre>
+        <p>The <code style="color: red;">findAllById</code> accepts an Iterable of IDs and returns a list of entities
+            that match these IDs. If some IDs
+            are not present in the database, they are simply ignored, and their corresponding entities won't be part of
+            the returned list.</p>
+        <h2>4. Testing - EmployeeRepository Query Methods</h2>
+        <p>Now, let's write a JUnit test case to test <code style="color: red;">EmployeeRepository</code> query methods:
+        </p>
+        <p>Test findAllById () Query Method</p>
+        <pre><code>
+    @Test
+    void findByDepartmentTest(){
+        List<Long> ids = Arrays.asList(1L, 2L, 3L);
+
+        List<Employee> employees = employeeRepository.findAllById(ids);
+
+        employees.forEach((employee) -> {
+            System.out.println(employee.getId());
+        });
+    }
+
+</code></pre>
+        <p>Note that Spring Data JPA ( internally uses Hibernate as JPA provider) generated SQL statement in a console:
+        </p>
+        <pre><code>
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.first_name,
+        e1_0.last_name 
+    from
+        employees e1_0 
+    where
+        e1_0.id in(?,?,?)
+
+</code></pre>
+        <p>Here is the complete code for your reference:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Arrays;
+import java.util.List;
+
+@SpringBootTest
+public class EmployeeRepositoryTests {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @BeforeEach
+    public void setUp() {
+        Employee e1 = new Employee();
+        e1.setFirstName("Ramesh");
+        e1.setLastName("Fadatare");
+        //e1.setHireDate(new Date());
+        employeeRepository.save(e1);
+    }
+
+    @Test
+    void findByDepartmentTest(){
+        List&lt;Long> ids = Arrays.asList(1L, 2L, 3L);
+
+        List&lt;Employee> employees = employeeRepository.findAllById(ids);
+
+        employees.forEach((employee) -> {
+            System.out.println(employee.getId());
+        });
+    }
+    @AfterEach
+    public void clean(){
+        employeeRepository.deleteAll();
+    }
+}
+
+</code></pre>
+        <h2>Points to Consider</h2>
+        <p><b>Performance: </b>The <code style="color: red;">findAllById</code> method can be efficient, especially if
+            the underlying database supports
+            fetching
+            multiple rows by multiple primary key values in a single query. However, be cautious about querying a vast
+            number of IDs in one go, as it might affect performance.</p>
+        <p><b>Order of Results: </b>It's important to note that the order of entities in the returned list might not
+            correspond to the order of IDs in the input list. If maintaining the order is crucial, you'd need to
+            re-order the results in your application logic.</p>
+        <p><b>Handling Missing IDs: </b>As mentioned, if some IDs aren't found in the database, they are just skipped.
+            If you
+            need to handle or report missing IDs, you'd need to implement that logic in your application after
+            retrieving the results.</p>
+        <p><b>Alternative Approaches: </b>If you need more control over the query, or if you want to combine the
+            ID-based
+            filtering with other query criteria, you can define custom query methods or utilize the @Query annotation to
+            specify a JPQL or SQL query.</p>
+        <h2>Conclusion</h2>
+        <p>Fetching entities by multiple IDs is a breeze with Spring Data JPA's <code
+                style="color: red;">findAllById</code> method. While it's a
+            powerful and convenient tool, always consider the potential performance implications and ensure your
+            application handles the results in a way that meets your specific needs. As with any tool, understanding the
+            underlying behavior is key to using it effectively.</p>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA findBy Order By</h1>
+        <p>When working with Spring Data JPA, it's often required not only to fetch records based on certain criteria
+            but also to sort the results in a particular order. Spring Data JPA makes this task intuitive by allowing
+            you to incorporate sorting directly within your method names.</p>
+        <p>In this post, we will dive into using <code style="color: red;">findBy</code> in combination with <code
+                style="color: red;">OrderBy</code> to both filter and sort results.
+        </p>
+        <h2>Basics of OrderBy</h2>
+        <p>The <code style="color: red;">OrderBy</code> keyword in method names allows you to specify sorting
+            instructions for your queries. The general
+            structure is:</p>
+        <pre><code>findBy[PropertyName]OrderBy[PropertyName][Asc/Desc]</code></pre>
+        <h2>Create JPA Entity</h2>
+        <pre><code>
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "employees")
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+}
+
+</code></pre>
+        <p>We are using below Lombok annotations to reduce the boilerplate code such as getter/setter and toString
+            methods:</p>
+        <p><b>@Getter: </b>Generates getter methods for the fields of the class.</p>
+        <p><b>@Setter: </b>setter methods for the fields of the class.</p>
+        <p><b>@ToString: </b>Generates an implementation of the <code style="color: red;">toString</code> method based
+            on the fields of the class.</p>
+        <h2>Spring Data JPA Repository - EmployeeRepository</h2>
+        <p>Let's create an <code style="color: red;">EmployeeRepository</code> interface that extends <code
+                style="color: red;">JpaRepository</code> interface from <a
+                href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a>:
+        </p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long> {
+}
+        </code></pre>
+        <h3>Sorting by Single Property:</h3>
+        <p>To find all employees and sort them by their last names in ascending order:</p>
+        <pre><code>List&lt;Employee> findAllByOrderByLastNameAsc();</code></pre>
+        <h3>Filtering and Sorting:</h3>
+        <p>To find employees by a specific first name and sort them by their hire date in descending order:</p>
+        <pre><code>List&lt;Employee> findByFirstNameOrderByHireDateDesc(String firstName);</code></pre>
+        <h3>Sorting by Multiple Properties:</h3>
+        <p>To fetch all employees and sort first by their last name in ascending order, and then by their first name in
+            ascending order:</p>
+        <pre><code>List&lt;Employee> findAllByOrderByLastNameAscFirstNameAsc();</code></pre>
+        <h2>Testing - EmployeeRepository Query Methods</h2>
+        <p>Let's write the JUnit test cases to all the above query methods:</p>
+        <h3>Test findAllByOrderByLastNameAsc() Query Method:</h3>
+        <pre><code>
+    @Test
+    void findAllByOrderByLastNameAscTest(){
+        List<Employee> employees = employeeRepository.findAllByOrderByLastNameAsc();
+
+        employees.forEach((employee) -> {
+            System.out.println(employee.getId());
+            System.out.println(employee.getFirstName());
+            System.out.println(employee.getLastName());
+        });
+    }
+    </code></pre>
+        <p>Run above JUnit test case, Spring Data JPA (uses Hibernate as JPA provider) generated SQL statements in a
+            console:</p>
+        <pre><code>
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.first_name,
+        e1_0.hire_date,
+        e1_0.last_name 
+    from
+        employees e1_0 
+    order by
+        e1_0.last_name
+
+</code></pre>
+        <h3>Test findAllByOrderByLastNameAscFirstNameAsc() Query Method:</h3>
+        <pre><code>
+    @Test
+    void findAllByOrderByLastNameAscFirstNameAscTest(){
+        List<Employee> employees = employeeRepository.findAllByOrderByLastNameAscFirstNameAsc();
+
+        employees.forEach((employee) -> {
+            System.out.println(employee.getId());
+            System.out.println(employee.getFirstName());
+            System.out.println(employee.getLastName());
+        });
+    }
+
+</code></pre>
+        <p>Run above JUnit test case, Spring Data JPA (uses Hibernate as JPA provider) generated SQL statements in a
+            console:</p>
+        <pre><code>
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.first_name,
+        e1_0.hire_date,
+        e1_0.last_name 
+    from
+        employees e1_0 
+    order by
+        e1_0.last_name,
+        e1_0.first_name
+
+</code></pre>
+        <h3>Test findByFirstNameOrderByHireDateDesc() Query Method:</h3>
+        <pre><code>
+    @Test
+    void findByFirstNameOrderByHireDateDescTest(){
+        List<Employee> employees = employeeRepository.findByFirstNameOrderByHireDateDesc("Ramesh");
+
+        employees.forEach((employee) -> {
+            System.out.println(employee.getId());
+            System.out.println(employee.getFirstName());
+            System.out.println(employee.getLastName());
+        });
+    }
+
+</code></pre>
+        <p>Run above JUnit test case, Spring Data JPA (uses Hibernate as JPA provider) generated SQL statements in a
+            console:</p>
+        <pre><code>
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.first_name,
+        e1_0.hire_date,
+        e1_0.last_name 
+    from
+        employees e1_0 
+    where
+        e1_0.first_name=? 
+    order by
+        e1_0.hire_date desc
+
+</code></pre>
+        <p>Here is the complete code for your reference:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Date;
+import java.util.List;
+
+@SpringBootTest
+public class EmployeeRepositoryTests {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @BeforeEach
+    public void setUp() {
+        Employee e1 = new Employee();
+        e1.setFirstName("Ramesh");
+        e1.setLastName("Fadatare");
+        e1.setHireDate(new Date());
+        employeeRepository.save(e1);
+    }
+
+    @Test
+    void findAllByOrderByLastNameAscTest(){
+        List&lt;Employee> employees = employeeRepository.findAllByOrderByLastNameAsc();
+
+        employees.forEach((employee) -> {
+            System.out.println(employee.getId());
+            System.out.println(employee.getFirstName());
+            System.out.println(employee.getLastName());
+        });
+    }
+
+    @Test
+    void findAllByOrderByLastNameAscFirstNameAscTest(){
+        List&lt;Employee> employees = employeeRepository.findAllByOrderByLastNameAscFirstNameAsc();
+
+        employees.forEach((employee) -> {
+            System.out.println(employee.getId());
+            System.out.println(employee.getFirstName());
+            System.out.println(employee.getLastName());
+        });
+    }
+
+    @Test
+    void findByFirstNameOrderByHireDateDescTest(){
+        List&lt;Employee> employees = employeeRepository.findByFirstNameOrderByHireDateDesc("Ramesh");
+
+        employees.forEach((employee) -> {
+            System.out.println(employee.getId());
+            System.out.println(employee.getFirstName());
+            System.out.println(employee.getLastName());
+        });
+    }
+
+    @AfterEach
+    public void clean(){
+        employeeRepository.deleteAll();
+    }
+}
+
+</code></pre>
+    </div>
+</body>
+
+</html>
