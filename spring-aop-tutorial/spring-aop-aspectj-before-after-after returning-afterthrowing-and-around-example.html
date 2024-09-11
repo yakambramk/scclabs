@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring AOP + AspectJ @Before, @After, @AfterReturning, @AfterThrowing and @Around Example</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring AOP + AspectJ @Before, @After, @AfterReturning, @AfterThrowing and @Around Example</h1>
+        <p>In this article, we will learn how to integrate AspectJ annotations with the Spring AOP framework. We will
+            create a simple spring boot application, add a logging aspect and then invoke aspect methods based on
+            pointcuts information passed in AspectJ annotations.</p>
+        <p><b>Important: This tutorial is upgraded to Spring Boot 3 and Java 17.</b> </p>
+
+        <p>Common AspectJ annotations :</p>
+
+        <ul>
+            <li><b>@Before – </b>Run before the method execution</li>
+            <li><b> @After – </b>Run after the method returned a result</li>
+            <li><b> @AfterReturning – </b>Run after the method returned a result, and intercept the returned result as
+                well.</li>
+            <li><b> @AfterThrowing –</b> Run after the method throws an exception</li>
+            <li><b> @Around – </b>Run around the method execution, and combine all three advices above.</li>
+        </ul>
+        <p>Let's first look at the snippets of each AspectJ annotation and then we will develop a complete example to
+            demonstrate the usage of AspectJ <b>@Before, @After, @AfterReturning, @AfterThrowing, and @Around
+            </b>annotations.
+        </p>
+
+        <h2>AspectJ @Before Annotation Usage [Snippet]</h2>
+
+        <p><b>@Before</b> annotated methods run exactly before all methods match with pointcut expression. Here is a
+            sample usage of <b>@Before</b> annotation:</p>
+        <pre>@Aspect
+    @Component
+    public class LoggingAspect {
+    
+     private final Logger log = LoggerFactory.getLogger(this.getClass());
+    
+     /**
+      * Run before the method execution.
+      * @param joinPoint
+      */
+     @Before("execution(* net.guides.springboot2.springboot2jpacrudexample.service.EmployeeService.addEmployee(..))")
+     public void logBefore(JoinPoint joinPoint) {
+      log.debug("logBefore running .....");
+      log.debug("Enter: {}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
+        joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+      
+     }
+    }</pre>
+
+        <ul>
+            <li><b>@Aspect -</b> Indicates that this is an Aspect</li>
+            <li><b> @Component -</b> This annotation mark the beans as Spring’s managed components</li>
+            <li><b> @Before </b>annotated methods run exactly before all methods match with pointcut expression</li>
+        </ul>
+        <h2>AspectJ @After Annotation Usage [Snippet]</h2>
+
+        <p><b>@After </b>annotated methods run exactly after all methods match with pointcut expression. You can use
+            @After
+            annotation in the below manner.</p>
+        <pre>@Aspect
+    @Component
+    public class LoggingAspect {
+    
+     private final Logger log = LoggerFactory.getLogger(this.getClass());
+    
+     /**
+      * Run after the method returned a result.
+      * @param joinPoint
+      */
+     @After("execution(* net.guides.springboot2.springboot2jpacrudexample.service.EmployeeService.addEmployee(..))")
+     public void logAfter(JoinPoint joinPoint) {
+      log.debug("logAfter running .....");
+      log.debug("Enter: {}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
+        joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+     }
+    }</pre>
+
+        <ul>
+            <li><b>@Aspect - </b>Indicates that this is an Aspect</li>
+            <li><b> @Component - </b> This annotation mark the beans as Spring’s managed components</li>
+            <li><b> @After</b> annotated methods run exactly after all methods match with a pointcut expression</li>
+        </ul>
+        <h2>AspectJ @Around Annotation Usage [Snippet]</h2>
+        <p> <b>@Around </b>annotated methods run before and after all methods matching with pointcut expression. Here is
+            a sample usage of <b>@Around</b> annotation:
+        </p>
+
+        <pre>@Aspect
+    @Component
+    public class LoggingAspect {
+    
+        private final Logger log = LoggerFactory.getLogger(this.getClass());
+    
+        /**
+         * Run around the method execution.
+         * @param joinPoint
+         * @return
+         * @throws Throwable
+         */
+        @Around("execution(* net.guides.springboot2.springboot2jpacrudexample.service.EmployeeService.getEmployeeById(..))")
+        public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
+            log.debug("logAround running .....");
+            if (log.isDebugEnabled()) {
+                log.debug("Enter: {}.{}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+            }
+            try {
+                Object result = joinPoint.proceed();
+                if (log.isDebugEnabled()) {
+                    log.debug("Exit: {}.{}() with result = {}", joinPoint.getSignature().getDeclaringTypeName(),
+                        joinPoint.getSignature().getName(), result);
+                }
+                return result;
+            } catch (IllegalArgumentException e) {
+                log.error("Illegal argument: {} in {}.{}()", Arrays.toString(joinPoint.getArgs()),
+                    joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+                throw e;
+            }
+    
+        }
+    }</pre>
+        <ul>
+            <li><b>@Aspect - </b>Indicates that this is an Aspect</li>
+            <li><b> @Component - </b>This annotation mark the beans as Spring’s managed components</li>
+            <li><b> @Around</b> annotated methods run before and after all methods matching with a pointcut expression
+            </li>
+        </ul>
+
+        <h2>AspectJ @AfterReturning Annotation Usage [snippet]</h2>
+
+        <p>Run after the method returned a result, and intercept the returned result as well. Here is a usage of the
+            <b> @AfterReturning</b> annotation:
+        </p>
+
+        <pre>@Aspect
+    @Component
+    public class LoggingAspect {
+    
+     private final Logger log = LoggerFactory.getLogger(this.getClass());
+    
+     /**
+      * Run after the method returned a result, intercept the returned result as well.
+      * @param joinPoint
+      * @param result
+      */
+     @AfterReturning(pointcut = "execution(* net.guides.springboot2.springboot2jpacrudexample.service.EmployeeService.deleteEmployee(..))", returning = "result")
+     public void logAfterReturning(JoinPoint joinPoint, Object result) {
+      log.debug("logAfterReturning running .....");
+      log.debug("Enter: {}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
+        joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+    
+     }
+    }   </pre>
+
+        <ul>
+            <li><b> @Aspect -</b> Indicates that this is an Aspect</li>
+            <li><b> @Component - </b>This annotation mark the beans as Spring’s managed components</li>
+            <li><b> @AfterReturning - </b>Run after the method returned a result, intercept the returned result as well
+            </li>
+        </ul>
+
+        <h2>AspectJ @AfterThrowing Annotation Usage [Snippet]</h2>
+
+        <p><b>@AfterThrowing </b>annotated methods run after the method (matching with pointcut expression) exits by
+            throwing
+            an exception. Here is a simple example:</p>
+
+        <pre>@Aspect
+    @Component
+    public class LoggingAspect {
+    
+        private final Logger log = LoggerFactory.getLogger(this.getClass());
+    
+        /**
+         * Advice that logs methods throwing exceptions.
+         *
+         * @param joinPoint join point for advice
+         * @param e         exception
+         */
+    
+        @AfterThrowing(pointcut = "execution(* net.guides.springboot2.springboot2jpacrudexample.service.EmployeeService.updateEmployee(..))", throwing = "error")
+        public void logAfterThrowing(JoinPoint joinPoint, Throwable error) {
+            log.debug("logAfterThrowing running .....");
+            log.error("Exception in {}.{}() with cause = {}", joinPoint.getSignature().getDeclaringTypeName(),
+                joinPoint.getSignature().getName(), error.getCause() != null ? error.getCause() : "NULL");
+        }
+    }</pre>
+        <ul>
+            <li><b>@Aspect - </b>Indicates that this is an Aspect</li>
+            <li><b> @Component - </b> This annotation mark the beans as Spring’s managed components</li>
+            <li><b> @AfterThrowing </b>annotated methods run after the method (matching with pointcut expression) exits
+                by throwing an exception.</li>
+        </ul>
+<h2>Develop Complete Spring AOP Example with AspectJ Annotations</h2>
+<p>Let's create a complete step-by-step CRUD spring boot application with Spring AOP.
+</p>
+<h2>1. Creating a Spring Boot Application</h2>
+        <p>There are many ways to create a Spring Boot application. You can refer below articles to create a Spring Boot
+            application.
+        </p>
+        <p><a href="/spring-mvc/create-springboot-project-with-spring-intializer.html">>> Create Spring Boot Project
+                With Spring Initializer</a></p>
+        <p><a href="/spring-mvc/create-springboot-project-in-spring-tool-suite.html">>> Create Spring Boot Project in
+                Spring Tool Suite [STS]</a></p>
+        <p>Refer next step to create a project packaging structure.</p>
+        <h2>2. Project Structure</h2>
+        <p>Following is the package or project structure for your reference - </p>
+        <img src="/assets/spring-aop-images/spring-aop-advice-project-structure.PNG" alt="" class="image-fluid">
+        <h2>3. Maven Dependencies - Pom.xml</h2>
+        <pre>
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+        &lt;groupId&gt;net.guides.springboot2&lt;/groupId&gt;
+        &lt;artifactId&gt;springboot2-springaop-example&lt;/artifactId&gt;
+        &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;packaging&gt;jar&lt;/packaging&gt;
+        &lt;name&gt;springboot2-springaop-example&lt;/name&gt;
+        &lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+        &lt;parent&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+            &lt;version&gt;3.0.4&lt;/version&gt;
+            &lt;relativePath /&gt;
+            &lt;!-- lookup parent from repository --&gt;
+        &lt;/parent&gt;
+        &lt;properties&gt;
+            &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+            &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+            &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;/properties&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-aop&lt;/artifactId&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+                &lt;artifactId&gt;h2&lt;/artifactId&gt;
+                &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                    &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    &lt;/project&gt;
+    </pre>
+        <h2>4. Domain Layer</h2>
+
+        <p>Let's create a simple <b>Employee</b> JPA entity class with the following code in it:</p>
+
+        <pre>import jakarta.persistence.*;
+
+    @Entity
+    @Table(name = "employees")
+    public class Employee {
+    
+        private long id;
+        private String firstName;
+        private String lastName;
+        private String emailId;
+    
+        public Employee() {
+    
+        }
+    
+        public Employee(String firstName, String lastName, String emailId) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.emailId = emailId;
+        }
+    
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        public long getId() {
+            return id;
+        }
+        public void setId(long id) {
+            this.id = id;
+        }
+    
+        @Column(name = "first_name", nullable = false)
+        public String getFirstName() {
+            return firstName;
+        }
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+    
+        @Column(name = "last_name", nullable = false)
+        public String getLastName() {
+            return lastName;
+        }
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+    
+        @Column(name = "email_address", nullable = false)
+        public String getEmailId() {
+            return emailId;
+        }
+        public void setEmailId(String emailId) {
+            this.emailId = emailId;
+        }
+    
+        @Override
+        public String toString() {
+            return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", emailId=" + emailId +
+                "]";
+        }
+    }</pre>
+
+        <h2>5. The Controller Layer</h2>
+
+        <p>Let's first create a Spring rest controller class and then we will add a logging aspect to it:</p>
+
+        <pre>import java.util.List;
+    import java.util.Map;
+    
+    import javax.validation.Valid;
+    
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.web.bind.annotation.DeleteMapping;
+    import org.springframework.web.bind.annotation.GetMapping;
+    import org.springframework.web.bind.annotation.PathVariable;
+    import org.springframework.web.bind.annotation.PostMapping;
+    import org.springframework.web.bind.annotation.PutMapping;
+    import org.springframework.web.bind.annotation.RequestBody;
+    import org.springframework.web.bind.annotation.RequestMapping;
+    import org.springframework.web.bind.annotation.RestController;
+    
+    @RestController
+    @RequestMapping("/api/v1")
+    public class EmployeeController {
+        @Autowired
+        private EmployeeService employeeService;
+    
+        @GetMapping("/employees")
+        public List < Employee > getAllEmployees() {
+            return employeeService.getAllEmployees();
+        }
+    
+        @GetMapping("/employees/{id}")
+        public ResponseEntity < Employee > getEmployeeById(@PathVariable(value = "id") Long employeeId)
+        throws ResourceNotFoundException {
+            Employee employee = employeeService.getEmployeeById(employeeId)
+                .orElseThrow(() - > new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+            return ResponseEntity.ok().body(employee);
+        }
+    
+        @PostMapping("/employees")
+        public Employee createEmployee(@Valid @RequestBody Employee employee) {
+            return employeeService.createEmployee(employee);
+        }
+    
+        @PutMapping("/employees/{id}")
+        public ResponseEntity < Employee > updateEmployee(@PathVariable(value = "id") Long employeeId,
+            @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
+            Employee updatedEmployee = employeeService.updateEmployee(employeeId, employeeDetails);
+            return ResponseEntity.ok(updatedEmployee);
+        }
+    
+        @DeleteMapping("/employees/{id}")
+        public Map < String, Boolean > deleteEmployee(@PathVariable(value = "id") Long employeeId)
+        throws ResourceNotFoundException {
+            return employeeService.deleteEmployee(employeeId);
+        }
+    }</pre>
+        <h2>6. The Service Layer</h2>
+
+        <p>Let's first create EmployeeService class and then we will add a logging aspect to it:</p>
+
+        <pre>import java.util.HashMap;
+    import java.util.List;
+    import java.util.Map;
+    import java.util.Optional;
+    
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.stereotype.Service;
+    
+    /**
+     * Employee Service
+     *
+     */
+    @Service
+    public class EmployeeService {
+        @Autowired
+        private EmployeeRepository employeeRepository;
+    
+        public List < Employee > getAllEmployees() {
+            return employeeRepository.findAll();
+        }
+    
+        public Optional < Employee > getEmployeeById(Long employeeId)
+        throws ResourceNotFoundException {
+            return employeeRepository.findById(employeeId);
+        }
+    
+        public Employee createEmployee(Employee employee) {
+            return employeeRepository.save(employee);
+        }
+    
+        public Employee updateEmployee(Long employeeId,
+            Employee employeeDetails) throws ResourceNotFoundException {
+            Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() - > new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+    
+            employee.setEmailId(employeeDetails.getEmailId());
+            employee.setLastName(employeeDetails.getLastName());
+            employee.setFirstName(employeeDetails.getFirstName());
+            final Employee updatedEmployee = employeeRepository.save(employee);
+            return updatedEmployee;
+        }
+    
+        public Map < String, Boolean > deleteEmployee(Long employeeId)
+        throws ResourceNotFoundException {
+            Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() - > new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+    
+            employeeRepository.delete(employee);
+            Map < String, Boolean > response = new HashMap < > ();
+            response.put("deleted", Boolean.TRUE);
+            return response;
+        }
+    }</pre>
+        <h2>7. The Repository Layer</h2>
+        <p>Let's first create <b>EmployeeRepository</b> and then we will add a logging aspect to it:</p>
+
+        <pre>import org.springframework.data.jpa.repository.JpaRepository;
+    import org.springframework.stereotype.Repository;
+    
+    public interface EmployeeRepository extends JpaRepository < Employee, Long > {
+    
+    }</pre>
+
+        <h2>8. The Logging Aspect</h2>
+
+        <p>Now, let's create an Aspect for logging execution. This LoggingAspect class provides AspectJ <b>@Before,
+                @After,
+                @AfterReturning, @AfterThrowing, and @Around</b> annotated methods:</p>
+        <pre>import java.util.Arrays;
+
+    import org.aspectj.lang.JoinPoint;
+    import org.aspectj.lang.ProceedingJoinPoint;
+    import org.aspectj.lang.annotation.After;
+    import org.aspectj.lang.annotation.AfterReturning;
+    import org.aspectj.lang.annotation.AfterThrowing;
+    import org.aspectj.lang.annotation.Around;
+    import org.aspectj.lang.annotation.Aspect;
+    import org.aspectj.lang.annotation.Before;
+    import org.slf4j.Logger;
+    import org.slf4j.LoggerFactory;
+    import org.springframework.stereotype.Component;
+    
+    /**
+     * Aspect for logging execution.
+     * 
+     *
+     */
+    @Aspect
+    @Component
+    public class LoggingAspect {
+    
+        private final Logger log = LoggerFactory.getLogger(this.getClass());
+    
+        /**
+         * Run before the method execution.
+         * @param joinPoint
+         */
+        @Before("execution(* net.guides.springboot2.springboot2jpacrudexample.service.EmployeeService.addEmployee(..))")
+        public void logBefore(JoinPoint joinPoint) {
+            log.debug("logBefore running .....");
+            log.debug("Enter: {}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
+                joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+    
+        }
+    
+        /**
+         * Run after the method returned a result.
+         * @param joinPoint
+         */
+        @After("execution(* net.guides.springboot2.springboot2jpacrudexample.service.EmployeeService.addEmployee(..))")
+        public void logAfter(JoinPoint joinPoint) {
+            log.debug("logAfter running .....");
+            log.debug("Enter: {}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
+                joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+        }
+    
+        /**
+         * Run after the method returned a result, intercept the returned result as well.
+         * @param joinPoint
+         * @param result
+         */
+        @AfterReturning(pointcut = "execution(* net.guides.springboot2.springboot2jpacrudexample.service.EmployeeService.deleteEmployee(..))", returning = "result")
+        public void logAfterReturning(JoinPoint joinPoint, Object result) {
+            log.debug("logAfterReturning running .....");
+            log.debug("Enter: {}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
+                joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+    
+        }
+    
+        /**
+         * Run around the method execution.
+         * @param joinPoint
+         * @return
+         * @throws Throwable
+         */
+        @Around("execution(* net.guides.springboot2.springboot2jpacrudexample.service.EmployeeService.getEmployeeById(..))")
+        public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
+            log.debug("logAround running .....");
+            if (log.isDebugEnabled()) {
+                log.debug("Enter: {}.{}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+            }
+            try {
+                Object result = joinPoint.proceed();
+                if (log.isDebugEnabled()) {
+                    log.debug("Exit: {}.{}() with result = {}", joinPoint.getSignature().getDeclaringTypeName(),
+                        joinPoint.getSignature().getName(), result);
+                }
+                return result;
+            } catch (IllegalArgumentException e) {
+                log.error("Illegal argument: {} in {}.{}()", Arrays.toString(joinPoint.getArgs()),
+                    joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+                throw e;
+            }
+    
+        }
+    
+        /**
+         * Advice that logs methods throwing exceptions.
+         *
+         * @param joinPoint join point for advice
+         * @param e         exception
+         */
+    
+        @AfterThrowing(pointcut = "execution(* net.guides.springboot2.springboot2jpacrudexample.service.EmployeeService.updateEmployee(..))", throwing = "error")
+        public void logAfterThrowing(JoinPoint joinPoint, Throwable error) {
+            log.debug("logAfterThrowing running .....");
+            log.error("Exception in {}.{}() with cause = {}", joinPoint.getSignature().getDeclaringTypeName(),
+                joinPoint.getSignature().getName(), error.getCause() != null ? error.getCause() : "NULL");
+        }
+    }</pre>
+        <h2>9. Exception Handling</h2>
+
+        <p>Let's create a ResourceNotFoundException.java class:</p>
+
+        <pre>import org.springframework.http.HttpStatus;
+    import org.springframework.web.bind.annotation.ResponseStatus;
+    
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public class ResourceNotFoundException extends Exception{
+    
+        private static final long serialVersionUID = 1L;
+    
+        public ResourceNotFoundException(String message){
+            super(message);
+        }
+    }</pre>
+        <p>Let’s define a simple error response bean:</p>
+
+        <pre>import java.util.Date;
+
+    public class ErrorDetails {
+     private Date timestamp;
+     private String message;
+     private String details;
+    
+     public ErrorDetails(Date timestamp, String message, String details) {
+      super();
+      this.timestamp = timestamp;
+      this.message = message;
+      this.details = details;
+     }
+    
+     public Date getTimestamp() {
+      return timestamp;
+     }
+    
+     public String getMessage() {
+      return message;
+     }
+    
+     public String getDetails() {
+      return details;
+     }
+    }
+    </pre>
+        <p>To use <b>ErrorDetails</b> to return the error response, let’s create a <b>GlobalExceptionHandler</b> class
+            annotated with
+            <b>@ControllerAdvice </b>annotation. This class handles exception-specific and global exceptions in a single
+            place.
+        </p>
+        <pre>import java.util.Date;
+
+    import org.springframework.http.HttpStatus;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.web.bind.annotation.ControllerAdvice;
+    import org.springframework.web.bind.annotation.ExceptionHandler;
+    import org.springframework.web.context.request.WebRequest;
+    
+    @ControllerAdvice
+    public class GlobalExceptionHandler {
+        @ExceptionHandler(ResourceNotFoundException.class)
+        public ResponseEntity<?> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+             ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+             return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+        }
+    
+        @ExceptionHandler(Exception.class)
+        public ResponseEntity<?> globleExcpetionHandler(Exception ex, WebRequest request) {
+            ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+            return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }</pre>
+
+        <h2>10. Running the Application</h2>
+        <p>Finally, let’s define the application’s entry point. Like most Spring Boot applications, we can do this with
+            a plain old <b>main() </b>method:</p>
+        <pre>package net.guides.springboot2.springboot2jpacrudexample;
+
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+    import org.springframework.boot.web.client.RestTemplateBuilder;
+    import org.springframework.context.annotation.Bean;
+    import org.springframework.web.client.RestTemplate;
+    
+    @SpringBootApplication
+    public class Application {
+    
+        @Bean
+        public RestTemplate restTemplate(RestTemplateBuilder builder) {
+            return builder.build();
+        }
+    
+        public static void main(String[] args) {
+            SpringApplication.run(Application.class, args);
+        }
+    }</pre>
+        <h2>11. Spring Rest Client</h2>
+        <p>Once the above spring application is up and running, let's test all Spring rest APIs and logging results with
+            the below Spring rest client:</p>
+        <pre>package net.guides.springboot2.springboot2jpacrudexample;
+
+    import java.util.Arrays;
+    import java.util.HashMap;
+    import java.util.Map;
+    
+    import org.springframework.http.HttpEntity;
+    import org.springframework.http.HttpHeaders;
+    import org.springframework.http.HttpMethod;
+    import org.springframework.http.MediaType;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.web.client.RestTemplate;
+    
+    import net.guides.springboot2.springboot2jpacrudexample.model.Employee;
+    
+    public class SpringRestClient {
+    
+        private static final String GET_EMPLOYEES_ENDPOINT_URL = "http://localhost:8080/api/v1/employees";
+        private static final String GET_EMPLOYEE_ENDPOINT_URL = "http://localhost:8080/api/v1/employees/{id}";
+        private static final String CREATE_EMPLOYEE_ENDPOINT_URL = "http://localhost:8080/api/v1/employees";
+        private static final String UPDATE_EMPLOYEE_ENDPOINT_URL = "http://localhost:8080/api/v1/employees/{id}";
+        private static final String DELETE_EMPLOYEE_ENDPOINT_URL = "http://localhost:8080/api/v1/employees/{id}";
+        private static RestTemplate restTemplate = new RestTemplate();
+    
+        public static void main(String[] args) {
+            SpringRestClient springRestClient = new SpringRestClient();
+    
+            // Step1: first create a new employee
+            springRestClient.createEmployee();
+    
+            // Step 2: get new created employee from step1
+            springRestClient.getEmployeeById();
+    
+            // Step3: get all employees
+            springRestClient.getEmployees();
+    
+            // Step4: Update employee with id = 1
+            springRestClient.updateEmployee();
+    
+            // Step5: Delete employee with id = 1
+            springRestClient.deleteEmployee();
+        }
+    
+        private void getEmployees() {
+    
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+            HttpEntity < String > entity = new HttpEntity < String > ("parameters", headers);
+    
+            ResponseEntity < String > result = restTemplate.exchange(GET_EMPLOYEES_ENDPOINT_URL, HttpMethod.GET, entity,
+                String.class);
+    
+            System.out.println(result);
+        }
+    
+        private void getEmployeeById() {
+    
+            Map < String, String > params = new HashMap < String, String > ();
+            params.put("id", "1");
+    
+            RestTemplate restTemplate = new RestTemplate();
+            Employee result = restTemplate.getForObject(GET_EMPLOYEE_ENDPOINT_URL, Employee.class, params);
+    
+            System.out.println(result);
+        }
+    
+        private void createEmployee() {
+    
+            Employee newEmployee = new Employee("admin", "admin", "admin@gmail.com");
+    
+            RestTemplate restTemplate = new RestTemplate();
+            Employee result = restTemplate.postForObject(CREATE_EMPLOYEE_ENDPOINT_URL, newEmployee, Employee.class);
+    
+            System.out.println(result);
+        }
+    
+        private void updateEmployee() {
+            Map < String, String > params = new HashMap < String, String > ();
+            params.put("id", "1");
+            Employee updatedEmployee = new Employee("admin123", "admin123", "admin123@gmail.com");
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.put(UPDATE_EMPLOYEE_ENDPOINT_URL, updatedEmployee, params);
+        }
+    
+        private void deleteEmployee() {
+            Map < String, String > params = new HashMap < String, String > ();
+            params.put("id", "1");
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.delete(DELETE_EMPLOYEE_ENDPOINT_URL, params);
+        }
+    }</pre>
+
+
+        <h2>Output:</h2>
+
+        <img src="/assets/spring-aop-images/spring-aop-advice-console-output (1).PNG" alt="" class="image-fluid">
+
+        <p>The logging statements are printed in the console, the above screenshot is for your reference.</p>
+        <h2>12. Conclusion</h2>
+
+        <p>We have learned how to integrate AspectJ annotations with the Spring AOP framework. We have developed a
+            complete example to demonstrate the usage of AspectJ <b>@Before, @After, @AfterReturning, @AfterThrowing, and
+                @Around </b>annotations.
+    </p>
+    </div>
+</body>
+
+</html>
