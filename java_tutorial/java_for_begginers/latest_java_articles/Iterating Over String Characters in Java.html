@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/Iterating Over String Characters in Java.jpg" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h1>Iterating Over String Characters in Java</h1>
+            <p>Author: SAI K </p>
+        </div><br>
+
+    <h2>Introduction</h2>
+    <p>In Java, strings are a fundamental data type used extensively in programming. Often, there's a need to iterate over each character in a string, whether for character counting, data validation, transformation, or other purposes. Java provides several ways to iterate over the characters of a string, each with its own use cases and benefits. In this blog post, we'll explore various methods to iterate the String characters in Java.</p>
+
+    <h2>Method 1: Using <code>charAt()</code> in a Loop</h2>
+    <p>The most straightforward method to iterate over characters in a string is using a <code>for</code> loop along with the <code>charAt()</code> method.</p>
+
+    <h3>Example:</h3>
+    <pre><code>public class StringIteration {
+    public static void main(String[] args) {
+        String str = "Hello, World!";
+        for (int i = 0; i &lt; str.length(); i++) {
+            char ch = str.charAt(i);
+            System.out.println("Character at position " + i + " is: " + ch);
+        }
+    }
+}</code></pre><br>
+
+    <h3>Output:</h3>
+    <pre><code>Character at position 0 is: H
+Character at position 1 is: e
+Character at position 2 is: l
+Character at position 3 is: l
+Character at position 4 is: o
+Character at position 5 is: ,
+Character at position 6 is:  
+Character at position 7 is: W
+Character at position 8 is: o
+Character at position 9 is: r
+Character at position 10 is: l
+Character at position 11 is: d
+Character at position 12 is: !</code></pre><br>
+
+    <h3>Explanation:</h3>
+    <p>In this example:</p>
+    <ul>
+        <li>We use a <code>for</code> loop to go through each index of the string.</li>
+        <li><code>charAt(i)</code> returns the character at the specified index.</li>
+    </ul>
+
+    <h2>Method 2: Using <code>toCharArray()</code> and a For-Each Loop</h2>
+    <p>Another method is to convert the string to a character array using <code>toCharArray()</code> and then use a for-each loop.</p>
+
+    <h3>Example:</h3>
+    <pre><code>public class StringIteration {
+    public static void main(String[] args) {
+        String str = "Hello, World!";
+        for (char ch : str.toCharArray()) {
+            System.out.println("Character: " + ch);
+        }
+    }
+}</code></pre><br>
+
+    <h3>Output:</h3>
+    <pre><code>Character: H
+Character: e
+Character: l
+Character: l
+Character: o
+Character: ,
+Character:  
+Character: W
+Character: o
+Character: r
+Character: l
+Character: d
+Character: !</code></pre><br>
+
+    <h3>Explanation:</h3>
+    <ul>
+        <li><code>toCharArray()</code> converts the string into a character array.</li>
+        <li>The for-each loop iterates over each character in the array.</li>
+    </ul>
+
+    <h2>Method 3: Using Java 8 Streams</h2>
+    <p>For a more functional approach, especially in Java 8 and later, you can use streams to iterate over characters.</p>
+
+    <h3>Example:</h3>
+    <pre><code>import java.util.stream.IntStream;
+
+public class StringIteration {
+    public static void main(String[] args) {
+        String str = "Hello, World!";
+        IntStream charsStream = str.chars();
+        charsStream.forEach(ch -&gt; System.out.println("Character: " + (char) ch));
+    }
+}</code></pre><br>
+
+    <h3>Output:</h3>
+    <pre><code>Character: H
+Character: e
+Character: l
+Character: l
+Character: o
+Character: ,
+Character:  
+Character: W
+Character: o
+Character: r
+Character: l
+Character: d
+Character: !</code></pre><br>
+
+    <h3>Explanation:</h3>
+    <ul>
+        <li><code>str.chars()</code> creates an <code>IntStream</code> representing the character values of the string.</li>
+        <li><code>forEach</code> is used to iterate over each character in the stream.</li>
+    </ul>
+
+    <h2>Method 4: Using <code>codePoints()</code> for Unicode Strings</h2>
+    <p>If you are dealing with Unicode strings that may have surrogate pairs, use <code>codePoints()</code>.</p>
+
+    <h3>Example:</h3>
+    <pre><code>public class StringIteration {
+    public static void main(String[] args) {
+        String str = "Hello, 👋 World!";
+        str.codePoints().forEach(cp -&gt; System.out.println("Codepoint: " + cp + ", Character: " + new String(Character.toChars(cp))));
+    }
+}</code></pre><br>
+
+    <h3>Output:</h3>
+    <pre><code>Codepoint: 72, Character: H
+Codepoint: 101, Character: e
+Codepoint: 108, Character: l
+Codepoint: 108, Character: l
+Codepoint: 111, Character: o
+Codepoint: 44, Character: ,
+Codepoint: 32, Character:  
+Codepoint: 128075, Character: 👋
+Codepoint: 32, Character:  
+Codepoint: 87, Character: W
+Codepoint: 111, Character: o
+Codepoint: 114, Character: r
+Codepoint: 108, Character: l
+Codepoint: 100, Character: d
+Codepoint: 33, Character: !</code></pre><br>
+
+    <h3>Explanation:</h3>
+    <ul>
+        <li><code>codePoints()</code> returns a stream of Unicode code points.</li>
+        <li>The <code>forEach</code> method is used to iterate over each code point.</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>Iterating the string characters in Java can be done in multiple ways, each suitable for different scenarios. Traditional loops work well
+
+
+        <h3>Related Java and Advanced Java Tutorials/Guides</h3>
+        <p>
+            <button type="button" class="btn btn-outline-primary">Java Programs</button>
+            <button type="button" class="btn btn-outline-secondary">Java For Beginners</button>
+            <button type="button" class="btn btn-outline-success">Java OOPS Tutorial</button>
+            <button type="button" class="btn btn-outline-danger">Java For Professional</button>
+            <button type="button" class="btn btn-outline-warning">Java Collections Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Java Spring Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Java Exceptions Tutorial </button>
+            <button type="button" class="btn btn-outline-secondary">Java Regex Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Java Multithreading</button>
+            <button type="button" class="btn btn-outline-danger">500+ Java MCQ</button>
+            <button type="button" class="btn btn-outline-warning">Java Generic Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Java IO Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">JDBC Tutorial</button>
+            <button type="button" class="btn btn-outline-dark">JavaFX Tutorial</button>
+            <button type="button" class="btn btn-outline-primary">Swing Tutorials </button>
+            <button type="button" class="btn btn-outline-secondary">Java 8 Date Time</button>
+            <button type="button" class="btn btn-outline-success">Interview Guides</button>
+            <button type="button" class="btn btn-outline-danger">Java 8 Tutorial </button>
+            <button type="button" class="btn btn-outline-warning">java 9 Tutorial</button>
+            <button type="button" class="btn btn-outline-info">DS And Algorithms</button>
+            <button type="button" class="btn btn-outline-danger">Head First Patters</button>
+            <button type="button" class="btn btn-outline-primary">Core JavaEE Patterns</button>
+            <button type="button" class="btn btn-outline-secondary">JSP Tutorial</button>
+            <button type="button" class="btn btn-outline-success">Servlet Tutorial</button>
+            <button type="button" class="btn btn-outline-danger">JSP Servlet Project</button>
+            <button type="button" class="btn btn-outline-warning">Java JSON-P Tutorial</button>
+            <button type="button" class="btn btn-outline-info">Maven Tutorial</button>
+        </p>
+        <div class="scrollup justify-content-end">
+            <a href="#">
+                <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+            </a>
+        </div>
+    
+    </div>
+    <div id="footer"></div>
+    <script>
+        fetch('../../../footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer').innerHTML = html;
+            });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+    
+    </html>

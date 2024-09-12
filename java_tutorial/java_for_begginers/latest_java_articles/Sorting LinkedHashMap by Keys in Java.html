@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/Sorting LinkedHashMap by Keys in Java_1.jpg" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+    <h1>Sorting LinkedHashMap by Keys in Java</h1>
+    <p>Author: SAI K</p>
+        </div><br>
+    <p>In this blog post, we'll explore how to sort a LinkedHashMap by its keys in Java. A LinkedHashMap in Java is a hash table and linked list implementation of the Map interface, with predictable iteration order.  <br><br>Sorting becomes necessary when you need to process or display the entries of a LinkedHashMap in a specific, non-insertion order, such as alphabetical or numerical order based on keys.</p><br>
+    
+    <h2>Sorting LinkedHashMap by Keys in Java</h2>
+    <p>Here's the complete Java class that demonstrates how to sort a LinkedHashMap by its keys:</p>
+    
+    <pre><code>import java.util.*;
+import java.util.stream.Collectors;
+
+public class FruitSorter {
+
+    // Method to sort LinkedHashMap by keys
+    public static &lt;K extends Comparable&lt;? super K&gt;, V&gt; Map&lt;K, V&gt; sortMapByKey(LinkedHashMap&lt;K, V&gt; map) {
+        return map.entrySet()
+                  .stream()
+                  .sorted(Map.Entry.comparingByKey())
+                  .collect(Collectors.toMap(
+                      Map.Entry::getKey,
+                      Map.Entry::getValue,
+                      (oldValue, newValue) -&gt; oldValue, LinkedHashMap::new));
+    }
+
+    public static void main(String[] args) {
+        // Creating and populating the LinkedHashMap
+        LinkedHashMap&lt;String, Integer&gt; fruits = new LinkedHashMap&lt;&gt;();
+        fruits.put("Apple", 3);
+        fruits.put("Orange", 2);
+        fruits.put("Banana", 4);
+        fruits.put("Grapes", 1);
+        fruits.put("Pineapple", 5);
+
+        // Displaying the original LinkedHashMap
+        System.out.println("Original LinkedHashMap: " + fruits);
+
+        // Sorting the LinkedHashMap by keys
+        Map&lt;String, Integer&gt; sortedFruits = sortMapByKey(fruits);
+
+        // Displaying the sorted LinkedHashMap
+        System.out.println("Sorted LinkedHashMap by keys: " + sortedFruits);
+    }
+}
+    </code></pre>
+
+    <h4>Output:</h4>
+    <pre><code>Original LinkedHashMap: {Apple=3, Orange=2, Banana=4, Grapes=1, Pineapple=5}
+Sorted LinkedHashMap by keys: {Apple=3, Banana=4, Grapes=1, Orange=2, Pineapple=5}</code></pre>
+
+    <p>We define a LinkedHashMap named <span>fruits</span>and populate it with fruit names as keys and integers as values.</p>
+    <p>The <span>sortMapByKey</span> method sorts the map by its keys using Java Streams and collects the result in a new LinkedHashMap. <br><br> We first display the original map and then the sorted map.</p>
+    
+    <h2>Sorting LinkedHashMap by Key in Java Using a Custom Comparator</h2>
+    <p>Here's the complete Java class demonstrating how to sort a LinkedHashMap by its keys using a custom comparator:</p>
+    
+    <pre><code>import java.util.*;
+import java.util.stream.Collectors;
+
+public class FruitSorter {
+
+    // Custom Comparator
+    public static Comparator&lt;String&gt; fruitNameComparator() {
+        return (fruit1, fruit2) -&gt; {
+            // Custom comparison logic goes here
+            // For example, sorting based on the length of the fruit name
+            return Integer.compare(fruit1.length(), fruit2.length());
+        };
+    }
+
+    // Method to sort LinkedHashMap by keys using a custom comparator
+    public static &lt;K, V&gt; Map&lt;K, V&gt; sortMapByKeyWithComparator(LinkedHashMap&lt;K, V&gt; map, Comparator&lt;K&gt; comparator) {
+        return map.entrySet()
+                  .stream()
+                  .sorted(Map.Entry.comparingByKey(comparator))
+                  .collect(Collectors.toMap(
+                      Map.Entry::getKey,
+                      Map.Entry::getValue,
+                      (oldValue, newValue) -&gt; oldValue, LinkedHashMap::new));
+    }
+
+    public static void main(String[] args) {
+        // Creating and populating the LinkedHashMap
+        LinkedHashMap&lt;String, Integer&gt; fruits = new LinkedHashMap&lt;&gt;();
+        fruits.put("Apple", 3);
+        fruits.put("Orange", 2);
+        fruits.put("Banana", 4);
+        fruits.put("Grapes", 1);
+        fruits.put("Pineapple", 5);
+
+        // Displaying the original LinkedHashMap
+        System.out.println("Original LinkedHashMap: " + fruits);
+
+        // Sorting the LinkedHashMap by keys using the custom comparator
+        Map&lt;String, Integer&gt; sortedFruits = sortMapByKeyWithComparator(fruits, fruitNameComparator());
+
+        // Displaying the sorted LinkedHashMap
+        System.out.println("Sorted LinkedHashMap by custom comparator: " + sortedFruits);
+    }
+}
+    </code></pre>
+
+    <h4>Output:</h4>
+    <pre><code>Original LinkedHashMap: {Apple=3, Orange=2, Banana=4, Grapes=1, Pineapple=5}
+Sorted LinkedHashMap by custom comparator: {Apple=3, Grapes=1, Orange=2, Banana=4, Pineapple=5}</code></pre>
+
+    <p>The <span>fruitNameComparator</span> method defines a custom comparator that sorts fruit names based on their length. <br><br> The <span>sortMapByKeyWithComparator</span> method sorts the map using the provided custom comparator. <br><br> We display both the original and the sorted map based on this custom sorting criteria.</p>
+
+
+    <h3>Related Java and Advanced Java Tutorials/Guides</h3>
+    <p>
+        <button type="button" class="btn btn-outline-primary">Java Programs</button>
+        <button type="button" class="btn btn-outline-secondary">Java For Beginners</button>
+        <button type="button" class="btn btn-outline-success">Java OOPS Tutorial</button>
+        <button type="button" class="btn btn-outline-danger">Java For Professional</button>
+        <button type="button" class="btn btn-outline-warning">Java Collections Tutorial</button>
+        <button type="button" class="btn btn-outline-info">Java Spring Tutorial</button>
+        <button type="button" class="btn btn-outline-primary">Java Exceptions Tutorial </button>
+        <button type="button" class="btn btn-outline-secondary">Java Regex Tutorial</button>
+        <button type="button" class="btn btn-outline-success">Java Multithreading</button>
+        <button type="button" class="btn btn-outline-danger">500+ Java MCQ</button>
+        <button type="button" class="btn btn-outline-warning">Java Generic Tutorial</button>
+        <button type="button" class="btn btn-outline-info">Java IO Tutorial</button>
+        <button type="button" class="btn btn-outline-primary">JDBC Tutorial</button>
+        <button type="button" class="btn btn-outline-dark">JavaFX Tutorial</button>
+        <button type="button" class="btn btn-outline-primary">Swing Tutorials </button>
+        <button type="button" class="btn btn-outline-secondary">Java 8 Date Time</button>
+        <button type="button" class="btn btn-outline-success">Interview Guides</button>
+        <button type="button" class="btn btn-outline-danger">Java 8 Tutorial </button>
+        <button type="button" class="btn btn-outline-warning">java 9 Tutorial</button>
+        <button type="button" class="btn btn-outline-info">DS And Algorithms</button>
+        <button type="button" class="btn btn-outline-danger">Head First Patters</button>
+        <button type="button" class="btn btn-outline-primary">Core JavaEE Patterns</button>
+        <button type="button" class="btn btn-outline-secondary">JSP Tutorial</button>
+        <button type="button" class="btn btn-outline-success">Servlet Tutorial</button>
+        <button type="button" class="btn btn-outline-danger">JSP Servlet Project</button>
+        <button type="button" class="btn btn-outline-warning">Java JSON-P Tutorial</button>
+        <button type="button" class="btn btn-outline-info">Maven Tutorial</button>
+    </p>
+    <div class="scrollup justify-content-end">
+        <a href="#">
+            <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+        </a>
+    </div>
+
+</div>
+<div id="footer"></div>
+<script>
+    fetch('../../../footer.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('footer').innerHTML = html;
+        });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/Parsing XML to HashMap in Java_1.png" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+                <h1>Parsing XML to HashMap in Java</h1>
+                <p>Author: SAI K</p>
+        </div><br>
+
+    <h2>Introduction</h2>
+    <p>XML (Extensible Markup Language) is a widely used format for storing and transporting data, and Java provides several ways to parse XML documents. One common requirement in Java applications is to parse an XML document and store its contents in a <code>HashMap</code> for easy access and manipulation. This process can be achieved using various libraries and techniques. In this blog post, we will explore a practical method to parse XML data into a <code>HashMap</code> in Java.</p>
+
+    <h2>Why Use HashMap for XML Data?</h2>
+    <p>A <code>HashMap</code> in Java is a collection used to store key-value pairs. When dealing with XML data, you often need to access specific elements or attributes efficiently. Storing XML data in a <code>HashMap</code> allows for quick retrieval of values based on keys, which can represent XML tags or attributes.</p>
+
+    <h2>Using JDOM for XML Parsing</h2>
+    <p>For this example, we'll use the <strong>JDOM</strong> library, a popular and easy-to-use library for parsing XML in Java. JDOM provides a way to represent XML documents in Java and offers a user-friendly API to access and manipulate the data.</p>
+
+    <h3>Step 1: Add JDOM Dependency</h3>
+    <p>First, add the JDOM dependency to your project. If you are using Maven, include the following in your <code>pom.xml</code>:</p>
+    <pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.jdom&lt;/groupId&gt;
+    &lt;artifactId&gt;jdom2&lt;/artifactId&gt;
+    &lt;version&gt;2.0.6&lt;/version&gt;
+&lt;/dependency&gt;</code></pre><br>
+
+    <h3>Step 2: Sample XML Data</h3>
+    <p>Consider the following simple XML file named <code>sample.xml</code>:</p>
+    <pre><code>&lt;root&gt;
+    &lt;element key="1"&gt;Value 1&lt;/element&gt;
+    &lt;element key="2"&gt;Value 2&lt;/element&gt;
+    &lt;element key="3"&gt;Value 3&lt;/element&gt;
+&lt;/root&gt;</code></pre><br>
+
+    <h3>Step 3: Parse XML and Populate HashMap</h3>
+    <p>Now, let's write a method to parse this XML and store its contents in a <code>HashMap</code>.</p>
+
+    <pre><code>import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class XMLToHashMap {
+
+    public static void main(String[] args) {
+        try {
+            File inputFile = new File("sample.xml");
+            SAXBuilder saxBuilder = new SAXBuilder();
+            Document document = saxBuilder.build(inputFile);
+            Element rootElement = document.getRootElement();
+
+            Map&lt;String, String&gt; xmlDataMap = new HashMap&lt;&gt;();
+            List&lt;Element&gt; elements = rootElement.getChildren();
+
+            for (Element element : elements) {
+                String key = element.getAttributeValue("key");
+                String value = element.getText();
+                xmlDataMap.put(key, value);
+            }
+
+            System.out.println("XML Data Map: " + xmlDataMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre><br>
+
+    <h3>Output:</h3>
+    <pre><code>XML Data Map: {1=Value 1, 2=Value 2, 3=Value 3}</code></pre><br>
+
+    <h3>Explanation:</h3>
+    <ul>
+        <li>We use <code>SAXBuilder</code> to parse the XML file.</li>
+        <li>We iterate over the child elements of the root element.</li>
+        <li>For each element, we retrieve the value of the key attribute and the text content, and then store them in the <code>HashMap</code>.</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>Parsing XML data into a <code>HashMap</code> in Java is a useful technique, especially for applications that require quick access to XML content. Using libraries like JDOM simplifies the process, making it more manageable to parse and manipulate XML data. This approach is beneficial for efficiently processing configurations, settings, or any structured XML data in Java applications.</p>
+
+    <p>For more insights and practical guides on Java programming, stay tuned! Happy coding!</p>
+
+
+
+    <h3>Related Java and Advanced Java Tutorials/Guides</h3>
+    <p>
+        <button type="button" class="btn btn-outline-primary">Java Programs</button>
+        <button type="button" class="btn btn-outline-secondary">Java For Beginners</button>
+        <button type="button" class="btn btn-outline-success">Java OOPS Tutorial</button>
+        <button type="button" class="btn btn-outline-danger">Java For Professional</button>
+        <button type="button" class="btn btn-outline-warning">Java Collections Tutorial</button>
+        <button type="button" class="btn btn-outline-info">Java Spring Tutorial</button>
+        <button type="button" class="btn btn-outline-primary">Java Exceptions Tutorial </button>
+        <button type="button" class="btn btn-outline-secondary">Java Regex Tutorial</button>
+        <button type="button" class="btn btn-outline-success">Java Multithreading</button>
+        <button type="button" class="btn btn-outline-danger">500+ Java MCQ</button>
+        <button type="button" class="btn btn-outline-warning">Java Generic Tutorial</button>
+        <button type="button" class="btn btn-outline-info">Java IO Tutorial</button>
+        <button type="button" class="btn btn-outline-primary">JDBC Tutorial</button>
+        <button type="button" class="btn btn-outline-dark">JavaFX Tutorial</button>
+        <button type="button" class="btn btn-outline-primary">Swing Tutorials </button>
+        <button type="button" class="btn btn-outline-secondary">Java 8 Date Time</button>
+        <button type="button" class="btn btn-outline-success">Interview Guides</button>
+        <button type="button" class="btn btn-outline-danger">Java 8 Tutorial </button>
+        <button type="button" class="btn btn-outline-warning">java 9 Tutorial</button>
+        <button type="button" class="btn btn-outline-info">DS And Algorithms</button>
+        <button type="button" class="btn btn-outline-danger">Head First Patters</button>
+        <button type="button" class="btn btn-outline-primary">Core JavaEE Patterns</button>
+        <button type="button" class="btn btn-outline-secondary">JSP Tutorial</button>
+        <button type="button" class="btn btn-outline-success">Servlet Tutorial</button>
+        <button type="button" class="btn btn-outline-danger">JSP Servlet Project</button>
+        <button type="button" class="btn btn-outline-warning">Java JSON-P Tutorial</button>
+        <button type="button" class="btn btn-outline-info">Maven Tutorial</button>
+    </p>
+    <div class="scrollup justify-content-end">
+        <a href="#">
+            <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+        </a>
+    </div>
+
+</div>
+<div id="footer"></div>
+<script>
+    fetch('../../../footer.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('footer').innerHTML = html;
+        });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
