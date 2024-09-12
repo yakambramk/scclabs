@@ -2,41 +2,135 @@
 <html>
 
 <head>
-    <title>Spring Boot Testing Tutorial</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring AOP + AspectJ @Before, @After, @AfterReturning, @AfterThrowing and @Around Example</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
         }
 
         h1 {
             color: red;
-            margin: 30px, 0;
-            font: bold;
+            font-size: 2rem;
         }
 
-        p {
-            line-height: 2.6;
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
             letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
         }
 
         a {
             text-decoration: none;
             cursor: pointer;
             color: #3D85C6;
-            line-height: 4.5;
+            line-height: 2.5;
             font-weight: bold;
         }
 
         a:hover {
             color: red;
-            font-weight: bold;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -44,20 +138,52 @@
 <body>
     <div class="container">
         <h1>Spring Boot Testing Tutorial</h1>
+        <p>Learn how to write Unit tests and Integration tests in BDD style for Spring Boot application using JUnit 5,
+            Mockito, AssertJ, Hamcrest, JsonPath, and Testcontainers.</p>
+        <h2>What you'll learn in this tutorial</h2>
+        <ul>
+            <li> Learn to write industry-standard Unit and Integration tests in BDD (Behaviour Driven Development) style
+                using Spring Boot Starter Test dependency from scratch</li>
+            <li> Learn how to use the BDD (Behaviour Development) format that is given/when/then to write Unit tests.
+            </li>
+            <li> Learn to Unit test the Spring boot application Repository layer</li>
+            <li> Learn to Unit test the Spring boot application Service layer</li>
+            <li> Learn to Unit test the Spring boot application Controller layer</li>
+            <li> Learn how to do Integration testing for the Spring boot application.</li>
+            <li> You will learn to use the most important Unit Testing ANNOTATIONS - @SpringBootTest, @WebMvcTest,
+                @DataJpaTest, and @MockBean</li>
+            <li> Use ALL the FRAMEWORKS in Spring Boot Starter Test - JUnit, Spring Test, Spring Boot Test, AssertJ,
+                Hamcrest, Mockito, JSONassert, and JsonPath.</li>
+            <li> You will learn to write Unit tests using Mocks and Stubs created with Mockito</li>
+            <li> Learn how to use Mockito annotations to create mock objects.</li>
+            <li> Learn to Write Integration Tests using a MySQL database.</li>
+            <li> Learn to write Integration Tests using a Testcontainers</li>
+            <li> You will learn to Write INDEPENDENT Integration tests for RESTFUL web services by talking with MULTIPLE
+                LAYERS - controller, service, and repository layers.</li>
+        </ul>
 
         <h2>Spring Boot Testing Tutorials and Guides</h2>
-        <a href="">✅ Spring Boot Testing - Data Access Layer Integration Testing using Testcontainers</a><br>
-        <a href="">✅ Spring Boot Testing - REST API Integration Testing using Testcontainers</a><br>
-        <a href="">✅ Spring Data JPA Repository Testing using Spring Boot @DataJpaTest
+        <a
+            href="/springboot-testing-tutorial/springboot- testing-data-access-layer-integration-testing-using-testcontaineers.html">✅
+            Spring Boot Testing - Data Access Layer Integration Testing using Testcontainers</a><br>
+        <a
+            href="/springboot-testing-tutorial/springboot-testing-rest-api-integration-testing-using-testcontainers.html">✅
+            Spring Boot Testing - REST API Integration Testing using Testcontainers</a><br>
+        <a href="/springboot-testing-tutorial/spring-data-jpa-repository-testing-using-springboot-datajpa-test.html">✅
+            Spring Data JPA Repository Testing using Spring Boot @DataJpaTest
         </a><br>
-        <a href="">✅ CRUD JUnit Tests for Spring Data JPA - Testing Repository Layer
+        <a href="/springboot-testing-tutorial/crud-junit-tests-for-spring-data-jpa-testing-repository-layer.html">✅ CRUD
+            JUnit Tests for Spring Data JPA - Testing Repository Layer
         </a><br>
-        <a href="">✅ Spring Boot Unit Testing CRUD REST API with JUnit and Mockito</a><br>
-        <a href="">✅ Spring Boot Integration Testing MySQL CRUD REST API Tutorial</a><br>
-        <a href="">✅ Spring Boot Unit Testing Service Layer using JUnit and Mockito</a><br>
-        <a href="">✅ @SpringBootTest Spring Boot Example</a><br>
-        <a href="">✅ @SpringBootTest vs @WebMvcTest</a><br>
-        <a href="">✅ @DataJpaTest Spring Boot Example</a><br>
+        <a href="springboot-testing-tutorial/springboot-unit-testing-crud-rest-api-with-junit-and-mockito.html">✅ Spring
+            Boot Unit Testing CRUD REST API with JUnit and Mockito</a><br>
+        <a href="springboot-testing-tutorial/springboot-integration-testing-mysql-crud-rest-api-tutorial.html">✅ Spring
+            Boot Integration Testing MySQL CRUD REST API Tutorial</a><br>
+        <a href="springboot-testing-tutorial/springboot-unit-testing-service-layer-using-junit-and-mockito.html">✅
+            Spring Boot Unit Testing Service Layer using JUnit and Mockito</a><br>
+        <a href="springboot-testing-tutorial/springboot-test-springboot-example.html">✅ @SpringBootTest Spring Boot Example</a><br>
+        <a href="springboot-testing-tutorial/springboot test -webmvctest.html">✅ @SpringBootTest vs @WebMvcTest</a><br>
+        <a href="springboot-testing-tutorial/data-jpa-test-springboot-example.html">✅ @DataJpaTest Spring Boot Example</a><br>
         <a href="">✅ MockMvc vs TestRestTemplate: Choosing the Right Tool for Spring Boot Testing</a><br>
         <a href="">✅ MockMvc vs WebTestClient</a><br>
         <a href="">✅ WebTestClient in Spring Boot: Testing CRUD REST APIs</a><br>
