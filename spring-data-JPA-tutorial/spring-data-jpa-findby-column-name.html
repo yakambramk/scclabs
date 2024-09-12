@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA findBy Column Name Example</h1>
+        <p><a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> makes it incredibly easy to handle database interactions without needing to
+            write a lot of
+            boilerplate code. One of the most magical features is the ability to generate SQL queries directly from
+            method names.</p>
+        <p>In this blog post, we will explore how <a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> generates SQL using method names and
+            how you can
+            create a few query methods using just a single field in a JPA Repository, specifically for MySQL database.
+        </p>
+        <h2>Spring Data JPA and SQL Generation from Method Names</h2>
+        <p>Spring Data JPA analyzes repository method names and creates SQL queries behind the scenes. The logic follows
+            specific conventions:</p>
+        <p><b>Start with a known prefix:</b> The method starts with prefixes like find…By, read…By, query…By, get…By,
+            etc.</p>
+        <p><b>Specify the property:</b> Next, you provide the entity's property or field name, ensuring it begins with
+            an
+            uppercase character.</p>
+        <p><b>Add a condition (Optional):</b> Finally, you can specify conditions on the property like …GreaterThan,
+            …LessThan, …Between, …Like, etc.</p>
+        <p>For example, for an entity <code style="color: red;">Employee</code> with a field name, if you have a method
+            findByName(String name), Spring
+            Data JPA would generate a SQL similar to:</p>
+        <pre><code>SELECT e FROM Employee e WHERE e.name = ?1</code></pre>
+        <p>Where <code style="color: red;">?1</code> refers to the first parameter passed to the method.</p>
+        <h2>1. Set up a Spring Boot project</h2>
+        <p>Let's launch <a href="https://start.spring.io/" target="_blank">Spring Initializr</a> and fill up the following project details:
+        <p><b>Project: </b>Maven Project (or Gradle)</p>
+        <p><b>Language: </b>Java
+        <p><b>Packaging: </b>Jar</p>
+        <p><b>Java version: </b>17</p>
+        <p><b>Dependencies: </b>Spring Data JPA, MySQL Driver and Lombok</p>
+        <p>Download, extract the project, and import to your favorite IDE.</p>
+        <h2>2. Configure the MySQL database</h2>
+        <p>Let's open the <code style="color: red;">src/main/resources/application.properties</code> file and add the
+            MySQL configuration properties:</p>
+        <pre><code>
+spring.datasource.url=jdbc:mysql://localhost:3306/demo
+spring.datasource.username=root
+spring.datasource.password=Mysql@123
+spring.jpa.hibernate.ddl-auto=update
+
+</code></pre>
+        <p>Make sure that you change the MySQL database username and password as per your MySQL installation on your
+            machine.</p>
+        <p>The <code style="color: red;">spring.jpa.hibernate.ddl-auto=update</code> line ensures that tables and
+            columns get automatically created or
+            updated based on your JPA entities.</p>
+        <h2>3. Create JPA Entity - Employee</h2>
+        <p>Let's create a simple <code style="color: red;">Employee</code> JPA entity that will map to database table -
+            <code style="color: red;">employees</code>:
+        </p>
+        <pre><code>
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "employees")
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String department;
+}
+            </code></pre>
+        <p>We are using below Lombok annotations to reduce the boilerplate code such as getter/setter methods:</p>
+        <p><b>@Getter: </b> getter methods for the fields of the class.</p>
+        <p><b>@Setter: </b>Generates setter methods for the fields of the class.</p>
+        <h2>3. Create Spring Data JPA Repository - EmployeeRepository</h2>
+        <p>Let's create an <code style="color: red;">EmployeeRepository</code> interface that extends the <code
+                style="color: red;">JpaRepository</code> interface from Spring Data JPA:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long> {
+}
+
+</code></pre>
+        <p>Next, let's define two query methods in <code style="color: red;">EmployeeRepository</code> interface:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long> {
+
+    Employee findByName(String name);
+
+    List&lt;Employee> findByDepartment(String department);
+}
+
+</code></pre>
+        <p><b>Employee findByName(String name) </b>- this query method retrieves an employee by name</p>
+        <p><b>List&lt;Employee> findByDepartment(String department) </b>- this query method retrieve a list of employees
+            by
+            department</p>
+        <h3>How Spring Data JPA generates the SQL:</h3>
+        <p>For <code style="color: red;">findByName(String name)</code> : SQL generated would be something like:</p>
+        <pre><code>SELECT * FROM employee WHERE name = ?</code></pre>
+        <p>In the SQL context, the placeholder <code style="color: red;">?</code> will be replaced by the value provided
+            as the argument when invoking the findByName method. </p>
+        <p>For <code style="color: red;">findByDepartment(String department)</code> : The generated SQL would be:</p>
+        <pre><code>SELECT * FROM employee WHERE department = ?</code></pre>
+        <h2>4. Testing - EmployeeRepository Query Methods</h2>
+        <p>Now, let's write a JUnit test case to test <code style="color: red;">EmployeeRepository</code> query methods:
+        </p>
+        <h3>Test findByName() Query Method</h3>
+        <pre><code>
+@Test
+void findByNameTest(){
+    Employee employee = employeeRepository.findByName("Ramesh");
+
+    System.out.println(employee.getId());
+    System.out.println(employee.getName());
+    System.out.println(employee.getDepartment());
+}
+
+</code></pre>
+        <p>Note that Spring Data JPA (uses Hibernate as a JPA provider) generated SQL statements in a console:</p>
+        <pre><code>
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.department,
+        e1_0.name 
+    from
+        employees e1_0 
+    where
+        e1_0.name=?
+15
+Ramesh
+IT
+
+</code></pre>
+        <h3>Test findByDepartment() Query Method</h3>
+        <pre><code>
+    @Test
+    void findByDepartmentTest(){
+        List<Employee> employees = employeeRepository.findByDepartment("IT");
+
+        employees.forEach((employee) -> {
+            System.out.println(employee.getId());
+            System.out.println(employee.getName());
+            System.out.println(employee.getDepartment());
+        });
+    }
+    
+</code></pre>
+        <p>Run the above JUnit test case, Spring Data JPA (uses Hibernate as JPA provider) generated SQL statements in a
+            console:</p>
+        <pre><code>
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.department,
+        e1_0.name 
+    from
+        employees e1_0 
+    where
+        e1_0.department=?
+17
+Ramesh
+IT
+18
+Meena
+IT
+
+</code></pre>
+        <p>Here is the complete code for your reference:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
+
+@SpringBootTest
+public class EmployeeRepositoryTests {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @BeforeEach
+    public void setUp() {
+        Employee e1 = new Employee();
+        e1.setName("Ramesh");
+        e1.setDepartment("IT");
+        employeeRepository.save(e1);
+
+        Employee e2 = new Employee();
+        e2.setName("Meena");
+        e2.setDepartment("IT");
+        employeeRepository.save(e2);
+    }
+
+    @Test
+    void findByNameTest(){
+        Employee employee = employeeRepository.findByName("Ramesh");
+
+        System.out.println(employee.getId());
+        System.out.println(employee.getName());
+        System.out.println(employee.getDepartment());
+    }
+
+    @Test
+    void findByDepartmentTest(){
+        List&lt;Employee> employees = employeeRepository.findByDepartment("IT");
+
+        employees.forEach((employee) -> {
+            System.out.println(employee.getId());
+            System.out.println(employee.getName());
+            System.out.println(employee.getDepartment());
+        });
+    }
+
+    @AfterEach
+    public void clean(){
+        employeeRepository.deleteAll();
+    }
+}
+
+</code></pre>
+        <h2>Conclusion</h2>
+        <p>In this blog post, we explored how <a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> generates SQL using method names and how
+            you can create a
+            few query methods using just a single field in a JPA Repository, specifically for MySQL database.</p>
+    </div>
+</body>
+
+</html>

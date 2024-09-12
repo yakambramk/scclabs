@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA - findByName</h1>
+        <p>In this blog post, we'll see into how <code style="color: red;">findByName</code> works in <a
+                href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring
+                Data JPA</a>
+            and how you can implement it in your applications.</p>
+        <h2>Overview</h2>
+        <p><a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> aims to
+            reduce the boilerplate code required for data access operations,
+            allowing developers
+            to focus more on the business logic of their applications. The framework handles most of the repetitive
+            tasks and offers a more expressive and fluent API for querying and manipulating data.</p>
+        <p>By using <a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data
+                JPA</a>, developers can: </p>
+        <ul>
+            <li>Reduce the amount of boilerplate code.</li>
+            <li>Enhance readability and maintainability. </li>
+            <li> Simplify database operations.</li>
+        </ul>
+        <h3>Understanding findByName </h3>
+        <p>When using <a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data
+                JPA</a>, you can derive queries directly from method names. No need to
+            write the
+            underlying SQL or JPQL! The <code style="color: red;">findByName</code> method is a derived query that,
+            unsurprisingly, fetches an entity
+            based on its <code style="color: red;">name</code> attribute. Let's see this in action.</p>
+        <h2>1. Setting Up a Simple Project</h2>
+        <h3>1.1. Entity Creation</h3>
+        <p>First, we'll need an entity. Let's use <code style="color: red;">Product</code> as an example.</p>
+        <pre><code>
+@Entity
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    private String name;
+    
+    // getters, setters, constructors, etc.
+}
+
+</code></pre>
+        <h3>1.2. Repository Creation </h3>
+        <p>Next, we'll need a JPA repository for the <code style="color: red;">Product</code> entity:</p>
+        <pre><code>
+    public interface ProductRepository extends JpaRepository&lt;Product, Long> {
+        Product findByName(String name);
+    }
+
+</code></pre>
+        <p>Notice how we just declare the method <code style="color: red;">findByName</code> without any implementation?
+            <a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> will
+            provide the
+            implementation for us!
+        </p>
+        <h2>2. Using findByName </h2>
+        <p>With the repository in place, you can now use the <code style="color: red;">findByName</code> method to
+            retrieve products.</p>
+        <pre><code>
+@Service
+public class ProductService {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    public Product getProductByName(String name) {
+        return productRepository.findByName(name);
+    }
+}
+
+</code></pre>
+        <p>If there's a product with the provided <code style="color: red;">name</code> in the database, the method will
+            return it. Otherwise, it will return <code style="color: red;">null</code>.</p>
+        <h2>3. How Does It Work? </h2>
+        <p><a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a>
+            analyzes the method name and creates a query for it. For <code style="color: red;">findByName</code>, the
+            underlying JPQL
+            query would look something like:</p>
+        <pre><code>SELECT p FROM Product p WHERE p.name = ?1</code></pre>
+        <p>The <code style="color: red;">?1</code> in the query represents the method's first parameter, which, in this
+            case, is the <code style="color: red;">name</code> of the product
+            you're searching for.</p>
+        <h2>4. What If There Are Multiple Products With the Same Name? </h2>
+        <p>Good question! </p>
+        <p>The <code style="color: red;">findByName</code> method will return the first product it encounters with the
+            given name. If you expect multiple
+            products with the same name and want to retrieve all of them, you should use <code
+                style="color: red;">findAllByName</code>:</p>
+        <pre><code>
+    public interface ProductRepository extends JpaRepository&lt;Product, Long> {
+        List&lt;Product> findAllByName(String name);
+    }
+
+</code></pre>
+        <h2>Conclusion</h2>
+        <p>Derived query methods, like <code style="color: red;">findByName</code>, make it remarkably simple to perform
+            common database operations
+            without having to write the actual query. This is just a glimpse of what <a
+                href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a>
+            offers. As you
+            delve deeper, you'll find more advanced features and capabilities that can further simplify data access in
+            your Spring applications. Happy coding!</p>
+    </div>
+</body>
+
+</html>

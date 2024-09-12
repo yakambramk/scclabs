@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA Delete Multiple Rows</h1>
+        <p><a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a>
+            simplifies CRUD operations for databases, including the ability to delete
+            multiple rows based
+            on specific criteria. Deleting multiple rows can often be more efficient than deleting them one by one,
+            especially when working with large datasets. In this blog post, we'll walk you through the steps to delete
+            multiple rows with <a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring
+                Data JPA</a>.</p>
+        <h2>Create JPA Entity - Order</h2>
+        <p>To demonstrate this example, we will use below <code style="color: red;">Order</code> JPA entity:</p>
+        <pre><code>
+@Entity
+public class Order {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String status;
+    private LocalDate orderDate;
+
+    // getters, setters, and other methods...
+}
+
+</code></pre>
+        <h2>Spring Data JPA Repository - OrderRepository</h2>
+        <p>And a corresponding JPA repository for Order entity:</p>
+        <pre><code>
+public interface OrderRepository extends JpaRepository&lt;Order, Long> {
+}
+    </code></pre>
+        <h2>Deleting Multiple Rows by Criteria</h2>
+        <p>You might want to delete multiple Order records based on a certain criteria, such as all orders with a
+            specific status. Here's how you can do it:</p>
+        <h3>Using Derived Delete Queries:</h3>
+        <pre><code>
+    public interface OrderRepository extends JpaRepository<Order, Long> {
+
+        @Transactional
+        void deleteByStatus(String status);
+        
+        @Transactional
+        void deleteByOrderDateBefore(LocalDate date);
+    }
+
+</code></pre>
+        <p>With these method declarations, <a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html"
+                target="_blank">Spring Data JPA</a> will generate the necessary code to delete
+            orders that match
+            the given criteria. The <code style="color: red;">@Transactional</code> annotation ensures the operation is
+            wrapped within a transaction.</p>
+        <h3>Using @Modifying with @Query:</h3>
+        <p>For more complex scenarios, or if you want more control over the query, you can use the <code
+                style="color: red;">@Query</code> annotation:
+        </p>
+        <pre><code>
+@Modifying
+@Transactional
+@Query("delete from Order o where o.status = ?1")
+void deleteOrdersWithStatus(String status);
+
+</code></pre>
+        <p>The <code style="color: red;">@Modifying</code> annotation tells <a
+                href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> that
+            this
+            query will modify
+            data, thus requiring a
+            transaction. The <code style="color: red;">@Query</code> annotation allows you to provide a custom JPQL
+            statement.</p>
+        <h2>Service Layer Integration</h2>
+        <p>To maintain a clean separation of concerns, let's create a service class that uses our repository:</p>
+        <pre><code>
+@Service
+public class OrderService {
+
+    private final OrderRepository orderRepository;
+
+    @Autowired
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
+    public void deleteOrdersByStatus(String status) {
+        orderRepository.deleteByStatus(status);
+    }
+    
+    public void deleteOrdersBeforeDate(LocalDate date) {
+        orderRepository.deleteByOrderDateBefore(date);
+    }
+}
+
+</code></pre>
+        <h2>Important Points</h2>
+        <p><b>Error Handling: </b>Deleting multiple rows can lead to database constraint violations or other unforeseen
+            issues. Ensure you handle potential errors gracefully.</p>
+        <p><b>Cascade Deletes: </b>If your entity has relationships with <code
+                style="color: red;">CascadeType.REMOVE</code>, then deleting the main
+            entity
+            might also delete related entities. Always review your entity relationships and cascade settings before bulk
+            delete operations.</p>
+        <p><b>Performance Implications: </b>While deleting multiple rows in one go can be efficient, it's also
+            resource-intensive. If you're deleting a very large number of rows, consider breaking the operation into
+            smaller batches.</p>
+        <h2>Conclusion</h2>
+        <p><a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a>
+            provides powerful tools for bulk delete operations, enabling you to delete multiple rows
+            efficiently based on specific criteria. While this simplifies database operations, always be mindful of
+            potential implications in terms of database constraints, relationships, and performance.</p>
+    </div>
+</body>
+
+</html>

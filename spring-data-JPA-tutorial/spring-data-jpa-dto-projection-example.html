@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Data JPA DTO Projection Example</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA DTO Projection Example</h1>
+        <p>Using DTO (Data Transfer Object) projections in <a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> is a powerful way to select specific columns
+            from a database, reducing the overhead of selecting unnecessary data. Here's a step-by-step guide on how to
+            set up DTO projections using an Employee entity as an example.</p>
+
+        <h2>1. Setting up the project</h2>
+        <p>Ensure you have the necessary dependencies in your <code style="color: red;">pom.xml</code>:</p>
+
+        <pre><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;
+        </code></pre>
+
+        <h2>2. Define the Entity</h2>
+        <p>Here's the <code style="color: red;">Employee</code> entity:</p>
+
+        <pre><code>
+@Entity
+public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String department;
+    private Double salary;
+
+    // getters, setters, etc.
+}
+
+</code></pre>
+
+        <h2>3. Create a DTO Projection</h2>
+        <p>Suppose you want to retrieve only the <code style="color: red;">firstName</code>, <code style="color: red;">lastName</code>, and
+            <code style="color: red;">department</code>:</p>
+
+        <pre><code>
+public class EmployeeInfoDto {
+    private final String firstName;
+    private final String lastName;
+    private final String department;
+
+    public EmployeeInfoDto(String firstName, String lastName, String department) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.department = department;
+    }
+
+    // getters
+}
+
+</code></pre>
+
+        <h2>4. Create the Repository</h2>
+        <p>Define a custom query using JPQL in the repository:</p>
+
+        <pre><code>
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long&gt; {
+
+    @Query("SELECT new com.yourpackage.EmployeeInfoDto(e.firstName, e.lastName, e.department) FROM Employee e")
+    List&lt;EmployeeInfoDto&gt; findAllEmployeeInfo();
+}
+
+</code></pre>
+<p>The <code style="color: red;">@Query</code> selects the desired fields and maps them to the <code style="color: red;">EmployeeInfoDto</code>. </p>
+        <h2>5. Use the Repository in a Service</h2>
+        <p>Now, utilize the repository method in your service layer:</p>
+
+        <pre><code>
+@Service
+public class EmployeeService {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    public List&lt;EmployeeInfoDto&gt; getAllEmployeeInfo() {
+        return employeeRepository.findAllEmployeeInfo();
+    }
+}
+
+</code></pre>
+
+        <h2>6. Test the Service</h2>
+        <p>Set up a test to ensure your DTO projections work correctly:</p>
+
+        <pre><code>
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class EmployeeServiceTest {
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    @Test
+    public void testFetchEmployeeInfo() {
+        List&lt;EmployeeInfoDto&gt; employeeInfo = employeeService.getAllEmployeeInfo();
+        for (EmployeeInfoDto info : employeeInfo) {
+            assertNotNull(info.getFirstName());
+            assertNotNull(info.getLastName());
+            assertNotNull(info.getDepartment());
+        }
+    }
+}
+
+</code></pre>
+
+        <h2>7. Why Use DTO Projections?</h2>
+        <ul>
+            <li><strong>Performance</strong>: By selecting only the needed columns from a database, there's less data to
+                transfer, process, and map.</li>
+            <li><strong>Avoiding Fetching Sensitive Data</strong>: If an entity has sensitive attributes (like passwords
+                or private keys), using DTOs can avoid accidentally fetching or exposing them.</li>
+            <li><strong>Flexibility</strong>: DTOs allow for shaping data differently based on the context. The same
+                entity can have multiple DTOs based on different use cases.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

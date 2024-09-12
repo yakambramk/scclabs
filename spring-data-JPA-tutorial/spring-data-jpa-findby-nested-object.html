@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA findBy Nested Object</h1>
+        <p>Entities in real-world applications often have associations with other entities. These associations can be
+            simple or complex, sometimes leading to deeply nested objects. Spring Data JPA makes querying these
+            relationships a breeze using method conventions. In this blog post, we'll explore how to use the <code
+                style="color: red;">findBy</code>
+            method to query nested objects. </p>
+        <h2>JPA Entities - Employee and Address</h2>
+        <p>In this example, let's assume we're building an HR system. We have two primary entities: <code
+                style="color: red;">Employee</code> and <code style="color: red;">Address</code>.</p>
+        <h3>Employee</h3>
+        <pre><code>
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "employees")
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
+}
+
+</code></pre>
+        <h3>Address</h3>
+        <pre><code>
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "addresses")
+public class Address1 {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String city;
+    private String country;
+}
+
+</code></pre>
+        <p>Notice the <a href="/spring-data-JPA-tutorial/jpa-onetoone-annotation.html" target="_blank">@OneToOne annotation</a>, indicating a one-to-one relationship between <code
+                style="color: red;">Employee</code> and <code style="color: red;">Address</code>.</p>
+        <p>We are using below Lombok annotations to reduce the boilerplate code such as getter/setter methods:</p>
+        <p>@Getter: Generates getter methods for the fields of the class.</p>
+        <p>@Setter: Generates setter methods for the fields of the class.</p>
+        <p>@ToString: Generates an implementation of the <code style="color: red;">toString</code> method based on the
+            fields of the class.</p>
+        <h2>Spring Data JPA Repository - EmployeeRepository</h2>
+        <p>Let's create an <code style="color: red;">EmployeeRepository</code> interface that extends the <code
+                style="color: red;">JpaRepository</code> interface from <a
+                href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a>:
+        </p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long> {
+}
+        </code></pre>
+        <h3>Querying Nested Objects</h3>
+        <p>Let's say we want to fetch all employees based on their <code style="color: red;">city</code>. How do we
+            achieve that? With Spring Data JPA,
+            it's astonishingly simple:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long> {
+   List&lt;Employee> findByAddress_City(String city);
+}
+            </code></pre>
+        <p>Notice the <code style="color: red;">findByAddress_City</code> method. The underscore (_) is a special
+            character in Spring Data JPA and allows
+            us to traverse the entity graph and bind the property to the nested property.</p>
+        <h3>Under the Hood</h3>
+        <p>When you call <code style="color: red;">findByAddress_City</code>, Spring Data JPA will generate a SQL query
+            similar to:</p>
+        <pre><code>
+select
+    e1_0.id,
+    e1_0.address_id,
+    e1_0.name 
+from
+    employees e1_0 
+left join
+    addresses a1_0 
+        on a1_0.id=e1_0.address_id 
+where
+    a1_0.city=?
+
+</code></pre>
+        <h3>Testing - EmployeeRepository Query Methods</h3>
+        <p>Let's write the JUnit test cases to all the above query methods:</p>
+        <pre><code>
+    @Test
+    void findByFirstNameAndLastNameTest(){
+        List<Employee> employees = employeeNestedRepository.findByAddress_City("Pune");
+
+        employees.forEach((employee) -> {
+            System.out.println(employee.toString());
+        });
+    }
+
+    </code></pre>
+        <p>Output:</p>
+        <pre><code>
+Hibernate: 
+    select
+        e1_0.id,
+        e1_0.address_id,
+        e1_0.name 
+    from
+        employees e1_0 
+    left join
+        addresses a1_0 
+            on a1_0.id=e1_0.address_id 
+    where
+        a1_0.city=?
+
+    </code></pre>
+        <h2>Conclusion</h2>
+        <p>Spring Data JPA continues to shine when it comes to simplifying database interactions in Java applications.
+            Its conventions around method naming, especially with nested objects, means that developers can quickly
+            write queries without having to dive deep into SQL or JPQL. However, it's essential to be aware of the
+            trade-offs and to know when to use these conventions vs. when to write custom queries. Happy coding!</p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA existsBy Multiple Columns</h1>
+        <p><a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> is
+            known for reducing boilerplate code, especially when it comes to CRUD
+            operations and query
+            methods. One very useful feature is the <code style="color: red;">existsBy</code> derived query method,
+            which can determine if a particular
+            record exists based on certain criteria, returning a boolean value. Combining this with multiple columns
+            allows developers to efficiently check for the existence of records based on a combination of attributes.
+        </p>
+        <p>In this post, we'll explore how to utilize the <code style="color: red;">existsBy</code> method with multiple
+            columns. </p>
+        <h2>Why existsBy?</h2>
+        <p>Before diving into the main topic, let's understand why <code style="color: red;">existsBy</code> is so
+            useful:</p>
+        <p><b>Performance: </b>Checking for the existence without loading the entire entity is often faster, especially
+            for large datasets.</p>
+        <p><b>Simplicity: </b>Directly returning a boolean for the existence check is more straightforward and can make
+            the
+            code cleaner.</p>
+        <h2>Create JPA Entity</h2>
+        <pre><code>
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "employees")
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+}
+        </code></pre>
+        <h2>Spring Data JPA Repository - EmployeeRepository</h2>
+        <p>Let's create an EmployeeRepository interface that extends JpaRepository interface from Spring Data JPA:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long> {
+}
+
+</code></pre>
+        <p>If you want to check if an employee exists with a specific first and last name, you can do:</p>
+        <pre><code>boolean existsByFirstNameAndLastName(String firstName, String lastName);</code></pre>
+        <p>This method will return true if an employee with the specified first and last names exists, and false
+            otherwise.</p>
+        <p>Similarly, if you want to verify the existence based on an email and last name:</p>
+        <pre><code>boolean existsByEmailAndLastName(String email, String lastName);</code></pre>
+        <p><a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> also
+            allows you to combine <code style="color: red;">And</code> & <code style="color: red;">Or</code> in the
+            method names:</p>
+        <pre><code>boolean existsByFirstNameAndLastNameOrEmail(String firstName, String lastName, String email);</code></pre>
+        <p>This method will check if an employee exists with the given first and last names, or with the given email.
+        </p>
+        <p>Here is the complete code for <code style="color: red;">EmployeeRepository</code>:</p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long> {
+
+    boolean existsByFirstNameAndLastName(String firstName, String lastName);
+
+    boolean existsByEmailAndLastName(String email, String lastName);
+
+    boolean existsByFirstNameAndLastNameOrEmail(String firstName, String lastName, String email);
+
+}
+    </code></pre>
+        <h2>Testing - EmployeeRepository</h2>
+        <p>Let's write the JUnit test cases to all the above query methods:</p>
+        <h3>Test existsByFirstNameAndLastName() query method:</h3>
+        <pre><code>
+    @Test
+    void existsByFirstNameAndLastNameTest(){
+        boolean status = employeeRepository.existsByFirstNameAndLastName("Ramesh", "Fadatare");
+
+        System.out.println(status);
+    }
+        </code></pre>
+        <p><b>Output:</b></p>
+        <pre><code>
+Hibernate: 
+    select
+        e1_0.id 
+    from
+        employees e1_0 
+    where
+        e1_0.first_name=? 
+        and e1_0.last_name=? limit ?
+        </code></pre>
+        <h3>Test existsByEmailAndLastName() query method:</h3>
+        <pre><code>
+    @Test
+    void existsByEmailAndLastNameTest(){
+        boolean status = employeeRepository.existsByEmailAndLastName("ramesh@gmail.com", "Fadatare");
+
+        System.out.println(status);
+    }
+        </code></pre>
+        <p><b>Output:</b></p>
+        <pre><code>
+Hibernate: 
+    select
+        e1_0.id 
+    from
+        employees e1_0 
+    where
+        e1_0.email=? 
+        and e1_0.last_name=? limit ?
+        </code></pre>
+        <h3>Test existsByFirstNameAndLastNameOrEmail() query method:</h3>
+        <pre><code>
+    @Test
+    void existsByFirstNameAndLastNameOrEmailTest(){
+        boolean status = employeeRepository
+                .existsByFirstNameAndLastNameOrEmail("Ramesh",
+                        "Fadatare",
+                        "ramesh@gmail.com");
+
+        System.out.println(status);
+    }
+
+</code></pre>
+        <p><b>Output:</b></p>
+        <pre><code>
+Hibernate: 
+    select
+        e1_0.id 
+    from
+        employees e1_0 
+    where
+        e1_0.first_name=? 
+        and e1_0.last_name=? 
+        or e1_0.email=? limit ?
+
+</code></pre>
+        <p><b>Here is the complete code for your reference:</b></p>
+        <pre><code>
+import com.springdatajpa.springboot.entity.Employee;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
+
+@SpringBootTest
+public class EmployeeRepositoryTests {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @BeforeEach
+    public void setUp() {
+        Employee e1 = new Employee();
+        e1.setFirstName("Ramesh");
+        e1.setLastName("Fadatare");
+        e1.setEmail("ramesh@gmail.com");
+        employeeRepository.save(e1);
+    }
+
+    @Test
+    void existsByFirstNameAndLastNameTest(){
+        boolean status = employeeRepository.existsByFirstNameAndLastName("Ramesh", "Fadatare");
+
+        System.out.println(status);
+    }
+
+    @Test
+    void existsByEmailAndLastNameTest(){
+        boolean status = employeeRepository.existsByEmailAndLastName("ramesh@gmail.com", "Fadatare");
+
+        System.out.println(status);
+    }
+
+    @Test
+    void existsByFirstNameAndLastNameOrEmailTest(){
+        boolean status = employeeRepository
+                .existsByFirstNameAndLastNameOrEmail("Ramesh",
+                        "Fadatare",
+                        "ramesh@gmail.com");
+
+        System.out.println(status);
+    }
+
+    @AfterEach
+    public void clean(){
+        employeeRepository.deleteAll();
+    }
+}
+
+</code></pre>
+        <h2>Conclusion</h2>
+        <p>The <code style="color: red;">existsBy</code> method in <a
+                href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a>
+            provides a succinct
+            way to check for the existence of records based on
+            multiple conditions. When combined with multiple columns, it enables developers to efficiently ensure
+            uniqueness or make decisions based on the existence of particular records. As always, use these tools
+            wisely, keeping readability and maintainability in mind.</p>
+    </div>
+</body>
+
+</html>

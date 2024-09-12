@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Data JPA Specification with Pagination</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1,
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA Specification With Pagination</h1>
+        <p>The combination of <code style="color: red;">Specification</code> and <code
+                style="color: red;">Pageable</code> in <a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> makes it super
+            easy to fetch data with dynamic conditions and pagination. Let's walk through a step-by-step example using a
+            <code style="color: red;">Student</code> entity.
+        </p>
+
+        <h2>1. Setting up the Project</h2>
+        <p>Make sure you have the necessary dependencies in your <code style="color: red;">pom.xml</code>:</p>
+        <pre><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+</code></pre>
+
+        <h2>2. Define the Entity</h2>
+        <pre><code>
+@Entity
+public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String course;
+    private Double grade;
+
+    // getters, setters, etc.
+}
+
+</code></pre>
+
+        <h2>3. Create the Repository</h2>
+        <p>Extend both <code style="color: red;">JpaRepository</code> and <code
+                style="color: red;">JpaSpecificationExecutor</code>:</p>
+        <pre><code>
+public interface StudentRepository extends JpaRepository&lt;Student, Long&gt;, JpaSpecificationExecutor&lt;Student&gt; {
+}
+
+</code></pre>
+
+        <h2>4. Define Specifications</h2>
+        <pre><code>
+public class StudentSpecifications {
+    
+    public static Specification&lt;Student&gt; hasName(String name) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("name"), "%" + name + "%");
+    }
+
+    public static Specification&lt;Student&gt; inCourse(String course) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("course"), course);
+    }
+
+    public static Specification&lt;Student&gt; hasGradeAbove(Double grade) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get("grade"), grade);
+    }
+}
+
+</code></pre>
+
+        <h2>5. Create a Service to Query with Pagination</h2>
+        <pre><code>
+@Service
+public class StudentService {
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    public Page&lt;Student&gt; findStudents(String name, String course, Double grade, Pageable pageable) {
+        return studentRepository.findAll(
+            Specification.where(StudentSpecifications.hasName(name))
+                .and(StudentSpecifications.inCourse(course))
+                .and(StudentSpecifications.hasGradeAbove(grade)),
+            pageable
+        );
+    }
+}
+
+</code></pre>
+
+        <h2>6. Using the Service</h2>
+        <p>You can use the <code style="color: red;">PageRequest</code> class to create an instance of <code
+                style="color: red;">Pageable</code>:</p>
+        <pre><code>
+@Autowired
+private StudentService studentService;
+
+public void fetchStudents() {
+    Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
+
+    Page&lt;Student&gt; students = studentService.findStudents("John", "Mathematics", 80.0, firstPageWithTwoElements);
+    
+    // Access the list of students using students.getContent()
+    for (Student student : students.getContent()) {
+        // process each student
+    }
+}
+
+</code></pre>
+
+        <h2>7. Extending to Controllers</h2>
+        <p>If you are integrating this into a web application, it's typical to pass pagination parameters like
+            <code style="color: red;">page</code>,
+            <code style="color: red;">size</code>, and <code style="color: red;">sort</code> from the client side:
+        </p>
+        <pre><code>
+@RestController
+@RequestMapping("/students")
+public class StudentController {
+
+    @Autowired
+    private StudentService studentService;
+
+    @GetMapping
+    public ResponseEntity&lt;Page&lt;Student&gt;&gt; getStudents(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String course,
+            @RequestParam(required = false) Double grade,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id,asc") String[] sort) {
+
+        List&lt;Sort.Order&gt; orders = new ArrayList&lt;&gt;();
+        for (String sortOrder : sort) {
+            String[] _sort = sortOrder.split(",");
+            orders.add(new Sort.Order(_sort[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC, _sort[0]));
+        }
+        
+        Page&lt;Student&gt; students = studentService.findStudents(name, course, grade, PageRequest.of(page, size, Sort.by(orders)));
+        return new ResponseEntity&lt;&gt;(students, HttpStatus.OK);
+    }
+}
+
+</code></pre>
+
+        <p>That's it! With this setup, you can create dynamic queries based on filters (like <code
+                style="color: red;">name</code>,
+            <code style="color: red;">course</code>, and <code style="color: red;">grade</code>)
+            and fetch results with pagination and sorting.
+        </p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>JPA/Hibernate One to One Bidirectional Mapping Annotation Example</h1>
+        <p>In this tutorial, we will learn how to implement step-by-step one-to-one bidirectional entity mapping using
+            JPA, Hibernate, and the MySQL database.</p>
+        <p>In this example, we create Instructor and InstructorDetail entities and we make a one-to-one mapping between
+            them.</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/one-to-one-bidirectional-ERD.png">
+        <p>We will implement CRUD (create/save, read, update, delete) operations for <code
+                style="color: red;">Instructor</code> and
+            <code style="color: red;">InstructorDetail</code> entities.
+        <p>For <code style="color: red;">Instructor</code> DAO CRUD operations:</p>
+        </p>
+        <pre><code>
+void saveInstructor(Instructor instructor);
+
+void updateInstructor(Instructor instructor);
+
+void deleteInstructor(int id);
+
+Instructor getInstructor(int id);
+        </code></pre>
+        <p>For <code style="color: red;">InstructorDetailDao</code> DAO CRUD operations:</p>
+        <pre><code>
+void saveInstructorDetail(InstructorDetail instructorDetail);
+
+void updateInstructorDetail(InstructorDetail instructorDetail);
+
+InstructorDetail getInstructorDetail(int id);
+
+</code></pre>
+        <h2>Development Steps</h2>
+        <ol>
+            <li>Create a Simple Maven Project</li>
+            <li>Project Directory Structure</li>
+            <li>Add jar Dependencies to pom.xml</li>
+            <li>Creating the JPA Entities(Persistent classes)</li>
+            <li>Create Hibernate DAO Classes</li>
+            <li>Create a Hibernate configuration file - HibernateUtil.java (Java Configuration)</li>
+            <li>Create the Main class and Run an Application</li>
+        </ol>
+        <h2>1. Create a Simple Maven Project</h2>
+        <p>Use the <a href="/apache-maven-tutorial/how-to-create-a-simple-maven-project-in-eclipse.html" target="_blank">How to Create a Simple Maven Project in Eclipse</a> article to create a simple Maven
+            project in Eclipse IDE.</p>
+        <h2>2. Project Directory Structure</h2>
+        <p>Let's create a packaging structure for the above-created simple maven project. Refer below screenshot for
+            your reference.</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/one-to-one-project-structure.PNG">
+        <h2>3. Add dependencies to pom.xml</h2>
+        <p>We are using MySQL database so add MySQL dependency to pom.xml:</p>
+        <pre><code>
+&lt;project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;net.javaguides.hibernate&lt;/groupId&gt;
+        &lt;artifactId&gt;hibernate-tutorial&lt;/artifactId&gt;
+        &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;/parent&gt;
+    &lt;artifactId&gt;hibernate-one-to-one-example&lt;/artifactId&gt;
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+            &lt;version&gt;8.0.32&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+            &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+            &lt;version&gt;6.1.7.Final&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;build&gt;
+        &lt;sourceDirectory&gt;src/main/java&lt;/sourceDirectory&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.5.1&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;17&lt;/source&gt;
+                    &lt;target&gt;17&lt;/target&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;
+    </code></pre>
+        <h2>4. Creating the JPA Entities(Persistent classes)</h2>
+        <p>We are creating a bidirectional mapping, we have placed @OneToOne annotation on both entity classes.</p>
+        <h3>Instructor JPA Entity</h3>
+        <pre><code>
+package net.javaguides.hibernate.entity;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "instructor")
+public class Instructor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "email")
+    private String email;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "instructor", fetch = FetchType.LAZY)
+    private InstructorDetail instructorDetail;
+
+    public Instructor() {
+
+    }
+
+    public Instructor(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+   // getters and setters
+}
+
+</code></pre>
+        <h3>InstructorDetail JPA Entity</h3>
+        <pre><code>
+package net.javaguides.hibernate.entity;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "instructor_detail")
+public class InstructorDetail {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "youtube_channel")
+    private String youtubeChannel;
+
+    @Column(name = "hobby")
+    private String hobby;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "instructor_id")
+    private Instructor instructor;
+
+    public InstructorDetail() {
+
+    }
+
+    public InstructorDetail(String youtubeChannel, String hobby) {
+        this.youtubeChannel = youtubeChannel;
+        this.hobby = hobby;
+    }
+    // getters and setters
+}
+
+</code></pre>
+        <h2>5. Create Hibernate DAO Classes</h2>
+        <h3>InstructorDao.java</h3>
+        <pre><code>
+package net.javaguides.hibernate.dao;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import net.javaguides.hibernate.entity.Instructor;
+import net.javaguides.hibernate.util.HibernateUtil;
+
+public class InstructorDao {
+    public void saveInstructor(Instructor instructor) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // start a transaction
+            transaction = session.beginTransaction();
+            // save the student object
+            session.save(instructor);
+            // commit transaction
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public void updateInstructor(Instructor instructor) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // start a transaction
+            transaction = session.beginTransaction();
+            // save the student object
+            session.update(instructor);
+            // commit transaction
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteInstructor(int id) {
+
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // start a transaction
+            transaction = session.beginTransaction();
+
+            // Delete a instructor object
+            Instructor instructor = session.get(Instructor.class, id);
+            if (instructor != null) {
+                session.delete(instructor);
+                System.out.println("instructor is deleted");
+            }
+
+            // commit transaction
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public Instructor getInstructor(int id) {
+
+        Transaction transaction = null;
+        Instructor instructor = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // start a transaction
+            transaction = session.beginTransaction();
+            // get an instructor object
+            instructor = session.get(Instructor.class, id);
+            // commit transaction
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return instructor;
+    }
+}
+    </code></pre>
+        <h3>InstructorDetailDao.java</h3>
+        <pre><code>
+package net.javaguides.hibernate.dao;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import net.javaguides.hibernate.entity.InstructorDetail;
+import net.javaguides.hibernate.util.HibernateUtil;
+
+public class InstructorDetailDao {
+
+    public void saveInstructorDetail(InstructorDetail instructorDetail) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // start a transaction
+            transaction = session.beginTransaction();
+            // save the student object
+            session.save(instructorDetail);
+            // commit transaction
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public void updateInstructorDetail(InstructorDetail instructorDetail) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // start a transaction
+            transaction = session.beginTransaction();
+            // save the student object
+            session.update(instructorDetail);
+            // commit transaction
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public InstructorDetail getInstructorDetail(int id) {
+
+        Transaction transaction = null;
+        InstructorDetail instructor = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // start a transaction
+            transaction = session.beginTransaction();
+            // get an instructor object
+            instructor = session.get(InstructorDetail.class, id);
+            // commit transaction
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return instructor;
+    }
+}
+        </code></pre>
+        <h2>6. HibernateUtil.java (Java Configuration)</h2>
+        <p>The <code style="color: red;">HibernateUtil</code> Java configuration file contains information about the
+            database and mapping file. Let's
+            create a <code style="color: red;">HibernateUtil</code> file and write the following code in it.</p>
+        <pre><code>
+package net.javaguides.hibernate.util;
+
+import java.util.Properties;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
+import org.hibernate.service.ServiceRegistry;
+
+import net.javaguides.hibernate.entity.Instructor;
+import net.javaguides.hibernate.entity.InstructorDetail;
+
+/**
+ * Java based configuration
+ * @author ramesh Fadatare
+ *
+ */
+public class HibernateUtil {
+    private static SessionFactory sessionFactory;
+
+    public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            try {
+                Configuration configuration = new Configuration();
+
+                // Hibernate settings equivalent to hibernate.cfg.xml's properties
+                Properties settings = new Properties();
+                settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
+                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/hibernate_db");
+                settings.put(Environment.USER, "root");
+                settings.put(Environment.PASS, "root");
+                settings.put(Environment.SHOW_SQL, "true");
+
+                settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
+
+                settings.put(Environment.HBM2DDL_AUTO, "create-drop");
+
+                configuration.setProperties(settings);
+                configuration.addAnnotatedClass(InstructorDetail.class);
+                configuration.addAnnotatedClass(Instructor.class);
+
+                ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                    .applySettings(configuration.getProperties()).build();
+                System.out.println("Hibernate Java Config serviceRegistry created");
+                sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+                return sessionFactory;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return sessionFactory;
+    }
+}
+
+</code></pre>
+        <h2>7. Create the Main class and Run an Application</h2>
+        <pre><code>
+package net.javaguides.hibernate;
+
+import net.javaguides.hibernate.dao.InstructorDao;
+import net.javaguides.hibernate.entity.Instructor;
+import net.javaguides.hibernate.entity.InstructorDetail;
+
+public class ManApp {
+    public static void main(String[] args) {
+
+        Instructor instructor = new Instructor("Ramesh", "Fadatare", "ramesh@javaguides.com");
+
+        InstructorDetail instructorDetail = new InstructorDetail("http://www.youtube.com", "Guitar");
+        // associate the objects
+        instructorDetail.setInstructor(instructor);
+        // associate the objects
+        instructor.setInstructorDetail(instructorDetail);
+
+        // when you get instructorDetail then hibernate also saves instructor info
+        InstructorDao instructorDao = new InstructorDao();
+        instructorDao.saveInstructor(instructor);
+    }
+}
+
+</code></pre>
+        <p>Note that when you save <code style="color: red;">instructorDetail</code> then hibernate also saves
+            instructor info because of cascade and <b>bidirectional</b>.</p>
+        <h2>Conclusion</h2>
+            <p>In this tutorial, we successfully built a Hibernate project from scratch and learned how to map a one-to-one
+            bidirectional database relationship using Hibernate/JPA.</p>
+    </div>
+</body>
+
+</html>

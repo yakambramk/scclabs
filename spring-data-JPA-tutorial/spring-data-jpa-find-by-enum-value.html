@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Data JPA Find by Enum Value</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA Find by Enum Value</h1>
+        <p>In Spring Data JPA, you can easily query entities by their attributes, including <code
+                style="color: red;">Enum</code> types. Here's a
+            step-by-step guide to illustrate how you can create a repository method to find entities by an Enum value.
+        </p>
+        <h2>Define the Enum</h2>
+        <p>First, define an enum that will be used in your entity:</p>
+        <pre><code>public enum Status {
+    ACTIVE,
+    INACTIVE,
+    SUSPENDED
+}
+</code></pre>
+
+        <h2>Use the Enum in your Entity</h2>
+        <p>Now, incorporate this enum into your JPA entity:</p>
+        <pre><code>@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    
+    @Enumerated(EnumType.STRING) // Store the enum as a string in the database
+    private Status status;
+
+    // getters, setters, etc.
+}
+</code></pre>
+
+        <h2>Create a Repository</h2>
+        <p>Create a repository interface to perform database operations:</p>
+        <pre><code>public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+    List&lt;User&gt; findByStatus(Status status);
+}
+</code></pre>
+        <p>In the repository, <code style="color: red;">findByStatus</code> is a derived query method. Spring Data JPA
+            will generate the necessary query
+            behind the scenes to fetch the users with the given status.</p>
+        <h2>Using the Repository in Service Class</h2>
+        <p>Next, use the repository method in your service layer to find users by status:</p>
+        <pre><code>@Service
+public class UserService {
+    @Autowired
+    private UserRepository userRepository;
+    
+    public List&lt;User&gt; findUsersByStatus(Status status) {
+        return userRepository.findByStatus(status);
+    }
+}
+</code></pre>
+        <p>In your service or controller, you can now call <code
+                style="color: red;">findUsersByStatus(Status.ACTIVE)</code> to get all users with an
+            ACTIVE status.</p>
+        <p>Note: The <code style="color: red;">@Enumerated(EnumType.STRING)</code> annotation is used to store the Enum
+            values as strings in the
+            database. If you don't use this annotation, JPA will, by default, store the <code
+                style="color: red;">Enum</code> values as integers (ordinal
+            values), which can cause issues if you later modify the order or values in the Enum. Storing them as strings
+            makes your database values more readable and avoids potential issues related to ordinal storage.</p>
+    </div>
+</body>
+
+</html>
