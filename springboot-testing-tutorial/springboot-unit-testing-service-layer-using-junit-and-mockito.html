@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Unit Testing Service Layer using JUnit and Mockito
+    </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Boot Unit Testing Service Layer using JUnit and Mockito</h1>
+
+        <p>In the previous tutorial, we have seen <a
+                href="springboot-unit-testing-crud-rest-api-with-junit-and-mockito.html">Spring Boot Unit Testing CRUD
+                REST API with JUnit and Mockito</a>. In this
+            tutorial, we will learn how to perform unit testing Spring boot service layer unit testing using JUnit 5 and
+            the Mockito framework.</p>
+
+        <p> In order to test Service layer components, we have to mock the Repository layer components using the Mockito
+            framework. We don't have to use a database for Unit testing.</p>
+        <p>Spring boot provides <b>spring-boot-starter-test </b>dependency for unit testing and integration testing of
+            Spring boot application:</p>
+
+        <pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+</pre>
+        <p>The Spring Boot Starter Test dependency is a primary dependency for testing the Spring Boot Applications. It
+            holds all the necessary elements required for the testing.</p>
+
+        <p> For the Unit testing service layer, we are going to use the following testing libraries:</p>
+        <ul>
+            <li> JUnit 5 Framework </li>
+            <li> Mockito 4 (Latest) </li>
+            <li> AssertJ Library </li>
+        </ul>
+        <h2>JUnit 5 Framework
+        </h2>
+        <p>It's the de facto standard testing framework for Java.</p>
+
+        <p> The current version of JUnit is 5+. The main goal of JUnit 5 is to support Java 8 and above, as well as
+            enable many different styles of testing.
+        </p>
+        <h2>Mockito 4 (Latest) </h2>
+
+        <p>Mockito is a mocking framework. It is a Java-based library used to create simple and basic test APIs for
+            performing unit testing of Java applications.</p>
+
+        <p> The main purpose of using the Mockito framework is to simplify the development of a test by mocking external
+            dependencies and using them in the test code.</p>
+
+        <p> Learn about the Mockito framework at <a href="https://site.mockito.org/">https://site.mockito.org/</a></p>
+
+        <h2>AssertJ Library </h2>
+        <p>AssertJ is a Java library that provides a rich set of assertions and truly helpful error messages, improves
+            test code readability, and is designed to be super easy to use within your favorite IDE.</p>
+
+        <p> Spring boot starter test dependency internally provides assertj-core dependency so we don’t have to add
+            assertj-core dependency manually in our Spring boot project.</p>
+
+        <h2>Tools and technologies used</h2>
+        <ul>
+            <li> Java 11+ </li>
+            <li> Spring Boot</li>
+            <li> Lombok</li>
+            <li> JUnit 5 Framework</li>
+            <li> Hamcrest</li>
+            <li> AssertJ</li>
+            <li> JsonPath</li>
+            <li> Mockito</li>
+            <li> IntelliJ IDEA</li>
+            <li> Docker</li>
+            <li> Maven</li>
+        </ul>
+        <h2>1. Create Spring Boot Application</h2>
+
+        <p>Using spring initialize, create a Spring Boot project and add the following dependencies:</p>
+        <ul>
+            <li> Spring Web</li>
+            <li> Spring Data JPA</li>
+            <li>Lombok</li>
+        </ul>
+
+        <p>Generate the Spring boot project as a zip file, extract it, and import it into IntelliJ IDEA.</p>
+        <h2>2. Maven Dependencies</h2>
+
+        <p>Make sure that you have added the below dependencies in your spring boot project:</p>
+        <pre>
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+        &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+        &lt;optional&gt;true&lt;/optional&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    </pre>
+        <h2>3. Create JPA Entity</h2>
+        <p>Next, let's create an <b>Employee</b> JPA entity with the following content:</p>
+
+        <pre>import lombok.*;
+
+    import javax.persistence.*;
+    
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    
+    @Entity
+    @Table(name = "employees")
+    public class Employee {
+    
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private long id;
+    
+        @Column(name = "first_name", nullable = false)
+        private String firstName;
+    
+        @Column(name = "last_name", nullable = false)
+        private String lastName;
+    
+        @Column(nullable = false)
+        private String email;
+    }</pre>
+        <p>Note that we are using Lombok annotations to reduce the boilerplate code.</p>
+
+        <p><b>@Entity</b> annotation is used to mark the class as a persistent Java class.</p>
+
+        <p><b> @Table </b>annotation is used to provide the details of the table that this entity will be mapped to.</p>
+        <p><b> @Id</b> annotation is used to define the primary key.</p>
+        <p><b> @GeneratedValue </b>annotation is used to define the primary key generation strategy. In the above case,
+            we have declared the primary key to be an Auto Increment field.</p>
+        <p><b> @Column </b>annotation is used to define the properties of the column that will be mapped to the
+            annotated field. You can define several properties like name, length, nullable, updateable, etc.</p>
+
+        <h2>4. Create Repository Layer</h2>
+        <p>Let's create <b>EmployeeRepository</b> which extends the <b>JpaRepository</b> interface:</p>
+        <pre>import net.javaguides.springboot.model.Employee;
+    import org.springframework.data.jpa.repository.JpaRepository;
+    
+    public interface EmployeeRepository extends JpaRepository&lt;Employee, Long> {
+    
+    }</pre>
+        <h2>5. Create Service Layer</h2>
+        <p><b>EmployeeService</b></p>
+        <p>Let's create an <b>EmployeeService</b> interface with CRUD methods:</p>
+
+        <pre>import net.javaguides.springboot.model.Employee;
+
+    import java.util.List;
+    import java.util.Optional;
+    
+    public interface EmployeeService {
+        Employee saveEmployee(Employee employee);
+        List&lt;Employee> getAllEmployees();
+        Optional&lt;Employee> getEmployeeById(long id);
+        Employee updateEmployee(Employee updatedEmployee);
+        void deleteEmployee(long id);
+    }</pre>
+
+        <h2>EmployeeServiceImpl</h2>
+        <p>Let's create an <b>EmployeeServiceImpl</b> class that implements the <b>EmployeeService</b> interface:</p>
+
+        <pre>import net.javaguides.springboot.exception.ResourceNotFoundException;
+    import net.javaguides.springboot.model.Employee;
+    import net.javaguides.springboot.repository.EmployeeRepository;
+    import net.javaguides.springboot.service.EmployeeService;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.stereotype.Service;
+    
+    import java.util.List;
+    import java.util.Optional;
+    
+    @Service
+    public class EmployeeServiceImpl implements EmployeeService {
+    
+        private EmployeeRepository employeeRepository;
+    
+        public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+            this.employeeRepository = employeeRepository;
+        }
+    
+        @Override
+        public Employee saveEmployee(Employee employee) {
+    
+            Optional&lt;Employee> savedEmployee = employeeRepository.findByEmail(employee.getEmail());
+            if(savedEmployee.isPresent()){
+                throw new ResourceNotFoundException("Employee already exist with given email:" + employee.getEmail());
+            }
+            return employeeRepository.save(employee);
+        }
+    
+        @Override
+        public List&lt;Employee> getAllEmployees() {
+            return employeeRepository.findAll();
+        }
+    
+        @Override
+        public Optional&lt;Employee> getEmployeeById(long id) {
+            return employeeRepository.findById(id);
+        }
+    
+        @Override
+        public Employee updateEmployee(Employee updatedEmployee) {
+            return employeeRepository.save(updatedEmployee);
+        }
+    
+        @Override
+        public void deleteEmployee(long id) {
+            employeeRepository.deleteById(id);
+        }
+    }</pre>
+
+        <h2>6. Unit Testing Service Layer using JUnit 5 and Mockito</h2>
+
+        <p>Let us start writing unit tests for EmployeeService. We should be able to write unit tests for
+            EmployeeService WITHOUT using any Spring features.</p>
+
+        <p> We are going to create a mock of <b>EmployeeRepository</b> using @Mock and create an
+            <b>EmployeeServiceImpl</b> instance using the mock EmployeeRepository instance.
+        </p>
+        <pre>import net.javaguides.springboot.exception.ResourceNotFoundException;
+    import net.javaguides.springboot.model.Employee;
+    import net.javaguides.springboot.repository.EmployeeRepository;
+    import net.javaguides.springboot.service.impl.EmployeeServiceImpl;
+    import static org.assertj.core.api.Assertions.assertThat;
+    import org.junit.jupiter.api.BeforeEach;
+    import org.junit.jupiter.api.DisplayName;
+    import org.junit.jupiter.api.Test;
+    import org.junit.jupiter.api.extension.ExtendWith;
+    
+    import static org.mockito.ArgumentMatchers.any;
+    import static org.mockito.BDDMockito.given;
+    import static org.mockito.BDDMockito.willDoNothing;
+    import static org.mockito.Mockito.*;
+    
+    import org.mockito.InjectMocks;
+    import org.mockito.Mock;
+    import org.mockito.junit.jupiter.MockitoExtension;
+    
+    import java.util.Collections;
+    import java.util.List;
+    import java.util.Optional;
+    
+    @ExtendWith(MockitoExtension.class)
+    public class EmployeeServiceTests {
+    
+        @Mock
+        private EmployeeRepository employeeRepository;
+    
+        @InjectMocks
+        private EmployeeServiceImpl employeeService;
+    
+        private Employee employee;
+    
+        @BeforeEach
+        public void setup(){
+            //employeeRepository = Mockito.mock(EmployeeRepository.class);
+            //employeeService = new EmployeeServiceImpl(employeeRepository);
+            employee = Employee.builder()
+                    .id(1L)
+                    .firstName("Ramesh")
+                    .lastName("Fadatare")
+                    .email("ramesh@gmail.com")
+                    .build();
+        }
+    
+        // JUnit test for saveEmployee method
+        @DisplayName("JUnit test for saveEmployee method")
+        @Test
+        public void givenEmployeeObject_whenSaveEmployee_thenReturnEmployeeObject(){
+            // given - precondition or setup
+            given(employeeRepository.findByEmail(employee.getEmail()))
+                    .willReturn(Optional.empty());
+    
+            given(employeeRepository.save(employee)).willReturn(employee);
+    
+            System.out.println(employeeRepository);
+            System.out.println(employeeService);
+    
+            // when -  action or the behaviour that we are going test
+            Employee savedEmployee = employeeService.saveEmployee(employee);
+    
+            System.out.println(savedEmployee);
+            // then - verify the output
+            assertThat(savedEmployee).isNotNull();
+        }
+    
+        // JUnit test for saveEmployee method
+        @DisplayName("JUnit test for saveEmployee method which throws exception")
+        @Test
+        public void givenExistingEmail_whenSaveEmployee_thenThrowsException(){
+            // given - precondition or setup
+            given(employeeRepository.findByEmail(employee.getEmail()))
+                    .willReturn(Optional.of(employee));
+    
+            System.out.println(employeeRepository);
+            System.out.println(employeeService);
+    
+            // when -  action or the behaviour that we are going test
+            org.junit.jupiter.api.Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+                employeeService.saveEmployee(employee);
+            });
+    
+            // then
+            verify(employeeRepository, never()).save(any(Employee.class));
+        }
+    
+        // JUnit test for getAllEmployees method
+        @DisplayName("JUnit test for getAllEmployees method")
+        @Test
+        public void givenEmployeesList_whenGetAllEmployees_thenReturnEmployeesList(){
+            // given - precondition or setup
+    
+            Employee employee1 = Employee.builder()
+                    .id(2L)
+                    .firstName("Tony")
+                    .lastName("Stark")
+                    .email("tony@gmail.com")
+                    .build();
+    
+            given(employeeRepository.findAll()).willReturn(List.of(employee,employee1));
+    
+            // when -  action or the behaviour that we are going test
+            List&lt;Employee> employeeList = employeeService.getAllEmployees();
+    
+            // then - verify the output
+            assertThat(employeeList).isNotNull();
+            assertThat(employeeList.size()).isEqualTo(2);
+        }
+    
+        // JUnit test for getAllEmployees method
+        @DisplayName("JUnit test for getAllEmployees method (negative scenario)")
+        @Test
+        public void givenEmptyEmployeesList_whenGetAllEmployees_thenReturnEmptyEmployeesList(){
+            // given - precondition or setup
+    
+            Employee employee1 = Employee.builder()
+                    .id(2L)
+                    .firstName("Tony")
+                    .lastName("Stark")
+                    .email("tony@gmail.com")
+                    .build();
+    
+            given(employeeRepository.findAll()).willReturn(Collections.emptyList());
+    
+            // when -  action or the behaviour that we are going test
+            List<Employee> employeeList = employeeService.getAllEmployees();
+    
+            // then - verify the output
+            assertThat(employeeList).isEmpty();
+            assertThat(employeeList.size()).isEqualTo(0);
+        }
+    
+        // JUnit test for getEmployeeById method
+        @DisplayName("JUnit test for getEmployeeById method")
+        @Test
+        public void givenEmployeeId_whenGetEmployeeById_thenReturnEmployeeObject(){
+            // given
+            given(employeeRepository.findById(1L)).willReturn(Optional.of(employee));
+    
+            // when
+            Employee savedEmployee = employeeService.getEmployeeById(employee.getId()).get();
+    
+            // then
+            assertThat(savedEmployee).isNotNull();
+    
+        }
+    
+        // JUnit test for updateEmployee method
+        @DisplayName("JUnit test for updateEmployee method")
+        @Test
+        public void givenEmployeeObject_whenUpdateEmployee_thenReturnUpdatedEmployee(){
+            // given - precondition or setup
+            given(employeeRepository.save(employee)).willReturn(employee);
+            employee.setEmail("ram@gmail.com");
+            employee.setFirstName("Ram");
+            // when -  action or the behaviour that we are going test
+            Employee updatedEmployee = employeeService.updateEmployee(employee);
+    
+            // then - verify the output
+            assertThat(updatedEmployee.getEmail()).isEqualTo("ram@gmail.com");
+            assertThat(updatedEmployee.getFirstName()).isEqualTo("Ram");
+        }
+    
+        // JUnit test for deleteEmployee method
+        @DisplayName("JUnit test for deleteEmployee method")
+        @Test
+        public void givenEmployeeId_whenDeleteEmployee_thenNothing(){
+            // given - precondition or setup
+            long employeeId = 1L;
+    
+            willDoNothing().given(employeeRepository).deleteById(employeeId);
+    
+            // when -  action or the behaviour that we are going test
+            employeeService.deleteEmployee(employeeId);
+    
+            // then - verify the output
+            verify(employeeRepository, times(1)).deleteById(employeeId);
+        }
+    }</pre>
+
+        <p>Notice that we are using the <b>assertThat()</b> method to assert the conditions using the AssertJ library.
+        </p>
+
+        <p> Mockito @Mock annotation is useful when we want to use the mocked object at multiple places.</p>
+
+        <p> When we want to inject a mocked object into another mocked object, we can use @InjectMocks annotation.
+            @InjectMock creates the mock object of the class and injects the mocks that are marked with the annotations
+            @Mock into it.</p>
+        <h2> JUnit test for saveEmployee method:</h2>
+        <h2>JUnit test for saveEmployee method:</h2>
+
+        <pre>  // JUnit test for saveEmployee method
+    @DisplayName("JUnit test for saveEmployee method")
+    @Test
+    public void givenEmployeeObject_whenSaveEmployee_thenReturnEmployeeObject(){
+        // given - precondition or setup
+        given(employeeRepository.findByEmail(employee.getEmail()))
+                .willReturn(Optional.empty());
+
+        given(employeeRepository.save(employee)).willReturn(employee);
+
+        System.out.println(employeeRepository);
+        System.out.println(employeeService);
+
+        // when -  action or the behaviour that we are going test
+        Employee savedEmployee = employeeService.saveEmployee(employee);
+
+        System.out.println(savedEmployee);
+        // then - verify the output
+        assertThat(savedEmployee).isNotNull();
+    }</pre>
+
+        <h2>JUnit test for saveEmployee method which throws Exception:</h2>
+
+        <pre>  // JUnit test for saveEmployee method
+    @DisplayName("JUnit test for saveEmployee method which throws exception")
+    @Test
+    public void givenExistingEmail_whenSaveEmployee_thenThrowsException(){
+        // given - precondition or setup
+        given(employeeRepository.findByEmail(employee.getEmail()))
+                .willReturn(Optional.of(employee));
+
+        System.out.println(employeeRepository);
+        System.out.println(employeeService);
+
+        // when -  action or the behaviour that we are going test
+        org.junit.jupiter.api.Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+            employeeService.saveEmployee(employee);
+        });
+
+        // then
+        verify(employeeRepository, never()).save(any(Employee.class));
+    }</pre>
+        <h2>JUnit test for getAllEmployees method:</h2>
+
+        <pre> @DisplayName("JUnit test for getAllEmployees method")
+    @Test
+    public void givenEmployeesList_whenGetAllEmployees_thenReturnEmployeesList(){
+        // given - precondition or setup
+
+        Employee employee1 = Employee.builder()
+                .id(2L)
+                .firstName("Tony")
+                .lastName("Stark")
+                .email("tony@gmail.com")
+                .build();
+
+        given(employeeRepository.findAll()).willReturn(List.of(employee,employee1));
+
+        // when -  action or the behaviour that we are going test
+        List&lt;Employee> employeeList = employeeService.getAllEmployees();
+
+        // then - verify the output
+        assertThat(employeeList).isNotNull();
+        assertThat(employeeList.size()).isEqualTo(2);
+    }</pre>
+
+        <h2>JUnit test for getEmployeeById method</h2>
+
+        <pre>   // JUnit test for getEmployeeById method
+    @DisplayName("JUnit test for getEmployeeById method")
+    @Test
+    public void givenEmployeeId_whenGetEmployeeById_thenReturnEmployeeObject(){
+        // given
+        given(employeeRepository.findById(1L)).willReturn(Optional.of(employee));
+
+        // when
+        Employee savedEmployee = employeeService.getEmployeeById(employee.getId()).get();
+
+        // then
+        assertThat(savedEmployee).isNotNull();
+
+    }</pre>
+
+        <h2>JUnit test for updateEmployee method:</h2>
+        <pre>    // JUnit test for updateEmployee method
+    @DisplayName("JUnit test for updateEmployee method")
+    @Test
+    public void givenEmployeeObject_whenUpdateEmployee_thenReturnUpdatedEmployee(){
+        // given - precondition or setup
+        given(employeeRepository.save(employee)).willReturn(employee);
+        employee.setEmail("ram@gmail.com");
+        employee.setFirstName("Ram");
+        // when -  action or the behaviour that we are going test
+        Employee updatedEmployee = employeeService.updateEmployee(employee);
+
+        // then - verify the output
+        assertThat(updatedEmployee.getEmail()).isEqualTo("ram@gmail.com");
+        assertThat(updatedEmployee.getFirstName()).isEqualTo("Ram");
+    }</pre>
+        <h2>JUnit test for deleteEmployee method</h2>
+        <pre>// JUnit test for deleteEmployee method
+    @DisplayName("JUnit test for deleteEmployee method")
+    @Test
+    public void givenEmployeeId_whenDeleteEmployee_thenNothing(){
+        // given - precondition or setup
+        long employeeId = 1L;
+
+        willDoNothing().given(employeeRepository).deleteById(employeeId);
+
+        // when -  action or the behaviour that we are going test
+        employeeService.deleteEmployee(employeeId);
+
+        // then - verify the output
+        verify(employeeRepository, times(1)).deleteById(employeeId);
+    }</pre>
+        <h2>7. Demo - Run JUnit Tests</h2>
+        <img src="/assets/springboot-testing-images/Spring Boot Unit Testing Service Layer using JUnit and Mockito.png"
+            alt="" class="image-fluid">
+        <h2>8. Conclusion</h2>
+        <p>In this tutorial, we have discussed how to perform Spring Boot unit testing CRUD REST APIs using JUnit and
+            Mockito frameworks.</p>
+
+        <h2>9. Spring Boot Testing Tutorials and Guides</h2>
+        <ul>
+            <li><a href="springboot-unit-testing-crud-rest-api-with-junit-and-mockito.html">Spring Boot Unit Testing
+                    CRUD REST API with JUnit and Mockito</a></li>
+            <li><a href="springboot- testing-data-access-layer-integration-testing-using-testcontaineers.html"> Spring
+                    Boot Testing - Data Access Layer Integration Testing using Testcontainers</a></li>
+            <li><a href="springboot-testing-rest-api-integration-testing-using-testcontainers.html"> Spring Boot Testing
+                    - REST API Integration Testing using Testcontainers</a></li>
+            <li><a href="spring-data-jpa-repository-testing-using-springboot-datajpa-test.html"> Spring Data JPA
+                    Repository Testing using Spring Boot @DataJpaTest</a></li>
+            <li><a href="crud-junit-tests-for-spring-data-jpa-testing-repository-layer.html"> CRUD JUnit Tests for
+                    Spring Data JPA - Testing Repository Layer</a></li>
+            <li><a href="springboot-integration-testing-mysql-crud-rest-api-tutorial.html"> Spring Boot Integration
+                    Testing MySQL CRUD REST API Tutorial</a></li>
+
+        </ul>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot REST API Integration Testing using JUnit, Mockito and Testcontainers
+    </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Boot REST API Integration Testing using JUnit, Mockito and Testcontainers</h1>
+        <p>In this tutorial, we will learn how to do Spring Boot application Integration Testing using Testcontainers.
+        </p>
+        <p>First, we write Integration tests using a local MySQL database, and then we will address the problem with
+            Testcontainers as a solution.</p>
+
+        <p> SpringBoot provides excellent support for integration testing using <b>@SpringBootTest</b> annotation. We
+            can use
+            <b>@SpringBootTest</b> annotation to load the application context and test various components.
+        </p>
+
+        <p> <b>@SpringBootTest</b> will bootstrap the full application context, which means we can <b>@Autowire</b> any
+            bean that's
+            picked up by component scanning into our test.</p>
+
+        <p> In this tutorial, we are going to use <b>@SpringBootTest</b> annotation for Integration testing.</p>
+        <h2>Tools and technologies used</h2>
+        <ul>
+            <li> Java 11+ </li>
+            <li> Spring Boot </li>
+            <li> Spring Data JPA </li>
+            <li> MySQL </li>
+            <li> Lombok </li>
+            <li> JUnit 5 Framework </li>
+            <li> IntelliJ IDEA</li>
+            <li> Testcontainers</li>
+            <li> Docker</li>
+            <li> Maven</li>
+        </ul>
+        <h2>What is Integration Testing</h2>
+
+        <p>As the name suggests, integration tests focus on integrating different layers of the application. That also
+            means no mocking is involved.</p>
+
+        <p> Basically, we write integration tests for testing a feature that may involve interaction with multiple
+            components.</p>
+
+        <p> Examples: Integration testing of complete <b>Employee Management Feature ( EmployeeRepository,
+                EmployeeService,
+                EmployeeController)</b>. </p>
+
+        <p> Integration testing of complete <b>User Management Feature (UserController, UserService, and
+                UserRepository)</b>.
+        </p>
+
+        <p> Integration testing of complete <b>Login Feature (LoginRespository, LoginController, Login Service)</b>, etc
+        </p>
+
+        <h2>Development Steps</h2>
+        <ol>
+            <li> Create Spring Boot Application</li>
+            <li> Configure MySQL database</li>
+            <li> Create JPA Entity</li>
+            <li> Create Spring Data JPA Repository</li>
+            <li> Create Spring Boot REST Controller</li>
+            <li> Create Integration Tests with MySQL database</li>
+            <li> What Testcontainers</li>
+            <li> Adding Testcontainers to Spring Boot Project</li>
+            <li> Write Integration Tests using Testcontainers</li>
+            <li> Demo</li>
+        </ol>
+        <h2>1. Create Spring Boot Application</h2>
+
+        <p>Using spring initialize, create a Spring Boot project and add the following dependencies:</p>
+
+        <ul>
+            <li> Spring Web </li>
+            <li> Spring Data JPA</li>
+            <li> Lombok</li>
+            <li> MySQL Driver</li>
+        </ul>
+        <p>Generate the Spring boot project as a zip file, extract it, and import it into IntelliJ IDEA.</p>
+        <h2>2. Configure MySQL database</h2>
+        <p>Let's use the MySQL database to store and retrieve the data in this example and we gonna use Hibernate
+            properties to create and drop tables.</p>
+
+        <p>Open the <b>application.properties </b>file and add the following configuration to it:</p>
+        <pre>spring.datasource.url=jdbc:mysql://localhost:3306/demo?useSSL=false
+    spring.datasource.username=root
+    spring.datasource.password=Mysql@123
+    
+    spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+    
+    spring.jpa.hibernate.ddl-auto = create-drop</pre>
+        <p>Make sure that you will create a demo database before running the Spring boot application.
+            Also, change the MySQL username and password as per your MySQL installation on your machine.</p>
+
+        <h2>3. Create JPA Entity</h2>
+        <p>Next, let's create a <b>Student</b> JPA entity: </p>
+        <pre>package net.javaguides.spirngboot.entity;
+
+    import lombok.*;
+    
+    import javax.persistence.*;
+    
+    @Setter
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Entity
+    @Table(name = "students")
+    public class Student {
+    
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private long id;
+    
+        @Column(name = "first_name")
+        private String firstName;
+    
+        @Column(name = "last_name")
+        private String lastName;
+        private String email;
+    }</pre>
+
+        <h2>4. Create Spring Data JPA Repository</h2>
+        <p>Let's create <b>StudentRepository</b> which extends the <b>JpaRepository</b> interface:</p>
+        <pre>package net.javaguides.spirngboot.repository;
+
+    import net.javaguides.spirngboot.entity.Student;
+    import org.springframework.data.jpa.repository.JpaRepository;
+    
+    public interface StudentRepository extends JpaRepository<Student, Long> {
+    }</pre>
+
+        <h2>5. Create Spring Boot REST Controller</h2>
+        <p>Let's create <b>StudentController</b> class and add these couple of REST endpoints:</p>
+
+        <pre>package net.javaguides.spirngboot.controller;
+
+    import net.javaguides.spirngboot.entity.Student;
+    import net.javaguides.spirngboot.repository.StudentRepository;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.http.HttpStatus;
+    import org.springframework.web.bind.annotation.*;
+    
+    import java.util.List;
+    
+    @RestController
+    @RequestMapping("/api/students")
+    public class StudentController {
+    
+        @Autowired
+        private StudentRepository studentRepository;
+    
+        @PostMapping
+        @ResponseStatus(HttpStatus.CREATED)
+        public Student createStudent(@RequestBody Student student){
+            return studentRepository.save(student);
+        }
+    
+        @GetMapping
+        public List<Student> getAllStudents(){
+            return studentRepository.findAll();
+        }
+    }</pre>
+
+        <h2>6. Create Integration Tests with MySQL database</h2>
+
+        <p>Now, let's create an Integration JUnit test for <b>GET ALL Students </b>REST API:</p>
+
+        <pre>package net.javaguides.spirngboot;
+
+    import net.javaguides.spirngboot.entity.Student;
+    import net.javaguides.spirngboot.repository.StudentRepository;
+    import org.hamcrest.CoreMatchers;
+    import org.junit.jupiter.api.Test;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+    import org.springframework.boot.test.context.SpringBootTest;
+    import org.springframework.test.web.servlet.MockMvc;
+    import org.springframework.test.web.servlet.ResultActions;
+    import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+    import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+    
+    import java.util.List;
+    
+    @SpringBootTest
+    @AutoConfigureMockMvc
+    class SpringbootTestcontainersDemoApplicationTests {
+    
+        @Autowired
+        private StudentRepository studentRepository;
+    
+        @Autowired
+        private MockMvc mockMvc;
+    
+        // given/when/then format - BDD style
+        @Test
+        public void givenStudents_whenGetAllStudents_thenListOfStudents() throws Exception {
+            // given - setup or precondition
+            List&lt;Student> students =
+                    List.of(Student.builder().firstName("Ramesh").lastName("faadatare").email("ramesh@gmail.com").build(),
+                    Student.builder().firstName("tony").lastName("stark").email("tony@gmail.com").build());
+            studentRepository.saveAll(students);
+    
+            // when - action
+            ResultActions response = mockMvc.perform(MockMvcRequestBuilders.get("/api/students"));
+    
+            // then - verify the output
+            response.andExpect(MockMvcResultMatchers.status().isOk());
+            response.andExpect(MockMvcResultMatchers.jsonPath("$.size()", CoreMatchers.is(students.size())));
+        }
+    
+    }</pre>
+
+        <p>Let's understand the above code.</p>
+
+        <p>We are using <b>@SpringBootTest </b>annotation to load the application context and test various components.
+
+            <b>MockMvc </b>provides support for Spring MVC testing. It encapsulates all web application beans and makes
+            them
+            available for testing. <b>@AutoConfigureMockMvc</b> annotation that can be applied to a test class to enable
+            and
+            configure auto-configuration of MockMvc.
+        </p>
+
+        <pre>@Autowired
+    private MockMvc mockMvc;</pre>
+        <p>The <b>MockMvc.perform()</b> method will call a GET request method, which returns the <b>ResultActions</b>.
+        </p>
+        <pre>ResultActions response = mockMvc.perform(MockMvcRequestBuilders.get("/api/students"));</pre>
+        <p>Using this result, we can have assertion expectations about the response, like its content, HTTP status, or
+            header. </p>
+        <p>The <b>andExpect()</b> will expect the provided argument. In our case, we're expecting HTTP status code and
+            the size of the JSON array in the response:</p>
+        <pre>// then - verify the output
+                response.andExpect(MockMvcResultMatchers.status().isOk());
+                response.andExpect(MockMvcResultMatchers.jsonPath("$.size()", CoreMatchers.is(students.size())));</pre>
+        <h2>7. Run Integration Test</h2>
+        <img src="/assets/springboot-testing-images/Integration Testing With @SpringBootTest.png" alt=""
+            class="image-fluid">
+        <h2>What is the problem with the Integration test that we have written?</h2>
+        <p>A common problem when writing integration tests is the dependency on installed components (Ex: MySQL,
+            RabbitMQ) where the integration tests are supposed to run.</p>
+
+        <p> In our case, our Integration tests depend on the MySQL database. Installing a specific version of the MySQL
+            database in every machine where the integration tests are supposed to run takes a lot of time right.</p>
+
+        <p> Basically, our integration tests depend on external services (installing MySQL, Rabbit MQ, Redis, etc) to
+            run the integration tests right then how to reduce this dependency - what will be the solution.</p>
+        <p><b>The solution is Testcontainers.</b></p>
+        <h2>8. What is Testcontainers?</h2>
+        <p>Testcontainers is a Java library that supports JUnit tests, providing lightweight, throwaway instances of
+            common databases, Selenium web browsers, or anything else that can run in a Docker container.</p>
+
+        <p> Using Testcontainers is fairly easy and it gives us the opportunity to create integration tests without the
+            need for pre-installed components.</p>
+
+        <p> Using Testcontainers, we would always start with a clean database and our integration tests could run on any
+            machine.</p>
+
+        <p> Testcontainer allows us to use Docker containers within our tests. As a result, we can write self-contained
+            integration tests that depend on external resources.</p>
+        <h2>9. Adding Testcontainers to Spring Boot Project</h2>
+        <p>Open the pom.xml file and add the following Testcontainers dependencies:</p>
+        <pre>
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.testcontainers&lt;/groupId&gt;
+                    &lt;artifactId&gt;testcontainers&lt;/artifactId&gt;
+                    &lt;version&gt;1.16.2&lt;/version&gt;
+                    &lt;scope&gt;test&lt;/scope&gt;
+                &lt;/dependency&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.testcontainers&lt;/groupId&gt;
+                    &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt;
+                    &lt;version&gt;1.16.2&lt;/version&gt;
+                    &lt;scope&gt;test&lt;/scope&gt;
+                &lt;/dependency&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.testcontainers&lt;/groupId&gt;
+                    &lt;artifactId&gt;mysql&lt;/artifactId&gt;
+                    &lt;version&gt;1.16.2&lt;/version&gt;
+                    &lt;scope&gt;test&lt;/scope&gt;
+                &lt;/dependency&gt;
+                </pre>
+        <h2>Write Integration Tests using Testcontainers</h2>
+        <p>Let's change the Integration test to use Testcontainers.</p>
+
+        <p> We gonna use the Singleton containers pattern to use Testcontainers.</p>
+
+        <p> Singleton containers pattern is useful to define a container that is only started once for several test
+            classes.</p>
+
+        <p> Let us create a base class AbstractContainerBaseTest so that all our integration tests can extend without
+            repeating the common configuration.</p>
+
+        <pre>package net.javaguides.spirngboot;
+
+                import org.testcontainers.containers.MySQLContainer;
+                
+                public class AbstractContainerBaseTest {
+                
+                    static final MySQLContainer MY_SQL_CONTAINER;
+                
+                    static {
+                        MY_SQL_CONTAINER = new MySQLContainer("mysql:latest");
+                
+                        MY_SQL_CONTAINER.start();
+                    }
+                }</pre>
+        <p>Now, simply extend our Integration class with the above <b>AbstractContainerBaseTest</b>:</p>
+        <pre>package net.javaguides.spirngboot;
+
+                    import net.javaguides.spirngboot.entity.Student;
+                    import net.javaguides.spirngboot.repository.StudentRepository;
+                    import org.hamcrest.CoreMatchers;
+                    import org.junit.jupiter.api.Test;
+                    import org.springframework.beans.factory.annotation.Autowired;
+                    import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+                    import org.springframework.boot.test.context.SpringBootTest;
+                    import org.springframework.test.web.servlet.MockMvc;
+                    import org.springframework.test.web.servlet.ResultActions;
+                    import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+                    import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+                    
+                    import java.util.List;
+                    
+                    @SpringBootTest
+                    @AutoConfigureMockMvc
+                    class SpringbootTestcontainersDemoApplicationTests extends AbstractContainerBaseTest{
+                    
+                        @Autowired
+                        private StudentRepository studentRepository;
+                    
+                        @Autowired
+                        private MockMvc mockMvc;
+                    
+                        // given/when/then format - BDD style
+                        @Test
+                        public void givenStudents_whenGetAllStudents_thenListOfStudents() throws Exception {
+                            // given - setup or precondition
+                            List&lt;Student> students =
+                                    List.of(Student.builder().firstName("Ramesh").lastName("faadatare").email("ramesh@gmail.com").build(),
+                                    Student.builder().firstName("tony").lastName("stark").email("tony@gmail.com").build());
+                            studentRepository.saveAll(students);
+                    
+                            // when - action
+                            ResultActions response = mockMvc.perform(MockMvcRequestBuilders.get("/api/students"));
+                    
+                            // then - verify the output
+                            response.andExpect(MockMvcResultMatchers.status().isOk());
+                            response.andExpect(MockMvcResultMatchers.jsonPath("$.size()", CoreMatchers.is(students.size())));
+                        }
+                    
+                    }</pre>
+        <h2>10. Demo</h2>
+        <p>Before running the Integration test make sure that Docker is running on your machine otherwise, you won't be
+            able to run the Integration test.</p>
+
+        <p> Here is the output of the above Integration test using Testcontainers:</p>
+        <img src="/assets/springboot-testing-images/Spring Boot Application Integration Testing using Testcontainers.png"
+            alt="" class="image-fluid">
+        <h2>Conclusion</h2>
+        <p>In this tutorial, we have discussed how to perform Spring Boot application Integration Testing using
+            Testcontainers.</p>
+
+    </div>
+</body>
+
+</html>

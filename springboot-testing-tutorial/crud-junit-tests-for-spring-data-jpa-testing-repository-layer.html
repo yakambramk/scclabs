@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD JUnit Tests for Spring Data JPA - Testing Repository Layer
+    </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>CRUD JUnit Tests for Spring Data JPA - Testing Repository Layer</h1>
+        <p>In this tutorial, we will learn how to test repository or DAO layer using Spring boot provided
+            <b>@DataJpaTest </b>annotation.
+        </p>
+
+        <p> We will write a JUnit 5 test case for CRUD operations - Create, Read, Update and Delete.</p>
+
+        <h2>@DataJpaTest Annotation Overview</h2>
+
+        <p>The Spring boot provides <b>@DataJpaTest</b> annotation. This annotation will disable full auto-configuration
+            and
+            instead apply only configuration relevant to JPA tests. By default, it will use an embedded, in-memory H2
+            database instead of the one declared in the configuration file, for faster test running time as compared to
+            disk file database.</p>
+
+        <p> The <b> @DataJpaTest</b> annotation doesn’t load other Spring beans (@Component, @Controller, @Service, and
+            annotated beans) into <b>ApplicationContext</b>.</p>
+
+        <p> We will create Spring Boot project from scratch using Spring data JPA ( Hibernate) and H2 database.</p>
+
+        <h2>1. Create Spring Boot Project</h2>
+
+        <p>Spring Boot provides a web tool called <a href="https://start.spring.io">https://start.spring.io</a> to
+            bootstrap an application quickly. Just go
+            to <a href="https://start.spring.io">https://start.spring.io</a> and generate a new spring boot project.</p>
+
+        <p><b>Use the below details in the Spring boot creation:</b></p>
+
+        <p><b>Project Name: </b>spring-data-data-testing</p>
+
+        <p><b> Project Type:</b> Maven</p>
+
+        <p><b> Choose dependencies: </b> Spring Data JPA, H2 database, Lombok, Spring Boot Dev Tools</p>
+
+        <p><b> Package name:</b> net.javaguides.springboot</p>
+
+        <h2>2. Maven Dependencies</h2>
+        <pre>
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+        &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;optional&gt;true&lt;/optional&gt;
+    &lt;/dependency&gt;
+    
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+        &lt;artifactId&gt;h2&lt;/artifactId&gt;
+        &lt;scope&gt;runtime&lt;/scope&gt;
+    &lt;/dependency&gt;
+    
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+        &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+        &lt;optional&gt;true&lt;/optional&gt;
+    &lt;/dependency&gt;
+    
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    </pre>
+
+        <h2>3. Create JPA Entity</h2>
+        <p>Let's create an <b>entity</b> package inside a base package "net.javaguides.springboot". Within the entity
+            package,
+            create a <b>Employee</b> class with the following content:</p>
+
+        <pre>package net.javaguides.springboot;
+
+                import lombok.AllArgsConstructor;
+                import lombok.Builder;
+                import lombok.Data;
+                import lombok.NoArgsConstructor;
+                
+                import jakarta.persistence.*;
+                
+                @Data
+                @AllArgsConstructor
+                @NoArgsConstructor
+                @Builder
+                @Entity
+                @Table(name = "employees")
+                public class Employee {
+                
+                    @Id
+                    @GeneratedValue(strategy = GenerationType.IDENTITY)
+                    private long id;
+                
+                    @Column(name = "first_name", nullable = false)
+                    private String firstName;
+                
+                    @Column(name = "last_name", nullable = false)
+                    private String lastName;
+                
+                    @Column(name = "email", nullable = false)
+                    private String email;
+                }</pre>
+        <p>The annotations used are: </p>
+        <p> <b> @Data: </b>This annotation is from the Lombok library and is used to automatically generate getters and
+            setters for all fields in the class, as well as implementations of toString(), equals(), and hashCode().
+            This reduces the amount of boilerplate code that needs to be written.</p>
+
+        <p> <b> @AllArgsConstructor:</b> This annotation is also from Lombok and generates a constructor that takes all
+            of the fields in the class as arguments.</p>
+
+        <p> <b> @NoArgsConstructor:</b> This annotation is also from Lombok and generates a no-argument constructor.</p>
+
+        <p> <b> @Builder:</b> This annotation is also from Lombok and generates a builder pattern for the class, which
+            provides a convenient way to create instances of the class with default or optional values for some fields.
+        </p>
+
+        <p> <b> @Entity: </b>This annotation is from the Java Persistence API (JPA) and marks the class as an entity
+            that can be persisted to a database.</p>
+
+        <p> <b> @Table(name = "employees"):</b> This annotation specifies the name of the table that corresponds to this
+            entity in the database.</p>
+        <h2>4. Create Spring Data JPA Repository</h2>
+
+        <p>The next thing we’re gonna do is create a repository to access a User’s data from the database.</p>
+
+        <p> The JpaRepository interface defines methods for all the CRUD operations on the entity, and a default
+            implementation of the JpaRepository called SimpleJpaRepository.</p>
+
+        <p> Let's create a repository package inside a base package "net.javaguides.springdatarest". Within the
+            repository package, create a EmployeeRepository interface with the following content:</p>
+        <pre>package net.javaguides.springboot;
+
+    import org.springframework.data.jpa.repository.JpaRepository;
+    
+    import java.util.Optional;
+    
+    public interface EmployeeRepository extends JpaRepository&lt;Employee, Long> {
+    
+        Optional&lt;Employee> findByEmail(String email);
+    }</pre>
+
+        <h2>5. CRUD JUnit Tests for Spring Data JPA Repository</h2>
+
+        <p>Spring Boot provides the <b>@DataJpaTest</b> annotation to test the persistence layer components that will
+            autoconfigure in-memory embedded databases and scan for <b>@Entity</b> classes and Spring Data JPA
+            repositories.
+            The @DataJpaTest annotation doesn’t load other Spring beans (<b>@Components, @Controller, @Service,</b> and
+            annotated beans) into <b>ApplicationContext</b>.</p>
+
+        <p> We need to specify the execution order because JUnit doesn’t run test methods in the order they appear in
+            the code. So we need to use the <b>@TestMethodOrder</b> and <b>@Order</b> annotations to execute test cases
+            in ascending
+            order.</p>
+
+        <p> Head over to <b>test</b> package. Let's create a <b>repository</b> package inside a base package
+            "test.net.javaguides.springboot". Within the <b>repository</b> package, create a
+            <b>EmployeeRepositoryTest</b> class with
+            the following content:</p>
+
+        <pre>package net.javaguides.springboot;
+
+    import org.assertj.core.api.Assertions;
+    import org.junit.jupiter.api.MethodOrderer;
+    import org.junit.jupiter.api.Order;
+    import org.junit.jupiter.api.Test;
+    import org.junit.jupiter.api.TestMethodOrder;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+    import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+    import org.springframework.jdbc.core.JdbcTemplate;
+    import org.springframework.test.annotation.Rollback;
+    
+    import javax.sql.DataSource;
+    import java.util.List;
+    import java.util.Optional;
+    
+    @DataJpaTest
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+    public class EmployeeRepositoryTests {
+    
+        @Autowired
+        private EmployeeRepository employeeRepository;
+    
+        // JUnit test for saveEmployee
+        @Test
+        @Order(1)
+        @Rollback(value = false)
+        public void saveEmployeeTest(){
+    
+            Employee employee = Employee.builder()
+                    .firstName("Ramesh")
+                    .lastName("Fadatare")
+                    .email("ramesh@gmail.com")
+                    .build();
+    
+            employeeRepository.save(employee);
+    
+            Assertions.assertThat(employee.getId()).isGreaterThan(0);
+        }
+    
+        @Test
+        @Order(2)
+        public void getEmployeeTest(){
+    
+            Employee employee = employeeRepository.findById(1L).get();
+    
+            Assertions.assertThat(employee.getId()).isEqualTo(1L);
+    
+        }
+    
+        @Test
+        @Order(3)
+        public void getListOfEmployeesTest(){
+    
+            List&lt;Employee> employees = employeeRepository.findAll();
+    
+            Assertions.assertThat(employees.size()).isGreaterThan(0);
+    
+        }
+    
+        @Test
+        @Order(4)
+        @Rollback(value = false)
+        public void updateEmployeeTest(){
+    
+            Employee employee = employeeRepository.findById(1L).get();
+    
+            employee.setEmail("ram@gmail.com");
+    
+            Employee employeeUpdated =  employeeRepository.save(employee);
+    
+            Assertions.assertThat(employeeUpdated.getEmail()).isEqualTo("ram@gmail.com");
+    
+        }
+    
+        @Test
+        @Order(5)
+        @Rollback(value = false)
+        public void deleteEmployeeTest(){
+    
+            Employee employee = employeeRepository.findById(1L).get();
+    
+            employeeRepository.delete(employee);
+    
+            //employeeRepository.deleteById(1L);
+    
+            Employee employee1 = null;
+    
+            Optional&lt;Employee> optionalEmployee = employeeRepository.findByEmail("ram@gmail.com");
+    
+            if(optionalEmployee.isPresent()){
+                employee1 = optionalEmployee.get();
+            }
+    
+            Assertions.assertThat(employee1).isNull();
+        }
+    
+    }</pre>
+
+        <p>Let's understand above JUnit test cases one by one.</p>
+
+        <h2>JUnit test for saveEmployee:</h2>
+        <pre>// JUnit test for saveEmployee
+    @Test
+    @Order(1)
+    @Rollback(value = false)
+    public void saveEmployeeTest(){
+
+        Employee employee = Employee.builder()
+                .firstName("Ramesh")
+                .lastName("Fadatare")
+                .email("ramesh@gmail.com")
+                .build();
+
+        employeeRepository.save(employee);
+
+        Assertions.assertThat(employee.getId()).isGreaterThan(0);
+    }</pre>
+
+        <p>Note that we have used <b>@Rollback(false)</b> to disable roll back to the data will be committed to the
+            database and available for the next test methods which will run separately.
+
+            We have also used <b>assertThat()</b> method from AssertJ library for more readability than using JUnit’s
+            assertion methods.</p>
+        <h2>JUnit test for getEmployee:</h2>
+
+        <p>We write a test to retrieve employee by it's Id and test the same with id 1:</p>
+        <pre>    @Test
+    @Order(2)
+    public void getEmployeeTest(){
+
+        Employee employee = employeeRepository.findById(1L).get();
+
+        Assertions.assertThat(employee.getId()).isEqualTo(1L);
+
+    }</pre>
+
+        <p>We have also used assertThat() method from AssertJ library for more readability than using JUnit’s assertion
+            methods.</p>
+
+        <h2>JUnit test for getListOfEmployees:</h2>
+        <p>We write a test method to retrieve list of employees from database and test it's size:</p>
+
+        <pre>    @Test
+    @Order(3)
+    public void getListOfEmployeesTest(){
+
+        List&lt;Employee> employees = employeeRepository.findAll();
+
+        Assertions.assertThat(employees.size()).isGreaterThan(0);
+
+    }</pre>
+
+        <p>We have also used <b>assertThat()</b> method from AssertJ library for more readability than using JUnit’s
+            assertion methods.</p>
+        <h2>JUnit test for updateEmployee:</h2>
+
+        <p>We write a JUnit test method to test update employee operation:</p>
+
+        <pre> @Test
+    @Order(4)
+    @Rollback(value = false)
+    public void updateEmployeeTest(){
+
+        Employee employee = employeeRepository.findById(1L).get();
+
+        employee.setEmail("ram@gmail.com");
+
+        Employee employeeUpdated =  employeeRepository.save(employee);
+
+        Assertions.assertThat(employeeUpdated.getEmail()).isEqualTo("ram@gmail.com");
+
+    }</pre>
+
+        <p>Note that we have used <b>@Rollback(false) </b>to disable roll back to the data will be committed to the
+            database and available for the next test methods which will run separately. </p>
+
+        <p> We have also used <b>assertThat() </b>method from AssertJ library for more readability than using JUnit’s
+            assertion methods.</p>
+        <h2>JUnit test for deleteEmployee:</h2>
+
+        <p>We write a JUnit test method to test delete employee operation:</p>
+
+        <pre>  @Test
+    @Order(5)
+    @Rollback(value = false)
+    public void deleteEmployeeTest(){
+
+        Employee employee = employeeRepository.findById(1L).get();
+
+        employeeRepository.delete(employee);
+
+        //employeeRepository.deleteById(1L);
+
+        Employee employee1 = null;
+
+        Optional&lt;Employee> optionalEmployee = employeeRepository.findByEmail("ram@gmail.com");
+
+        if(optionalEmployee.isPresent()){
+            employee1 = optionalEmployee.get();
+        }
+
+        Assertions.assertThat(employee1).isNull();
+    }</pre>
+        <p><b>Here the output of the CRUD JUnit tests:</b></p>
+        <img src="/assets/springboot-testing-images/junit tests for spring data jpa.png" alt="" class="image-fluid">
+
+    </div>
+</body>
+
+</html>

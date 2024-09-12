@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@SpringBootTest vs @WebMvcTest
+    </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>@SpringBootTest vs @WebMvcTest</h1>
+        <p>In this quick article, we will understand what is <b>@SpringBootTest</b> and <b>@WebMvcTest </b>annotations
+            and the
+            differences between them. </p>
+
+        <p> Before understanding the difference between <b>@SpringBootTest</b> and <b>@WebMvcTest</b> annotations, let's
+            first take a look at a quick overview of these two annotations.</p>
+        <h2>@SpringBootTest Annotation</h2>
+
+        <p> Spring Boot provides <b>@SpringBootTest </b>annotation for Integration testing. This annotation creates an
+            application context and loads the full application context.</p>
+
+        <p> <b>@SpringBootTest</b> will bootstrap the full application context, which means we can <b> @Autowire</b> any
+            bean that's
+            picked up by component scanning into our test.</p>
+
+        <p> It starts the embedded server, creates a web environment, and then enables @Test methods to do integration
+            testing.</p>
+
+        <p> By default, @SpringBootTest does not start a server. We need to add the attribute <b>webEnvironment</b> to
+            further
+            refine how your tests run. It has several options: </p>
+
+        <ul>
+            <li><b>MOCK(Default): </b>Loads a web ApplicationContext and provides a mock web environment.</li>
+            <li><b> RANDOM_PORT:</b> Loads a WebServerApplicationContext and provides a real web environment. The
+                embedded server is started and listened to a random port. This is the one that should be used for the
+                integration test.</li>
+            <li><b> DEFINED_PORT:</b> Loads a WebServerApplicationContext and provides a real web environment. NONE:
+                Loads an ApplicationContext by using SpringApplication but does not provide any web environment.</li>
+        </ul>
+
+        <h2>@WebMvcTest Annotation</h2>
+
+        <p>SpringBoot provides @WebMvcTest annotation to test Spring MVC Controllers. Also, @WebMvcTest based test run
+            faster because it will load only the specified controller and its dependencies only without loading the
+            entire application. </p>
+
+        <p> Spring Boot instantiates only the web layer rather than the whole application context. In an application
+            with multiple controllers, you can even ask for only one to be instantiated by using, for example,
+            @WebMvcTest(HomeController.class).</p>
+
+        <h2>@SpringBootTest vs @WebMvcTest</h2>
+        <p>1. <b> @SpringBootTest </b> annotation loads the full application context so that we can able to test various
+            components. So basically, the @SpringBootTest annotation tells Spring Boot to look for the main
+            configuration class (one with @SpringBootApplication, for instance) and use that to start a Spring
+            application context.</p>
+
+        <p> <b>@WebMvcTest </b> annotation loads only the specified controller and its dependencies only without loading
+            the
+            entire application. For example, let's say you have multiple Spring MVC controllers in your Spring boot
+            project - EmployeeController, UserController, LoginController, etc then we can use @WebMvcTest annotation to
+            test only specific Spring MVC controllers without loading all the controllers and their dependencies. </p>
+
+        <p> 2. Spring Boot provides <b> @SpringBootTest</b> annotation for Integration testing.</p>
+
+        <p> Spring boot provides @WebMvcTest annotation for testing Spring MVC controllers <b>(Unit testing).</b></p>
+        <h2>When to use @SpringBootTest and @WebMvcTest annotations?</h2>
+        <ul>
+            <li>Use @SpringBoot Test annotation for Integration testing.</li>
+            <li> Use @WebMvcTest annotation for Unit testing Spring MVC controller.</li>
+        </ul>
+
+        <h2>CRUD Examples for @SpringBootTest and @WebMvcTest annotations</h2>
+
+        <p>Usage of @SpringBootTest annotation demonstrated in the below tutorial:</p>
+
+        <p><a href="springboot-integration-testing-mysql-crud-rest-api-tutorial.html"> Spring Boot Integration Testing
+                MySQL CRUD REST API Tutorial</a></p>
+
+        <p> Usage of @WebMvcTest annotation demonstrated in the below tutorial:</p>
+
+        <p><a href="springboot-unit-testing-crud-rest-api-with-junit-and-mockito.html">Spring Boot Unit Testing CRUD
+                REST API with JUnit and Mockito</a></p>
+        <h2>Spring Boot Testing Tutorials and Guides</h2>
+
+        <p><a href="springboot- testing-data-access-layer-integration-testing-using-testcontaineers.html">Spring Boot Testing - Data Access Layer Integration Testing using Testcontainers</a></p>
+
+        <p><a href="springboot-testing-rest-api-integration-testing-using-testcontainers.html"> Spring Boot Testing - REST API Integration Testing using Testcontainers</a></p>
+
+        <p><a href="spring-data-jpa-repository-testing-using-springboot-datajpa-test.html"> Spring Data JPA Repository Testing using Spring Boot @DataJpaTest</a></p>
+
+        <p><a href="crud-junit-tests-for-spring-data-jpa-testing-repository-layer.html"> CRUD JUnit Tests for Spring Data JPA - Testing Repository Layer</a></p>
+
+        <p><a href="springboot-unit-testing-crud-rest-api-with-junit-and-mockito.html"> Spring Boot Unit Testing CRUD REST API with JUnit and Mockito</a></p>
+
+        <p><a href="springboot-integration-testing-mysql-crud-rest-api-tutorial.html"> Spring Boot Integration Testing MySQL CRUD REST API Tutorial</a></p>
+
+        <p><a href="springboot-unit-testing-service-layer-using-junit-and-mockito.html"> Spring Boot Unit Testing Service Layer using JUnit and Mockito</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+</body>
+
+</html>
