@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/String isEmpty() vs String isBlank() in Java.jpg" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h1>String isEmpty() vs String isBlank() in Java</h1>
+            <p>Author: SAI K </p>
+        </div><br>
+
+    <h2>Introduction</h2>
+    <p>In Java, the String class provides multiple methods to check if a string is empty or consists only of whitespace. Two commonly used methods for this purpose are <code>isEmpty()</code> and <code>isBlank()</code>. Although they might seem similar, they serve different purposes and have distinct behavior. This blog post will explore the differences between <code>isEmpty()</code> and <code>isBlank()</code>.</p>
+
+    <h2>Table of Contents</h2>
+    <ul>
+        <li><a href="#isEmpty">Understanding isEmpty()</a></li>
+        <li><a href="#isBlank">Understanding isBlank()</a></li>
+        <li><a href="#differences">Differences Between isEmpty() and isBlank()</a></li>
+        <li><a href="#examples">Usage Examples</a></li>
+        <li><a href="#program">Complete Example Program</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+    </ul>
+
+    <h2 id="isEmpty">1. Understanding isEmpty()</h2>
+    <p>The <code>isEmpty()</code> method checks if a string has a length of 0. It returns <span class="highlight">true</span> if the string is empty and <span class="highlight">false</span> otherwise.</p>
+
+    <h3>Syntax:</h3>
+    <pre><code>public boolean isEmpty()</code></pre>
+
+    <h3>Example:</h3>
+    <pre><code>public class IsEmptyExample {
+    public static void main(String[] args) {
+        String str1 = "";
+        String str2 = " ";
+        String str3 = "Hello";
+
+        System.out.println("str1 is empty: " + str1.isEmpty()); // true
+        System.out.println("str2 is empty: " + str2.isEmpty()); // false
+        System.out.println("str3 is empty: " + str3.isEmpty()); // false
+    }
+}</code></pre><br>
+
+    <h3>Output:</h3>
+    <pre><code>str1 is empty: true
+str2 is empty: false
+str3 is empty: false</code></pre><br>
+
+    <h2 id="isBlank">2. Understanding isBlank()</h2>
+    <p>The <code>isBlank()</code> method checks if a string is empty or consists only of whitespace characters. It returns <span class="highlight">true</span> if the string is empty or contains only whitespace characters, and <span class="highlight">false</span> otherwise.</p>
+
+    <h3>Syntax:</h3>
+    <pre><code>public boolean isBlank()</code></pre>
+
+    <h3>Example:</h3>
+    <pre><code>public class IsBlankExample {
+    public static void main(String[] args) {
+        String str1 = "";
+        String str2 = " ";
+        String str3 = "\n\t";
+        String str4 = "Hello";
+
+        System.out.println("str1 is blank: " + str1.isBlank()); // true
+        System.out.println("str2 is blank: " + str2.isBlank()); // true
+        System.out.println("str3 is blank: " + str3.isBlank()); // true
+        System.out.println("str4 is blank: " + str4.isBlank()); // false
+    }
+}</code></pre><br>
+
+    <h3>Output:</h3>
+    <pre><code>str1 is blank: true
+str2 is blank: true
+str3 is blank: true
+str4 is blank: false</code></pre><br>
+
+    <h2 id="differences">3. Differences Between isEmpty() and isBlank()</h2>
+    <ul>
+        <li><strong>Whitespace Characters:</strong>
+            <ul>
+                <li><code>isEmpty()</code> returns <span class="highlight">false</span> if the string contains any characters, including whitespace.</li>
+                <li><code>isBlank()</code> returns <span class="highlight">true</span> if the string contains only whitespace characters or is empty.</li>
+            </ul>
+        </li>
+        <li><strong>Method Introduction:</strong>
+            <ul>
+                <li><code>isEmpty()</code> has been available since Java 6.</li>
+                <li><code>isBlank()</code> was introduced in Java 11.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2 id="examples">4. Usage Examples</h2>
+
+    <h3>Example Using isEmpty():</h3>
+    <pre><code>public class IsEmptyUsage {
+    public static void main(String[] args) {
+        String input = "   ";
+
+        if (input.isEmpty()) {
+            System.out.println("The input string is empty.");
+        } else {
+            System.out.println("The input string is not empty.");
+        }
+    }
+}</code></pre><br>
+
+    <h3>Example Using isBlank():</h3>
+    <pre><code>public class IsBlankUsage {
+    public static void main(String[] args) {
+        String input = "   ";
+
+        if (input.isBlank()) {
+            System.out.println("The input string is blank.");
+        } else {
+            System.out.println("The input string is not blank.");
+        }
+    }
+}</code></pre><br>
+
+    <h3>Output for Both Examples:</h3>
+    <pre><code>The input string is not empty.
+The input string is blank.</code></pre><br>
+
+    <h2 id="program">5. Complete Example Program</h2>
+
+    <pre><code>public class StringCheckExample {
+    public static void main(String[] args) {
+        String str1 = "";
+        String str2 = " ";
+        String str3 = "Hello";
+        String str4 = "\t\n";
+
+        System.out.println("Using isEmpty() method:");
+        System.out.println("str1 is empty: " + str1.isEmpty());
+        System.out.println("str2 is empty: " + str2.isEmpty());
+        System.out.println("str3 is empty: " + str3.isEmpty());
+        System.out.println("str4 is empty: " + str4.isEmpty());
+
+        System.out.println("\nUsing isBlank() method:");
+        System.out.println("str1 is blank: " + str1.isBlank());
+        System.out.println("str2 is blank: " + str2.isBlank());
+        System.out.println("str3 is blank: " + str3.isBlank());
+        System.out.println("str4 is blank: " + str4.isBlank());
+    }
+}</code></pre><br>
+
+    <h3>Output:</h3>
+    <pre><code>Using isEmpty() method:
+str1 is empty: true
+str2 is empty: false
+str3 is empty: false
+str4 is empty: false
+
+Using isBlank() method:
+str1 is blank: true
+str2 is blank: true
+str3 is blank: false
+str4 is blank: true</code></pre><br>
+
+    <h2 id="conclusion">6. Conclusion</h2>
+    <p>The <code>isEmpty()</code> and <code>isBlank()</code> methods in Java are useful for checking whether a string is empty or contains only whitespace characters. While <code>isEmpty()</code> checks if the string's length is 0, <code>isBlank()</code> checks if the string is empty or consists only of whitespace characters. Understanding the differences between these methods helps in choosing the right method for various use cases.</p>
+
+    <p>Happy coding!</p>
+
+    <h3>Related Java and Advanced Java Tutorials/Guides</h3>
+    <p>
+        <button type="button" class="btn btn-outline-primary">Java Programs</button>
+        <button type="button" class="btn btn-outline-secondary">Java For Beginners</button>
+        <button type="button" class="btn btn-outline-success">Java OOPS Tutorial</button>
+        <button type="button" class="btn btn-outline-danger">Java For Professional</button>
+        <button type="button" class="btn btn-outline-warning">Java Collections Tutorial</button>
+        <button type="button" class="btn btn-outline-info">Java Spring Tutorial</button>
+        <button type="button" class="btn btn-outline-primary">Java Exceptions Tutorial </button>
+        <button type="button" class="btn btn-outline-secondary">Java Regex Tutorial</button>
+        <button type="button" class="btn btn-outline-success">Java Multithreading</button>
+        <button type="button" class="btn btn-outline-danger">500+ Java MCQ</button>
+        <button type="button" class="btn btn-outline-warning">Java Generic Tutorial</button>
+        <button type="button" class="btn btn-outline-info">Java IO Tutorial</button>
+        <button type="button" class="btn btn-outline-primary">JDBC Tutorial</button>
+        <button type="button" class="btn btn-outline-dark">JavaFX Tutorial</button>
+        <button type="button" class="btn btn-outline-primary">Swing Tutorials </button>
+        <button type="button" class="btn btn-outline-secondary">Java 8 Date Time</button>
+        <button type="button" class="btn btn-outline-success">Interview Guides</button>
+        <button type="button" class="btn btn-outline-danger">Java 8 Tutorial </button>
+        <button type="button" class="btn btn-outline-warning">java 9 Tutorial</button>
+        <button type="button" class="btn btn-outline-info">DS And Algorithms</button>
+        <button type="button" class="btn btn-outline-danger">Head First Patters</button>
+        <button type="button" class="btn btn-outline-primary">Core JavaEE Patterns</button>
+        <button type="button" class="btn btn-outline-secondary">JSP Tutorial</button>
+        <button type="button" class="btn btn-outline-success">Servlet Tutorial</button>
+        <button type="button" class="btn btn-outline-danger">JSP Servlet Project</button>
+        <button type="button" class="btn btn-outline-warning">Java JSON-P Tutorial</button>
+        <button type="button" class="btn btn-outline-info">Maven Tutorial</button>
+    </p>
+    <div class="scrollup justify-content-end">
+        <a href="#">
+            <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+        </a>
+    </div>
+
+</div>
+<div id="footer"></div>
+<script>
+    fetch('../../../footer.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('footer').innerHTML = html;
+        });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
