@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataIntegrityViolationException in Spring Boot</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>DataIntegrityViolationException in Spring Boot</h1>
+        <p>When working with Spring Boot and relational databases, you might occasionally encounter the <code
+                style="color: red;">DataIntegrityViolationException</code>. This exception is thrown when an operation
+            violates a database's integrity constraints. Understanding its causes and finding solutions is crucial for
+            maintaining a healthy and robust application.</p>
+
+        <h2>What is DataIntegrityViolationException?</h2>
+        <p>The <code style="color: red;">DataIntegrityViolationException</code> is a runtime exception in the Spring
+            framework that typically arises when performing database operations. It indicates that some sort of
+            integrity constraint defined in the database has been violated.</p>
+        <p>This could be due to reasons like:</p>
+        <ul>
+            <li><strong>Unique Constraint Violation:</strong> Attempting to save or update an entity that would result
+                in the violation of a unique constraint. For instance, trying to save two users with the same unique
+                email address in a system where email addresses must be unique.</li>
+            <li><strong>Not Null Constraint Violation:</strong> Inserting or updating data that results in a null value
+                for a column that has been defined as NOT NULL.</li>
+            <li><strong>Foreign Key Constraint Violation:</strong> Either deleting a record that is being referenced by
+                another table through a foreign key or adding a record that references a non-existent key.</li>
+            <li><strong>Data Size Limit Violation:</strong> Trying to insert or update data whose size exceeds the
+                defined column size.</li>
+            <li><strong>Data Format Violation:</strong> Inserting or updating a record with data that does not match the
+                expected format or data type for the column.</li>
+        </ul>
+
+        <h2>Common Causes and Solutions</h2>
+        <h3>Violating a Unique Constraint</h3>
+        <p><strong>Cause:</strong> Two or more records have the same value in a column marked with a <code style="color: red;">unique</code> constraint.
+        </p>
+
+        <pre><code>@Entity
+public class User {
+    @Column(unique = true)
+    private String email;
+}</code></pre>
+<p><b>Exception:</b></p>
+        <pre>DataIntegrityViolationException: Duplicate entry 'example@email.com' for key 'email'</pre>
+        <p><strong>Solution:</strong> Ensure that unique constraints are adhered to in your application logic, or handle
+            the exception and notify the user.</p>
+
+        <h3>Not Null Constraint Violation</h3>
+        <p><strong>Cause:</strong> Attempting to insert or update a record with a null value in a column that has a NOT
+            NULL constraint.</p>
+        <p><strong>Exception:</strong></p>
+            <pre>DataIntegrityViolationException: Column 'name' cannot be null.</pre>
+        <p><strong>Solution:</strong> Ensure that all required fields are set before persisting or updating entities.
+        </p>
+
+        <h3>Violating Foreign Key Constraint</h3>
+        <p><strong>Cause:</strong> Deleting a record that is referenced by a foreign key in another table or adding a
+            record that references a non-existent foreign key.</p>
+        <p><strong>Exception:</strong></p>
+            <pre>DataIntegrityViolationException: Cannot delete or update a parent row: a foreign key constraint fails.</pre>
+        <p><strong>Solution:</strong> If deleting, ensure you either delete referencing records first or restructure
+            your database relationships to cascade deletes. When inserting, ensure that all foreign keys reference
+            existing records.</p>
+
+        <h3>Data Size Exceeds Column Limit</h3>
+        <p><strong>Cause:</strong> The size of the data being inserted exceeds the size limit of the column.</p>
+        <p><strong>Exception:</strong></p> 
+            <pre>DataIntegrityViolationException: Data truncation: Data too long for column 'description'</pre>
+        <p><strong>Solution:</strong> Ensure that the data being inserted fits within the column limits. This might
+            involve truncating strings or downsizing large data.</p>
+
+        <h3>Invalid Data Format</h3>
+        <p><strong>Cause:</strong> Trying to insert or update a record with data in a format that doesn't match the
+            column's expected format.</p>
+        <p><strong>Exception:</strong></p><pre>DataIntegrityViolationException: Incorrect date value.</pre>
+        <p><strong>Solution:</strong> Validate and format your data correctly before inserting or updating records.</p>
+
+        <h2>Best Practices for Troubleshooting</h2>
+        <ul>
+            <li><strong>Logging:</strong> Always check the exception message and stack trace. The message often provides
+                a clear indication of what went wrong.</li>
+            <li><strong>Validation:</strong> Implement data validation layers in your application to catch data
+                integrity issues before they reach the database.</li>
+            <li><strong>Testing:</strong> Regularly test the persistence layer to ensure that all constraints are
+                handled correctly.</li>
+            <li><strong>Database Design:</strong> Periodically review your database schema and ensure that it aligns
+                with the current state of the application.</li>
+        </ul>
+
+        <h2>Conclusion</h2>
+        <p>While the <code style="color: red;">DataIntegrityViolationException</code> can be daunting, understanding its root causes can make it much
+            easier to handle. With proper application design, thorough testing, and proactive validation, you can
+            minimize the chances of encountering this exception.</p>
+    </div>
+</body>
+
+</html>

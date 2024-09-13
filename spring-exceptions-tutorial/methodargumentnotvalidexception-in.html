@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MethodArgumentNotValidException in Spring Boot</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>MethodArgumentNotValidException in Spring Boot</h1>
+        <p>In Spring Boot applications, especially those exposing RESTful APIs, data validation is a crucial aspect to
+            ensure the integrity and safety of the system.</p>
+
+        <p>Spring Boot provides a handy way to validate request payloads using annotations and
+            <code style="color: red;">MethodArgumentNotValidException</code> is thrown when these validations fail. In
+            this post, we will dive deep into
+            understanding this exception, its causes, and the best strategies to handle it.
+        </p>
+
+        <h2>What is MethodArgumentNotValidException?</h2>
+        <p>The <code style="color: red;">MethodArgumentNotValidException</code> is thrown by Spring Boot when validation
+            on an argument annotated with
+            <code style="color: red;">@Valid</code> fails. This typically happens during the deserialization process
+            when a client sends a
+            request to a Spring REST endpoint.
+        </p>
+
+        <h2>Causes</h2>
+        <ul>
+            <li><strong>Invalid Request Payload:</strong> This is the most common cause. For instance, when a client
+                sends data that doesn't meet the validation criteria defined in the DTO (Data Transfer Object).</li>
+            <li><strong>Binding Errors:</strong> When the expected format of an incoming request body doesn't match the
+                expected format.</li>
+        </ul>
+
+        <h2>Reproducing the Exception</h2>
+        <p>Consider this simple DTO with validation annotations:</p>
+        <pre><code>
+public class UserDTO {
+    
+    @NotBlank(message = "Name should not be blank")
+    private String name;
+
+    @Min(value = 18, message = "Age should be greater than 18")
+    private Integer age;
+
+    // getters and setters
+}
+        </code></pre>
+        <p>Now, consider an endpoint that accepts this DTO:</p>
+        <pre><code>
+@PostMapping("/users")
+public ResponseEntity<String> createUser(@Valid @RequestBody UserDTO user) {
+    // logic to create user
+    return new ResponseEntity&lt;>("User created successfully", HttpStatus.CREATED);
+}
+        </code></pre>
+        <p>If you send a request with a blank name or an age less than 18, the application will throw
+            <code style="color: red;">MethodArgumentNotValidException</code>.
+        </p>
+
+        <h2>Handling the Exception</h2>
+        <p>To handle this exception and return a proper message to the client, you can use Spring's
+            <a href="/spring-exceptions-tutorial/spring-boot-2-exception-handling-for-rest-apis.html"
+                target="_blank">@ControllerAdvice</a>:
+        </p>
+        <pre><code>
+            @ControllerAdvice
+            public class GlobalExceptionHandler {
+                
+                    @ExceptionHandler(MethodArgumentNotValidException.class)
+                    public ResponseEntity&lt;Object&gt; handleValidationExceptions(MethodArgumentNotValidException ex) {
+                        Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();
+                        ex.getBindingResult().getAllErrors().forEach(error -&gt; {
+                            String fieldName = ((FieldError) error).getField();
+                            String errorMessage = error.getDefaultMessage();
+                            errors.put(fieldName, errorMessage);
+                        });
+                        return new ResponseEntity&lt;&gt;(errors, HttpStatus.BAD_REQUEST);
+                    }
+            }
+        </code></pre>
+
+        <p>This exception handler captures the exception and maps the field errors to a map, which is then returned as a
+            response. This way, the client can get a clear understanding of which fields failed validation and why.</p>
+
+        <p>Check out the complete example: <a
+                href="/spring-exceptions-tutorial/spring-boot-2-exception-handling-for-rest-apis.html"
+                target="_blank">Spring Boot Exception Handling for REST APIs</a></p>
+
+        <h2>Conclusion</h2>
+        <p><code style="color: red;">MethodArgumentNotValidException</code> is a powerful feature in Spring Boot that helps developers ensure the quality
+            and correctness of incoming data. Instead of handling validation manually, Spring Boot provides a
+            declarative way to specify constraints on your data models. Properly handling this exception provides
+            clients with clear feedback on the nature of the validation failure, thus enhancing the API's usability.</p>
+    </div>
+</body>
+
+</html>

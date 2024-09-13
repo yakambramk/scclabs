@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA Repository Testing using Spring Boot @DataJpaTest</h1>
+        <p>In this article, we will learn how to test Spring Data JPA Repositories using Spring Boot provided
+            <code style="color: red;">@DataJpaTest</code> annotation.
+        </p>
+        <p>Sometimes we might want to test the persistence layer components of our application, which doesn’t require
+            the loading of many components like controllers, security configuration, and so on.</p>
+        <p>So Spring Boot provides the <code style="color: red;">@DataJpaTest</code> annotation to test the only
+            repository/persistence layer components
+            of our Spring boot application ( The <code style="color: red;">@DataJpaTest</code> annotation doesn’t load
+            other Spring beans (<b>@Components</b>,
+            <b>@Controller</b>, <b>@Service</b>, and annotated beans) into <b>ApplicationContext</b>).
+        </p>
+        <p>We use Spring boot starter test dependency to write JUnit tests for Repository layer components:</p>
+        <p>We use Spring boot starter test dependency to write JUnit tests for Repository layer components:</p>
+        <pre><code>
+    &lt;dependency>
+        &lt;groupId>org.springframework.boot</groupId>
+        &lt;artifactId>spring-boot-starter-test</artifactId>
+        &lt;scope>test</scope>
+    &lt;/dependency>
+
+</code></pre>
+        <h2>Overview of Spring Boot Starter Test Dependency</h2>
+        <p>The Spring Boot Starter Test dependency is a primary dependency for testing the Spring Boot Applications. It
+            holds all the necessary elements required for the testing.</p>
+        <p>This starter includes:</p>
+        <ol>
+            <li>Spring-specific dependencies </li>
+            <li>Dependencies for auto-configuration </li>
+            <li>Set of testing libraries - JUnit, Mockito, Hamcrest, AssertJ, JSONassert, and JsonPath.</li>
+        </ol>
+        <p>Spring Boot Starter Test dependency adds all the required dependencies to Unit test Repository layer
+            components so we don't have to add testing libraries.</p>
+        <h2>@DataJpaTest Annotation Overview</h2>
+        <p>Spring Boot provides the <code style="color: red;">@DataJpaTest</code> annotation to test the persistence
+            layer components that will
+            autoconfigure in-memory embedded databases and scan for @Entity classes and Spring Data JPA repositories.
+        </p>
+        <p>The <code style="color: red;">@DataJpaTest</code> annotation doesn’t load other Spring beans (<code
+                style="color: red;">@Components</code>,
+            <code style="color: red;">@Controller</code>, <code style="color: red;">@Service</code>, and
+            annotated beans) into <code style="color: red;">ApplicationContext</code>.
+        </p>
+        <p>To test Spring Data JPA repositories or any other JPA-related components for that matter, Spring Boot
+            provides the <code style="color: red;">@DataJpaTest</code> annotation. We can just add it to our unit test
+            and it will set up a Spring
+            application context:</p>
+        <pre><code>
+@ExtendWith(SpringExtension.class)
+@DataJpaTest
+class UserEntityRepositoryTest {
+
+     @Autowired private DataSource dataSource;
+     @Autowired private JdbcTemplate jdbcTemplate;
+     @Autowired private EntityManager entityManager;
+     @Autowired private UserRepository userRepository;
+
+     @Test
+     void injectedComponentsAreNotNull(){
+          assertThat(dataSource).isNotNull();
+          assertThat(jdbcTemplate).isNotNull();
+          assertThat(entityManager).isNotNull();
+          assertThat(userRepository).isNotNull();
+     }
+}
+
+</code></pre>
+        <p>In this article, we will focus on Unit testing Spring Data JPA repositories.</p>
+        <p>Let's create a Spring boot project from scratch to demonstrate Unit testing Spring Data JPA repositories.</p>
+        <h2>1. Tools and Technologies Used</h2>
+        <ul>
+            <li>Spring Boot - 3+</li>
+            <li>JDK - 17 or later</li>
+            <li>Spring Framework - 6</li>
+            <li>H2</li>
+            <li>Maven - 3+</li>
+            <li>IDE - IntelliJ IDEA</li>
+        </ul>
+        <h2>2. Creating Spring Boot Project</h2>
+        <p>Spring Boot provides a web tool called <a href="https://start.spring.io"
+                target="_blank">https://start.spring.io</a> to bootstrap an application quickly. Just go to the website
+            and generate a new Spring Boot project using the details below:</p>
+        <ul>
+            <li><strong>Project Name:</strong> spring-data-jpa-course</li>
+            <li><strong>Project Type:</strong> Maven</li>
+            <li><strong>Choose dependencies:</strong> Spring Data JPA, H2 database, Lombok</li>
+            <li><strong>Package name:</strong> net.javaguides.springboot</li>
+        </ul>
+        <h2>3. Maven Dependencies</h2>
+        <p>Here is the complete <code style="color: red;">pom.xml</code> for your reference:</p>
+        <pre><code>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;parent&gt;
+		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+		&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+		&lt;version&gt;3.0.4&lt;/version&gt;
+		&lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+	&lt;/parent&gt;
+	&lt;groupId&gt;net.javaguides&lt;/groupId&gt;
+	&lt;artifactId&gt;spring-boot-testing&lt;/artifactId&gt;
+	&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;spring-boot-testing&lt;/name&gt;
+	&lt;description&gt;Spring boot unit testing and integration testing&lt;/description&gt;
+	&lt;properties&gt;
+		&lt;java.version&gt;17&lt;/java.version&gt;
+	&lt;/properties&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.h2database&lt;/groupId&gt;
+			&lt;artifactId&gt;h2&lt;/artifactId&gt;
+			&lt;scope&gt;runtime&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+			&lt;artifactId&gt;lombok&lt;/artifactId&gt;
+			&lt;optional&gt;true&lt;/optional&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+				&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+				&lt;configuration&gt;
+					&lt;excludes&gt;
+						&lt;exclude&gt;
+							&lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+							&lt;artifactId&gt;lombok&lt;/artifactId&gt;
+						&lt;/exclude&gt;
+					&lt;/excludes&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+
+&lt;/project&gt;
+    </code></pre>
+        <h2>4. Create JPA Entity - Employee.java</h2>
+        <p>Let's create a model package inside a base package "net.javaguides.springboot".</p>
+        <p>Within the model package, create an Employee class with the following content:</p>
+        <pre><code>
+package net.javaguides.springboot.model;
+
+import lombok.*;
+
+import jakarta.persistence.*;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+
+@Entity
+@Table(name = "employees")
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+
+    @Column(nullable = false)
+    private String email;
+}
+
+</code></pre>
+        <p>Note that we are using Lombok annotations to reduce the boilerplate code.</p>
+        <h2>5. Create Spring Data JPA Repository</h2>
+        <p>The next thing we’re gonna do is to create a repository to access an Employee's data from the database.</p>
+        <p>The <code style="color: red;">JpaRepository</code> interface defines methods for all the CRUD operations on
+            the entity, and a default
+            implementation of the <code style="color: red;">JpaRepository</code> called <code
+                style="color: red;">SimpleJpaRepository</code>.</p>
+        <p>Let's create a <code style="color: red;">repository</code> package inside a base package
+            "net.javaguides.springdatarest".</p>
+        <p>Within the <code style="color: red;">repository</code> package, create an <code
+                style="color: red;">EmployeeRepository</code> interface with the following content:</p>
+        <pre><code>
+package net.javaguides.springboot.repository;
+
+import net.javaguides.springboot.model.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long> {
+
+}
+
+</code></pre>
+        <h2>6. JUnit Tests for Spring Data JPA Repository</h2>
+        <p>Spring Boot provides the <code style="color: red;">@DataJpaTest</code> annotation to test the persistence
+            layer components that will
+            autoconfigure in-memory embedded databases and scan for <code style="color: red;">@Entity</code> classes and
+            Spring Data JPA repositories.
+        </p>
+        <p>The @DataJpaTest annotation doesn’t load other Spring beans (<code style="color: red;">@Components</code>,
+            <code style="color: red;">@Controller</code>, <code style="color: red;">@Service</code>, and
+            annotated beans) into <code style="color: red;">ApplicationContext</code>.
+        </p>
+        <p>Head over to the <code style="color: red;">test</code> package. Let's create a <code
+                style="color: red;">repository</code> package inside a base package
+            "test.net.javaguides.springboot".</p>
+        <p>Within the <code style="color: red;">repository</code> package, create an <code
+                style="color: red;">EmployeeRepositoryTests</code> class with the following content:</p>
+        <pre><code>
+package net.javaguides.springboot.repository;
+
+import net.javaguides.springboot.model.Employee;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.util.List;
+import java.util.Optional;
+
+@DataJpaTest
+public class EmployeeRepositoryTests {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    private Employee employee;
+
+    @BeforeEach
+    public void setup(){
+        employee = Employee.builder()
+                .firstName("Ramesh")
+                .lastName("Fadatare")
+                .email("ramesh@gmail,com")
+                .build();
+    }
+
+    // JUnit test for save employee operation
+    //@DisplayName("JUnit test for save employee operation")
+    @Test
+    public void givenEmployeeObject_whenSave_thenReturnSavedEmployee(){
+
+        //given - precondition or setup
+        Employee employee = Employee.builder()
+                .firstName("Ramesh")
+                .lastName("Ramesh")
+                .email("ramesh@gmail,com")
+                .build();
+        // when - action or the behaviour that we are going test
+        Employee savedEmployee = employeeRepository.save(employee);
+
+        // then - verify the output
+        assertThat(savedEmployee).isNotNull();
+        assertThat(savedEmployee.getId()).isGreaterThan(0);
+    }
+
+
+    // JUnit test for get all employees operation
+    @DisplayName("JUnit test for get all employees operation")
+    @Test
+    public void givenEmployeesList_whenFindAll_thenEmployeesList(){
+        // given - precondition or setup
+
+        Employee employee1 = Employee.builder()
+                .firstName("John")
+                .lastName("Cena")
+                .email("cena@gmail,com")
+                .build();
+
+        employeeRepository.save(employee);
+        employeeRepository.save(employee1);
+
+        // when -  action or the behaviour that we are going test
+        List&lt;Employee> employeeList = employeeRepository.findAll();
+
+        // then - verify the output
+        assertThat(employeeList).isNotNull();
+        assertThat(employeeList.size()).isEqualTo(2);
+
+    }
+
+    // JUnit test for get employee by id operation
+    @DisplayName("JUnit test for get employee by id operation")
+    @Test
+    public void givenEmployeeObject_whenFindById_thenReturnEmployeeObject(){
+
+        employeeRepository.save(employee);
+
+        // when -  action or the behaviour that we are going test
+        Employee employeeDB = employeeRepository.findById(employee.getId()).get();
+
+        // then - verify the output
+        assertThat(employeeDB).isNotNull();
+    }
+
+    // JUnit test for update employee operation
+    @DisplayName("JUnit test for update employee operation")
+    @Test
+    public void givenEmployeeObject_whenUpdateEmployee_thenReturnUpdatedEmployee(){
+
+        employeeRepository.save(employee);
+
+        // when -  action or the behaviour that we are going test
+        Employee savedEmployee = employeeRepository.findById(employee.getId()).get();
+        savedEmployee.setEmail("ram@gmail.com");
+        savedEmployee.setFirstName("Ram");
+        Employee updatedEmployee =  employeeRepository.save(savedEmployee);
+
+        // then - verify the output
+        assertThat(updatedEmployee.getEmail()).isEqualTo("ram@gmail.com");
+        assertThat(updatedEmployee.getFirstName()).isEqualTo("Ram");
+    }
+
+    // JUnit test for delete employee operation
+    @DisplayName("JUnit test for delete employee operation")
+    @Test
+    public void givenEmployeeObject_whenDelete_thenRemoveEmployee(){
+
+        employeeRepository.save(employee);
+
+        // when -  action or the behaviour that we are going test
+        employeeRepository.deleteById(employee.getId());
+        Optional&lt;Employee> employeeOptional = employeeRepository.findById(employee.getId());
+
+        // then - verify the output
+        assertThat(employeeOptional).isEmpty();
+    }
+}
+
+</code></pre>
+        <p>Note that we are using the <code style="color: red;">assertThat()</code> method from the AssertJ library for
+            assertions.</p>
+        <p>Let's understand the above JUnit tests one by one.</p>
+        <p>We have used <code style="color: red;">@BeforeEach</code> annotation to signal that the annotated method
+            should be executed before each <code style="color: red;">@Test</code>
+            method in the current test class:</p>
+        <pre><code>
+    @BeforeEach
+    public void setup(){
+        employee = Employee.builder()
+                .firstName("Ramesh")
+                .lastName("Fadatare")
+                .email("ramesh@gmail,com")
+                .build();
+    }
+            </code></pre>
+        <h2>JUnit test to save employee operation:</h2>
+        <pre><code>
+    // JUnit test for save employee operation
+    //@DisplayName("JUnit test for save employee operation")
+    @Test
+    public void givenEmployeeObject_whenSave_thenReturnSavedEmployee(){
+
+        //given - precondition or setup
+        Employee employee = Employee.builder()
+                .firstName("Ramesh")
+                .lastName("Ramesh")
+                .email("ramesh@gmail,com")
+                .build();
+        // when - action or the behaviour that we are going test
+        Employee savedEmployee = employeeRepository.save(employee);
+
+        // then - verify the output
+        assertThat(savedEmployee).isNotNull();
+        assertThat(savedEmployee.getId()).isGreaterThan(0);
+    }
+
+</code></pre>
+        <h2>JUnit test to get all employees operation</h2>
+        <pre><code>
+    // JUnit test for get all employees operation
+    @DisplayName("JUnit test for get all employees operation")
+    @Test
+    public void givenEmployeesList_whenFindAll_thenEmployeesList(){
+        // given - precondition or setup
+
+        Employee employee1 = Employee.builder()
+                .firstName("John")
+                .lastName("Cena")
+                .email("cena@gmail,com")
+                .build();
+
+        employeeRepository.save(employee);
+        employeeRepository.save(employee1);
+
+        // when -  action or the behaviour that we are going test
+        List&lt;Employee> employeeList = employeeRepository.findAll();
+
+        // then - verify the output
+        assertThat(employeeList).isNotNull();
+        assertThat(employeeList.size()).isEqualTo(2);
+
+    }
+
+</code></pre>
+        <h2>JUnit test to get single employee by id operation</h2>
+        <pre><code>
+    // JUnit test for get employee by id operation
+    @DisplayName("JUnit test for get employee by id operation")
+    @Test
+    public void givenEmployeeObject_whenFindById_thenReturnEmployeeObject(){
+
+        employeeRepository.save(employee);
+
+        // when -  action or the behaviour that we are going test
+        Employee employeeDB = employeeRepository.findById(employee.getId()).get();
+
+        // then - verify the output
+        assertThat(employeeDB).isNotNull();
+    }
+
+</code></pre>
+        <h2>JUnit test to update employee operation</h2>
+        <pre><code>
+    // JUnit test for update employee operation
+    @DisplayName("JUnit test for update employee operation")
+    @Test
+    public void givenEmployeeObject_whenUpdateEmployee_thenReturnUpdatedEmployee(){
+
+        employeeRepository.save(employee);
+
+        // when -  action or the behaviour that we are going test
+        Employee savedEmployee = employeeRepository.findById(employee.getId()).get();
+        savedEmployee.setEmail("ram@gmail.com");
+        savedEmployee.setFirstName("Ram");
+        Employee updatedEmployee =  employeeRepository.save(savedEmployee);
+
+        // then - verify the output
+        assertThat(updatedEmployee.getEmail()).isEqualTo("ram@gmail.com");
+        assertThat(updatedEmployee.getFirstName()).isEqualTo("Ram");
+    }
+
+</code></pre>
+        <h2>JUnit test for delete employee operation</h2>
+        <pre><code>
+    // JUnit test for delete employee operation
+    @DisplayName("JUnit test for delete employee operation")
+    @Test
+    public void givenEmployeeObject_whenDelete_thenRemoveEmployee(){
+
+        employeeRepository.save(employee);
+
+        // when -  action or the behaviour that we are going test
+        employeeRepository.deleteById(employee.getId());
+        Optional&lt;Employee> employeeOptional = employeeRepository.findById(employee.getId());
+
+        // then - verify the output
+        assertThat(employeeOptional).isEmpty();
+    }
+
+</code></pre>
+        <h2>7. Running JUnit Tests</h2>
+        <p>When you run <code style="color: red;">EmployeeRepositoryTests</code>, Spring Boot will autoconfigure the H2 in-memory embedded database (as
+            you have the H2 database driver in the classpath) and run the tests.</p>
+<p>The output of the tests is shown below screenshot:</p>
+<img src="../assets/spring-data-jpa-tutorial-images/running-junit-test.png" style="width: 100%;">
+    </div>
+</body>
+
+</html>

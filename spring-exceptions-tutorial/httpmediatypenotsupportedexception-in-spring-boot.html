@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HttpMediaTypeNotSupportedException in Spring Boot</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>HttpMediaTypeNotSupportedException in Spring Boot</h1>
+        <p>
+            <strong>Spring Boot</strong> applications leverage the Spring Web module to create robust and scalable web
+            applications.
+            However, when working with web requests, it's possible to encounter certain exceptions.
+            One such exception is the <code style="color: red;">HttpMediaTypeNotSupportedException</code>.
+        </p>
+
+        <h2>What is HttpMediaTypeNotSupportedException?</h2>
+        <p>
+            <code style="color: red;">HttpMediaTypeNotSupportedException</code> is thrown when the client sends a
+            request with a media type that is not
+            supported by the application. This can happen, for instance, if your controller endpoint is expecting a
+            request with content
+            type <code style="color: red;">application/json</code>, but the client sends a request with content type
+            <code style="color: red;">text/xml</code>.
+        </p>
+
+        <h2>Here is the Exception Trace:</h2>
+        <pre><code>
+org.springframework.web.HttpMediaTypeNotSupportedException: Content type 'text/xml' not supported
+    at org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodArgumentResolver.readWithMessageConverters(AbstractMessageConverterMethodArgumentResolver.java:239)
+    at org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor.readWithMessageConverters(RequestResponseBodyMethodProcessor.java:157)
+    at org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor.resolveArgument(RequestResponseBodyMethodProcessor.java:130)
+    at org.springframework.web.method.support.HandlerMethodArgumentResolverComposite.resolveArgument(HandlerMethodArgumentResolverComposite.java:127)
+    ... more
+</code></pre>
+
+        <h2>How to reproduce?</h2>
+        <p>Let's consider a simple Spring Boot controller:</p>
+
+        <pre><code>
+@RestController
+@RequestMapping("/api/greetings")
+public class GreetingController {
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity&lt;String&gt; greet(@RequestBody String name) {
+        return ResponseEntity.ok("Hello, " + name);
+    }
+}
+
+</code></pre>
+
+        <p><strong>Call REST API:</strong></p>
+        <p>Now, if you send a POST request to <code style="color: red;">/api/greetings</code> with the header
+            <code style="color: red;">Content-Type: text/plain</code>, you'll encounter the exception.</p>
+<img src="../assets/spring-exceptions-images/unsupported media type -postman.png" style="width: 100%;">
+        <h2>Exception in the console:</h2>
+        <img src="../assets/spring-exceptions-images/unsupported media type -console.png" style="width: 100%;">
+        <h2>Solutions</h2>
+        <h3>Specify Supported Media Types</h3>
+        <p>
+            Make it clear in your controller which media types are supported using the <code>consumes</code> attribute:
+        </p>
+
+        <pre>@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)</pre>
+
+        <h3>Handle the Exception</h3>
+        <p>
+            Use Spring's <a href="/spring-exceptions-tutorial/spring-boot-exceptionhandler-multiple-exceptions.html" target="_blank">@ExceptionHandler</a> to catch the exception and provide a meaningful response:
+        </p>
+
+        <pre><code>
+@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+public ResponseEntity&lt;String&gt; handleTypeNotSupported(HttpMediaTypeNotSupportedException e) {
+    return ResponseEntity.badRequest().body("Content type not supported.");
+}
+
+</code></pre>
+
+        <h3>Client Awareness</h3>
+        <p>
+            Ensure clients are aware of the expected content type. This often means updating API documentation or
+            providing clear error
+            messages for developers.
+        </p>
+
+        <h3>Use Spring's ContentNegotiationConfigurer</h3>
+        <p>
+            You can further customize how media types are resolved using this in a configuration class.
+        </p>
+
+        <h2>Conclusion</h2>
+        <p>
+            Handling media types correctly is crucial in a web application to ensure seamless client-server
+            interactions. The
+            <code style="color: red;">HttpMediaTypeNotSupportedException</code> gives developers a clear signal that there's a mismatch,
+            and handling it
+            gracefully can make the development process smoother.
+        </p>
+    </div>
+</body>
+
+</html>

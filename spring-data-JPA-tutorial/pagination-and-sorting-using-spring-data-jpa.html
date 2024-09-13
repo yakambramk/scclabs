@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Pagination and Sorting using Spring Data JPA - PagingAndSortingRepository</h1>
+        <p>In this article, we will learn how to implement pagination and sorting using Spring Data JPA.</p>
+        <p>As you know, pagination allows the users to see a small portion of data at a time (a page), and sorting
+            allows the users to view the data in a more organized way. Both paging and sorting help the users consume
+            information more easily and conveniently.</p>
+        <p>Let's first discuss pagination implementation using Spring Data JPA then we will move to sorting
+            implementation.</p>
+        <h2>1. Pagination Implementation</h2>
+        <h3>Understand Spring Data JPA’s Pagination APIs</h3>
+        <p>To use paging and sorting APIs provided by Spring Data JPA, your repository interface must extend the
+            <code style="color: red;">PagingAndSortingRepository</code> interface.
+        <p>
+        <p><code style="color: red;">PagingAndSortingRepository</code> is an extension of the <code
+                style="color: red;">CrudRepository</code> to provide additional methods to
+            retrieve
+            entities using the pagination and sorting abstraction. It provides two methods :</p>
+        <ul>
+            <li><code style="color: red;">Page findAll(Pageable pageable) </code>– returns a Page of entities meeting
+                the paging restriction provided in
+                the
+                Pageable object.</li>
+            <li><code style="color: red;">Iterable findAll(Sort sort) </code>– returns all entities sorted by the given
+                options. No paging is applied
+                here.</li>
+        </ul>
+        <p>Here is the internal source code of <code>PagingAndSortingRepository</code> interface:</p>
+        <pre><code>
+@NoRepositoryBean
+public interface PagingAndSortingRepository &lt; T, ID > extends CrudRepository &lt; T, ID > {
+
+    /**
+     * Returns all entities sorted by the given options.
+     *
+     * @param sort
+     * @return all entities sorted by the given options
+     */
+    Iterable &lt; T > findAll(Sort sort);
+
+    /**
+     * Returns a {@link Page} of entities meeting the paging restriction provided in the {@code Pageable} object.
+     *
+     * @param pageable
+     * @return a page of entities
+     */
+    Page &lt; T > findAll(Pageable pageable);
+}
+
+</code></pre>
+        <p><code style="color: red;">JpaRepository</code> interface extends the <code
+                style="color: red;">PagingAndSortingRepository</code> interface so if your repository interface is of
+            type <code style="color: red;">JpaRepository</code>, you don’t have to make a change to it.</p>
+        <p>Here is the internal source code of the <code style="color: red;">JpaRepository</code> interface which
+            extends <code style="color: red;">PagingAndSortingRepository</code> interface:</p>
+        <pre><code>
+@NoRepositoryBean
+public interface JpaRepository &lt; T, ID > extends PagingAndSortingRepository &lt; T, ID > , QueryByExampleExecutor &lt; T > {
+
+    List &lt; T > findAll();
+
+    List &lt; T > findAll(Sort sort);
+
+    List &lt; T > findAllById(Iterable &lt; ID > ids);
+
+    &lt;S extends T > List &lt; S > saveAll(Iterable &lt; S > entities);
+
+    void flush();
+
+    &lt;S extends T > S saveAndFlush(S entity);
+
+    void deleteInBatch(Iterable &lt; T > entities);
+
+    void deleteAllInBatch();
+
+    T getOne(ID id);
+
+    @Override &lt;
+    S extends T > List &lt; S > findAll(Example &lt; S > example);
+
+    @Override &lt;
+    S extends T > List &lt; S > findAll(Example &lt; S > example, Sort sort);
+}
+            </code></pre>
+        <p>Let's understand the usage of the <code style="color: red;">PagingAndSortingRepository</code> interface and
+            it''s methods with an example.</p>
+        <p>Consider we have an <code style="color: red;">Employee</code> JPA entity:</p>
+        <pre><code>
+@Entity
+@Table(name = "employees")
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "email")
+    private String email;
+    </code></pre>
+        <p>Now, we use the following code to get the first page from the database, with 5 items per page:</p>
+        <pre><code>
+int pageNumber = 1;
+int pageSize = 5;
+Pageable pageable = PageRequest.of(pageNumber, pageSize);
+ 
+Page<Employee> page = employeeRepository.findAll(pageable);
+
+</code></pre>
+        <p>Then you can get the actual content as follows:</p>
+        <pre><code>List&lt;Employee> listEmployees = page.getContent();</code></pre>
+        <p>With a Page object you can know the total rows in the database and the total pages according to the given
+            page size:</p>
+        <pre><code>
+long totalItems = page.getTotalElements();
+int totalPages = page.getTotalPages();
+
+</code></pre>
+        <h3>Create EmployeeRepository</h3>
+        <p>Let's create an <code style="color: red;">EmployeeRepository</code> interface which extends <code
+                style="color: red;">JpaRepository</code> which intern extends the
+            <code style="color: red;">PagingAndSortingRepository</code> interface so we can leverage pagination API:
+        </p>
+        <pre><code>
+package net.javaguides.springboot.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import net.javaguides.springboot.model.Employee;
+
+@Repository
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long>{
+
+}
+
+</code></pre>
+        <p>Let's see how to use <code style="color: red;">EmployeeRepository</code> in the service layer.</p>
+        <h3>Create EmployeeService interface</h3>
+        <p>In the service layer, let's create the <code style="color: red;">EmployeeService</code> interface and add the
+            following code to it:</p>
+        <pre><code>
+package net.javaguides.springboot.service;
+
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
+import net.javaguides.springboot.model.Employee;
+
+public interface EmployeeService {
+    Page &lt; Employee > findPaginated(int pageNo, int pageSize);
+}
+            </code></pre>
+        <h3>EmployeeServiceImpl Class</h3>
+        <p>In the service layer, let's create an <code style="color: red;">EmployeeServiceImpl</code> class which
+            implements the <code style="color: red;">EmployeeService</code>
+            interface and provides implementation for pagination:</p>
+        <pre><code>
+@Override
+public Page<Employee> findPaginated(int pageNo, int pageSize) {
+    Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+    return this.employeeRepository.findAll(pageable);
+}
+
+</code></pre>
+        <p>Check out the complete example at <a
+                href="/spring-data-JPA-tutorial/pagination-and-sorting-with-spring-boot-thymeleaf-spring-data-jpa-hibernate-mysql.html" target="_blank">Pagination
+                and Sorting with Spring Boot, ThymeLeaf, Spring
+                Data JPA, Hibernate, MySQL</a></p>
+        <h2>2. Sorting Implementation</h2>
+        <h3>Understand Spring Data JPA’s Sorting API</h3>
+        <p>The Spring Data JPA provides <code style="color: red;">PagingAndSortingRepository</code> interface which
+            supports sorting and pagination with the
+            following APIs:</p>
+        <pre><code>
+@NoRepositoryBean
+public interface PagingAndSortingRepository &lt; T, ID > extends CrudRepository &lt; T, ID > {
+
+    /**
+     * Returns all entities sorted by the given options.
+     *
+     * @param sort
+     * @return all entities sorted by the given options
+     */
+    Iterable &lt; T > findAll(Sort sort);
+
+    /**
+     * Returns a {@link Page} of entities meeting the paging restriction provided in the {@code Pageable} object.
+     *
+     * @param pageable
+     * @return a page of entities
+     */
+    Page &lt; T > findAll(Pageable pageable);
+}
+        </code></pre>
+        <p>First, create a <b>Sort</b> object like this:</p>
+        <pre><code>Sort sort = Sort.by(“fieldName”).ascending();</code></pre>
+        <p>This will sort the result by <code style="color: red;">fieldName</code> in ascending order. <code
+                style="color: red;">fieldName</code> must match a field name declared in the
+            entity class.</p>
+        <p>We can also sort by more than one field, for example:</p>
+        <pre><code>Sort sort = Sort.by("fieldName1").ascending().and(Sort.by("fieldName2").descending());</code></pre>
+        <p>Then we pass the <b>Sort</b> object to create a <b>Pageable</b> as follows:</p>
+        <pre><code>Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sort);</code></pre>
+        <p>Finally, we pass the <code style="color: red;">pageable</code> object to the <code
+                style="color: red;">findAll()</code> method:</p>
+        <pre><code>this.employeeRepository.findAll(pageable);</code></pre>
+        <h3>Create EmployeeRepository</h3>
+        <p>Let's create an <code style="color: red;">EmployeeRepository</code> interface which extends <code
+                style="color: red;">JpaRepository</code> which intern extends the
+            <code style="color: red;">PagingAndSortingRepository</code> interface so we can leverage sorting API:
+        </p>
+        <pre><code>
+package net.javaguides.springboot.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import net.javaguides.springboot.model.Employee;
+
+@Repository
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long>{
+
+}
+
+</code></pre>
+        <p>Let's see how to use <code style="color: red;">EmployeeRepository</code> in the service layer.</p>
+        <h3>EmployeeService.java interface changes</h3>
+        <p>Let's add two fields to the existing method:</p>
+        <pre><code>Page&lt;Employee> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);</code></pre>
+        <p>The complete code:</p>
+        <pre><code>
+package net.javaguides.springboot.service;
+
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
+import net.javaguides.springboot.model.Employee;
+
+public interface EmployeeService {
+    Page &lt; Employee > findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
+}
+
+</code></pre>
+        <h3>EmployeeServiceImpl.java class changes</h3>
+        <p>The sorting logic implemented in the below method:</p>
+        <pre><code>
+@Override
+public Page&lt;Employee> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
+    Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+     Sort.by(sortField).descending();
+ 
+    Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+    return this.employeeRepository.findAll(pageable);
+}
+
+</code></pre>
+        <p>Note that we are using the same method to perform both pagination and sorting operations.</p>
+        <p>Check out the complete example at <a
+                href="/spring-data-JPA-tutorial/pagination-and-sorting-with-spring-boot-thymeleaf-spring-data-jpa-hibernate-mysql.html"
+                target="_blank">Pagination
+                and Sorting with Spring Boot, ThymeLeaf, Spring Data
+                JPA, Hibernate, MySQL</a></p>
+        <h2>3. Spring Data JPA interfaces</h2>
+        <p>Check out the below diagram which shows the main interfaces of Spring Data JPA for your reference:</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/spring-data-jpa-diagram.png">
+    </div>
+</body>
+
+</html>

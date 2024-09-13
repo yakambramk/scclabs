@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoUniqueBeanDefinitionException in Spring Boot</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>NoUniqueBeanDefinitionException in Spring Boot</h1>
+        <p>In Spring's Dependency Injection, the <code style="color: red;">NoUniqueBeanDefinitionException</code> is a
+            common exception developers encounter. In this article, we will dive into what this exception is, its
+            primary causes, and how to address them.</p>
+
+        <h2>What is NoUniqueBeanDefinitionException?</h2>
+        <p>The <code style="color: red;">NoUniqueBeanDefinitionException</code> is thrown when the Spring container
+            finds more than one bean of the same type and is unsure which one to inject. This ambiguity arises in the
+            context of autowiring by type.</p>
+
+        <p>Here's a typical error message you might see:</p>
+        <pre><code>org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type '[SomeType]' available: 
+expected single matching bean but found 2: [beanName1, beanName2]</code></pre>
+
+        <h2>How to Reproduce the Issue and Fix this issue</h2>
+
+        <h3>Reproduce: Multiple Beans of the Same Type</h3>
+        <p>1. Create a simple interface and two implementations:</p>
+        <pre><code>public interface Animal {
+    String sound();
+}
+
+@Component
+public class Dog implements Animal {
+    @Override
+    public String sound() {
+        return "Woof!";
+    }
+}
+
+@Component
+public class Cat implements Animal {
+    @Override
+    public String sound() {
+        return "Meow!";
+    }
+}</code></pre>
+        <p>We have two beans (<code style="color: red;">Dog</code> and <code style="color: red;">Cat</code>) that
+            implement the <code style="color: red;">Animal</code> interface. Both of these beans are managed by Spring,
+            thanks to the
+            <a href="/spring-mvc/spring-component-annotation-example.html" target="_blank">@Component</a> annotation.
+        </p>
+
+        <p>2. Attempt to inject the Animal type:</p>
+        <pre><code>@Component
+public class AnimalService {
+
+    private final Animal animal;
+
+    @Autowired
+    public AnimalService(Animal animal) {
+        this.animal = animal;
+    }
+
+    public void makeSound() {
+        System.out.println(animal.sound());
+    }
+}</code></pre>
+        <p>In the <code style="color: red;">AnimalService</code> class, we have a constructor that requires an
+            <code style="color: red;">Animal</code> type. When Spring tries to create a
+            bean for <code style="color: red;">AnimalService</code>, it sees that there are two possible beans (Dog and
+            Cat) that can be injected for the
+            <code style="color: red;">Animal</code> type. This ambiguity causes the
+            <code style="color: red;">NoUniqueBeanDefinitionException</code>.
+        </p>
+        <pre><code>org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type 'com.example.springboot.demo.Animal' available: 
+expected single matching bean but found 2: cat,dog</code></pre>
+
+        <h2>How to Fix</h2>
+        <p><strong>Using <code>@Qualifier</code> Annotation:</strong> If you want to specify which exact bean to be
+            injected, you can use the <code>@Qualifier</code> annotation:</p>
+        <pre><code>@Autowired
+public AnimalService(@Qualifier("cat") Animal animal) {
+    this.animal = animal;
+}</code></pre>
+        <p>With this change, the <code style="color: red;">Cat</code> bean will be injected into the <code
+                style="color: red;">AnimalService</code> class.</p>
+
+        <p><strong>Using <code>@Primary</code> Annotation:</strong> If you want one of the beans to be the primary
+            choice when injecting, you can use the <code>@Primary</code> annotation:</p>
+        <pre><code>@Component
+@Primary
+public class Dog implements Animal {
+    //...
+}</code></pre>
+        <p>With the above change, <code style="color: red;">Dog</code> will be the primary bean to be injected whenever
+            an <code style="color: red;">Animal</code> type is required unless
+            specified otherwise.</p>
+
+        <h2>Other Common Causes & Solutions</h2>
+        <h3>Accidental Bean Overriding</h3>
+        <p><strong>Cause:</strong> Sometimes, multiple configurations or component scans could lead to beans being
+            unintentionally overridden or duplicated.</p>
+        <p><strong>Solution:</strong> Review your configurations and component scans. Ensure there's no unintended
+            overriding or duplication of bean definitions.</p>
+
+        <h3>External Libraries with Bean Definitions</h3>
+        <p><strong>Cause:</strong> Sometimes, external libraries or modules you include might define beans of their own.
+            If these bean types match with the ones in your application, ambiguity arises.</p>
+        <p><strong>Solution:</strong> Use the <code>@Qualifier</code> annotation to specify the exact bean name you want
+            to inject. If you have control over the library, you can also modify the bean definitions to ensure
+            uniqueness.</p>
+
+        <h3>Profiles</h3>
+        <p><strong>Cause:</strong> Different beans of the same type can be associated with different Spring profiles.
+        </p>
+        <p><strong>Solution:</strong> Ensure that only one of the beans is active for the current profile. If multiple
+            profiles are active, consider restructuring your beans or using the <code>@Qualifier</code> annotation for
+            clarity.</p>
+
+        <h2>Conclusion</h2>
+        <p>The <code style="color: red;">NoUniqueBeanDefinitionException</code> error in Spring signifies ambiguity in the dependency
+            injection process. Resolving this typically involves being explicit about your intentions, either by
+            specifying which bean you want to use or by ensuring that there's only one suitable candidate in the
+            context. Always remember that clarity in configuration helps keep such issues at bay.</p>
+    </div>
+</body>
+
+</html>

@@ -266,7 +266,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 </code></pre>
         <p>Note that we do not need to add <code style="color: red;">@Repository</code> annotation because <a
-                href="">Spring Data
+                href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data
                 JPA</a> internally takes care of it.</p>
         <h2>Create Service Layer</h2>
         <p>This layer will contain the business logic for the API and will be used to perform CRUD operations using the
@@ -381,7 +381,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user){
         User savedUser = userService.createUser(user);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        return new ResponseEntity&lt;>(savedUser, HttpStatus.CREATED);
     }
 
     // build get user by id REST API
@@ -389,7 +389,7 @@ public class UserController {
     @GetMapping("{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") Long userId){
         User user = userService.getUserById(userId);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity&lt;>(user, HttpStatus.OK);
     }
 
     // Build Get All Users REST API
@@ -397,7 +397,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers(){
         List<User> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return new ResponseEntity&lt;>(users, HttpStatus.OK);
     }
 
     // Build Update User REST API
@@ -407,14 +407,14 @@ public class UserController {
                                            @RequestBody User user){
         user.setId(userId);
         User updatedUser = userService.updateUser(user);
-        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        return new ResponseEntity&lt;>(updatedUser, HttpStatus.OK);
     }
 
     // Build Delete User REST API
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteUser(@PathVariable("id") Long userId){
         userService.deleteUser(userId);
-        return new ResponseEntity<>("User successfully deleted!", HttpStatus.OK);
+        return new ResponseEntity&lt;>("User successfully deleted!", HttpStatus.OK);
     }
 }
 
@@ -474,10 +474,6 @@ public class UserController {
         <p>In this tutorial, we have created a Spring boot project and built CRUD RESTful Webservices using <a
                 href="">Spring Boot
                 3, Spring Data JPA (Hibernate)</a>, and MySQL database.</p>
-
-
-
-
     </div>
 </body>
 

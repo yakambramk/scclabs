@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Pagination and Sorting with Spring Boot, ThymeLeaf, Spring Data JPA, Hibernate, MySQL</h1>
+        <p>In the previous tutorial, we have developed a CRUD web application with Spring Boot and Thymeleaf.</p>
+        <p>In this tutorial, we will extend <a href="/spring-data-JPA-tutorial/spring-boot-crud-web-application-with-thymeleaf.html" target="_blank">spring boot CRUD web application</a> and implement pagination and
+            sorting
+            operations using spring boot, thymeleaf, spring data JPA, Hibernate, and MySQL database.</p>
+        <p>As you know, pagination allows the users to see a small portion of data at a time (a page), and sorting
+            allows the users to view the data in a more organized way. Both paging and sorting help the users consume
+            information more easily and conveniently.</p>
+        <p>Let's start with the <b>Employee Management</b> System project which can be downloaded from this tutorial
+            which is
+            based on Spring Boot, Spring Data JPA, Hibernate, Thymeleaf, and MySQL database.</p>
+        <h2>Prerequisite</h2>
+        <p><a href="/spring-data-JPA-tutorial/spring-boot-crud-web-application-with-thymeleaf.html" target="_blank">Spring Boot CRUD Web Application with Thymeleaf, Spring MVC, Spring Data JPA, Hibernate, MySQL</a>
+        </p>
+        <h2>Project Requirements</h2>
+        <p>Here is a high-level project requirement to implement pagination and sorting for Employees List page<b>
+                (Employee Management System)</b>. </p>
+        <p>Users should able to:</p>
+        <ul>
+            <li>perform pagination on employees list page</li>
+            <li>perform sorting on employees list page</li>
+        </ul>
+        <h2>What we will build?</h2>
+        <p>We will extend <a href="/spring-data-JPA-tutorial/spring-boot-crud-web-application-with-thymeleaf.html" target="_blank">spring boot CRUD web application</a> and implement pagination and sorting using
+            spring boot,
+            thymeleaf, spring data JPA, Hibernate, and MySQL database.</p>
+        <p>The below screenshots summaries the pagination and sorting operations that we are going to develop in this
+            tutorial.</p>
+        <h3>Pagination:</h3>
+        <img
+            src="../assets/spring-data-jpa-tutorial-images/Spring Boot Thymeleaf CRUD Database Real-Time Project - PART 6 -Pagination with Spring Data JPA.png">
+        <h3>Sorting:</h3>
+        <img src="../assets/spring-data-jpa-tutorial-images/sorting with spring data jpa.png">
+        <p>First, we will implement a pagination operation step by step and then we will complete the sorting operation.
+        </p>
+        <h2>1. Pagination Implementation</h2>
+        <h3>Understand Spring Data JPA’s Pagination APIs</h3>
+        <p>To use paging and sorting APIs provided by Spring Data JPA, your repository interface must extend the <code
+                style="color: red;">PagingAndSortingRepository</code> interface which defines the following couple of
+            methods (T refers to an entity class):</p>
+        <pre><code>
+@NoRepositoryBean
+public interface PagingAndSortingRepository &lt; T, ID > extends CrudRepository &lt; T, ID > {
+
+    /**
+     * Returns all entities sorted by the given options.
+     *
+     * @param sort
+     * @return all entities sorted by the given options
+     */
+    Iterable &lt; T > findAll(Sort sort);
+
+    /**
+     * Returns a {@link Page} of entities meeting the paging restriction provided in the {@code Pageable} object.
+     *
+     * @param pageable
+     * @return a page of entities
+     */
+    Page &lt; T > findAll(Pageable pageable);
+}
+            </code></pre>
+        <p><code style="color: red;">JpaRepository</code> interface extends <code
+                style="color: red;">PagingAndSortingRepository</code> interface so if your repository interface is of
+            type <code style="color: red;">JpaRepository</code>, you don’t have to make a change to it.</p>
+        <p>For example, use the following to get the first page from the database, with 5 items per page:</p>
+        <pre><code>
+int pageNumber = 1;
+int pageSize = 5;
+Pageable pageable = PageRequest.of(pageNumber, pageSize);
+ 
+Page&lt;Product> page = repository.findAll(pageable);
+            </code></pre>
+        <p>Then you can get the actual content as follows:</p>
+        <pre><code>List&lt;Employee> listEmployees = page.getContent();</code></pre>
+        <p>With a Page object you can know the total rows in the database and the total pages according to the given
+            page size:</p>
+        <pre><code>
+long totalItems = page.getTotalElements();
+int totalPages = page.getTotalPages();
+            </code></pre>
+        <p>This information is useful for implementing pagination in the view with the Thymeleaf template.</p>
+        <h3>Back-end changes for pagination</h3>
+        <p><b>EmployeeService.java interface changes</b></p>
+        <p>Add below method to this interface:</p>
+        <pre><code>Page&lt;Employee> findPaginated(int pageNo, int pageSize);</code></pre>
+        <p>The complete code:</p>
+        <pre><code>
+package net.javaguides.springboot.service;
+
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
+import net.javaguides.springboot.model.Employee;
+
+public interface EmployeeService {
+    List &lt; Employee > getAllEmployees();
+    void saveEmployee(Employee employee);
+    Employee getEmployeeById(long id);
+    void deleteEmployeeById(long id);
+    Page &lt; Employee > findPaginated(int pageNo, int pageSize);
+}
+                </code></pre>
+        <p><b>EmployeeServiceImpl.java class changes</b></p>
+        <p>Add below method to EmployeeServiceImpl class:</p>
+        <pre><code>
+@Override
+public Page&lt;Employee> findPaginated(int pageNo, int pageSize) {
+ Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+ return this.employeeRepository.findAll(pageable);
+}
+                    </code></pre>
+        <p><b>EmployeeController.java class changes</b></p>
+        <p>Add below handler method to EmployeeController class to perform pagination:
+        </p>
+        <pre><code>
+@GetMapping("/page/{pageNo}")
+public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
+    int pageSize = 5;
+
+    Page &lt; Employee > page = employeeService.findPaginated(pageNo, pageSize);
+    List &lt; Employee > listEmployees = page.getContent();
+
+    model.addAttribute("currentPage", pageNo);
+    model.addAttribute("totalPages", page.getTotalPages());
+    model.addAttribute("totalItems", page.getTotalElements());
+    model.addAttribute("listEmployees", listEmployees);
+    return "index";
+}
+                    </code></pre>
+        <p>Also, we need to make a change to an existing method as below:</p>
+        <pre><code>
+// display list of employees
+@GetMapping("/")
+public String viewHomePage(Model model) {
+ return findPaginated(1, model);  
+}
+                    </code></pre>
+        <h3>Front-end changes for pagination</h3>
+        <p>Add below pagination code to index.html:</p>
+        <pre><code>
+&lt;div th:if="${totalPages &gt; 1}"&gt;
+    &lt;div class="row col-sm-10"&gt;
+        &lt;div class="col-sm-2"&gt;
+            Total Rows: [[${totalItems}]]
+        &lt;/div&gt;
+        &lt;div class="col-sm-1"&gt;
+            &lt;span th:each="i: ${#numbers.sequence(1, totalPages)}"&gt;
+      &lt;a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}"&gt;[[${i}]]&lt;/a&gt;
+      &lt;span th:unless="${currentPage != i}"&gt;[[${i}]]&lt;/span&gt; &amp;nbsp; &amp;nbsp;
+            &lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class="col-sm-1"&gt;
+            &lt;a th:if="${currentPage &lt; totalPages}" th:href="@{'/page/' + ${currentPage + 1}}"&gt;Next&lt;/a&gt;
+            &lt;span th:unless="${currentPage &lt; totalPages}"&gt;Next&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class="col-sm-1"&gt;
+            &lt;a th:if="${currentPage &lt; totalPages}" th:href="@{'/page/' + ${totalPages}}"&gt;Last&lt;/a&gt;
+            &lt;span th:unless="${currentPage &lt; totalPages}"&gt;Last&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+                    </code></pre>
+        <p>The complete code:</p>
+        <pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en" xmlns:th="http://www.thymeleaf.org"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="ISO-8859-1"&gt;
+    &lt;title&gt;Employee Management System&lt;/title&gt;
+
+    &lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"&gt;
+
+&lt;/head&gt;
+
+&lt;body&gt;
+
+    &lt;div class="container my-2"&gt;
+        &lt;h1&gt;Employees List&lt;/h1&gt;
+
+        &lt;a th:href="@{/showNewEmployeeForm}" class="btn btn-primary btn-sm mb-3"&gt; Add Employee &lt;/a&gt;
+
+        &lt;table border="1" class="table table-striped table-responsive-md"&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;Employee First Name&lt;/th&gt;
+                    &lt;th&gt;Employee Last Name&lt;/th&gt;
+                    &lt;th&gt;Employee Email&lt;/th&gt;
+                    &lt;th&gt; Actions &lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr th:each="employee : ${listEmployees}"&gt;
+                    &lt;td th:text="${employee.firstName}"&gt;&lt;/td&gt;
+                    &lt;td th:text="${employee.lastName}"&gt;&lt;/td&gt;
+                    &lt;td th:text="${employee.email}"&gt;&lt;/td&gt;
+                    &lt;td&gt; &lt;a th:href="@{/showFormForUpdate/{id}(id=${employee.id})}" class="btn btn-primary"&gt;Update&lt;/a&gt;
+                        &lt;a th:href="@{/deleteEmployee/{id}(id=${employee.id})}" class="btn btn-danger"&gt;Delete&lt;/a&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;div th:if="${totalPages &gt; 1}"&gt;
+            &lt;div class="row col-sm-10"&gt;
+                &lt;div class="col-sm-2"&gt;
+                    Total Rows: [[${totalItems}]]
+                &lt;/div&gt;
+                &lt;div class="col-sm-1"&gt;
+                    &lt;span th:each="i: ${#numbers.sequence(1, totalPages)}"&gt;
+      &lt;a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}"&gt;[[${i}]]&lt;/a&gt;
+      &lt;span th:unless="${currentPage != i}"&gt;[[${i}]]&lt;/span&gt; &nbsp; &nbsp;
+                    &lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div class="col-sm-1"&gt;
+                    &lt;a th:if="${currentPage &lt; totalPages}" th:href="@{'/page/' + ${currentPage + 1}}"&gt;Next&lt;/a&gt;
+                    &lt;span th:unless="${currentPage &lt; totalPages}"&gt;Next&lt;/span&gt;
+                &lt;/div&gt;
+
+                &lt;div class="col-sm-1"&gt;
+                    &lt;a th:if="${currentPage &lt; totalPages}" th:href="@{'/page/' + ${totalPages}}"&gt;Last&lt;/a&gt;
+                    &lt;span th:unless="${currentPage &lt; totalPages}"&gt;Last&lt;/span&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+
+        </code></pre>
+        <h2>2. Sorting Implementation</h2>
+        <h3>Understand Spring Data JPA’s Sorting API</h3>
+        <p>The Spring Data JPA provides <code style="color: red;">PagingAndSortingRepository</code> interface which
+            supports sorting and pagination with the following APIs:</p>
+        <pre><code>
+@NoRepositoryBean
+public interface PagingAndSortingRepository &lt; T, ID > extends CrudRepository &lt; T, ID > {
+
+    /**
+     * Returns all entities sorted by the given options.
+     *
+     * @param sort
+     * @return all entities sorted by the given options
+     */
+    Iterable &lt; T > findAll(Sort sort);
+
+    /**
+     * Returns a {@link Page} of entities meeting the paging restriction provided in the {@code Pageable} object.
+     *
+     * @param pageable
+     * @return a page of entities
+     */
+    Page &lt; T > findAll(Pageable pageable);
+}
+            </code></pre>
+        <p>The users will be able to sort the employee's list by clicking on the column header of the table.</p>
+        <p>First, create a <b>Sort</b> object like this:</p>
+        <pre><code>Sort sort = Sort.by(“fieldName”).ascending();</code></pre>
+        <p>This will sort the result by <b>fieldName</b> in ascending order. <b>fieldName</b> must match a field name
+            declared in the entity class.</p>
+        <p>We can also sort by more than one field, for example:</p>
+        <pre><code>Sort sort = Sort.by("fieldName1").ascending().and(Sort.by("fieldName2").descending());</code></pre>
+        <p>Then we pass the <b>Sort</b> object to create a <b>Pageable</b> as follows:</p>
+        <pre><code>Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sort);</code></pre>
+        <p>Let's understand more in the example section.</p>
+        <h3>Back-end changes for sorting</h3>
+        <p><b>EmployeeService.java interface changes</b></p>
+        <p>Let's add two fields to the existing method:</p>
+        <pre><code>Page&lt;Employee> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);</code></pre>
+        <p>The complete code:</p>
+        <pre><code>
+package net.javaguides.springboot.service;
+
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
+import net.javaguides.springboot.model.Employee;
+
+public interface EmployeeService {
+    List &lt; Employee > getAllEmployees();
+    void saveEmployee(Employee employee);
+    Employee getEmployeeById(long id);
+    void deleteEmployeeById(long id);
+    Page &lt; Employee > findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
+}
+
+</code></pre>
+        <p><b>EmployeeServiceImpl.java class changes</b></p>
+        <p>The sorting logic implemented in the below method:</p>
+        <pre><code>
+@Override
+public Page&lt;Employee> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
+    Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+     Sort.by(sortField).descending();
+ 
+    Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+    return this.employeeRepository.findAll(pageable);
+}
+
+</code></pre>
+        <p>The complete code:</p>
+        <pre><code>
+package net.javaguides.springboot.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import net.javaguides.springboot.model.Employee;
+import net.javaguides.springboot.repository.EmployeeRepository;
+
+@Service
+public class EmployeeServiceImpl implements EmployeeService {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Override
+    public List &lt; Employee > getAllEmployees() {
+        return employeeRepository.findAll();
+    }
+
+    @Override
+    public void saveEmployee(Employee employee) {
+        this.employeeRepository.save(employee);
+    }
+
+    @Override
+    public Employee getEmployeeById(long id) {
+        Optional &lt; Employee > optional = employeeRepository.findById(id);
+        Employee employee = null;
+        if (optional.isPresent()) {
+            employee = optional.get();
+        } else {
+            throw new RuntimeException(" Employee not found for id :: " + id);
+        }
+        return employee;
+    }
+
+    @Override
+    public void deleteEmployeeById(long id) {
+        this.employeeRepository.deleteById(id);
+    }
+
+    @Override
+    public Page &lt; Employee > findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+            Sort.by(sortField).descending();
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+        return this.employeeRepository.findAll(pageable);
+    }
+}
+
+</code></pre>
+        <p><b>EmployeeController.java changes</b></p>
+        <p>Let's change the existing method to provide a support for sorting:</p>
+        <pre><code>
+@GetMapping("/page/{pageNo}")
+public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+    @RequestParam("sortField") String sortField,
+    @RequestParam("sortDir") String sortDir,
+    Model model) {
+    int pageSize = 5;
+
+    Page &lt; Employee > page = employeeService.findPaginated(pageNo, pageSize, sortField, sortDir);
+    List &lt; Employee > listEmployees = page.getContent();
+
+    model.addAttribute("currentPage", pageNo);
+    model.addAttribute("totalPages", page.getTotalPages());
+    model.addAttribute("totalItems", page.getTotalElements());
+
+    model.addAttribute("sortField", sortField);
+    model.addAttribute("sortDir", sortDir);
+    model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
+    model.addAttribute("listEmployees", listEmployees);
+    return "index";
+}
+
+</code></pre>
+        <p>Also provide default sorting field and sorting direction for home page:</p>
+        <pre><code>
+    // display list of employees
+    @GetMapping("/")
+    public String viewHomePage(Model model) {
+        return findPaginated(1, "firstName", "asc", model);
+    }
+
+</code></pre>
+        <p>The complete code:</p>
+        <pre><code>
+package net.javaguides.springboot.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import net.javaguides.springboot.model.Employee;
+import net.javaguides.springboot.service.EmployeeService;
+
+@Controller
+public class EmployeeController {
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    // display list of employees
+    @GetMapping("/")
+    public String viewHomePage(Model model) {
+        return findPaginated(1, "firstName", "asc", model);
+    }
+
+    @GetMapping("/showNewEmployeeForm")
+    public String showNewEmployeeForm(Model model) {
+        // create model attribute to bind form data
+        Employee employee = new Employee();
+        model.addAttribute("employee", employee);
+        return "new_employee";
+    }
+
+    @PostMapping("/saveEmployee")
+    public String saveEmployee(@ModelAttribute("employee") Employee employee) {
+        // save employee to database
+        employeeService.saveEmployee(employee);
+        return "redirect:/";
+    }
+
+    @GetMapping("/showFormForUpdate/{id}")
+    public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) {
+
+        // get employee from the service
+        Employee employee = employeeService.getEmployeeById(id);
+
+        // set employee as a model attribute to pre-populate the form
+        model.addAttribute("employee", employee);
+        return "update_employee";
+    }
+
+    @GetMapping("/deleteEmployee/{id}")
+    public String deleteEmployee(@PathVariable(value = "id") long id) {
+
+        // call delete employee method 
+        this.employeeService.deleteEmployeeById(id);
+        return "redirect:/";
+    }
+
+
+    @GetMapping("/page/{pageNo}")
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+        @RequestParam("sortField") String sortField,
+        @RequestParam("sortDir") String sortDir,
+        Model model) {
+        int pageSize = 5;
+
+        Page &lt; Employee > page = employeeService.findPaginated(pageNo, pageSize, sortField, sortDir);
+        List &lt; Employee > listEmployees = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
+        model.addAttribute("listEmployees", listEmployees);
+        return "index";
+    }
+}
+
+</code></pre>
+        <h3>Front-end changes for sorting</h3>
+        <p><b>index.html</b></p>
+        <p>We make the header columns of the table sortable by adding hyperlinks with the following code:</p>
+        <pre><code>
+&lt;th&gt;
+      &lt;a th:href="@{'/page/' + ${currentPage} + '?sortField=firstName&amp;sortDir=' + ${reverseSortDir}}"&gt;
+       Employee First Name&lt;/a&gt;
+&lt;/th&gt;
+&lt;th&gt;
+     &lt;a th:href="@{'/page/' + ${currentPage} + '?sortField=lastName&amp;sortDir=' + ${reverseSortDir}}"&gt;
+       Employee Last Name&lt;/a&gt;
+&lt;/th&gt;
+&lt;th&gt;
+     &lt;a th:href="@{'/page/' + ${currentPage} + '?sortField=email&amp;sortDir=' + ${reverseSortDir}}"&gt;
+       Employee Email&lt;/a&gt;
+&lt;/th&gt;
+&lt;th&gt; Actions &lt;/th&gt;
+    </code></pre>
+        <p>We also need to change pagination part to provide sorting support like:</p>
+        <pre><code>
+  &lt;div th:if = "${totalPages &gt; 1}"&gt;
+   &lt;div class = "row col-sm-10"&gt;
+    &lt;div class = "col-sm-2"&gt;
+     Total Rows: [[${totalItems}]] 
+    &lt;/div&gt;
+    &lt;div class = "col-sm-1"&gt;
+     &lt;span th:each="i: ${#numbers.sequence(1, totalPages)}"&gt;
+      &lt;a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}+ '?sortField=' + ${sortField} + '&amp;sortDir=' + ${sortDir}}"&gt;[[${i}]]&lt;/a&gt;
+      &lt;span th:unless="${currentPage != i}"&gt;[[${i}]]&lt;/span&gt;  &amp;nbsp; &amp;nbsp;
+     &lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class = "col-sm-1"&gt;
+     &lt;a th:if="${currentPage &lt; totalPages}" th:href="@{'/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&amp;sortDir=' + ${sortDir}}"&gt;Next&lt;/a&gt;
+     &lt;span th:unless="${currentPage &lt; totalPages}"&gt;Next&lt;/span&gt;
+    &lt;/div&gt;
+    
+     &lt;div class="col-sm-1"&gt;
+        &lt;a th:if="${currentPage &lt; totalPages}" th:href="@{'/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&amp;sortDir=' + ${sortDir}}"&gt;Last&lt;/a&gt;
+     &lt;span th:unless="${currentPage &lt; totalPages}"&gt;Last&lt;/span&gt;
+        &lt;/div&gt;
+   &lt;/div&gt;
+  &lt;/div&gt;
+    </code></pre>
+        <p>The complete code:</p>
+        <pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en" xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+&lt;meta charset="ISO-8859-1"&gt;
+&lt;title&gt;Employee Management System&lt;/title&gt;
+
+&lt;link rel="stylesheet"
+ href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+ integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+ crossorigin="anonymous"&gt;
+ 
+&lt;/head&gt;
+&lt;body&gt;
+
+ &lt;div class="container my-2"&gt;
+ &lt;h1&gt;Employees List&lt;/h1&gt;
+ 
+ &lt;a th:href = "@{/showNewEmployeeForm}" class="btn btn-primary btn-sm mb-3"&gt; Add Employee &lt;/a&gt;
+ 
+  &lt;table border="1" class = "table table-striped table-responsive-md"&gt;
+   &lt;thead&gt;
+    &lt;tr&gt;
+     &lt;th&gt;
+      &lt;a th:href="@{'/page/' + ${currentPage} + '?sortField=firstName&amp;sortDir=' + ${reverseSortDir}}"&gt;
+       Employee First Name&lt;/a&gt;
+     &lt;/th&gt;
+     &lt;th&gt;
+     &lt;a th:href="@{'/page/' + ${currentPage} + '?sortField=lastName&amp;sortDir=' + ${reverseSortDir}}"&gt;
+       Employee Last Name&lt;/a&gt;
+     &lt;/th&gt;
+     &lt;th&gt;
+     &lt;a th:href="@{'/page/' + ${currentPage} + '?sortField=email&amp;sortDir=' + ${reverseSortDir}}"&gt;
+       Employee Email&lt;/a&gt;
+     &lt;/th&gt;
+     &lt;th&gt; Actions &lt;/th&gt;
+    &lt;/tr&gt;
+   &lt;/thead&gt;
+   &lt;tbody&gt;
+    &lt;tr th:each="employee : ${listEmployees}"&gt;
+     &lt;td th:text="${employee.firstName}"&gt;&lt;/td&gt;
+     &lt;td th:text="${employee.lastName}"&gt;&lt;/td&gt;
+     &lt;td th:text="${employee.email}"&gt;&lt;/td&gt;
+     &lt;td&gt; &lt;a th:href="@{/showFormForUpdate/{id}(id=${employee.id})}" class="btn btn-primary"&gt;Update&lt;/a&gt;
+         &lt;a th:href="@{/deleteEmployee/{id}(id=${employee.id})}" class="btn btn-danger"&gt;Delete&lt;/a&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+   &lt;/tbody&gt;
+  &lt;/table&gt;
+  
+  &lt;div th:if = "${totalPages &gt; 1}"&gt;
+   &lt;div class = "row col-sm-10"&gt;
+    &lt;div class = "col-sm-2"&gt;
+     Total Rows: [[${totalItems}]] 
+    &lt;/div&gt;
+    &lt;div class = "col-sm-1"&gt;
+     &lt;span th:each="i: ${#numbers.sequence(1, totalPages)}"&gt;
+      &lt;a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}+ '?sortField=' + ${sortField} + '&amp;sortDir=' + ${sortDir}}"&gt;[[${i}]]&lt;/a&gt;
+      &lt;span th:unless="${currentPage != i}"&gt;[[${i}]]&lt;/span&gt;  &amp;nbsp; &amp;nbsp;
+     &lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class = "col-sm-1"&gt;
+     &lt;a th:if="${currentPage &lt; totalPages}" th:href="@{'/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&amp;sortDir=' + ${sortDir}}"&gt;Next&lt;/a&gt;
+     &lt;span th:unless="${currentPage &lt; totalPages}"&gt;Next&lt;/span&gt;
+    &lt;/div&gt;
+    
+     &lt;div class="col-sm-1"&gt;
+        &lt;a th:if="${currentPage &lt; totalPages}" th:href="@{'/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&amp;sortDir=' + ${sortDir}}"&gt;Last&lt;/a&gt;
+     &lt;span th:unless="${currentPage &lt; totalPages}"&gt;Last&lt;/span&gt;
+        &lt;/div&gt;
+   &lt;/div&gt;
+  &lt;/div&gt;
+ &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+    </code></pre>
+    </div>
+</body>
+
+</html>

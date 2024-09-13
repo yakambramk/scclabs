@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding UnsatisfiedDependencyException in Spring Boot</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Unsatisfied Dependency in Spring Boot</h1>
+        <p>Spring Framework, at its core, revolves around the concept of Dependency Injection (DI). The framework
+            manages the life cycle of beans and ensures that they are provided with the necessary dependencies.</p>
+
+        <p>However, occasionally, there can be issues with the dependency resolution, resulting in the
+            <strong>UnsatisfiedDependencyException</strong>. This article will explore this exception, its causes, and
+            potential solutions.
+        </p>
+
+        <h2>What is UnsatisfiedDependencyException?</h2>
+        <p>The UnsatisfiedDependencyException typically occurs during the Spring container's bean creation process. It
+            indicates that one of the dependencies required for creating a bean cannot be satisfied. The error message
+            will typically look something like this:</p>
+
+        <pre>org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'someBeanName': 
+Unsatisfied dependency expressed through field 'someFieldName'; nested exception is ...</pre>
+        <p>This error is thrown when Spring's Inversion of Control (IoC) container cannot resolve a dependency required
+            to create a bean. Let's dive into why this happens and how to fix it.</p>
+        <h2>Causes</h2>
+        <p><b>Missing Annotations: </b>The required bean may not be marked as a Spring component (<b>@Component</b>,
+            <b>@Service</b>,
+            <b>@Repository</b>, <b>@Controller</b>, etc.).
+        </p>
+        <p><b>Component Scan Issues: </b>Spring might not be scanning the package where your component is located. This
+            can be
+            due to misconfiguration or oversight.</p>
+        <p><b>Multiple Beans: </b>Sometimes, there might be multiple beans of the desired type, and Spring cannot decide
+            which
+            one to inject.</p>
+        <p><b>Profile-specific Beans: </b></p>The bean to be injected might be annotated with a specific profile, and
+        that profile
+        might not be active.</p>
+        <p><b>Other Configuration Errors: </b>XML-based configurations or Java-based configurations might have errors,
+            or they
+            might not be picked up by Spring at all.</p>
+        <h2>Solutions</h2>
+        <h3>Add Missing Annotations</h3>
+        <p>Make sure that you annotated a class with respective Spring annotation to make that class a Spring bean.</p>
+        <ul>
+            <li><a href="/spring-mvc/spring-component-annotation-example.html" target="_blank">@Component: </a>This is a
+                generic stereotype annotation to indicate that a class is a Spring
+                component.</li>
+            <li><a href="/spring-core-tutorial/spring-service-annotation.html" target="_blank">@Service: </a>This
+                denotes a class as a service layer, and it's a specialization of the
+                @Component annotation.</li>
+            <li><a href="/spring-mvc/spring-repository-annotation.html" target="_blank">@Repository: </a>This is used on
+                classes that directly access the database. </li>
+            <li><a href="/spring-exceptions-tutorial/spring-controller-annotation-example.html"
+                    target="_blank">@Controller: </a>Used with classes that act as web controllers in a Spring MVC
+                application.
+            </li>
+            <li><a href="">@RestController: </a>This is a combination of @Controller and @ResponseBody and is commonly
+                used for creating RESTful web services in Spring Boot applications.</li>
+        </ul>
+        <p><b>For example: </b>If a required bean is missing an annotation, it won't be registered in the Spring
+            context.
+            Here's how to fix it: Let's say you have a class <code style="color: red;">SomeService</code> which is
+            supposed to be a Spring-managed
+            bean, but you forgot to annotate it:</p>
+        <pre><code>
+public class SomeService {
+    // ... class content ...
+}
+                </code></pre>
+        <p>To allow Spring to manage this class as a bean and inject it wherever needed, you should annotate it with the
+            appropriate annotation:</p>
+        <pre><code>
+@Service
+public class SomeService {
+    // ... class content ...
+}
+                </code></pre>
+        <p>Now, Spring will recognize <code style="color: red;">SomeService</code> as a managed bean, and it will be
+            eligible for auto-wiring wherever it's needed.</p>
+        <h3>Fix Component Scanning</h3>
+        <p>If using @SpringBootApplication in Spring Boot, by default, it will scan all sub-packages of the package
+            where it's located. Make sure your main application class is in a root package above other classes.
+            Alternatively, you can specify the packages to scan using the <code
+                style="color: red;">@ComponentScan</code> annotation:</p>
+        <pre><code>
+@SpringBootApplication
+@ComponentScan(basePackages = "com.example")
+public class MyApplication {
+    // ...
+}
+
+</code></pre>
+        <h3>Qualify Your Beans</h3>
+        <p>If multiple beans of the same type exist, use the <a href="/spring-core-tutorial/spring-qualifier-annotation-example.html" target="_blank">@Qualifier</a> annotation to specify which bean
+            to inject:</p>
+        <pre><code>
+@Autowired
+public SomeService(@Qualifier("specificBeanName") SomeClass someClass) {
+    // ...
+}
+
+</code></pre>
+        <h3>Check Profiles</h3>
+        <p>If the bean definition is bound to a specific profile using the <code style="color: red;">@Profile</code>
+            annotation, ensure that the profile is active. </p>
+        <h3>Review Configuration</h3>
+        <p>Examine XML-based or Java-based configurations for errors. Also, ensure they are located in a package scanned
+            by Spring or explicitly imported. </p>
+        <h2>Conclusion</h2>
+        <p>The <code style="color: red;">UnsatisfiedDependencyException</code> error essentially means that Spring
+            couldn't find a matching bean for the
+            given dependency. By carefully inspecting your configuration and understanding the cause, you can usually
+            resolve this error quite quickly.
+        </p>
+    </div>
+</body>
+
+</html>
