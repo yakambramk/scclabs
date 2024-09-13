@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Vue.js CRUD Example: Full-Stack Application</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Cloud API Gateway Global Filter Example - Spring Boot Microservices</h1>
+                <h4>author : Sai K</h4>
+                <p>In this tutorial, we will create a Spring Cloud API Gateway project and demonstrate how to implement
+                    a global <br><br>filter. We will use Spring Boot 3.2 and Spring Cloud 2023.x versions. The global filter
+                    will be applied to <br><br>all incoming requests passing through the API Gateway.</p><br>
+                <h2>Prerequisites</h2>
+                <p>Before we start, ensure you have the following:</p>
+                <ul>
+                    <li>Java Development Kit (JDK) installed</li><br>
+                    <li> Apache Maven installed</li><br>
+                    <li>An IDE (such as IntelliJ IDEA, Eclipse, or VS Code) installed</li><br>
+                </ul>
+                <h2>Step 1: Setting Up the Spring Cloud API Gateway Project</h2>
+                <h3>1.1 Create a Spring Cloud API Gateway Project</h3>
+                <p><b>1.Open Spring Initializr:</b></p>
+                <p>Go to <a href="https://start.spring.io/">Spring Initializr</a> in your web browser.
+                </p>
+                <p><b>2.Configure Project Metadata:</b></p>
+                <ul>
+                    <li><b>Project:</b> Maven Project</li><br>
+                    <li><b>Language:</b> Java</li><br>
+                    <li><b>Spring Boot:</b> Select the latest version of Spring Boot 3</li><br>
+                    <li><b>Group:</b> com.example</li><br>
+                    <li><b>Artifact:</b> api-gateway </li><br>
+                    <li><b>Name:</b> api-gateway</li><br>
+                    <li><b>Description:</b> : Spring Cloud API Gateway Example
+                    </li><br>
+                    <li><b>Package Name:</b>com.example.apigateway</li><br>
+                    <li><b>Packaging:</b> Jar</li><br>
+                    <li><b>Java Version:</b> 17 (or your preferred version)</li><br>
+                    <li>Click Next. </li>
+                </ul>
+                <p>3.Select Dependencies:</p>
+                <li>On the Dependencies screen, select the dependencies you need: </li>
+                <ul>
+                    <li><b>Spring Cloud Gateway</b></li><br>
+                    <li><b>Spring Boot DevTools</b></li><br>
+                    <li><b> Spring Security</b></li><br>
+                </ul>
+                <li>Click Next.<br></li>
+                <p>4.Generate the Project:</p>
+                <ul>
+                    <li>Click Generate to download the project zip file.</li><br>
+                    <li>Extract the zip file to your desired location.</li><br>
+                </ul>
+                <p>5.Open the Project in Your IDE:</p>
+                <ul>
+                    <li>Open your IDE and import the project as a Maven project.</li><br>
+                </ul>
+                <h2>1.2 Update pom.xml</h2>
+                <p>Ensure your pom.xml includes the Spring Cloud dependencies. Add the Spring Cloud BOM (Bill of
+                    Materials) for <br><br>the 2023.x version to manage the dependencies:</p>
+                <pre><code>
+                &lt;properties&gt;
+    &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;spring-cloud.version&gt;2023.0.0&lt;/spring-cloud.version&gt;
+&lt;/properties&gt;
+
+&lt;dependencyManagement&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
+            &lt;version&gt;${spring-cloud.version}&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-cloud-starter-gateway&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+        &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;optional&gt;true&lt;/optional&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+            </code></pre>
+                <h2>Step 2: Configure the Application Properties</h2>
+                <h3>2.1 Update application.yml</h3>
+                <p>Create an application.yml file in the src/main/resources directory and configure it as follows:</p>
+                <pre><code>
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: example_service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/example/**
+            </code></pre>
+                <p>This configuration sets up a route that forwards requests matching /example/** to a service running
+                    on <br><br> http://localhost:8081.</p><br>
+                <h2>Step 3: Implementing a Global Filter</h2>
+                <h3>3.1 Create the GlobalFilter Class </h3>
+                <p>Create a new class named CustomGlobalFilter in the com.example.apigateway.filter package:</p>
+                <pre><code>
+                    package com.example.apigateway.filter;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
+
+import org.springframework.web.server.ServerWebExchange;
+
+@Component
+@Order(0)
+public class CustomGlobalFilter implements GlobalFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(CustomGlobalFilter.class);
+
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, org.springframework.cloud.gateway.filter.GatewayFilterChain chain) {
+        logger.info("Global Filter executed for request: {}", exchange.getRequest().getPath());
+        return chain.filter(exchange).then(Mono.fromRunnable(() -> {
+            logger.info("Global Filter post-processing for response: {}", exchange.getResponse().getStatusCode());
+        }));
+    }
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>The CustomGlobalFilter class implements the GlobalFilter interface.</li><br>
+                    <li> The filter method logs the request path and response status code.</li><br>
+                    <li>The @Component annotation registers the filter as a Spring bean.</li><br>
+                    <li>The @Order(0) annotation ensures this filter runs first among multiple filters.</li><br>
+                </ul>
+                <h2>Step 4: Running the Application</h2>
+                <h3>4.1 Create the ApiGatewayApplication Class</h3>
+                <p>Ensure the ApiGatewayApplication class is present in the src/main/java/com/example/apigateway
+                    directory:</p>
+                <pre><code>
+    package com.example.apigateway;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ApiGatewayApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ApiGatewayApplication.class, args);
+    }
+}
+</code></pre>
+                <h2>4.2 Run the Application</h2>
+                <p>
+                    1. Open the ApiGatewayApplication class in the src/main/java/com/example/apigateway directory.
+                    <br><br>
+
+                    2.Click the green Run button in your IDE or use the terminal to run the application: <br><br>
+                </p>
+                <pre><code>./mvnw spring-boot:run</code></pre>
+                <p>3.The application will start on http://localhost:8080.</p>
+                <h2>Step 5: Testing the Application</h2>
+                <h3>5.1 Test the Global Filter</h3>
+                <p>
+                    1. Start the service running on http://localhost:8081 that the API Gateway routes to. This can be
+                    any <br><br> Spring Boot application that handles requests at the /example endpoint. <br><br>
+                    2.Use a tool like Postman to send a request to http://localhost:8080/example/test. <br><br>
+                    3.Check the logs to verify that the global filter has been executed. You should see log entries
+                    indicating that the <br><br>global filter processed the request and response.
+                </p>
+                <h2>Conclusion</h2>
+                <p>In this tutorial, we created a Spring Cloud API Gateway project using Spring Boot 3.2 and Spring Cloud 2023.x <br><br> versions. We configured the application to route requests to a backend service and implemented a global filter to <br><br> log requests and responses. This setup provides a solid foundation for developing more complex API Gateway <br><br> functionalities.</p>
+                <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

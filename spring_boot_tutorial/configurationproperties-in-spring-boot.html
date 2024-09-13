@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ConfigurationProperties in Spring Boot</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>@ConfigurationProperties in Spring Boot</h1>
+                <h4>author : Sai K</h4>
+                <p>The @ConfigurationProperties annotation in Spring Boot is used to map properties from external
+                    configuration <br><br>files (such as application.properties or application.yml) to Java objects. This allows
+                    you to manage configuration <br><br> in a type-safe manner and keep your configuration clean and
+                    maintainable.</p><br>
+                <p>In this tutorial, we'll explore how to use @ConfigurationProperties in a Spring Boot application.</p>
+                <h2>Prerequisites</h2>
+                <p>Before we start, ensure you have the following:</p>
+                <ul>
+                    <li>Java Development Kit (JDK) installed</li><br>
+                    <li>Maven or Gradle</li><br>
+                    <li>An IDE (such as IntelliJ IDEA, Eclipse, or VS Code) installed</li><br>
+                </ul>
+                <h2>Step 1: Set Up a Spring Boot Project</h2>
+                <h3>1.1 Create a New Spring Boot Project</h3>
+                <p>Use <a href="https://start.spring.io/">Spring Initializr</a>to create a new project with the
+                    following dependencies:
+                </p>
+                <ul>
+                    <li>Spring Web</li><br>
+                    <li>Spring Boot Actuator</li><br>
+                    <li>Spring Configuration Processor (optional, for IDE support)</li><br>
+                </ul>
+                <p>Download and unzip the project, then open it in your IDE.</p>
+                <h3>1.2 Configure application.properties</h3>
+                <p>Set up the application properties for your project. We'll add some custom properties that we want to
+                    map to Java objects.</p>
+                <pre><code>
+myapp.datasource.url=jdbc:mysql://localhost:3306/mydb
+myapp.datasource.username=root
+myapp.datasource.password=rootpassword
+myapp.datasource.max-pool-size=10
+
+myapp.mail.host=smtp.example.com
+myapp.mail.port=587
+myapp.mail.username=myemail@example.com
+myapp.mail.password=secret
+                </code></pre>
+                <h3> Explanation:</h3>
+                <ul>
+                    <li>myapp.datasource.*: Custom properties for configuring the datasource.</li><br>
+                    <li> myapp.mail.*: Custom properties for configuring the mail server.</li><br>
+                </ul>
+                <h2>Step 2: Create Configuration Properties Classes</h2>
+                <p>We will create Java classes to map these properties.</p>
+                <h3>2.1 Create a DataSourceProperties Class</h3>
+                <p>Create a class to map the datasource properties.</p>
+                <pre><code>
+                    package com.example.demo.config;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ConfigurationProperties(prefix = "myapp.datasource")
+public class DataSourceProperties {
+
+    private String url;
+    private String username;
+    private String password;
+    private int maxPoolSize;
+
+    // Getters and setters
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getMaxPoolSize() {
+        return maxPoolSize;
+    }
+
+    public void setMaxPoolSize(int maxPoolSize) {
+        this.maxPoolSize = maxPoolSize;
+    }
+}
+                </code></pre>
+                <h3>Explanation: </h3>
+                <ul>
+                    <li>@Configuration: Marks the class as a source of bean definitions.</li><br>
+                    <li> @ConfigurationProperties(prefix = "myapp.datasource"): Maps properties prefixed with
+                        myapp.datasource to this class.</li><br>
+                    <li> This class contains fields corresponding to the properties, along with getters and setters.
+                    </li><br>
+                </ul>
+                <h3>2.2 Create a MailProperties Class</h3>
+                <p>Create a class to map the mail properties.</p>
+                <pre><code>
+package com.example.demo.config;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ConfigurationProperties(prefix = "myapp.mail")
+public class MailProperties {
+
+    private String host;
+    private int port;
+    private String username;
+    private String password;
+
+    // Getters and setters
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+}
+                </code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@Configuration: Marks the class as a source of bean definitions.</li><br>
+                    <li> @ConfigurationProperties(prefix = "myapp.mail"): Maps properties prefixed with myapp.mail to
+                        this class.</li><br>
+                    <li>This class contains fields corresponding to the properties, along with getters and setters.</li>
+                    <br>
+                </ul>
+                <h2>Step 3: Enable Configuration Properties</h2>
+                <h3>3.1 Create a Configuration Class</h3>
+                <p>You need to create a configuration class to enable your @ConfigurationProperties beans.</p>
+                <pre><code>
+                    package com.example.demo.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+
+@Configuration
+@EnableConfigurationProperties({DataSourceProperties.class, MailProperties.class})
+public class AppConfig {
+}</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@Configuration: Marks the class as a source of bean definitions.</li><br>
+                    <li> @EnableConfigurationProperties: Enables support for @ConfigurationProperties-annotated beans.
+                    </li>
+                </ul>
+                <h2>Step 4: Use Configuration Properties in Your Application</h2>
+                <h3>4.1 Create a REST Controller</h3>
+                <p>Create a REST controller to demonstrate how to use the configuration properties.</p>
+                <pre><code>
+    package com.example.demo.controller;
+
+import com.example.demo.config.DataSourceProperties;
+import com.example.demo.config.MailProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class ConfigController {
+
+    @Autowired
+    private DataSourceProperties dataSourceProperties;
+
+    @Autowired
+    private MailProperties mailProperties;
+
+    @GetMapping("/config/datasource")
+    public DataSourceProperties getDataSourceConfig() {
+        return dataSourceProperties;
+    }
+
+    @GetMapping("/config/mail")
+    public MailProperties getMailConfig() {
+        return mailProperties;
+    }
+}
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@RestController: Marks the class as a REST controller.
+                    </li><br>
+                    <li> @Autowired: Injects the DataSourceProperties and MailProperties beans.</li><br>
+                    <li>
+                        The getDataSourceConfig and getMailConfig methods return the configuration properties as JSON
+                        responses.</li><br>
+                </ul>
+                <h3>4.2 Add Main Application Class</h3>
+                <p>Ensure your main application class is present.</p>
+                <pre><code>
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+</code></pre>
+<h2>Step 5: Testing the Application</h2>
+<h3>5.1 Run the Application</h3>
+<p>Run the Spring Boot application and navigate to the following URLs to see the loaded configuration properties:</p>
+<ul>
+    <li>http://localhost:8080/config/datasource</li><br>
+    <li>http://localhost:8080/config/mail</li><br>
+</ul>
+<h2>Conclusion</h2>
+<p>In this tutorial, you have learned how to use the @ConfigurationProperties annotation in a Spring Boot <br><br> application to map external configuration properties to Java objects. This approach provides a clean and type- <br><br>safe way to manage configuration properties and keeps your code organized and maintainable.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Vue.js CRUD Example: Full-Stack Application</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Boot Vue.js User Registration and Login Example Tutorial</h1>
+                <h4>author : Sai K</h4>
+                <p>In this tutorial, we will create a full-stack application using Spring Boot 3 for the backend and
+                    Vue.js 3.4 for the <br><br> frontend. We will implement user registration and login functionalities. The
+                    tutorial will cover setting up the <br><br> project, creating the backend with Spring Boot, Spring Security
+                    for user registration and <br><br> login functionalities, and building the frontend with Vue.js.</p><br> 
+                <h2>Prerequisites</h2>
+                <p>Before we start, ensure you have the following:</p>
+                <ul>
+                    <li>Java Development Kit (JDK) installed</li><br>
+                    <li> Apache Maven installed</li><br>
+                    <li>Node.js and npm installed</li><br>
+                    <li>An IDE (such as IntelliJ IDEA, Eclipse, or VS Code) installed</li><br>
+                </ul>
+                <h2>Step 1: Setting Up the Spring Boot Project</h2>
+                <h3>1.1 Create a Spring Boot Project</h3>
+                <p>Go to <a href="https://start.spring.io/">Spring Initializr</a> in your web browser.
+                </p>
+                <p>2.Configure Project Metadata:</p>
+                <ul>
+                    <li><b>Project:</b> Maven Project</li><br>
+                    <li><b>Language:</b> Java</li><br>
+                    <li><b>Spring Boot:</b> Select the latest version of Spring Boot 3</li><br>
+                    <li><b>Group:</b> com.example</li><br>
+                    <li><b>Artifact:</b> user-registration </li><br>
+                    <li><b>Name:</b> user-registration</li><br>
+                    <li><b>Description:</b> : User Registration and Login Application with Spring Boot and Vue.js
+                    </li><br>
+                    <li><b>Package Name:</b>com.example.userregistration</li><br>
+                    <li><b>Packaging:</b> Jar</li><br>
+                    <li><b>Java Version:</b> 17 (or your preferred version)</li><br>
+                    <li>Click Next. </li>
+                </ul>
+                <p>3.Select Dependencies:</p>
+                <li>On the Dependencies screen, select the dependencies you need: </li>
+                <ul>
+                    <li><b>Spring Web</b></li><br>
+                    <li><b>Spring Data JPA</b></li><br>
+                    <li><b>H2 Database</b></li><br>
+                    <li><b>Spring Boot DevTools</b></li><br>
+                    <li><b> Spring Security</b></li><br>
+                </ul>
+                <li>Click Next.<br></li>
+                <p>4.Generate the Project:</p>
+                <ul>
+                    <li>Click Generate to download the project zip file.</li><br>
+                    <li>Extract the zip file to your desired location.</li><br>
+                </ul>
+                <p>5.Open the Project in Your IDE:</p>
+                <ul>
+                    <li>Open your IDE and import the project as a Maven project.</li><br>
+                </ul>
+                <h2>1.2 Update application.properties</h2>
+                <p>Open the application.properties file located in the src/main/resources directory and add the
+                    following <br><br> configuration:</p>
+                <pre><code>
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+spring.jpa.hibernate.ddl-auto=update
+                </code></pre>
+                <h3>1.3 Create the User Entity</h3>
+                <p>In the com.example.userregistration.model package, create a new Java class named User:</p>
+                <pre><code>
+                    package com.example.userregistration.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+
+    // Getters and Setters
+}
+                </code></pre>
+                <h3>1.4 Create the UserRepository Interface </h3>
+                <p>In the com.example.userregistration.repository package, create a new Java interface named
+                    UserRepository:</p>
+                <pre><code>
+                    package com.example.userregistration.repository;
+
+import com.example.userregistration.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findByEmail(String email);
+}  </code></pre>
+                <h3>1.5 Create the UserService Class</h3>
+                <p>In the com.example.userregistration.service package, create a new Java class named UserService:</p>
+                <pre><code>
+    package com.example.userregistration.service;
+
+import com.example.userregistration.model.User;
+import com.example.userregistration.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+
+@Service
+public class UserService implements UserDetailsService {
+
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), Collections.emptyList());
+    }
+}
+</code></pre>
+                <h3>1.6 Create the AuthController Class</h3>
+                <p>In the com.example.userregistration.controller package, create a new Java class named AuthController:
+                </p>
+                <pre><code>
+    package com.example.userregistration.controller;
+
+import com.example.userregistration.model.User;
+import com.example.userregistration.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+
+    private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+
+    @Autowired
+    public AuthController(UserService userService, AuthenticationManager authenticationManager) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+    }
+
+    @PostMapping("/register")
+    public User registerUser(@RequestBody User user) {
+        return userService.saveUser(user);
+    }
+
+    @PostMapping("/login")
+    public String loginUser(@RequestBody User user) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return "User logged in successfully";
+    }
+}
+</code></pre>
+                <h3>1.7 Configure Spring Security</h3>
+                <p>Create a new Java class named SecurityConfig in the com.example.userregistration.config package:</p>
+                <pre><code>
+    package com.example.userregistration.config;
+
+import com.example.userregistration.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    private final UserService userService;
+
+    @Autowired
+    public SecurityConfig(UserService userService) {
+        this.userService = userService;
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated()
+            );
+
+        return http.build();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+}
+</code></pre>
+                <h2>Step 2: Creating the Frontend with Vue.js</h2>
+                <h3>2.1 Set Up Vue Project</h3>
+                <p>1.Open a terminal and navigate to your workspace directory. <br><br>
+
+                    2. Create a new Vue project using Vue CLI:</p>
+                <pre><code>
+npm install -g @vue/cli
+vue create vue-frontend
+                    </code></pre>
+                <p>3.Navigate to the project directory:</p>
+                <pre><code>cd vue-frontend</code></pre>
+                <h3>2.2 Install Axios and Bootstrap</h3>
+                <p>Install Axios to make HTTP requests and Bootstrap for styling:</p>
+                <pre><code>npm install axios bootstrap</code></pre>
+                <h3>2.3 Create Components</h3>
+                <p>Create the necessary components for user registration and login.</p>
+                <h3>2.3.1 Create AuthService.js</h3>
+                <p>Create a new file AuthService.js in the src directory to handle API requests for authentication:</p>
+                <pre><code>
+import axios from 'axios';
+
+const API_BASE_URL = "http://localhost:8080/auth";
+
+class AuthService {
+    register(user) {
+        return axios.post(`${API_BASE_URL}/register`, user);
+    }
+
+    login(user) {
+        return axios.post(`${API_BASE_URL}/login`, user);
+    }
+}
+
+export default new AuthService();
+                    </code></pre>
+                <h3>2.3.2 Create RegisterComponent.vue</h3>
+                <p>Create a new file RegisterComponent.vue in the src/components directory:</p>
+                <pre><code>
+&lt;template&gt;
+  &lt;div class="container mt-5"&gt;
+    &lt;div class="row justify-content-center"&gt;
+      &lt;div class="col-md-6"&gt;
+        &lt;div class="card"&gt;
+          &lt;div class="card-header"&gt;Registration&lt;/div&gt;
+          &lt;div class="card-body"&gt;
+            &lt;form @submit.prevent="registerUser"&gt;
+              &lt;div class="form-group"&gt;
+                &lt;label&gt;First Name&lt;/label&gt;
+                &lt;input v-model="user.firstName" class="form-control" type="text" placeholder="Enter first name" /&gt;
+              &lt;/div&gt;
+              &lt;div class="form-group"&gt;
+                &lt;label&gt;Last Name&lt;/label&gt;
+                &lt;input v-model="user.lastName" class="form-control" type="text" placeholder="Enter last name" /&gt;
+              &lt;/div&gt;
+              &lt;div class="form-group"&gt;
+                &lt;label&gt;Email&lt;/label&gt;
+                &lt;input v-model="user.email" class="form-control" type="email" placeholder="Enter email address" /&gt;
+              &lt;/div&gt;
+              &lt;div class="form-group"&gt;
+                &lt;label&gt;Password&lt;/label&gt;
+                &lt;input v-model="user.password" class="form-control" type="password" placeholder="Enter password" /&gt;
+              &lt;/div&gt;
+              &lt;button type="submit" class="btn btn-primary"&gt;Register&lt;/button&gt;
+            &lt;/form&gt;
+            &lt;div class="mt-3"&gt;
+              &lt;span&gt;Already registered? &lt;router-link to="/login"&gt;Login here&lt;/router-link&gt;&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import AuthService from '../AuthService';
+
+export default {
+  data() {
+    return {
+      user: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: ''
+      }
+    };
+  },
+  methods: {
+    registerUser() {
+      AuthService.register(this.user).then(response =&gt; {
+        console.log(response.data);
+      });
+    }
+  }
+};
+&lt;/script&gt;
+</code></pre>
+                <h3>2.3.3 Create LoginComponent.vue</h3>
+                <p>Create a new file LoginComponent.vue in the src/components directory:</p>
+                <pre><code>
+ &lt;template&gt;
+  &lt;div class="container mt-5"&gt;
+    &lt;div class="row justify-content-center"&gt;
+      &lt;div class="col-md-6"&gt;
+        &lt;div class="card"&gt;
+          &lt;div class="card-header"&gt;Login Form&lt;/div&gt;
+          &lt;div class="card-body"&gt;
+            &lt;form @submit.prevent="loginUser"&gt;
+              &lt;div class="form-group"&gt;
+                &lt;label&gt;Email&lt;/label&gt;
+                &lt;input v-model="user.email" class="form-control" type="email" placeholder="Email" /&gt;
+              &lt;/div&gt;
+              &lt;div class="form-group"&gt;
+                &lt;label&gt;Password&lt;/label&gt;
+                &lt;input v-model="user.password" class="form-control" type="password" placeholder="Password" /&gt;
+              &lt;/div&gt;
+              &lt;button type="submit" class="btn btn-primary"&gt;Login&lt;/button&gt;
+            &lt;/form&gt;
+            &lt;div class="mt-3"&gt;
+              &lt;span&gt;Not registered? &lt;router-link to="/register"&gt;Register/SignUp Here&lt;/router-link&gt;&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import AuthService from '../AuthService';
+
+export default {
+  data() {
+    return {
+      user: {
+        email: '',
+        password: ''
+      }
+    };
+  },
+  methods: {
+    loginUser() {
+      AuthService.login(this.user).then(response =&gt; {
+        console.log(response.data);
+      });
+    }
+  }
+};
+&lt;/script&gt;
+</code></pre>
+                <h3>2.3.4 Create App.vue</h3>
+                <p>Modify the App.vue file to include routing for the components:</p>
+                <pre><code>
+    &lt;template&gt;
+  &lt;div id="app"&gt;
+    &lt;nav class="navbar navbar-expand-lg navbar-light bg-light"&gt;
+      &lt;a class="navbar-brand" href="#"&gt;Registration and Login System&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;router-view&gt;&lt;/router-view&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: 'App'
+};
+&lt;/script&gt;
+
+&lt;style&gt;
+nav {
+  margin-bottom: 20px;
+}
+&lt;/style&gt;
+</code></pre>
+                <h3>2.3.5 Update main.js</h3>
+                <p>Ensure the main.js file is set up correctly:</p>
+                <pre><code>
+import { createApp } from 'vue';
+import App from './App.vue';
+import { createRouter, createWebHistory } from 'vue-router';
+import RegisterComponent from './components/RegisterComponent.vue';
+import LoginComponent from './components/LoginComponent.vue';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const routes = [
+  { path: '/', component: RegisterComponent },
+  { path: '/register', component: RegisterComponent },
+  { path: '/login', component: LoginComponent }
+];
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+});
+
+const app = createApp(App);
+app.use(router);
+app.mount('#app');
+</code></pre>
+                <h2>Step 3: Running the Application</h2>
+                <h3>3.1 Run the Spring Boot Application</h3>
+                <p>1.Open the UserRegistrationApplication class in the src/main/java/com/example/userregistration
+                    director. <br><br>
+                    2. Click the green Run button in your IDE or use the terminal to run the application:
+                </p>
+                <pre><code>./mvnw spring-boot:run</code></pre>
+                <h3>3.2 Run the Vue.js Application</h3>
+                <p>1.Open a terminal and navigate to the vue-frontend directory. <br><br>
+
+                    2.Start the Vue application:</p>
+<pre><code>npm run serve</code></pre>
+<p>Open your web browser and navigate to http://localhost:8080.</p>
+<p>You should now be able to register and log in users using the Vue.js frontend and Spring Boot backend.</p>
+<h2>Conclusion</h2>
+<p>In this tutorial, we created a full-stack application using Spring Boot for the backend and Vue.js for the frontend. <br><br>We implemented user registration and login functionalities and handled the necessary configurations to connect <br><br> the two parts of the application. This setup provides a solid foundation for developing more complex full-stack <br><br>applications.</p>
+<h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

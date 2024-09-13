@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Microservices API Gateway with Automatic Routes Mapping</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Boot Microservices API Gateway with Automatic Routes Mapping</h1>
+                <h4>author : Sai K</h4>
+                <p>In this tutorial, we will create two Spring Boot microservices and set up an API Gateway that
+                    automatically maps <br><br>routes to these microservices using Eureka for service discovery. We'll
+                    use the latest Spring Boot version 3.2+ <br><br> and Spring Cloud 2023.x. This guide is intended for
+                    beginners and includes detailed explanations for each step.</p>
+                <br>
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li>JDK 17 or later</li><br>
+                    <li>Maven or Gradle</li><br>
+                    <li>IDE (IntelliJ IDEA, Eclipse, etc.)</li><br>
+                </ul>
+                <h2>Step 1: Set Up the Eureka Server</h2>
+                <h3>1.1 Create the Project </h3>
+                <p>Use Spring Initializr to create a new project with the following dependencies:</p>
+                <li>Eureka Server</li>
+                <p><b>1.2 Configure application.properties</b></p>
+                <p>Set up the application properties for the Eureka Server.</p>
+                <pre><code>
+server.port=8761
+spring.application.name=eureka-server
+
+eureka.client.register-with-eureka=false
+eureka.client.fetch-registry=false
+                </code></pre>
+                <h3>Explanation: </h3>
+                <ul>
+                    <li>server.port=8761: Sets the port for the Eureka Server.</li><br>
+                    <li>spring.application.name=eureka-server: Names the application.</li><br>
+                    <li>eureka.client.register-with-eureka=false: Indicates that the Eureka Server itself should not try
+                        to register with another Eureka Server.</li><br>
+                    <li>eureka.client.fetch-registry=false: Indicates that the Eureka Server should not attempt to fetch
+                        registry information from another Eureka Server.</li><br>
+
+                </ul>
+                <h3>1.3 Enable Eureka Server</h3>
+                <p>Add the @EnableEurekaServer annotation to the main application class.</p>
+                <pre><code>
+                    package com.example.eurekaserver;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+
+@SpringBootApplication
+@EnableEurekaServer
+public class EurekaServerApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(EurekaServerApplication.class, args);
+    }
+}
+                </code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@EnableEurekaServer: Enables the Eureka Server functionality in your Spring Boot application.
+                    </li>
+                </ul>
+                <h2>Step 2: Set Up service-a
+                </h2>
+                <h3>2.1 Create the Project</h3>
+                <p>Use Spring Initializr to create a new project with the following dependencies:</p>
+                <ul>
+                    <li>Spring Web</li><br>
+                    <li> Eureka Discovery Client</li><br>
+                </ul>
+                <h3>2.2 Configure application.properties</h3>
+                <p>Set up the application properties for service-a. </p>
+                <pre><code>
+server.port=8081
+spring.application.name=service-a
+
+eureka.client.service-url.default-zone=http://localhost:8761/eureka/
+
+                </code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>server.port=8081: Sets the port for the Product Service.</li><br>
+                    <li>spring.application.name=service-a: Names the application.</li><br>
+                    <li>eureka.client.service-url.default-zone=http://localhost:8761/eureka/: Specifies the Eureka
+                        Server URL for service registration.</li><br>
+                </ul>
+                <h3>2.3 Enable Eureka Client</h3>
+                <p>Add the @EnableDiscoveryClient annotation to the main application class.</p>
+                <pre><code>
+                    package com.example.servicea;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class ServiceAApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(ServiceAApplication.class, args);
+    }
+}
+ </code></pre>
+                <h3>Explanation:</h3>
+                <li>@EnableDiscoveryClient: Indicates that this application should register with a Eureka Server for
+                    service discovery.</li>
+                <h3>2.4 Create a Controller</h3>
+                <p>Create a controller to handle requests.</p>
+                <pre><code>
+    package com.example.servicea;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class ServiceAController {
+
+    @GetMapping("/service-a")
+    public String getServiceA() {
+        return "Response from Service A";
+    }
+}
+ </code></pre>
+                <h3>Explanation: </h3>
+                <ul>
+                    <li>@RestController: Marks this class as a REST controller.</li><br>
+                    <li>@GetMapping("/service-a"): Maps GET requests to /service-a to this method</li><br>
+                </ul>
+                <h2>Step 3: Set Up service-b</h2>
+                <h3>3.1 Create the Project</h3>
+                <p>Use Spring Initializr to create a new project with the following dependencies:</p>
+                <ul>
+                    <li>Spring Web</li><br>
+                    <li> Eureka Discovery Client</li><br>
+                </ul>
+                <h3>3.2 Configure application.properties</h3>
+                <p>Set up the application properties for service-b.</p>
+                <pre><code>
+    server.port=8082
+spring.application.name=service-b
+
+eureka.client.service-url.default-zone=http://localhost:8761/eureka/
+</code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>server.port=8082: Sets the port for the Order Service.</li><br>
+                    <li>spring.application.name=service-b: Names the application.</li><br>
+                    <li>eureka.client.service-url.default-zone=http://localhost:8761/eureka/: Specifies the Eureka
+                        Server URL for service registration</li><br>
+                </ul>
+                <h3>3.3 Enable Eureka Client</h3>
+                <p>Add the @EnableDiscoveryClient annotation to the main application class.</p>
+                <pre><code>
+    package com.example.serviceb;
+
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+    import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+    
+    @SpringBootApplication
+    @EnableDiscoveryClient
+    public class ServiceBApplication {
+        public static void main(String[] args) {
+            SpringApplication.run(ServiceBApplication.class, args);
+        }
+    }
+    </code></pre>
+                <h3>Explanation:</h3>
+                <li>@EnableDiscoveryClient: Indicates that this application should register with a Eureka Server for
+                    service discovery.</li>
+                <h3>3.4 Create a Controller </h3>
+                <p>Create a controller to handle requests.</p>
+                <pre><code>
+        package com.example.serviceb;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class ServiceBController {
+
+    @GetMapping("/service-b")
+    public String getServiceB() {
+        return "Response from Service B";
+    }
+}
+    </code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>@RestController: Marks this class as a REST controller.</li><br>
+                    <li>@GetMapping("/service-b"): Maps GET requests to /service-b to this method.</li><br>
+                </ul>
+                <h2>Step 4: Set Up the API Gateway</h2>
+                <h3>4.1 Create the Project</h3>
+                <p>Use Spring Initializr to create a new project with the following dependencies:</p>
+                <ul>
+                    <li>Spring Cloud Gateway</li><br>
+                    <li>Eureka Discovery Client</li><br>
+                </ul>
+                <h3>4.2 Configure application.properties</h3>
+                <p>Set up the application properties for the API Gateway.</p>
+                <pre><code>
+server.port=8080
+spring.application.name=api-gateway
+
+eureka.client.service-url.default-zone=http://localhost:8761/eureka/
+spring.cloud.gateway.discovery.locator.enabled=true
+spring.cloud.gateway.discovery.locator.lower-case-service-id=true
+
+    </code></pre>
+                <h3>Explanation:</h3>
+                <ul>
+                    <li>server.port=8080: Sets the port for the API Gateway.</li><br>
+                    <li>spring.application.name=api-gateway: Names the application.</li><br>
+                    <li>eureka.client.service-url.default-zone=http://localhost:8761/eureka/: Specifies the Eureka
+                        Server URL for service registration.
+                    </li><br>
+                    <li>spring.cloud.gateway.discovery.locator.enabled=true: Enables the Discovery Locator to
+                        automatically map routes.
+                    </li><br>
+                    <li>spring.cloud.gateway.discovery.locator.lower-case-service-id=true: Converts service IDs to
+                        lowercase.
+                    </li><br>
+                </ul>
+                <h3>4.3 Enable Eureka Client and Gateway</h3>
+                <p>Enable Eureka client and gateway functionality by adding the @EnableDiscoveryClient annotation in the
+                    main <br><br> application class.</p>
+                <pre><code>
+package com.example.apigateway;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class ApiGatewayApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(ApiGatewayApplication.class, args);
+    }
+}</code></pre>
+                <h3>Explanation:</h3>
+                <li>@EnableDiscoveryClient: Indicates that this application should register with a Eureka Server for
+                    service <br><br>discovery.</li>
+                <h2>Step 5: Run the Microservices</h2>
+                <p>1.Start the Eureka Server: Run the EurekaServerApplication class <br><br>
+                    2. Start service-a: Run the ServiceAApplication class.<br><br>
+                    3.Start service-b: Run the ServiceBApplication class.<br><br>
+                    4.Start the API Gateway: Run the ApiGatewayApplication class.</p>
+                <h2>Step 6: Test the Communication</h2>
+                <p>Open your browser or use a tool like Postman to test the endpoints through the API Gateway:</p>
+                <ul>
+                    <li>service-a: http://localhost:8080/service-a/service-a</li><br>
+                    <li>service-b: http://localhost:8080/service-b/service-b</li><br>
+                </ul>
+<p>The response from service-a and service-b should include the respective messages defined in their controllers.</p>
+<h2>Conclusion</h2>
+<p>You have successfully set up two Spring Boot microservices and an API Gateway with automatic route mapping <br><br>using Eureka Server for service discovery. The API Gateway dynamically discovers the services registered with <br><br>bEureka and routes the requests appropriately. </p><br>
+<p>A quick way to enable Spring Cloud API Gateway to route HTTP requests to a Microservice registered with the<br><br> discovery service is to enable the Discovery Locator. To enable the automatic mapping of routes in your Spring<br><br> Cloud API Gateway project, open the application.properties file and add the following configuration properties.</p>
+<pre><code>
+spring.cloud.gateway.discovery.locator.enabled=true
+spring.cloud.gateway.discovery.locator.lower-case-service-id=true
+</code></pre>
+<ul>
+    <li>spring.cloud.gateway.discovery.locator.enabled=true: Enables the Discovery Locator to automatically map routes.</li><br>
+    <li>spring.cloud.gateway.discovery.locator.lower-case-service-id=true: Converts service IDs to lowercase.</li><br>
+</ul>
+<h3>Related Spring and Spring Boot Tutorials/Guides:</h3>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
