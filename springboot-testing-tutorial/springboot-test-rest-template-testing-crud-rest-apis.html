@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot TestRestTemplate - Testing CRUD REST APIs
+    </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Boot TestRestTemplate - Testing CRUD REST APIs</h1>
+        <p>This tutorial will guide you through using TestRestTemplate in Spring Boot for testing CRUD operations on a
+            User entity. We will use an H2 in-memory database for data persistence and create the necessary service,
+            repository, and controller layers.</p>
+        <h2>What is TestRestTemplate?</h2>
+        <p>TestRestTemplate is a template class provided by Spring Boot for integration testing that involves a running
+            server. It is used to make RESTful calls to an actual server and is ideal for full-stack integration
+            testing. </p>
+
+        <h2>Advantages of TestRestTemplate</h2>
+
+        <p><b>Full-Stack Testing:</b> TestRestTemplate is used for end-to-end testing of the application, including the
+            web layer, server, and often the database.</p>
+
+        <p><b> Realistic Scenarios:</b> It is closer to real-world scenarios where the application is running on an
+            actual server, making it ideal for testing the complete stack.</p>
+
+        <p><b> Ease of Use:</b> It offers a straightforward approach for making REST calls, simplifying the testing of
+            RESTful APIs.</p>
+        <h2>Ideal Use Cases for TestRestTemplate</h2>
+        <ul>
+            <li> Use TestRestTemplate, where you need to test the application as a whole using Integration testing.</li>
+            <li> Testing RESTful APIs in scenarios that closely mimic the production environment.</li>
+            <li> Situations where you want to test the application's interaction with external services or databases.
+            </li>
+        </ul>
+        <h2>Testing Spring Boot CRUD REST APIs using TestRestTemplate </h2>
+
+        <p>In this tutorial, we'll create a Spring Boot application that performs CRUD operations on a <b>User</b>
+            entity,
+            using an H2 in-memory database for persistence. We'll then test these CRUD operations using
+            <b>TestRestTemplate</b>. The application will be structured into three layers: Repository, Service, and
+            Controller.
+        </p>
+        <h2>Project Setup </h2>
+
+        <p>Ensure you have the following dependencies in your pom.xml:</p>
+
+        <pre>
+    &lt;dependency&gt;
+          &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+          &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+          &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+          &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+          &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+          &lt;artifactId&gt;h2&lt;/artifactId&gt;
+          &lt;scope&gt;runtime&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+          &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+          &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+          &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+</pre>
+        <h2>The User Entity</h2>
+        <pre>import jakarta.persistence.*;
+
+    @Entity
+    public class User {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+        private String firstName;
+        private String lastName;
+        private String email;
+    
+        // Constructors, Getters, Setters
+    }</pre>
+        <h2>The UserRepository</h2>
+
+        <pre>import org.springframework.data.jpa.repository.JpaRepository;
+
+    public interface UserRepository extends JpaRepository&lt;User, Long> {
+    }</pre>
+        <h2>The UserService</h2>
+        <pre>import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.stereotype.Service;
+    
+    import java.util.List;
+    import java.util.Optional;
+    
+    @Service
+    public class UserService {
+    
+        private final UserRepository userRepository;
+    
+        @Autowired
+        public UserService(UserRepository userRepository) {
+            this.userRepository = userRepository;
+        }
+    
+        public User createUser(User user) {
+            return userRepository.save(user);
+        }
+    
+        public Optional&lt;User> getUser(Long id) {
+            return userRepository.findById(id);
+        }
+    
+        public User updateUser(Long id, User userDetails) {
+            User user = userRepository.findById(id).orElseThrow();
+            user.setFirstName(userDetails.getFirstName());
+            user.setLastName(userDetails.getLastName());
+            user.setEmail(userDetails.getEmail());
+            return userRepository.save(user);
+        }
+    
+        public void deleteUser(Long id) {
+            userRepository.deleteById(id);
+        }
+    
+        public List&lt;User> getAllUsers() {
+            return userRepository.findAll();
+        }
+    }</pre>
+
+        <h2>The UserController </h2>
+
+        <pre>import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.web.bind.annotation.*;
+    
+    import java.util.List;
+    
+    @RestController
+    @RequestMapping("/users")
+    public class UserController {
+    
+        private final UserService userService;
+    
+        @Autowired
+        public UserController(UserService userService) {
+            this.userService = userService;
+        }
+    
+        @PostMapping
+        public ResponseEntity&lt;User> createUser(@RequestBody User user) {
+            return ResponseEntity.ok(userService.createUser(user));
+        }
+    
+        @GetMapping("/{id}")
+        public ResponseEntity&lt;User> getUser(@PathVariable Long id) {
+            return userService.getUser(id)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        }
+    
+        @GetMapping
+        public ResponseEntity&lt;List&lt;User>> getAllUsers() {
+            return ResponseEntity.ok(userService.getAllUsers());
+        }
+    
+        @PutMapping("/{id}")
+        public ResponseEntity&lt;User> updateUser(@PathVariable Long id, @RequestBody User user) {
+            return ResponseEntity.ok(userService.updateUser(id, user));
+        }
+    
+        @DeleteMapping("/{id}")
+        public ResponseEntity&lt;Void> deleteUser(@PathVariable Long id) {
+            userService.deleteUser(id);
+            return ResponseEntity.ok().build();
+        }
+    }</pre>
+        <h2>Writing Tests with TestRestTemplate</h2>
+
+        <p>First, configure TestRestTemplate in your test class:</p>
+
+        <pre>@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+    public class UserControllerTest {
+    
+        @Autowired
+        private TestRestTemplate testRestTemplate;
+    
+        // Test methods go here
+    }</pre>
+
+        <p>Now, write tests for each CRUD operation. Create, retrieve, update, and delete User entities, and assert the
+            responses using TestRestTemplate.</p>
+
+        <h2>Create (POST)</h2>
+
+        <p>Testing the creation of a new User.</p>
+
+        <pre>@Test
+    public void createUserTest() {
+        User newUser = new User(null, "Alice", "Smith", "alice.smith@example.com");
+        ResponseEntity&lt;User> response = testRestTemplate.postForEntity("/users", newUser, User.class);
+    
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody().getId());
+        assertEquals("Alice", response.getBody().getFirstName());
+    }</pre>
+        <h2>Read (GET)</h2>
+        <p>Testing retrieval of a User.</p>
+        <pre>@Test
+    public void getUserTest() {
+        // Create a user to retrieve
+        User newUser = new User(null, "Bob", "Jones", "bob.jones@example.com");
+        User createdUser = testRestTemplate.postForObject("/users", newUser, User.class);
+    
+        ResponseEntity&lt;User> response = testRestTemplate.getForEntity("/users/" + createdUser.getId(), User.class);
+    
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Bob", response.getBody().getFirstName());
+    }</pre>
+        <h2>Update (PUT)</h2>
+        <p>Testing the update of a User.</p>
+        <pre>@Test
+    public void updateUserTest() {
+        // Create a user to update
+        User newUser = new User(null, "Charlie", "Brown", "charlie.brown@example.com");
+        User createdUser = testRestTemplate.postForObject("/users", newUser, User.class);
+    
+        User updatedUser = new User(null, "Charles", "Brown", "charlie.brown@example.com");
+        testRestTemplate.put("/users/" + createdUser.getId(), updatedUser);
+    
+        ResponseEntity&lt;User> response = testRestTemplate.getForEntity("/users/" + createdUser.getId(), User.class);
+    
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Charles", response.getBody().getFirstName());
+    }</pre>
+
+        <h2>Delete (DELETE)</h2>
+        <p>Testing the deletion of a User.</p>
+        <pre>@Test
+    public void deleteUserTest() {
+        // Create a user to delete
+        User newUser = new User(null, "Dave", "Wilson", "dave.wilson@example.com");
+        User createdUser = testRestTemplate.postForObject("/users", newUser, User.class);
+    
+        testRestTemplate.delete("/users/" + createdUser.getId());
+    
+        ResponseEntity&lt;User> response = testRestTemplate.getForEntity("/users/" + createdUser.getId(), User.class);
+    
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }</pre>
+        <h2>Conclusion</h2>
+        <p>In this tutorial, we've demonstrated how to use TestRestTemplate for testing CRUD operations on a User entity
+            in a Spring Boot application, backed by an H2 in-memory database. This approach is ideal for full-stack
+            integration testing, providing a realistic testing environment while ensuring the correct behavior of the
+            RESTful service.</p>
+    </div>
+</body>
+
+</html>

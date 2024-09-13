@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebTestClient in Spring Boot: Testing CRUD REST APIs
+    </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>WebTestClient in Spring Boot: Testing CRUD REST APIs</h1>
+        <p>In this tutorial, we'll explore how to use Spring Boot's WebTestClient for testing CRUD (Create, Read,
+            Update, Delete) operations in a RESTful service. WebTestClient is a non-blocking, reactive web client for
+            testing web components.</p>
+        <h2>What is WebTestClient?</h2>
+        <p><b>WebTestClient</b> is a client-side test tool that is part of the Spring WebFlux module. It's designed to
+            test
+            reactive and non-reactive web applications by performing requests and asserting responses without the need
+            for running a server. <b>WebTestClient</b> is particularly useful for integration testing, where it can
+            mimic the
+            behavior of client requests and validate the responses from your RESTful services. </p>
+        <h2>Key Features: </h2>
+        <p><b>Non-Blocking Client: </b>Suitable for testing reactive applications with asynchronous and event-driven
+            behavior. </p>
+
+        <p><b> Fluent API: </b>Offers a fluent API for building requests, sending them, and asserting responses. </p>
+
+        <p><b> Support for Both Web MVC and WebFlux:</b> Works with both traditional servlet-based and reactive-based
+            web applications.</p>
+        <h2>Testing Spring Boot CRUD REST APIs using WebTestClient</h2>
+        <p>In this tutorial, we'll create a Spring Boot application that performs CRUD operations on a <b>User</b>
+            entity,
+            using an H2 in-memory database for persistence. We'll then test these CRUD operations using
+            <b>WebTestClient</b>.
+            The application will be structured into three layers: Repository, Service, and Controller.
+        </p>
+        <h2>Project Setup </h2>
+
+        <p>Ensure you have the following dependencies in your pom.xml:</p>
+        <pre>
+    &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-webflux&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+            &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+            &lt;artifactId&gt;h2&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+  </pre>
+        <h2>The User Entity</h2>
+        <pre>import jakarta.persistence.*;
+
+    @Entity
+    public class User {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+        private String firstName;
+        private String lastName;
+        private String email;
+    
+        // Constructors, Getters, Setters
+    }</pre>
+
+        <h2>The UserRepository</h2>
+
+        <pre>import org.springframework.data.jpa.repository.JpaRepository;
+
+    public interface UserRepository extends JpaRepository&lt;User, Long> {
+    }</pre>
+        <h2>The UserService</h2>
+        <pre>import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.stereotype.Service;
+    
+    import java.util.List;
+    import java.util.Optional;
+    
+    @Service
+    public class UserService {
+    
+        private final UserRepository userRepository;
+    
+        @Autowired
+        public UserService(UserRepository userRepository) {
+            this.userRepository = userRepository;
+        }
+    
+        public User createUser(User user) {
+            return userRepository.save(user);
+        }
+    
+        public Optional&lt;User> getUser(Long id) {
+            return userRepository.findById(id);
+        }
+    
+        public User updateUser(Long id, User userDetails) {
+            User user = userRepository.findById(id).orElseThrow();
+            user.setFirstName(userDetails.getFirstName());
+            user.setLastName(userDetails.getLastName());
+            user.setEmail(userDetails.getEmail());
+            return userRepository.save(user);
+        }
+    
+        public void deleteUser(Long id) {
+            userRepository.deleteById(id);
+        }
+    
+        public List&lt;User> getAllUsers() {
+            return userRepository.findAll();
+        }
+    }</pre>
+        <h2>The UserController</h2>
+        <pre>import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.web.bind.annotation.*;
+    
+    import java.util.List;
+    
+    @RestController
+    @RequestMapping("/users")
+    public class UserController {
+    
+        private final UserService userService;
+    
+        @Autowired
+        public UserController(UserService userService) {
+            this.userService = userService;
+        }
+    
+        @PostMapping
+        public ResponseEntity&lt;User> createUser(@RequestBody User user) {
+            return ResponseEntity.ok(userService.createUser(user));
+        }
+    
+        @GetMapping("/{id}")
+        public ResponseEntity&lt;User> getUser(@PathVariable Long id) {
+            return userService.getUser(id)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        }
+    
+        @GetMapping
+        public ResponseEntity&lt;List&lt;User>> getAllUsers() {
+            return ResponseEntity.ok(userService.getAllUsers());
+        }
+    
+        @PutMapping("/{id}")
+        public ResponseEntity&lt;User> updateUser(@PathVariable Long id, @RequestBody User user) {
+            return ResponseEntity.ok(userService.updateUser(id, user));
+        }
+    
+        @DeleteMapping("/{id}")
+        public ResponseEntity&lt;Void> deleteUser(@PathVariable Long id) {
+            userService.deleteUser(id);
+            return ResponseEntity.ok().build();
+        }
+    }
+    </pre>
+        <h2>Writing Tests with WebTestClient</h2>
+        <p>First, configure <b>WebTestClient</b> in your test class:</p>
+        <pre>@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+    @AutoConfigureWebTestClient
+    public class UserControllerTest {
+    
+        @Autowired
+        private WebTestClient webTestClient;
+    
+        // Test methods go here
+    }</pre>
+        <p>Now, let's write tests for each CRUD operation - create, retrieve, update, and delete User entities, and
+            assert the responses using <b>WebTestClient</b>.</p>
+        <h2>Preparing Test Data</h2>
+        <p>For our test cases, we'll need a sample User object.</p>
+        <pre>@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+    @AutoConfigureWebTestClient
+    public class UserControllerTest {
+    
+        @Autowired
+        private WebTestClient webTestClient;
+    
+        private User sampleUser;
+    
+        @BeforeEach
+        void setUp() {
+            sampleUser = new User();
+            sampleUser.setFirstName("John");
+            sampleUser.setLastName("Doe");
+            sampleUser.setEmail("john.doe@example.com");
+        }
+    
+        // Test methods will be added here
+    }</pre>
+        <h2>Create (POST)</h2>
+        <p>Testing the creation of a new User.
+
+        </p>
+        <pre>@Test
+    public void createUserTest() {
+        webTestClient.post()
+                     .uri("/users")
+                     .contentType(MediaType.APPLICATION_JSON)
+                     .bodyValue(sampleUser)
+                     .exchange()
+                     .expectStatus().isOk()
+                     .expectBody()
+                     .jsonPath("$.firstName").isEqualTo("John")
+                     .jsonPath("$.lastName").isEqualTo("Doe")
+                     .jsonPath("$.email").isEqualTo("john.doe@example.com");
+    }</pre>
+
+        <h2>Read (GET)</h2>
+        <p>Testing retrieval of a User.</p>
+        <pre>@Test
+    public void getUserTest() {
+        Long userId = 1L; // Assuming this ID exists in the database
+        webTestClient.get()
+                     .uri("/users/" + userId)
+                     .exchange()
+                     .expectStatus().isOk()
+                     .expectBody()
+                     .jsonPath("$.id").isEqualTo(userId)
+                     .jsonPath("$.firstName").isEqualTo("John");
+    }</pre>
+        <h2>Update (PUT)</h2>
+        <p>Testing the update of a User.</p>
+
+        <pre>@Test
+    public void updateUserTest() {
+        Long userId = 1L; // Assuming this ID exists
+        User updatedUser = new User();
+        updatedUser.setFirstName("Jane");
+        updatedUser.setLastName("Doe");
+        updatedUser.setEmail("jane.doe@example.com");
+    
+        webTestClient.put()
+                     .uri("/users/" + userId)
+                     .contentType(MediaType.APPLICATION_JSON)
+                     .bodyValue(updatedUser)
+                     .exchange()
+                     .expectStatus().isOk()
+                     .expectBody()
+                     .jsonPath("$.firstName").isEqualTo("Jane")
+                     .jsonPath("$.lastName").isEqualTo("Doe");
+    }</pre>
+
+        <h2>Delete (DELETE)</h2>
+        <p>Testing the deletion of a User.</p>
+        <pre>@Test
+    public void deleteUserTest() {
+        Long userId = 1L; // Assuming this ID exists
+        webTestClient.delete()
+                     .uri("/users/" + userId)
+                     .exchange()
+                     .expectStatus().isOk();
+    }</pre>
+        <h2>Conclusion </h2>
+        <p>This tutorial covered creating a simple Spring Boot application with a User entity and performing CRUD
+            operations using an H2 database. The application is structured into repository, service, and controller
+            layers, and we tested these operations using <b>WebTestClient</b>, demonstrating the tool's effectiveness for
+            testing web layers in Spring Boot applications.</p>
+
+
+    </div>
+</body>
+
+</html>

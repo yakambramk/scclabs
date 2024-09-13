@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot MockMvc - CRUD Example Tutorial
+    </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Boot MockMvc - CRUD Example Tutorial</h1>
+        <p>In Spring Boot, the MockMvc framework provides a powerful and convenient way to test your web applications by
+            simulating HTTP requests and validating the responses.</p>
+
+        <p> In this blog post, we will delve into the details of Spring Boot's <b>MockMvc</b> framework and explore how
+            it can
+            be used for effective web application testing. </p>
+        <h2>What is MockMvc in Spring Boot? </h2>
+        <p><b>MockMvc</b> is a part of the Spring Test framework that provides a simulated environment for testing web
+            applications without the need for a running server. It allows you to send HTTP requests, handle the requests
+            in your controllers, and validate the responses in a controlled and isolated manner.</p>
+
+        <p> With <b>MockMvc</b>, you can test the behavior of your web application's endpoints and verify that they are
+            working as expected.</p>
+
+        <h2>Spring Boot MockMvc Example</h2>
+        <p><b>Add Maven Dependencies</b></p>
+        <p>To use <b>MockMvc</b> in your Spring Boot project, you need to include the <b>spring-boot-starter-test</b>
+            dependency in
+            your project configuration file, such as Maven's pom.xml or Gradle's build file.</p>
+        <pre>
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                    &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+                    &lt;scope&gt;test&lt;/scope&gt;
+                &lt;/dependency&gt;
+                </pre>
+        <p>Also, add below <b>spring-boot-starter-web</b> dependency to build REST APIs in the Spring boot application:
+        </p>
+        <pre>
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    </pre>
+
+        <h2>Create Spring MVC Controller </h2>
+
+        <p>Next, let's create <b>HelloWorldController</b> and annotate it with <b>@RestController</b> annotation:</p>
+        <pre>import org.springframework.web.bind.annotation.GetMapping;
+    import org.springframework.web.bind.annotation.PathVariable;
+    import org.springframework.web.bind.annotation.RestController;
+    
+    @RestController
+    public class HelloWorldController {
+    
+        @GetMapping("/hello/{name}")
+        public String sayHello(@PathVariable String name) {
+            return "Hello, " + name + "!";
+        }
+    }</pre>
+        <p>In the above example, the <b>HelloWorldController</b> class is annotated with <b>@RestController</b>, which
+            indicates that
+            it is a controller class responsible for handling HTTP requests and returning JSON responses. </p>
+
+        <p>The <b>@GetMapping </b> is used to map the <b>/hello/{name}</b> URL path to the sayHello method. The
+            <b>@PathVariable </b> is used to extract the <b>{name} </b>path variable and pass it as a method parameter.
+            The
+            method returns a simple greeting message.
+        </p>
+
+        <p>Next, run your Spring boot application and send a request to the REST API. For example, you can send a GET
+            request to <b>http://localhost:8080/hello/Ramesh </b>to get a response of "Hello, Ramesh!".</p>
+        <img src="/assets/springboot-testing-images/Screenshot 2023-07-11 at 12.13.40 PM.png" alt=""
+            class="image-fluid">
+
+        <h2>Unit Testing HelloController Class</h2>
+        <p>Create a test class and annotate it with @WebMvcTest:</p>
+
+        <pre>import org.junit.jupiter.api.Test;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+    import org.springframework.test.web.servlet.MockMvc;
+    
+    import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+    import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+    import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+    
+    @WebMvcTest(HelloWorldController.class)
+    public class HelloWorldControllerTest {
+    
+        @Autowired
+        private MockMvc mockMvc;
+    
+        @Test
+        public void testGetEndpoint() throws Exception {
+            mockMvc.perform(get("/hello/Ramesh"))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(content().string("Hello, Ramesh!"));
+        }
+    }</pre>
+        <p>Note that we are using <b>@WebMvcTest</b> annotation to load only <b>HelloWorldController</b> class:</p>
+
+        <pre>@WebMvcTest(HelloWorldController.class)</pre>
+        <p>The <b>MockMvc</b> instance is autowired and used to perform HTTP requests and assertions in the test
+            methods.</p>
+
+        <pre>@Autowired
+	private MockMvc mockMvc;</pre>
+
+        <p>The <b>mockMvc.perform()</b> is used to send the HTTP request, and the <b>andExpect() </b>method is used to
+            validate the
+            response. Various methods like <b>status(), content()</b>, and more are available for asserting different
+            aspects
+            of the response, such as status codes, headers, and response body.</p>
+
+        <h2>Run the Unit Test</h2>
+
+        <img src="/assets/springboot-testing-images/Screenshot 2023-07-11 at 1.11.16 PM.png" alt="" class="image-fluid">
+
+        <h2>JUnit Tests for CRUD REST APIs</h2>
+        <p>Let’s create some JUnit tests which will test different HTTP methods in the controller class.</p>
+        <h2>GET REST API</h2>
+        <p>Consider we have below GET User REST:</p>
+
+        <pre> @GetMapping("/{id}")
+    public ResponseEntity&lt;User> getUser(@PathVariable Long id) {
+        User user = userService.getUser(id);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }</pre>
+
+        <p>Next, here is the JUnit test to call Get User REST API using MockMvc:</p>
+
+        <pre>   @Autowired
+    private MockMvc mockMvc;
+
+    @Test
+    public void testGetUser() throws Exception {
+        mockMvc.perform(get("/api/users/{id}", 1)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("John"))
+                .andExpect(jsonPath("$.email").value("john@example.com"));
+    }</pre>
+        <p>This test method performs a GET request to retrieve a user by its ID. It validates the response status, as
+            well as the name and email values of the retrieved user.
+
+        </p>
+        <h2>POST REST API</h2>
+        <p>Consider we have below Create User REST:</p>
+        <pre>  @PostMapping
+    public ResponseEntity&lt;User> createUser(@RequestBody User user) {
+        User createdUser = userService.createUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }</pre>
+        <p>Next, here is the JUnit test to call Create User REST API using MockMvc:</p>
+        <pre>   @Test
+    public void testCreateUser() throws Exception {
+        mockMvc.perform(post("/api/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"John\", \"email\": \"john@example.com\"}")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("John"))
+                .andExpect(jsonPath("$.email").value("john@example.com"));
+    }</pre>
+        <p>This test method performs a POST request to create a new user by sending a JSON payload containing the user's
+            name and email. It then validates the response status, as well as the name and email values of the created
+            user.</p>
+        <h2>PUT REST API</h2>
+        <p>Consider we have below Update User REST:</p>
+        <pre>   @PutMapping("/{id}")
+    public ResponseEntity&lt;User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+        User user = userService.updateUser(id, updatedUser);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }</pre>
+        <p>Next, here is the JUnit test to call Update User REST API using MockMvc:</p>
+        <pre> @Test
+    public void testUpdateUser() throws Exception {
+        mockMvc.perform(put("/api/users/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"John Doe\", \"email\": \"johndoe@example.com\"}")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("John Doe"))
+                .andExpect(jsonPath("$.email").value("johndoe@example.com"));
+    }</pre>
+
+        <p>This test method performs a PUT request to update a user's information. It sends a JSON payload containing
+            the updated name and email and then verifies the response status and the updated values of the user.</p>
+
+        <h2>DELETE REST API</h2>
+        <p>Consider we have below Delete User REST:</p>
+
+        <pre>    @GetMapping
+    public ResponseEntity&lt;List<User>> getAllUsers() {
+        List&lt;User> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }</pre>
+        <p>Next, here is the JUnit test to call Delete User REST API using MockMvc:</p>
+
+        <pre> @Test
+    public void testDeleteUser() throws Exception {
+        mockMvc.perform(delete("/api/users/{id}", 1))
+                .andExpect(status().isOk());
+    }</pre>
+        <p>This test method performs a DELETE request to delete a user by its ID. It checks the response status to
+            ensure the deletion was successful.</p>
+
+        <h2>Conclusion</h2>
+
+        <p>The MockMvc framework in Spring Boot provides a powerful and convenient way to test your web applications. By
+            simulating HTTP requests and validating the responses, you can ensure that your endpoints are working
+            correctly and delivering the expected results. </p>
+
+        <p> MockMvc simplifies the process of testing the web layer and helps you build reliable and robust web
+            applications with confidence.</p>
+
+    </div>
+</body>
+
+</html>
