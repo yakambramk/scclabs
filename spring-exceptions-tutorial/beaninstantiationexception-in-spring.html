@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeanInstantiationException in Spring Boot</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>BeanInstantiationException in Spring Boot</h1>
+        <p>In this post, we'll dive deep into what the BeanInstantiationException exception is, how to reproduce it, its
+            common causes, and how to solve them.</p>
+
+        <h2>What is BeanInstantiationException?</h2>
+        <p><code style="color: red;">BeanInstantiationException</code> is thrown when Spring's application context is
+            unable to instantiate a bean. This can occur for a number of reasons ranging from issues with the bean's
+            constructor to configuration errors.</p>
+
+        <h2>How to Reproduce BeanInstantiationException</h2>
+        <p>To see this exception in action, let's consider a few scenarios:</p>
+        <h3>1. Constructor Throws an Exception</h3>
+        <pre><code>import org.springframework.stereotype.Service;
+
+@Service
+public class MyService {
+    public MyService() {
+        throw new RuntimeException("Constructor failed!");
+    }
+}
+</code></pre>
+        <p>Running the above Spring Boot application will result in a BeanInstantiationException due to the exception
+            thrown in the constructor.</p>
+        <pre><code>Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.example.springboot.MyService]: Constructor threw exception
+</code></pre>
+        <h3>2. Abstract Class or Interface </h3>
+        <p>If you mistakenly annotate an abstract class or an interface with <a
+                href="/spring-mvc/spring-component-annotation-example.html" target="_blank">@Component</a> or
+            <a href="/spring-core-tutorial/spring-service-annotation.html" target="_blank">@Service</a>, Spring will
+            fail to create a bean instance.
+        </p>
+        <pre><code>import org.springframework.stereotype.Service;
+
+@Service
+public abstract class AbstractService {
+    // some methods...
+}
+</code></pre>
+        <h3>3. No Default Constructor </h3>
+        <p>A class without a default constructor, where Spring doesn't have any way to provide the required arguments,
+            can also cause this issue.</p>
+        <pre><code>package com.example.demo;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyComponent {
+    private final String name;
+
+    public MyComponent(String name) {
+        this.name = name;
+    }
+}
+</code></pre>
+        <h2>Common Causes and Solutions </h2>
+        <p>Now that we've seen how to reproduce the issue, let's look at the causes behind these scenarios and their
+            respective solutions:</p>
+        <h3>1. Constructor Throws an Exception </h3>
+        <p><strong>Cause:</strong> The bean's constructor threw an unchecked exception.</p>
+        <p><strong>Solution:</strong> Ensure the constructor does not throw any unchecked exceptions. Move such
+            logic outside of the constructor to a @PostConstruct method or handle them with appropriate
+            checks.
+        <p>
+        <h3>2. Abstract Class or Interface </h3>
+        <p><strong>Cause:</strong> Spring cannot instantiate an abstract class or an interface.</p>
+        <p><strong>Solution:</strong> Do not annotate interfaces or abstract classes with @Component,
+            @Service, etc. Use composition or ensure concrete implementations are available.</p>
+        <h3>3. No Default Constructor </h3>
+        <p><strong>Cause:</strong> Spring requires a no-argument constructor to instantiate the bean.</p>
+        <p><strong>Solution:</strong> Provide a default constructor. If using library classes, consider extending
+            the class or using configuration to provide necessary arguments.</p>
+        <h2>Conclusion</h2>
+        <p><code style="color: red;">BeanInstantiationException</code> can seem intimidating at first, especially for
+            newcomers to Spring Boot. However,
+            with a proper understanding of its causes, it becomes easier to debug and solve. Always refer to the
+            exception stack trace for a clearer picture of what went wrong!</p>
+    </div>
+
+</body>
+
+</html>

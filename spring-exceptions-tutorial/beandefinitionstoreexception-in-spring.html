@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeanDefinitionStoreException in Spring</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>BeanDefinitionStoreException in Spring</h1>
+        <p>In the world of Spring Boot, a variety of exceptions can pop up during the application startup or
+            configuration phase. One such exception is <code style="color: red;">BeanDefinitionStoreException</code>.
+            This post aims to
+            dive deep into this exception, its common causes, and ways to troubleshoot and resolve it.</p>
+
+        <h2>What is BeanDefinitionStoreException?</h2>
+        <p>The <code style="color: red;">BeanDefinitionStoreException</code> is thrown when there's an issue during the
+            process of
+            loading bean definitions into the application context. This error is typically a signal of a configuration
+            problem.</p>
+
+        <h2>Common Causes and Solutions</h2>
+
+        <h3>Invalid Configuration File</h3>
+        <p><strong>Cause:</strong> Mistakes in XML configuration, if you're still using XML for your Spring Boot
+            configuration.</p>
+
+        <pre><code>&lt;been class="com.example.MyClass"/&gt;</code></pre>
+
+        <p><strong>Solution:</strong> Notice the typo in the tag "been". This should be "bean". Validate your XML
+            against the Spring schema and correct such issues.</p>
+        <p><b>Exception in action:</b></p>
+        <pre><code>
+        BeanDefinitionStoreException: IOException parsing XML document [...]; 
+        nested exception is org.xml.sax.SAXParseException; lineNumber: [...]; columnNumber: [...];
+        The element type "been" must be terminated by the matching end-tag "</been>".
+    </code></pre>
+
+        <h3>File Not Found</h3>
+        <p><strong>Cause:</strong> The XML configuration file isn't in the classpath.</p>
+
+        <p><strong>Solution:</strong> Ensure your configuration files are correctly placed, especially if you're using
+            the <code style="color: red;">ClassPathXmlApplicationContext</code>.</p>
+        <p><b>Exception in action:</b></p>
+        <pre><code>
+        BeanDefinitionStoreException: Could not resolve bean definition resource pattern [...]; 
+        nested exception is java.io.FileNotFoundException
+    </code></pre>
+
+        <h3>Invalid Annotations</h3>
+        <p><strong>Cause:</strong> Incorrect use of annotations like <a href="/spring-mvc/spring-component-annotation-example.html" target="_blank">@Component</a> without enabling
+            component scanning.</p>
+
+        <pre><code>
+        @Component
+        public class MyComponent { ... }
+    </code></pre>
+
+        <p><strong>Solution:</strong> Ensure you have annotated your configuration class with @ComponentScan.</p>
+        <p><b>Exception in action:</b></p>
+        <pre><code>
+        BeanDefinitionStoreException: Failed to read candidate component class [...];
+        nested exception is java.lang.IllegalArgumentException: [...]
+    </code></pre>
+
+        <h3>Duplicate Bean Definition</h3>
+        <p><strong>Cause:</strong> The same bean is defined multiple times.</p>
+
+        <pre>
+        @Bean
+        public MyBean myBean1() { ... }
+
+        @Bean
+        public MyBean myBean2() { ... }
+    </pre>
+
+        <p><strong>Solution:</strong> Give unique names or remove one of the duplicate beans.</p>
+
+        <pre><code>BeanDefinitionStoreException: Bean name 'myBean' is already used in this &lt;beans&gt; element</code></pre>
+
+        <h3>Property Placeholder Issues</h3>
+        <p><strong>Cause:</strong> Missing placeholder values.</p>
+
+        <pre>
+        @Value("${some.property}")
+        private String propertyValue;
+    </pre>
+
+        <p><strong>Solution:</strong> Make sure <code style="color: red;">some.property</code> is defined in your properties or YAML files.</p>
+        <p><b>Exception in action:</b></p>
+        <pre><code>BeanDefinitionStoreException: Could not resolve placeholder 'some.property' in string value "${some.property}"</code></pre>
+
+        <h2>Best Practices for Troubleshooting</h2>
+        <ul>
+            <li><strong>Detailed Logs:</strong> The first step to diagnosing the issue lies in the detailed logs
+                provided by Spring. A thorough look at the exception stack trace often pinpoints the error.</li>
+            <li><strong>Consistent Configuration:</strong> Ensure you maintain consistency in your configuration styles
+                to avoid potential conflicts.</li>
+            <li><strong>Unit Testing:</strong> Use Spring's test support to load your application context, ensuring
+                configurations are correct.</li>
+        </ul>
+
+        <h2>Conclusion</h2>
+        <p><code style="color: red;">BeanDefinitionStoreException</code> can initially seem daunting. However, armed with the right knowledge and a
+            systematic approach to debugging, such issues can be resolved promptly. Embracing best practices and
+            understanding the common triggers ensures a smoother development experience with Spring Boot.</p>
+    </div>
+
+</body>
+
+</html>

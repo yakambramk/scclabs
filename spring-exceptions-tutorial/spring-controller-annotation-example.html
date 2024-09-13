@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring @Controller Annotation Example Tutorial</h1>
+        <p>In this tutorial, we will learn what is @Controller and how to use it in Spring Boot web applications.</p>
+        <h2>Spring @Controller Annotation Overview</h2>
+        <p>The <code style="color: red;">@Controller</code> annotation is used in Spring MVC to mark a class as a
+            controller component. It acts as a
+            request handler and handles incoming HTTP requests, performing the necessary processing and returning a
+            response.</p>
+        <p>Controllers in Spring MVC are responsible for processing user requests, interacting with business logic or
+            services, and returning a view or response to the client.</p>
+        <h2>Spring @Controller Annotation Example</h2>
+        <p>Let's use Spring Boot to develop a simple web application.</p>
+        <h3>Add Maven Dependencies</h3>
+        <p>Add the following Maven dependencies to your Spring boot application:</p>
+        <pre><code>
+    &lt;dependency>
+        &lt;groupId>org.springframework.boot</groupId>
+        &lt;artifactId>spring-boot-starter-thymeleaf</artifactId>
+    &lt;/dependency>
+    &lt;dependency>
+        &lt;groupId>org.springframework.boot</groupId>
+        &lt;artifactId>spring-boot-starter-web</artifactId>
+    &lt;/dependency>
+
+</code></pre>
+        <p>The <code style="color: red;">spring-boot-starter-web starter</code> is responsible for setting up the
+            web-related components and
+            configurations in a Spring Boot application. It includes the necessary dependencies and auto-configurations
+            to develop web applications using Spring MVC.</p>
+        <p>The <code style="color: red;">spring-boot-starter-thymeleaf</code> starter includes the Thymeleaf templating
+            engine for server-side rendering
+            of views. Thymeleaf is a popular Java-based templating language that enables the creation of dynamic web
+            pages.</p>
+        <p>By including the <code style="color: red;">spring-boot-starter-web</code> and <code
+                style="color: red;">spring-boot-starter-thymeleaf</code> starters in your
+            Spring Boot project, you can quickly set up a web application with the necessary web infrastructure, request
+            handling
+            capabilities, and Thymeleaf templating support. These starters simplify the configuration process and
+            provide a solid foundation for building modern, scalable, and interactive web applications using Spring
+            Boot.</p>
+        <h3>Create Spring MVC HelloController</h3>
+        <p>Next, create a class and annotate it with @Controller:</p>
+        <pre><code>
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+public class HelloController {
+
+    @GetMapping({
+        "/",
+        "/hello"
+    })
+    public String hello(@RequestParam(value = "name",
+        defaultValue = "World", required = true) String name, Model model) {
+        model.addAttribute("name", name);
+        return "hello";
+    }
+}
+
+</code></pre>
+        <p>In the example above, the <code style="color: red;">HelloController</code> class is annotated with <code
+                style="color: red;">@Controller</code>. The @GetMapping annotation is
+            used to map the <code style="color: red;">/hello</code> and <code style="color: red;">/</code> URL paths to
+            the home method, which returns a view name "hello". When a user
+            visits the /hello URL, this method is executed and the associated view is
+            rendered.</p>
+        <p>Spring boot will auto-configure the view resolver for Thymeleaf whenever it will find the
+            <code style="color: red;">spring-boot-starter-thymeleaf</code> dependency on the classpath. Spring boot will
+            pick Thymeleaf templates (HTML
+            pages) from the <code style="color: red;">resources/templates</code> folder.
+        </p>
+        <h3>Create Thymeleaf Template View</h3>
+        <p>Next, let's create a Thymeleaf template <code style="color: red;">hello.html</code> under <code
+                style="color: red;">/resources/templates</code> folder and add the following code to it:</p>
+        <pre><code>
+&lt;!DOCTYPE html>
+&lt;html>
+&lt;head>
+&lt;meta charset="ISO-8859-1">
+&lt;title>Insert title here</title>
+&lt;/head>
+&lt;body>
+  &lt;p th:text="'Hello, ' + ${name} + '!'" />
+&lt;/body>
+&lt;/html>
+
+</code></pre>
+        <p>In the above code, <code style="color: red;">th:text</code> Thymeleaf attribute specifies that the content of
+            the paragraph should be set
+            using Thymeleaf's text substitution feature. </p>
+        <p><b>"Hello, ' + ${name} + '!'"</b>: This Thymeleaf expression concatenates the string "Hello, " with the value
+            of the
+            <code style="color: red;">${name}</code> variable and then appends "!" at the end. The <code
+                style="color: red;">${name}</code> variable is expected to be passed as a model
+            attribute when rendering the template. The result of this expression will be dynamically inserted into the
+            paragraph element when the page is rendered, displaying a personalized greeting message.
+        </p>
+        <h3>Demo</h3>
+        <p>Next, let's run the Spring boot application and see the result in the browser:</p>
+        <p>Root URL: <a href="http://localhost:8080/">http://localhost:8080/</a></p>
+        <img src="../assets/spring-exceptions-images/@controller-hello-world.png" style="width: 100%;">
+        <p>The <code style="color: red;">/hello?Ramesh</code> URL: <a
+                href="http://localhost:8080/hello?Ramesh">http://localhost:8080/hello?Ramesh</a></p>
+        <img src="../assets/spring-exceptions-images/@controller-hello-ramesh.png" style="width: 100%;">
+        <h2>Conclusion</h2>
+            <p>The @Controller annotation is a fundamental building block of Spring MVC, allowing developers to create web
+            applications and handle HTTP requests with ease. By using the @Controller annotation, you can define request
+            mapping methods and build flexible, modular, and maintainable web applications using the Spring Framework.
+        </p>
+    </div>
+</body>
+
+</html>

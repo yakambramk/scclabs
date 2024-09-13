@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoHandlerFoundException in Spring Boot</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>NoHandlerFoundException in Spring Boot</h1>
+        <p>When developing web applications with Spring Boot, you may occasionally encounter exceptions related to the
+            request-response lifecycle. One such exception is <code style="color: red;">NoHandlerFoundException</code>. In this post, we'll explore what
+            causes this exception, how to handle it gracefully, and some best practices to prevent it.</p>
+
+        <h2>What is NoHandlerFoundException?</h2>
+        <p>The <code style="color: red;">NoHandlerFoundException</code> is thrown when Spring's DispatcherServlet can't find a handler (like a
+            Controller) for a particular request URL. Simply put, this means that your application does not have a
+            matching endpoint for the URL the client has requested.</p>
+
+        <h2>Causes</h2>
+        <ul>
+            <li><strong>Endpoint Doesn't Exist:</strong> The client might be requesting an endpoint that does not exist
+                in your application.</li>
+            <li><strong>Mistyped URL:</strong> A common cause is a typo in the requested URL.</li>
+            <li><strong>Incomplete Configuration:</strong> Misconfiguration related to view resolvers or static
+                resources might lead to this exception.</li>
+        </ul>
+
+        <h2>How to Handle</h2>
+        <p><strong>Enable Custom Error Page:</strong> One of the best ways to handle this exception is by presenting a
+            user-friendly 404 error page.</p>
+
+        <pre><code>
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ModelAndView handleError404(HttpServletRequest request, Exception e) {
+        ModelAndView mav = new ModelAndView("404error");
+        mav.addObject("exception", e);
+        return mav;
+    }
+}
+
+</code></pre>
+
+        <p>In the above example, whenever <code style="color: red;">NoHandlerFoundException</code> is thrown, the user will be directed to a
+            404 error view.</p>
+
+        <h3>Enable spring.mvc.throw-exception-if-no-handler-found</h3>
+        <p>To ensure the exception is thrown and can be captured by your exception handler, add this to your
+            <code style="color: red;">application.properties</code>:</p>
+
+        <pre><code>
+spring.mvc.throw-exception-if-no-handler-found=true
+spring.resources.add-mappings=false
+
+</code></pre>
+
+        <h3>Logging</h3>
+        <p>Always log the exception so that you can monitor and potentially identify malicious or erroneous requests.
+        </p>
+
+        <pre><code>
+@ExceptionHandler(NoHandlerFoundException.class)
+public ResponseEntity&lt;String&gt; handleNoHandlerFoundException(NoHandlerFoundException ex) {
+    log.error("404 Error", ex);
+    return new ResponseEntity&lt;String&gt;("Error 404 - Page Not Found", HttpStatus.NOT_FOUND);
+}
+
+</code></pre>
+
+        <h2>Prevention</h2>
+        <ul>
+            <li><strong>Consistent URL Design:</strong> Maintain consistency in your endpoint URLs to reduce client-side
+                errors.</li>
+            <li><strong>Provide API Documentation:</strong> If developing a RESTful service, use tools like Swagger for
+                clear API documentation.</li>
+            <li><strong>Monitoring and Alerts:</strong> Set up monitoring and alerting for 404 errors to track and
+                manage such requests efficiently.</li>
+        </ul>
+
+        <h2>Conclusion</h2>
+        <p><code style="color: red;">NoHandlerFoundException</code> in Spring Boot indicates a missed handler for a request URL. Proper handling and
+            user-friendly error messages can enhance the user experience. Regular monitoring and setting up alerts for
+            such exceptions will help in maintaining the health and reliability of your application.</p>
+    </div>
+</body>
+
+</html>

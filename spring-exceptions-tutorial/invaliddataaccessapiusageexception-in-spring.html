@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring InvalidDataAccessApiUsageException</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring InvalidDataAccessApiUsageException</h1>
+        <p>In this post, we will explore <code style="color: red;">InvalidDataAccessApiUsageException</code>, its
+            causes, and solutions.</p>
+
+        <h2>What is InvalidDataAccessApiUsageException?</h2>
+        <p>The <code style="color: red;">InvalidDataAccessApiUsageException</code> is thrown when you misuse the API
+            provided by the Spring Data JPA module. This generally happens when there's a misalignment between the
+            expectations of the API and how it's actually being used.</p>
+
+        <h3>Common Causes and Solutions</h3>
+        <h4>1. Using a Non-Managed Entity Instance</h4>
+        <p><strong>Cause:</strong> Attempting to save or update a transient, non-managed entity.</p>
+        <pre><code>
+MyEntity entity = new MyEntity();
+repository.save(entity);
+
+</code></pre>
+
+        <pre><code>InvalidDataAccessApiUsageException: The instance passed for save(...) is not a managed entity.</code></pre>
+        <p><strong>Solution:</strong> Ensure that entities passed to repository methods are managed by JPA.</p>
+
+        <h4>2. Illegal use of getOne</h4>
+        <p><strong>Cause:</strong> Invoking <code style="color: red;">getOne(ID id)</code> without actually using the
+            returned reference, leading to lazy initialization.</p>
+        <pre><code>MyEntity entity = repository.getOne(id);</code></pre>
+        <pre><code>InvalidDataAccessApiUsageException: You should not treat the result of getOne(ID) as a detached entity.</code></pre>
+        <p><strong>Solution:</strong> Instead of <code style="color: red;">getOne</code>, use <code
+                style="color: red;">findById(ID id)</code> which returns an <code style="color: red;">Optional&lt;MyEntity&gt;</code>.</p>
+
+        <h4>3. Null Values in Repository Methods</h4>
+        <p><strong>Cause:</strong> Passing a null value to a repository method that does not accept null.</p>
+        <pre><code>repository.findById(null);</code></pre>
+<pre><code>InvalidDataAccessApiUsageException: ID must not be null.</code></pre>
+        <p><strong>Solution:</strong> Always ensure to pass non-null values when invoking repository methods.</p>
+
+        <h4>4. Illegal Cascade Operation</h4>
+        <p><strong>Cause:</strong> Using cascade operations on entities that aren't related or properly mapped.</p>
+        <pre><code>
+@OneToMany(cascade = CascadeType.ALL)
+private Set&lt;MyEntity&gt; entities;
+
+</code></pre>
+<p><b>Exception:</b></p> 
+<pre><code>InvalidDataAccessApiUsageException: Removing a detached instance [...]</code></pre>
+        <p><strong>Solution:</strong> Ensure that the entities have been properly related using JPA annotations.</p>
+
+        <h4>5. Improper Query Derivation</h4>
+        <p><strong>Cause:</strong> Mistake in method name leading to Spring Data JPA being unable to derive the query.
+        </p>
+        <pre><code>List&lt;MyEntity&gt; findByNonExistentProperty(String value);</code></pre>
+        <p><b>Exception:</b></p> 
+<pre><code>InvalidDataAccessApiUsageException: Failed to create query for method [...]</code></pre>
+        <p><strong>Solution:</strong> Ensure that the method name correctly matches the entity's properties.</p>
+
+        <h3>Best Practices for Troubleshooting</h3>
+        <ul>
+            <li><strong>Detailed Logs:</strong> A good starting point is the detailed exception message and stack trace.
+            </li>
+            <li><strong>Consistency:</strong> Ensure consistent usage of JPA or Spring Data repository methods.</li>
+            <li><strong>Unit Testing:</strong> Create unit tests around your repositories to catch issues early.</li>
+            <li><strong>Understand JPA:</strong> A deep understanding of JPA and Spring Data repositories helps avoid
+                these exceptions.</li>
+        </ul>
+
+        <h3>Conclusion</h3>
+        <p>The <code style="color: red;">InvalidDataAccessApiUsageException</code> might seem cryptic at first glance. However, with a deep
+            dive into its causes and solutions, you can avoid these pitfalls and make the most of Spring Boot's data
+            access capabilities. Remember, the stack trace is your friend and a treasure trove of information. Happy
+            coding!</p>
+    </div>
+</body>
+
+</html>

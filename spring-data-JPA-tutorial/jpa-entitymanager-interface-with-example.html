@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>JPA EntityManager Interface with Example</h1>
+        <h2>EntityManager Interface Overview </h2>
+        <p>A connection to a database is represented by an <code style="color: red;">EntityManager</code> instance,
+            which also provides functionality for
+            performing operations on a database. Many applications require multiple database connections during their
+            lifetime. For instance, in a web application, it is common to establish a separate database connection,
+            using a separate <code style="color: red;">EntityManager</code> instance, for every HTTP request.</p>
+        <p>An <code style="color: red;">EntityManager</code> instance is associated with a persistence context. A
+            persistence context is a set of entity
+            instances in which for any persistent entity identity there is a unique entity instance. Within the
+            persistence context, the entity instances and their lifecycle are managed.</p>
+        <p>The <code style="color: red;">EntityManager</code> API is used to create and remove persistent entity
+            instances, to find entities by their
+            primary key, and query over entities.</p>
+        <p>The set of entities that can be managed by a given <code style="color: red;">EntityManager</code> instance is
+            defined by a persistence unit.
+            A persistence unit defines the set of all classes that are related or grouped by the application, and which
+            must be colocated in their mapping to a single database.</p>
+        <h2>EntityManager Interface - Class Diagram</h2>
+        <p>The below class diagram shows a list of methods that <code style="color: red;">EntityManager</code> Interface
+            provides.</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/JPA EntityManager Interface class diagram.png">
+        <h2>EntityManager Interface Example</h2>
+        <p><code style="color: red;">EntityManager Interface</code> provides <code style="color: red;">persist()</code>
+            method to store an entity in a database. In this example, we will
+            demonstrate the usage of <code style="color: red;">EntityManager Interface</code> via persisting an entity
+            in a database.</p>
+        <h2>Steps to persist an entity object</h2>
+        <h3>Step 1: Creating an entity manager factory object</h3>
+        <p>The <b>EntityManagerFactory</b> interface is present in <code style="color: red;">java.persistence</code>
+            package is used to provide an entity manager.</p>
+        <pre><code>EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("PERSISTENCE");</code></pre>
+        <ul>
+            <li><code style="color: red;">Persistence</code> - <code style="color: red;">Persistence</code> is a
+                bootstrap class that is used to obtain an EntityManagerFactory interface.
+            </li>
+            <li><code style="color: red;">createEntityManagerFactory()</code> method - The role of this method is to
+                create and return an
+                EntityManagerFactory for the named persistence unit. Thus, this method contains the name of the
+                persistence unit passed in the <code style="color: red;">Persistence.xml</code> file.</li>
+        </ul>
+        <h3>Step 2: Obtaining an entity manager from a factory</h3>
+        <pre><code>EntityManager entityManager = entityManagerFactory.createEntityManager();</code></pre>
+        <ul>
+            <li><code style="color: red;">EntityManager</code> - An <code style="color: red;">EntityManager</code> is an
+                interface</li>
+            <li><code style="color: red;">createEntityManager()</code> method - It creates new application-managed <code
+                    style="color: red;">EntityManager</code></li>
+        </ul>
+        <h3>Step 3: Initializing an entity manager</h3>
+        <pre><code>entityManager.getTransaction().begin();</code></pre>
+        <ul>
+            <li><code style="color: red;">getTransaction()</code> method - This method returns the resource-level
+                EntityTransaction object.</li>
+            <li><code style="color: red;">begin()</code> method - This method is used to start the transaction.</li>
+        </ul>
+        <h3>Step 4: Persisting data into the relational database.</h3>
+        <pre><code>entityManager.persist(student); </code></pre>
+        <ul>
+            <li><code style="color: red;">persist()</code> - This method is used to make an instance managed and
+                persistent. An entity instance is passed within this method.</li>
+        </ul>
+        <h3>Step 5: Closing the transaction</h3>
+        <pre><code>entityManager.getTransaction().commit();</code></pre>
+        <h3>Step 6: Releasing the factory resources</h3>
+        <pre><code>
+entityManager.close();
+entityManagerFactory.close();
+
+</code></pre>
+        <ul>
+            <li>close() - This method is used to release the factory resources.</li>
+        </ul>
+        <h2>EntityManager Interface Complete Example</h2>
+        <pre><code>
+    private static void insertEntity() {
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("PERSISTENCE");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+    
+        Student student = new Student("Ramesh", "Fadatare", "rameshfadatare@javaguides.com");
+        entityManager.persist(student);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+</code></pre>
+
+    </div>
+</body>
+
+</html>

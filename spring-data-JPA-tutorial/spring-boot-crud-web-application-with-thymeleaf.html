@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Boot CRUD Web Application with Thymeleaf, Spring MVC, Spring Data JPA, Hibernate, MySQL</h1>
+        <p>In this tutorial, we'll learn how to develop a Spring MVC CRUD web application with Spring Boot, Thymeleaf,
+            Spring Data JPA, Hibernate, and MySQL database.</p>
+        <h2>Project Requirements</h2>
+        <p>Here is a high-level project requirement to create a web application for <b>Employee Management System</b>.
+            Users
+            should able to:</p>
+        <ul>
+            <li>Get all the employees</li>
+            <li>Add a new employee</li>
+            <li>Update an employee</li>
+            <li>Delete an employee</li>
+        </ul>
+        <h2>What we will build?</h2>
+        <p>We will create a Spring MVC web application for <b>Employee Management System</b> to implement the above
+            features.</p>
+        <p>The below screenshot summaries CRUD operations that we are going to develop in this tutorial.</h2>
+            <img src="../assets/spring-data-jpa-tutorial-images/Spring Boot CRUD Web Application with Thymeleaf, Spring MVC, Spring Data JPA, Hibernate, MySQL.png"
+                style="width: 100%;">
+        <h2>Application Flow</h2>
+        <p>The below diagram shows the application flow of our Spring MVC web application with Thymeleaf:</p>
+        <img src="../assets/spring-data-jpa-tutorial-images/Spring Boot Thymeleaf Hibernate MySQL CRUD Example Tutorial.png"
+            style="width: 100%;">
+        <h2>Tools and technologies used</h2>
+        <ul>
+            <li>IDE - Eclipse / STS</li>
+            <li>Spring Boot 3+</li>
+            <li>Spring Framework 6+</li>
+            <li>Maven</li>
+            <li>Java 17</li>
+            <li>Spring Data JPA ( Hibernate)</li>
+            <li>Thymeleaf</li>
+        </ul>
+        <h3>1. Create Spring Boot Project</h3>
+        <p>There are many ways to create a Spring Boot application. You can refer below articles to create a Spring
+            Boot application.</p>
+        <p>>><a href="/spring-data-JPA-tutorial/create-spring-boot-project-with-spring-initializer.html" target="_blank">Create Spring Boot Project With Spring Initializer</a></p>
+        <p>>><a href="/spring-data-JPA-tutorial/create-spring-boot-project-in-spring-tool-suite.html" target="_blank">Create Spring Boot Project in Spring Tool Suite [STS]</a></p>
+        <h3>2. Maven Dependencies</h3>
+        <pre><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+    &lt;optional&gt;true&lt;/optional&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+    &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;
+        </code></pre>
+        <h3>3. Project Structure</h3>
+        <img src="../assets/spring-data-jpa-tutorial-images/Project-Structure-tymleaf.png">
+        <h3>4. Configure and Setup MySQL Database</h3>
+        <p>Create a database with the name "<b>demo</b>" in the MySQL database server.</p>
+        <p>We’ll need to configure MySQL database URL, <b>username</b>, and <b>password</b> so that Spring can establish
+            a connection
+            with the database on startup.</p>
+        <p>Open <code style="color: red;">application.properties</code> and add following MySQL database configuration:
+        </p>
+        <pre><code>
+# DATASOURCE (DataSourceAutoConfiguration & DataSourceProperties)
+spring.datasource.url=jdbc:mysql://localhost:3306/demo?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+spring.datasource.username=root
+spring.datasource.password=root
+
+# Hibernate
+
+# The SQL dialect makes Hibernate generate better SQL for the chosen database
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQLDialect
+
+# Hibernate ddl auto (create, create-drop, validate, update)
+spring.jpa.hibernate.ddl-auto = update
+
+logging.level.org.hibernate.SQL=DEBUG
+logging.level.org.hibernate.type=TRACE
+        </code></pre>
+        <p>Make sure that you change the <code style="color: red;">spring.datasource.username</code> and <code
+                style="color: red;">spring.datasource.password</code> properties as per
+            your MySQL installation.</p>
+        <p>The <code style="color: red;">spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the
+            database tables and the domain models
+            in your application are in sync. Whenever you change the domain model, hibernate will automatically update
+            the mapped table in the database when you restart the application.</p>
+        <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by
+            hibernate.</p>
+        <h3>5. Model Layer - Create JPA Entity - Employee.java</h3>
+        <p>Let's create <code style="color: red;">Employee.java</code> class under "net.javaguides.springboot.model"
+            package and add following content to it:</p>
+        <pre><code>
+package net.javaguides.springboot.model;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "employees")
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "email")
+    private String email;
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
+    public String getFirstName() {
+        return firstName;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+}
+
+</code></pre>
+        <h3>6. Repository Layer - EmployeeRepository.java</h3>
+        <p>Create a <code style="color: red;">EmployeeRepository</code> interface under
+            "net.javaguides.springboot.repository" package and add the
+            following content to it:</p>
+        <pre><code>
+package net.javaguides.springboot.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import net.javaguides.springboot.model.Employee;
+
+@Repository
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long>{
+
+}
+
+</code></pre>
+        <h3>7. Service Layer</h3>
+        <p><b>7.1 EmployeeService.java interface</b></p>
+        <p>The complete code:</p>
+        <pre><code>
+package net.javaguides.springboot.service;
+
+import java.util.List;
+
+import net.javaguides.springboot.model.Employee;
+
+public interface EmployeeService {
+    List &lt; Employee > getAllEmployees();
+    void saveEmployee(Employee employee);
+    Employee getEmployeeById(long id);
+    void deleteEmployeeById(long id);
+}
+
+</code></pre>
+        <p><b>7.2. EmployeeServiceImpl class</b></p>
+        <p>The complete code:</p>
+        <pre><code>
+package net.javaguides.springboot.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import net.javaguides.springboot.model.Employee;
+import net.javaguides.springboot.repository.EmployeeRepository;
+
+@Service
+public class EmployeeServiceImpl implements EmployeeService {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Override
+    public List &lt; Employee > getAllEmployees() {
+        return employeeRepository.findAll();
+    }
+
+    @Override
+    public void saveEmployee(Employee employee) {
+        this.employeeRepository.save(employee);
+    }
+
+    @Override
+    public Employee getEmployeeById(long id) {
+        Optional &lt; Employee > optional = employeeRepository.findById(id);
+        Employee employee = null;
+        if (optional.isPresent()) {
+            employee = optional.get();
+        } else {
+            throw new RuntimeException(" Employee not found for id :: " + id);
+        }
+        return employee;
+    }
+
+    @Override
+    public void deleteEmployeeById(long id) {
+        this.employeeRepository.deleteById(id);
+    }
+}
+    </code></pre>
+        <h3>8. Controller Layer - EmployeeController.java</h3>
+        <p>The complete code:</p>
+        <pre><code>
+package net.javaguides.springboot.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import net.javaguides.springboot.model.Employee;
+import net.javaguides.springboot.service.EmployeeService;
+
+@Controller
+public class EmployeeController {
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    // display list of employees
+    @GetMapping("/")
+    public String viewHomePage(Model model) {
+        model.addAttribute("listEmployees", employeeService.getAllEmployees());
+        return "index";
+    }
+
+    @GetMapping("/showNewEmployeeForm")
+    public String showNewEmployeeForm(Model model) {
+        // create model attribute to bind form data
+        Employee employee = new Employee();
+        model.addAttribute("employee", employee);
+        return "new_employee";
+    }
+
+    @PostMapping("/saveEmployee")
+    public String saveEmployee(@ModelAttribute("employee") Employee employee) {
+        // save employee to database
+        employeeService.saveEmployee(employee);
+        return "redirect:/";
+    }
+
+    @GetMapping("/showFormForUpdate/{id}")
+    public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) {
+
+        // get employee from the service
+        Employee employee = employeeService.getEmployeeById(id);
+
+        // set employee as a model attribute to pre-populate the form
+        model.addAttribute("employee", employee);
+        return "update_employee";
+    }
+
+    @GetMapping("/deleteEmployee/{id}")
+    public String deleteEmployee(@PathVariable(value = "id") long id) {
+
+        // call delete employee method 
+        this.employeeService.deleteEmployeeById(id);
+        return "redirect:/";
+    }
+}
+
+</code></pre>
+        <h3>9. View Layer</h3>
+        <p><b>9.1 index.html</b></p>
+        <p>Create new <code style="color: red;">index.html</code> file under "resources/templates" folder and add the
+            following content to it:</p>
+        <pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en" xmlns:th="http://www.thymeleaf.org"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="ISO-8859-1"&gt;
+    &lt;title&gt;Employee Management System&lt;/title&gt;
+
+    &lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"&gt;
+
+&lt;/head&gt;
+
+&lt;body&gt;
+
+    &lt;div class="container my-2"&gt;
+        &lt;h1&gt;Employees List&lt;/h1&gt;
+
+        &lt;a th:href="@{/showNewEmployeeForm}" class="btn btn-primary btn-sm mb-3"&gt; Add Employee &lt;/a&gt;
+
+        &lt;table border="1" class="table table-striped table-responsive-md"&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;Employee First Name&lt;/th&gt;
+                    &lt;th&gt;Employee Last Name&lt;/th&gt;
+                    &lt;th&gt;Employee Email&lt;/th&gt;
+                    &lt;th&gt; Actions &lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr th:each="employee : ${listEmployees}"&gt;
+                    &lt;td th:text="${employee.firstName}"&gt;&lt;/td&gt;
+                    &lt;td th:text="${employee.lastName}"&gt;&lt;/td&gt;
+                    &lt;td th:text="${employee.email}"&gt;&lt;/td&gt;
+                    &lt;td&gt; &lt;a th:href="@{/showFormForUpdate/{id}(id=${employee.id})}" class="btn btn-primary"&gt;Update&lt;/a&gt;
+                        &lt;a th:href="@{/deleteEmployee/{id}(id=${employee.id})}" class="btn btn-danger"&gt;Delete&lt;/a&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+        </code></pre>
+        <h3>9.2 new_employee.html</h3>
+        <p>Create new <code style="color: red;">new_employee.html</code> file under "resources/templates" folder and add the following content to it:
+        </p>
+        <pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot; xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;ISO-8859-1&quot;&gt;
+    &lt;title&gt;Employee Management System&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css&quot; integrity=&quot;sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO&quot; crossorigin=&quot;anonymous&quot;&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h1&gt;Employee Management System&lt;/h1&gt;
+        &lt;hr&gt;
+        &lt;h2&gt;Save Employee&lt;/h2&gt;
+
+        &lt;form action=&quot;#&quot; th:action=&quot;@{/saveEmployee}&quot; th:object=&quot;${employee}&quot; method=&quot;POST&quot;&gt;
+            &lt;input type=&quot;text&quot; th:field=&quot;*{firstName}&quot; placeholder=&quot;Employee First Name&quot; class=&quot;form-control mb-4 col-4&quot;&gt;
+
+            &lt;input type=&quot;text&quot; th:field=&quot;*{lastName}&quot; placeholder=&quot;Employee Last Name&quot; class=&quot;form-control mb-4 col-4&quot;&gt;
+
+            &lt;input type=&quot;text&quot; th:field=&quot;*{email}&quot; placeholder=&quot;Employee Email&quot; class=&quot;form-control mb-4 col-4&quot;&gt;
+
+            &lt;button type=&quot;submit&quot; class=&quot;btn btn-info col-2&quot;&gt; Save Employee&lt;/button&gt;
+        &lt;/form&gt;
+
+        &lt;hr&gt;
+
+        &lt;a th:href=&quot;@{/}&quot;&gt; Back to Employee List&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+        </code></pre>
+        <h3>9.3 update_employee.html</h3>
+            <p>Create <code style="color: red;">update_employee.html</code> file under "resources/templates" folder and add the following content to it:</p>
+<pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en" xmlns:th="http://www.thymeleaf.org"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="ISO-8859-1"&gt;
+    &lt;title&gt;Employee Management System&lt;/title&gt;
+
+    &lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div class="container"&gt;
+        &lt;h1&gt;Employee Management System&lt;/h1&gt;
+        &lt;hr&gt;
+        &lt;h2&gt;Update Employee&lt;/h2&gt;
+
+        &lt;form action="#" th:action="@{/saveEmployee}" th:object="${employee}" method="POST"&gt;
+
+            &lt;!-- Add hidden form field to handle update --&gt;
+            &lt;input type="hidden" th:field="*{id}" /&gt;
+
+            &lt;input type="text" th:field="*{firstName}" class="form-control mb-4 col-4"&gt;
+
+            &lt;input type="text" th:field="*{lastName}" class="form-control mb-4 col-4"&gt;
+
+            &lt;input type="text" th:field="*{email}" class="form-control mb-4 col-4"&gt;
+
+            &lt;button type="submit" class="btn btn-info col-2"&gt; Update Employee&lt;/button&gt;
+        &lt;/form&gt;
+
+        &lt;hr&gt;
+
+        &lt;a th:href="@{/}"&gt; Back to Employee List&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+
+</code></pre>
+<h3>10. Run Spring application and demo</h3>
+    <p>Run  spring boot  application with the following command:</p>
+    <pre><code>$ mvn spring-boot:run</code></pre>
+    <h3>Demo</h3>
+        <h3>List Employees Page</h3>
+        <img src="../assets/spring-data-jpa-tutorial-images/Spring Boot CRUD Web Application with Thymeleaf, Spring MVC, Spring Data JPA, Hibernate, MySQL.png"
+                style="width: 100%;">
+                <h3>Update Employee Page</h3>
+                <img src="../assets/spring-data-jpa-tutorial-images/update-employee-page.png">
+                <h3>Add Employee Page</h3>
+                <img src="../assets/spring-data-jpa-tutorial-images/add-employee-page.png">
+    </div>
+</body>
+
+</html>

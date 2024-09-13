@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot @ExceptionHandler Multiple Exceptions</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2,
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Boot @ExceptionHandler Multiple Exceptions</h1>
+        <p>In this blog post, we will explore how to handle multiple exceptions using <code
+                style="color: red;">@ExceptionHandler</code> in a Spring Boot
+            application and provide examples to illustrate its usage.</p>
+        <h2>Setting Up the Global Exception Handler</h2>
+        <p>
+            To handle exceptions globally in a Spring Boot application, we need to define a
+            <code style="color: red;">GlobalExceptionHandler</code> class annotated with <code
+                style="color: red;">@ControllerAdvice</code>.
+            Within this class, we will handle specific exceptions, multiple exceptions, and fallback exceptions.
+        </p>
+
+        <h3>Handling Specific Exceptions</h3>
+        <p>In this example, we define <code style="color: red;">@ExceptionHandler</code> methods for handling specific
+            exceptions individually. Each
+            method takes the specific exception type as a parameter and implements the logic to handle that particular
+            exception. You can customize the response based on the exception and return an appropriate <code
+                style="color: red;">ResponseEntity</code>
+            with the desired HTTP status code and response body.
+        </p>
+        <pre>
+@ControllerAdvice
+public class GlobalExceptionHandler {
+    @ExceptionHandler(FirstException.class)
+    public ResponseEntity&lt;String&gt; handleFirstException(FirstException ex) {
+        // Handle FirstException and return a custom response
+    }
+
+    @ExceptionHandler(SecondException.class)
+    public ResponseEntity&lt;String&gt; handleSecondException(SecondException ex) {
+        // Handle SecondException and return a custom response
+    }
+}</pre>
+
+        <h3>Handling Multiple Exceptions Together</h3>
+        <p>To handle multiple exceptions together, you can use the {} notation within the <code
+                style="color: red;">@ExceptionHandler</code> annotation.
+            In this example, the <code style="color: red;">handleMultipleExceptions</code> method demonstrates handling
+            <code style="color: red;">ThirdException</code> and
+            <code style="color: red;">FourthException</code> together. This allows you to provide a unified handling
+            mechanism for multiple exceptions,
+            reducing code duplication.
+        </p>
+        <pre>
+@ControllerAdvice
+public class GlobalExceptionHandler {
+    @ExceptionHandler({ThirdException.class, FourthException.class})
+    public ResponseEntity&lt;String&gt; handleMultipleExceptions(Exception ex) {
+        // Handle ThirdException and FourthException together and return a custom response
+    }
+}</pre>
+
+        <h3>Fallback Exception Handling</h3>
+        <p>The <code style="color: red;">handleMultipleExceptions</code> method acts as a fallback handler for any other
+            unhandled exceptions that are not
+            explicitly defined in the previous <code style="color: red;">@ExceptionHandler</code> methods. This ensures
+            that you have a catch-all
+            mechanism to handle unexpected exceptions and provide a generic error response.
+        </p>
+        <pre>
+@ControllerAdvice
+public class GlobalExceptionHandler {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;String&gt; handleOtherExceptions(Exception ex) {
+        // Handle any other unhandled exceptions and return a generic error response
+    }
+}</pre>
+
+        <h3>Conclusion</h3>
+        <p>Using the <code style="color: red;">@ExceptionHandler</code> annotation in a Spring Boot application allows
+            you to handle exceptions
+            effectively and provide tailored responses based on the specific exception types. By defining multiple
+            <code style="color: red;">@ExceptionHandler</code> methods within a <code
+                style="color: red;">@ControllerAdvice</code> class, you can handle different exceptions separately,
+            handle multiple exceptions together, and have a fallback mechanism for any unhandled exceptions. This
+            approach enhances the error-handling capabilities of your application, resulting in a better user experience
+            and improved reliability.
+        </p>
+    </div>
+</body>
+
+</html>

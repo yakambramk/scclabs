@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HttpMessageNotReadableException in Spring Boot</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>HttpMessageNotReadableException in Spring Boot</h1>
+        <p>In this post, we will explore what is <code style="color: red">HttpMessageNotReadableException</code>, how to reproduce it, and what are the
+            possible solutions.</p>
+        <h2>What is HttpMessageNotReadableException?</h2>
+        <p>The <code style="color: red">HttpMessageNotReadableException</code> is thrown when the request payload (body) is not readable. This can
+            happen
+            for various reasons:</p>
+        <ul>
+            <li>The JSON sent by the client might be malformed.</li>
+            <li>There might be a type mismatch, such as sending a string where an integer is expected.</li>
+            <li>Missing essential properties that are marked as required in the DTO (Data Transfer Object).</li>
+        </ul>
+
+        <h2>Reproduce Step-By-Step</h2>
+        <p>Create a <code style="color: red">Student</code> class with the following content:</p>
+        <pre><code>class Student {
+    private String firstName;
+    private String lastName;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+}</code></pre>
+
+        <p>Next, let's create a <code style="color: red">StudentController</code> with the following REST API:</p>
+        <pre><code>@RestController
+@RequestMapping("/api/students")
+public class StudentController {
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity&lt;Student&gt; student(@RequestBody Student student) {
+        return ResponseEntity.ok(student);
+    }
+}</code></pre>
+
+        <p>Next, call the above REST API using Postman and make sure to pass malformed JSON in the request body:</p>
+        <img src="../assets/spring-exceptions-images/HttpMessageNotReadableException - postman.png" style="width: 100%;">
+        <img src="../assets/spring-exceptions-images/HttpMessageNotReadableException - console.png" style="width: 100%;">
+        <pre><code>{
+    "firstName": "John",
+    "lastName": 123  // Invalid type
+}</code></pre>
+
+        <p>You will encounter the <code>HttpMessageNotReadableException</code>:</p>
+
+        <h2>Solutions</h2>
+        <h3>1. Proper Client Data</h3>
+        <p>Ensure the client sends data in the correct format. This can be clarified with proper API documentation.</p>
+
+        <h3>2. Handle the Exception Gracefully</h3>
+        <p>Use Spring's <a href="/spring-exceptions-tutorial/spring-boot-exceptionhandler-multiple-exceptions.html" target="_blank">@ExceptionHandler</a> to catch the exception and return a more user-friendly message:
+        </p>
+        <pre><code>@ExceptionHandler(HttpMessageNotReadableException.class)
+public ResponseEntity&lt;String&gt; handleInvalidInput(HttpMessageNotReadableException e) {
+    return ResponseEntity.badRequest().body("Invalid request payload.");
+}</code></pre>
+
+        <h3>3. Utilize Validation</h3>
+        <p>Use Java's built-in validation API along with annotations like <code style="color: red;">@Valid</code> to enforce structured
+            data.</p>
+
+        <h3>4. Descriptive Error Messages</h3>
+        <p>Where possible, provide descriptive error messages. For instance, instead of saying "Invalid Input", you
+            might
+            specify that a certain field was missing or was of the wrong type.</p>
+
+        <h2>Conclusion</h2>
+        <p>HttpMessageNotReadableException gives a clear indication that the client has sent data in an unexpected
+            format,
+            and with the right handling, can make the API more robust and user-friendly.</p>
+    </div>
+</body>
+
+</html>

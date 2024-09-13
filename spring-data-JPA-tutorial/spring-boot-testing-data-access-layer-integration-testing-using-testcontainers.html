@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Boot Repository Layer or DAO Layer Integration Testing using Testcontainers</h1>
+        <p>In this tutorial, we will learn how to write Integration tests for Data Access or Repository layer using
+            Testcontainers.</p>
+        <h2>Create Integration Tests for Data Access or Repository Layer with MySQL database</h2>
+        <p>Let's first write Integration tests for <code style="color: red;">StudentRepository</code> without using
+            Testcontainers and then later we will
+            use Testcontainers.</p>
+        <p>Let's create <code style="color: red;">StudentRepositoryTests</code> class and add the following content to
+            it:</p>
+        <pre><code>
+package net.javaguides.spirngboot.repository;
+
+import net.javaguides.spirngboot.AbstractContainerBaseTest;
+import net.javaguides.spirngboot.entity.Student;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class StudentRepositoryTest {
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    // JUnit for save student operation - BDD style
+    @Test
+    public void givenStudentObject_whenSave_thenReturnSavedStudent(){
+
+        // given - setup or precondition
+        Student student = Student.builder().firstName("Ramesh")
+                .lastName("fadatare").email("ramesh@gmail.com").build();
+
+        // when - action or the testing
+        Student savedStudent = studentRepository.save(student);
+
+        // then - very output
+        Assertions.assertNotNull(savedStudent);
+        Assertions.assertNotNull(savedStudent.getId());
+
+    }
+
+    // JUnit for findById student operation - BDD style
+    @Test
+    public void givenStudentId_whenfindbyId_thenReturnSavedStudent(){
+
+        // given - setup or precondition
+        Student student = Student.builder().firstName("Ramesh")
+                .lastName("fadatare").email("ramesh@gmail.com").build();
+        Student savedStudent = studentRepository.save(student);
+
+        // when - action or the testing
+        Student studentDB = studentRepository.findById(student.getId()).get();
+
+        // then - very output
+        Assertions.assertNotNull(studentDB);
+    }
+
+}
+            </code></pre>
+        <p>The Spring boot provides <code style="color: red;">@DataJpaTest</code> annotation. This annotation will
+            disable full auto-configuration and
+            instead apply only configuration relevant to JPA tests. By default, it will use an embedded, in-memory H2
+            database instead of the one declared in the configuration file, for faster test running time as compared to
+            disk file database.</p>
+        <p>Note that we have disabled H2 in-memory database support using <code
+                style="color: red;">@AutoConfigureTestDatabase</code> annotation because
+            we want to run Integration tests with the MySQL database.</p>
+        <p>We have already configured the MySQL database in our Spring boot project so let's run Integration tests with
+            the MySQL database.</p>
+        <h2>Run Integration tests</h2>
+        <img src="../assets/spring-data-jpa-tutorial-images/Spring Boot Testing - Data Access Layer Integration Testing.png"
+            style="width: 100%;">
+        <h3>What is the problem with the Integration test that we have written?</h3>
+        <p>A common problem when writing integration tests is the dependency on installed components (Ex: MySQL,
+            RabbitMQ) where the integration tests are supposed to run.</p>
+        <p>In our case, our Integration tests depend on the MySQL database. Installing a specific version of the MySQL
+            database in every machine where the integration tests are supposed to run takes a lot of time right.</p>
+        <p>Basically, our integration tests depend on external services (installing MySQL, Rabbit MQ, Redis, etc) to
+            run the integration tests right then how to reduce this dependency - what will be the solution.</p>
+        <p><b>The solution is Testcontainers.</b></p>
+        <p>Testcontainers is a Java library that supports JUnit tests, providing lightweight, throwaway instances of
+            common databases, Selenium web browsers, or anything else that can run in a Docker container.</p>
+        <p>Testcontainer allows us to use Docker containers within our tests. As a result, we can write self-contained
+            integration tests that depend on external resources.</p>
+        <h2>Write Integration Tests for Data Access or Repository Layer using Testcontainers</h2>
+        <p>Let's change the Integration test to use Testcontainers.</p>
+        <p>We just need to extend our <code style="color: red;">StudentRepositoryTest</code> class with <code
+                style="color: red;">AbstractContainerBaseTest</code> class:</p>
+        <pre><code>
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class StudentRepositoryTest extends AbstractContainerBaseTest {
+ // code goes here
+}
+
+</code></pre>
+        <p>Here is the complete code:</p>
+        <pre><code>
+package net.javaguides.spirngboot.repository;
+
+import net.javaguides.spirngboot.AbstractContainerBaseTest;
+import net.javaguides.spirngboot.entity.Student;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class StudentRepositoryTest extends AbstractContainerBaseTest {
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    // JUnit for save student operation - BDD style
+    @Test
+    public void givenStudentObject_whenSave_thenReturnSavedStudent(){
+
+        // given - setup or precondition
+        Student student = Student.builder().firstName("Ramesh")
+                .lastName("fadatare").email("ramesh@gmail.com").build();
+
+        // when - action or the testing
+        Student savedStudent = studentRepository.save(student);
+
+        // then - very output
+        Assertions.assertNotNull(savedStudent);
+        Assertions.assertNotNull(savedStudent.getId());
+
+    }
+
+    // JUnit for save student operation - BDD style
+    @Test
+    public void givenStudentId_whenfindbyId_thenReturnSavedStudent(){
+
+        // given - setup or precondition
+        Student student = Student.builder().firstName("Ramesh")
+                .lastName("fadatare").email("ramesh@gmail.com").build();
+        Student savedStudent = studentRepository.save(student);
+
+        // when - action or the testing
+        Student studentDB = studentRepository.findById(student.getId()).get();
+
+        // then - very output
+        Assertions.assertNotNull(studentDB);
+    }
+
+}
+
+</code></pre>
+        <h2>Run Integration tests using Testcontainers</h2>
+        <img src="../assets/spring-data-jpa-tutorial-images/Spring Boot Testing - Data Access Layer Integration Testing using Testcontainers.png"
+            style="width: 100%;">
+        <h2>Conclusion</h2>
+            <p>In this tutorial, we have discussed how to perform Spring Boot Data Access or Repository layer Integration
+            testing using Testcontainers.</p>
+    </div>
+</body>
+
+</html>

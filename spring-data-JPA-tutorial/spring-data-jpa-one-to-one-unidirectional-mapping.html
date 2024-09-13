@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Data JPA One to One Unidirectional Mapping</h1>
+        <p>In this tutorial, we will learn how to perform one-to-one mapping using Spring Data JPA (Hibernate as a JPA
+            provider).</p>
+        <p>We will take the <b>Order</b> and the <b>Address</b> (billing address) entities to perform One to One
+            Unidirectional
+            mapping.</p>
+        <p>One <code style="color: red;">Order</code> can have only one <code style="color: red;">Address</code>
+            (billing address). If we load the Order entity then we can get the
+            associated billing address using unidirectional mapping but vice versa is not possible.</p>
+        <p>Database level, the <b>Orders</b> table has a relationship field (foreign key) that refers to the
+            <b>Addresses</b> table.
+        </p>
+        <img src="../assets/spring-data-jpa-tutorial-images/Spring Data JPA One to One Unidirectional Mapping.png"
+            style="width: 100%;">
+        <h2>1. Creating Spring Boot Project</h2>
+        <p>Spring Boot provides a web tool called <a href="https://start.spring.io"
+                target="_blank">https://start.spring.io</a> to bootstrap an application quickly. Just go to the website
+            and generate a new Spring Boot project using the details below:</p>
+        <ul>
+            <li><strong>Project Name:</strong> spring-data-jpa-course</li>
+            <li><strong>Project Type:</strong> Maven</li>
+            <li><strong>Choose dependencies:</strong> Spring Data JPA, MySQL Driver, Lombok</li>
+            <li><strong>Package name:</strong> net.javaguides.springboot</li>
+        </ul>
+
+        <h2>2. Maven Dependencies</h2>
+        <p>Add the following dependencies to your <code style="color: red;">pom.xml</code> file:</p>
+        <pre><code>
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+        &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+        &lt;scope&gt;runtime&lt;/scope&gt;
+    &lt;/dependency&gt;
+    
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+        </code></pre>
+
+        <h2>3. Configure MySQL Database</h2>
+        <p>Use the following configurations in your <code style="color: red;">application.properties</code> file:</p>
+        <pre><code>
+    spring.datasource.url=jdbc:mysql://localhost:3306/demo?useSSL=false
+    spring.datasource.username=root
+    spring.datasource.password=Mysql@123
+    
+    spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+    spring.jpa.hibernate.ddl-auto=create-drop
+        </code></pre>
+        <p>Ensure the <b>demo</b> database exists before running the application, and adjust the username and password
+            according to your MySQL installation.</p>
+
+        <h2>4. Create JPA Entities</h2>
+        <p>Create the <code style="color: red;">Order</code> and <code style="color: red;">Address</code> entities inside the net.javaguides.springboot.entity
+            package:</p>
+        <p>Within the <code style="color: red;">entity</code> package, create an <code style="color: red;">Order</code> and <code style="color: red;">Address</code> classes with
+            the following content:</p>
+        <h3>Order.java</h3>
+        <pre><code>
+package net.javaguides.springdatajpacourse.entity;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name="orders")
+public class Order {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private Long id;
+
+    @Column(name="order_tracking_number")
+    private String orderTrackingNumber;
+
+    @Column(name="total_quantity")
+    private int totalQuantity;
+
+    @Column(name="total_price")
+    private BigDecimal totalPrice;
+
+    @Column(name="status")
+    private String status;
+
+    @Column(name="date_created")
+    @CreationTimestamp
+    private Date dateCreated;
+
+    @Column(name="last_updated")
+    @UpdateTimestamp
+    private Date lastUpdated;
+
+    // Unidirectional
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "billing_address_id", referencedColumnName = "id")
+    private Address billingAddress;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getOrderTrackingNumber() {
+        return orderTrackingNumber;
+    }
+
+    public void setOrderTrackingNumber(String orderTrackingNumber) {
+        this.orderTrackingNumber = orderTrackingNumber;
+    }
+
+    public int getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public Address getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void setBillingAddress(Address billingAddress) {
+        this.billingAddress = billingAddress;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", orderTrackingNumber='" + orderTrackingNumber + '\'' +
+                ", totalQuantity=" + totalQuantity +
+                ", totalPrice=" + totalPrice +
+                ", status='" + status + '\'' +
+                ", dateCreated=" + dateCreated +
+                ", lastUpdated=" + lastUpdated +
+                ", billingAddress=" + billingAddress +
+                '}';
+    }
+}
+        </code></pre>
+        <p>The above Order class represents an order entity in a database. It is annotated with <code
+                style="color: red;">@Entity</code>, which marks it
+            as a JPA entity class.</p>
+        <p>The <code style="color: red;">@Table</code> annotation is used to specify the name of the database table that
+            this entity maps to.</p>
+        <p>The <code style="color: red;">Order</code> class has several fields annotated with <code
+                style="color: red;">@Column</code>, which maps each field to a corresponding column
+            in the database table.</p>
+        <p>The <code style="color: red;">@Id</code> annotation specifies that the id field is the primary key of the
+            <code style="color: red;">Order</code> entity, and the
+            <code style="color: red;">@GeneratedValue</code> annotation specifies that the value of the id field is
+            automatically generated by the
+            database.
+        </p>
+        <p>The <code style="color: red;">@CreationTimestamp</code> and <code style="color: red;">@UpdateTimestamp</code>
+            annotations are used to
+            automatically set the dateCreated and
+            lastUpdated fields to the current timestamp when the entity is created or updated, respectively.</p>
+        <p>The <code style="color: red;">@OneToOne</code> annotation is used to specify a one-to-one relationship
+            between the <code style="color: red;">Order</code> entity and the
+            <code style="color: red;">Address</code> entity. The cascade attribute is set to <code
+                style="color: red;">CascadeType.ALL</code>, which means that any changes made to the
+            <code style="color: red;">Order</code> entity will be propagated to the associated <code
+                style="color: red;">Address</code> entity.
+        </p>
+        <h3>Address.java</h3>
+        <pre><code>
+package net.javaguides.springdatajpacourse.entity;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="addresses")
+public class Address {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private Long id;
+
+    @Column(name="street")
+    private String street;
+
+    @Column(name="city")
+    private String city;
+
+    @Column(name="state")
+    private String state;
+
+    @Column(name="country")
+    private String country;
+
+    @Column(name="zip_code")
+    private String zipCode;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", country='" + country + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                '}';
+    }
+}
+        </code></pre>
+        <p>The annotations used:</p>
+        <p><code style="color: red;">@Entity: </code>This annotation indicates that the class is a JPA entity and should
+            be managed by the persistence context.</p>
+        <p><code style="color: red;">@Table: </code>This annotation specifies the name of the table to which the entity
+            is mapped.</p>
+        <p><code style="color: red;">@Id: </code>This annotation indicates that the field is the primary key of the
+            entity.</p>
+        <p><code style="color: red;">@GeneratedValue: </code>This annotation specifies the strategy used for generating
+            the primary key value.</p>
+        <p><code style="color: red;">@Column: </code>This annotation specifies the mapping of the field to the
+            corresponding column in the database.</p>
+        <h2>5. Create Spring Data JPA Repositories</h2>
+        <p>The next thing we’re gonna do is to create repositories to access <code style="color: red;">Order</code> and
+            <code style="color: red;">Address</code> entities data from the
+            database.
+        </p>
+        <p>The <code style="color: red;">JpaRepository</code> interface defines methods for all the CRUD operations on
+            the entity, and a default
+            implementation of the <code style="color: red;">JpaRepository</code> called <code
+                style="color: red;">SimpleJpaRepository</code>.</p>
+        <p>Let's create a <code style="color: red;">repository</code> package inside a base package
+            "net.javaguides.springdatarest".</p>
+        <p>Within the <code style="color: red;">repository</code> package, create <code
+                style="color: red;">OrderRepository</code> and <code style="color: red;">AddressRepository</code>
+            interfaces with the following
+            content:</p>
+        <h3>OrderRepository.java</h3>
+        <pre><code>
+    package net.javaguides.springdatajpacourse.repository;
+    
+    import net.javaguides.springdatajpacourse.entity.Order;
+    import org.springframework.data.jpa.repository.JpaRepository;
+    
+    public interface OrderRepository extends JpaRepository&lt;Order, Long&gt; {
+        Order findByOrderTrackingNumber(String orderTrackingNumber);
+    }
+        </code></pre>
+
+        <h3>AddressRepository.java</h3>
+        <pre><code>
+    package net.javaguides.springdatajpacourse.repository;
+    
+    import net.javaguides.springdatajpacourse.entity.Address;
+    import org.springframework.data.jpa.repository.JpaRepository;
+    
+    public interface AddressRepository extends JpaRepository&lt;Address, Long&gt; {}
+        </code></pre>
+
+        <h2>6. Testing One-to-One Mapping</h2>
+        <p>Let's write the JUnit test to perform CRUD operations on one-to-one unidirectional mapping using Spring Data
+            JPA:</p>
+        <pre><code>
+package net.javaguides.springdatajpacourse.repository;
+
+import net.javaguides.springdatajpacourse.entity.Address;
+import net.javaguides.springdatajpacourse.entity.Order;
+import net.javaguides.springdatajpacourse.entity.OrderItem;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.math.BigDecimal;
+
+@SpringBootTest
+public class OneToOneUnidirectionalMappingTest {
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Test
+    void saveOrderOperation(){
+        // create Order object
+        Order order = new Order();
+
+        order.setOrderTrackingNumber("1000");
+        order.setStatus("COMPLETED");
+        order.setTotalPrice(new BigDecimal(2000));
+        order.setTotalQuantity(5);
+
+        Address billingAddress = new Address();
+        billingAddress.setStreet("kothrud");
+        billingAddress.setCity("pune");
+        billingAddress.setState("Maharashra");
+        billingAddress.setCountry("India");
+        billingAddress.setZipCode("11048");
+
+        order.setBillingAddress(billingAddress);
+
+        // save both order and address ( Cascade type - ALL)
+        orderRepository.save(order);
+    }
+
+    @Test
+    void fetchOrderOperation(){
+        // display Order information
+
+        // fetch order with it's address
+        Order order1 = orderRepository.findById(1L).get();
+
+        System.out.println(order1.toString());
+    }
+
+    @Test
+    void updateOrderOperation(){
+        // fetch order with it's address
+        Order order1 = orderRepository.findById(1L).get();
+
+        System.out.println(order1.toString());
+
+        order1.setStatus("DELIVERED");
+
+        order1.getBillingAddress().setZipCode("11047");
+
+        // update order along with that address
+        orderRepository.save(order1);
+    }
+
+    @Test
+    void deleteOrderOperation(){
+        // remove order with it's address
+        orderRepository.deleteById(1L);
+    }
+}
+        </code></pre>
+        <p>Let's understand CascadeType.ALL. Well, the CascadeType.ALL contain important PERSIST, MERGE, and REMOVE
+            operations and let's understand each of them.</p>
+        <h3>Cascading the one-to-one persist operation</h3>
+        <p>The CascadeType.PERSIST comes along with the CascadeType.ALL configuration, so we only have to persist the
+            Order entity, and the associated Address entity is persisted as well:</p>
+        <pre><code>
+    // create Order object
+    Order order = new Order();
+
+    order.setOrderTrackingNumber("1000");
+    order.setStatus("COMPLETED");
+    order.setTotalPrice(new BigDecimal(2000));
+    order.setTotalQuantity(5);
+
+    Address billingAddress = new Address();
+    billingAddress.setStreet("kothrud");
+    billingAddress.setCity("pune");
+    billingAddress.setState("Maharashra");
+    billingAddress.setCountry("India");
+    billingAddress.setZipCode("11048");
+
+    order.setBillingAddress(billingAddress);
+
+    // save both order and address ( Cascade type - ALL)
+    orderRepository.save(order);
+
+</code></pre>
+        <h3>Cascading the one-to-one merge operation</h3>
+        <p>The CascadeType.MERGE is inherited from the CascadeType.ALL setting, so we only have to merge the Order
+            entity,
+            and the associated Address is merged as well:</p>
+        <pre><code>
+    // fetch order with it's address
+    Order order1 = orderRepository.findById(1L).get();
+
+    System.out.println(order1.toString());
+
+    order1.setStatus("DELIVERED");
+
+    order1.getBillingAddress().setZipCode("11047");
+
+    // update order along with that address
+    orderRepository.save(order1);
+
+</code></pre>
+        <h3>Cascading the one-to-one delete operation</h3>
+        <p>The CascadeType.REMOVE is also inherited from the CascadeType.ALL configuration, so the Order entity deletion
+            triggers an Address entity removal too:</p>
+        <pre><code>
+// remove order with it's address
+orderRepository.deleteById(1L);
+        </code></pre>
+    </div>
+</body>
+
+</html>
