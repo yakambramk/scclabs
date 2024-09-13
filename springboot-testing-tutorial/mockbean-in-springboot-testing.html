@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@MockBean in Spring Boot Testing: CRUD Operations Example
+    </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>@MockBean in Spring Boot Testing: CRUD Operations Example</h1>
+
+        <p>In Spring Boot, @MockBean is a powerful annotation used for testing, particularly when dealing with external
+            dependencies or layers that need to be isolated. This blog post will demonstrate how to effectively use
+            @MockBean in Spring Boot for testing CRUD operations. </p>
+
+        <h2>Understanding @MockBean in Spring Boot </h2>
+
+        <p><b>@MockBean</b> is an annotation provided by Spring Boot for testing purposes. It is used to add mock
+            objects to the Spring application context or replace existing beans with their mock versions during the
+            execution of tests. This is especially useful in integration testing where a part of the application needs
+            to be tested in isolation. </p>
+        <h2>Why Use @MockBean? </h2>
+
+        <p><b>Isolation:</b> It allows for testing a specific part of the application in isolation, particularly when
+            external services are involved. </p>
+
+        <p><b> Controlled Environment: </b>Enables the creation of a controlled testing environment by defining the
+            expected behavior of the mock. </p>
+
+        <p><b> Integration Testing:</b> Facilitates testing within the full Spring context without relying on external
+            dependencies. </p>
+        <h2>A CRUD Operations Example with @MockBean </h2>
+
+        <p>Let's see an example demonstrating CRUD operations in a user management system. We'll create a User entity, a
+            repository, a service, and a controller, and then write tests using <b>@MockBean</b>. </p>
+        <h2>The User Entity
+        </h2>
+        <pre>import jakarta.persistence.*;
+
+    @Entity
+    public class User {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+        private String firstName;
+        private String lastName;
+        private String email;
+    
+        // Constructors, Getters, Setters
+    }</pre>
+
+        <h2>The UserRepository</h2>
+
+        <pre>import org.springframework.data.jpa.repository.JpaRepository;
+
+    public interface UserRepository extends JpaRepository&lt;User, Long> {
+    }</pre>
+
+        <h2>The UserService</h2>
+        <pre>import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.stereotype.Service;
+    
+    import java.util.List;
+    import java.util.Optional;
+    
+    @Service
+    public class UserService {
+    
+        private final UserRepository userRepository;
+    
+        @Autowired
+        public UserService(UserRepository userRepository) {
+            this.userRepository = userRepository;
+        }
+    
+        public User createUser(User user) {
+            return userRepository.save(user);
+        }
+    
+        public Optional&lt;User> getUser(Long id) {
+            return userRepository.findById(id);
+        }
+    
+        public User updateUser(Long id, User userDetails) {
+            User user = userRepository.findById(id).orElseThrow();
+            user.setFirstName(userDetails.getFirstName());
+            user.setLastName(userDetails.getLastName());
+            user.setEmail(userDetails.getEmail());
+            return userRepository.save(user);
+        }
+    
+        public void deleteUser(Long id) {
+            userRepository.deleteById(id);
+        }
+    
+        public List&lt;User> getAllUsers() {
+            return userRepository.findAll();
+        }
+    }</pre>
+        <h2>The UserController</h2>
+        <pre>import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.http.ResponseEntity;
+        import org.springframework.web.bind.annotation.*;
+        
+        import java.util.List;
+        
+        @RestController
+        @RequestMapping("/users")
+        public class UserController {
+        
+            private final UserService userService;
+        
+            @Autowired
+            public UserController(UserService userService) {
+                this.userService = userService;
+            }
+        
+            @PostMapping
+            public ResponseEntity&lt;User> createUser(@RequestBody User user) {
+                return ResponseEntity.ok(userService.createUser(user));
+            }
+        
+            @GetMapping("/{id}")
+            public ResponseEntity&lt;User> getUser(@PathVariable Long id) {
+                return userService.getUser(id)
+                        .map(ResponseEntity::ok)
+                        .orElse(ResponseEntity.notFound().build());
+            }
+        
+            @GetMapping
+            public ResponseEntity&lt;List&lt;User>> getAllUsers() {
+                return ResponseEntity.ok(userService.getAllUsers());
+            }
+        
+            @PutMapping("/{id}")
+            public ResponseEntity&lt;User> updateUser(@PathVariable Long id, @RequestBody User user) {
+                return ResponseEntity.ok(userService.updateUser(id, user));
+            }
+        
+            @DeleteMapping("/{id}")
+            public ResponseEntity&lt;Void> deleteUser(@PathVariable Long id) {
+                userService.deleteUser(id);
+                return ResponseEntity.ok().build();
+            }
+        }</pre>
+        <h2>UserServiceTest - Testing with @MockBean</h2>
+        <p>The below CRUD tests will demonstrate how to mock and assert the behavior of the <b>UserService</b> using
+            <b>@MockBean</b> for the <b>UserRepository</b>.
+        </p>
+        <pre>import org.junit.jupiter.api.Test;
+    import org.mockito.Mockito;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.boot.test.context.SpringBootTest;
+    import org.springframework.boot.test.mock.mockito.MockBean;
+    
+    import java.util.Optional;
+    
+    import static org.junit.jupiter.api.Assertions.*;
+    import static org.mockito.ArgumentMatchers.any;
+    import static org.mockito.ArgumentMatchers.eq;
+    
+    @SpringBootTest
+    public class UserServiceTest {
+    
+        @Autowired
+        private UserService userService;
+    
+        @MockBean
+        private UserRepository userRepository;
+    
+        @Test
+        public void testCreateUser() {
+            User mockUser = new User(1L, "John", "Doe", "john@example.com");
+            Mockito.when(userRepository.save(any(User.class))).thenReturn(mockUser);
+    
+            User result = userService.createUser(new User());
+            assertEquals(mockUser, result);
+        }
+    
+        @Test
+        public void testGetUserById() {
+            Long userId = 1L;
+            User mockUser = new User(userId, "John", "Doe", "john@example.com");
+            Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(mockUser));
+    
+            Optional&lt;User> result = userService.getUserById(userId);
+            assertTrue(result.isPresent());
+            assertEquals(mockUser, result.get());
+        }
+    
+        @Test
+        public void testUpdateUser() {
+            Long userId = 1L;
+            User existingUser = new User(userId, "John", "Doe", "john@example.com");
+            User updatedInfo = new User(userId, "Jane", "Doe", "jane@example.com");
+    
+            Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
+            Mockito.when(userRepository.save(any(User.class))).thenReturn(updatedInfo);
+    
+            User result = userService.updateUser(userId, updatedInfo);
+            assertEquals(updatedInfo.getFirstName(), result.getFirstName());
+            assertEquals(updatedInfo.getLastName(), result.getLastName());
+            assertEquals(updatedInfo.getEmail(), result.getEmail());
+        }
+    
+        @Test
+        public void testDeleteUser() {
+            Long userId = 1L;
+            Mockito.doNothing().when(userRepository).deleteById(eq(userId));
+            userService.deleteUser(userId);
+    
+            Mockito.verify(userRepository, Mockito.times(1)).deleteById(userId);
+        }
+    }</pre>
+        <h2>Explanation:</h2>
+
+        <p><b>testGetUserById: </b>This test verifies that the <b>getUserById</b> method in <b>UserService</b> correctly
+            retrieves a
+            user by ID using the mocked UserRepository. </p>
+
+        <p><b> testUpdateUser:</b> This test checks if the <b>updateUser</b> method in <b>UserService</b> correctly
+            updates a user's
+            information and returns the updated user. </p>
+
+        <p><b> testDeleteUser:</b> This test ensures that the <b>deleteUser</b> method in <b>UserService</b> correctly
+            invokes the
+            <b>deleteById</b> method on the <b>UserRepository</b>.
+        </p>
+
+        <p> By mocking the <b>UserRepository</b> and defining its behavior, we're able to isolate and test the
+            UserService
+            methods effectively, ensuring that they perform as expected without the need for actual database
+            interaction. This approach is vital for writing reliable and maintainable unit tests in Spring Boot
+            applications.</p>
+
+        <h2>UserContollerTest - Testing with @MockBean</h2>
+        <p>To test the <b>UserController</b> in a Spring Boot application, we'll use <b>MockMvc</b> which simulates HTTP
+            requests to
+            the controller and allows us to assert the responses. We will mock the UserService to isolate the controller
+            layer. Let's write test cases for each CRUD operation in the UserControllerTest class.</p>
+
+        <pre>import org.junit.jupiter.api.BeforeEach;
+    import org.junit.jupiter.api.Test;
+    import org.junit.jupiter.api.extension.ExtendWith;
+    import org.mockito.Mockito;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+    import org.springframework.boot.test.mock.mockito.MockBean;
+    import org.springframework.http.MediaType;
+    import org.springframework.test.context.junit.jupiter.SpringExtension;
+    import org.springframework.test.web.servlet.MockMvc;
+    import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+    
+    import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+    import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+    
+    @ExtendWith(SpringExtension.class)
+    @WebMvcTest(UserController.class)
+    public class UserControllerTest {
+    
+        @Autowired
+        private MockMvc mockMvc;
+    
+        @MockBean
+        private UserService userService;
+    
+        private User sampleUser;
+    
+        @BeforeEach
+        void setUp() {
+            sampleUser = new User(1L, "John", "Doe", "john@example.com");
+        }
+    
+        @Test
+        public void createUserTest() throws Exception {
+            Mockito.when(userService.createUser(Mockito.any(User.class))).thenReturn(sampleUser);
+    
+            mockMvc.perform(post("/users")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("{\"firstName\":\"John\",\"lastName\":\"Doe\",\"email\":\"john@example.com\"}"))
+                   .andExpect(status().isOk())
+                   .andExpect(jsonPath("$.firstName").value("John"))
+                   .andExpect(jsonPath("$.lastName").value("Doe"));
+        }
+    
+        @Test
+        public void getUserByIdTest() throws Exception {
+            Mockito.when(userService.getUserById(sampleUser.getId())).thenReturn(Optional.of(sampleUser));
+    
+            mockMvc.perform(get("/users/" + sampleUser.getId()))
+                   .andExpect(status().isOk())
+                   .andExpect(jsonPath("$.firstName").value("John"))
+                   .andExpect(jsonPath("$.email").value("john@example.com"));
+        }
+    
+        @Test
+        public void updateUserTest() throws Exception {
+            User updatedUser = new User(sampleUser.getId(), "Jane", "Doe", "jane@example.com");
+            Mockito.when(userService.updateUser(Mockito.eq(sampleUser.getId()), Mockito.any(User.class))).thenReturn(updatedUser);
+    
+            mockMvc.perform(put("/users/" + sampleUser.getId())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("{\"firstName\":\"Jane\",\"lastName\":\"Doe\",\"email\":\"jane@example.com\"}"))
+                   .andExpect(status().isOk())
+                   .andExpect(jsonPath("$.firstName").value("Jane"))
+                   .andExpect(jsonPath("$.email").value("jane@example.com"));
+        }
+    
+        @Test
+        public void deleteUserTest() throws Exception {
+            Mockito.doNothing().when(userService).deleteUser(sampleUser.getId());
+    
+            mockMvc.perform(delete("/users/" + sampleUser.getId()))
+                   .andExpect(status().isOk());
+        }
+    }</pre>
+
+        <p>In these tests, MockMvc is used to simulate HTTP requests to the <b>UserController</b>, and
+            <b>UserService</b> is mocked
+            using <b> @MockBean</b> to ensure the tests are isolated to the controller layer. This approach allows us to
+            verify
+            that the <b>UserController</b> handles requests correctly and returns the appropriate responses for each
+            CRUD
+            operation.</p>
+    </div>
+</body>
+
+</html>
