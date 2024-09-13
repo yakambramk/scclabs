@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Create Microservices in Java Using Spring Boot</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>How to Create Microservices in Java Using Spring Boot</h1>
+                <h4>author : Sai K</h4>
+                <p>Microservices architecture is a design approach where an application is composed of small, loosely
+                    coupled<br><br> services that communicate with each other. In this tutorial, we'll create a simple
+                    e-commerce application using a <br><br>microservices architecture with Spring Boot. We'll cover the
+                    following components:</p><br>
+                <p>
+                    1. <b>Eureka Server:</b> For service discovery. <br><br>
+                    2.<b>API Gateway:</b> Acts as a single entry point.<br><br>
+                    3.<b>Product Service:</b> Manages product information.<br><br>
+                    4.<b>Order Service:</b> Manages customer orders.<br><br>
+                    5.<b>Inventory Service:</b> Manages product inventory.<br><br>
+                </p>
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li>JDK 17 or later</li><br>
+                    <li>Maven or Gradle</li><br>
+                    <li>Docker (optional, for running supporting services like Eureka, RabbitMQ, etc.)</li><br>
+                    <li>IDE (IntelliJ IDEA, Eclipse, etc.)</li><br>
+                </ul>
+                <h2>Step 1: Set Up the Eureka Server for Service Discovery</h2>
+                <h3>1.1 Create the Project</h3>
+                <p>Use Spring Initializr to create a new project with the following dependencies:</p>
+                <ul>
+                    <li>Eureka Server</li>
+                </ul>
+                <h3>1.2 Configure application.properties</h3>
+                <p>Set up the application properties for the Eureka Server.</p>
+                <pre><code>
+server.port=8761
+spring.application.name=eureka-server
+eureka.client.register-with-eureka=false
+eureka.client.fetch-registry=false
+                </code></pre>
+                <h3>1.3 Enable Eureka Server</h3>
+                <p>Add the @EnableEurekaServer annotation to the main application class.</p>
+                <pre><code>
+package com.example.eurekaserver;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+
+@SpringBootApplication
+@EnableEurekaServer
+public class EurekaServerApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(EurekaServerApplication.class, args);
+    }
+} </code></pre>
+                <h2>Step 2: Set Up API Gateway</h2>
+                <h3>2.1 Create the Project</h3>
+                <p>Use Spring Initializr to create a new project with the following dependencies:</p>
+                <ul>
+                    <li>Spring Cloud Gateway</li><br>
+                    <li> Eureka Discovery Client</li><br>
+                </ul>
+                <h3>2.2 Configure application.properties</h3>
+                <p>Set up the application properties for the API Gateway.</p>
+                <pre><code>
+server.port=8080
+spring.application.name=api-gateway
+eureka.client.service-url.default-zone=http://localhost:8761/eureka/
+spring.cloud.gateway.discovery.locator.enabled=true
+spring.cloud.gateway.discovery.locator.lower-case-service-id=true
+</code></pre>
+                <h3>2.3 Enable Eureka Client and Gateway</h3>
+                <p>Add the @EnableDiscoveryClient annotation in the main application class.</p>
+                <pre><code>
+    package com.example.apigateway;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class ApiGatewayApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(ApiGatewayApplication.class, args);
+    }
+}
+</code></pre>
+                <h3>Step 3: Set Up Product Service</h3>
+                <p>Use Spring Initializr to create a new project with the following dependencies:</p>
+                <ul>
+                    <li>Spring Web</li><br>
+                    <li>Spring Boot Actuator</li><br>
+                    <li>Spring Data JPA</li><br>
+                    <li>H2 Database</li><br>
+                    <li>Eureka Discovery Client</li><br>
+                </ul>
+                <h3>3.2 Configure application.properties</h3>
+                <p>Set up the application properties for the Product Service.</p>
+                <pre><code>
+server.port=8081
+spring.application.name=product-service
+eureka.client.service-url.default-zone=http://localhost:8761/eureka/
+spring.datasource.url=jdbc:h2:mem:productdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.h2.console.enabled=true
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+</code></pre>
+                <h3>3.3 Enable Eureka Client</h3>
+                <p>Add the @EnableDiscoveryClient annotation to the main application class.</p>
+                <pre><code>
+package com.example.productservice;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class ProductServiceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(ProductServiceApplication.class, args);
+    }
+}
+</code></pre>
+                <h3>3.4 Create Product Model</h3>
+                <p>Create a simple Product model.</p>
+                <pre><code>
+    package com.example.productservice;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+public class Product {
+    @Id
+    private String id;
+    private String name;
+    private double price;
+
+    // Getters and setters
+}
+</code></pre>
+                <h3>3.5 Create Product Repository</h3>
+                <p>Create a repository interface to manage Product entities.</p>
+                <pre><code>
+package com.example.productservice;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductRepository extends JpaRepository<Product, String> {
+}
+</code></pre>
+                <h3>3.6 Create Product Service</h3>
+                <p>Create a service to handle product-related business logic.</p>
+                <pre><code>
+    package com.example.productservice;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ProductService {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    public Product getProductById(String id) {
+        return productRepository.findById(id).orElse(null);
+    }
+
+    public Product addProduct(Product product) {
+        return productRepository.save(product);
+    }
+}
+</code></pre>
+                <h3>3.7 Create Product Controller</h3>
+                <p>Create a controller to handle HTTP requests.</p>
+                <pre><code>
+    package com.example.productservice;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/products")
+public class ProductController {
+
+    @Autowired
+    private ProductService productService;
+
+    @GetMapping
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
+    }
+
+    @GetMapping("/{id}")
+    public Product getProductById(@PathVariable String id) {
+        return productService.getProductById(id);
+    }
+
+    @PostMapping
+    public Product addProduct(@RequestBody Product product) {
+        return productService.addProduct(product);
+    }
+}
+</code></pre>
+                <h2>Step 4: Set Up Order Service</h2>
+                <h3>4.1 Create the Project</h3>
+                <p>Use Spring Initializr to create a new project with the following dependencies:</p>
+                <ul>
+                    <li>Spring Web</li><br>
+                    <li>Spring Boot Actuator</li><br>
+                    <li>Spring Data JPA</li><br>
+                    <li>H2 Database</li><br>
+                    <li>Eureka Discovery Client</li><br>
+                    <li>OpenFeign</li><br>
+                </ul>
+                <h3>4.2 Configure application.properties</h3>
+                <p>Set up the application properties for the Order Service.</p>
+                <pre><code>
+    server.port=8082
+spring.application.name=order-service
+eureka.client.service-url.default-zone=http://localhost:8761/eureka/
+spring.datasource.url=jdbc:h2:mem:orderdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.h2.console.enabled=true
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+</code></pre>
+                <h3>4.3 Enable Eureka Client and Feign Clients</h3>
+                <p>Add the @EnableDiscoveryClient and @EnableFeignClients annotations to the main application class.</p>
+                <pre><code>
+package com.example.orderservice;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+@EnableFeignClients
+public class OrderServiceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(OrderServiceApplication.class, args);
+    }
+}
+</code></pre>
+                <h3>4.4 Create Order Model</h3>
+                <p>Create a simple Order model. </p>
+                <pre><code>
+package com.example.orderservice;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+public class Order {
+    @Id
+    private String id;
+    private String productId;
+    private int quantity;
+
+    // Getters and setters
+}</code></pre>
+                <h3>4.5 Create Order Repository</h3>
+                <p>Create a repository interface to manage Order entities.</p>
+                <pre><code>
+package com.example.orderservice;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface OrderRepository extends JpaRepository<Order, String> {
+}
+</code></pre>
+                <h3>4.6 Create Product Client</h3>
+                <p>Create a Feign client interface to communicate with the product-service.</p>
+                <pre><code>
+package com.example.orderservice;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+@FeignClient(name = "product-service")
+public interface ProductClient {
+
+    @GetMapping("/products/{id}")
+    Product getProductById(@PathVariable String id);
+}
+</code></pre>
+                <h3>4.7 Create Product DTO</h3>
+                <p>Create a Product DTO to match the one in product-service.</p>
+                <pre><code>
+package com.example.orderservice;
+
+public class Product {
+    private String id;
+    private String name;
+    private double price;
+
+    // Getters and setters
+}
+</code></pre>
+                <h3>4.8 Create Order Service</h3>
+                <p>Create a service to handle order-related business logic.</p>
+                <pre><code>
+    package com.example.orderservice;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class OrderService {
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private ProductClient productClient;
+
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
+
+    public Order getOrderById(String id) {
+        return orderRepository.findById(id).orElse(null);
+    }
+
+    public Order addOrder(Order order) {
+        Product product = productClient.getProductById(order.getProductId());
+        if (product != null) {
+            return orderRepository.save(order);
+        } else {
+            throw new RuntimeException("Product not found");
+        }
+    }
+}
+</code></pre>
+                <h3>4.9 Create Order Controller</h3>
+                <p>Create a controller to handle HTTP requests.</p>
+                <pre><code>
+    package com.example.orderservice;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/orders")
+public class OrderController {
+
+    @Autowired
+    private OrderService orderService;
+
+    @GetMapping
+    public List<Order> getAllOrders() {
+        return orderService.getAllOrders();
+    }
+
+    @GetMapping("/{id}")
+    public Order getOrderById(@PathVariable String id) {
+        return orderService.getOrderById(id);
+    }
+
+    @PostMapping
+    public Order addOrder(@RequestBody Order order) {
+        return orderService.addOrder(order);
+    }
+}
+</code></pre>
+                <h2>Step 5: Set Up Inventory Service</h2>
+                <h3>5.1 Create the Project</h3>
+                <p>Use Spring Initializr to create a new project with the following dependencies:</p>
+                <ul>
+                    <li>Spring Web</li><br>
+                    <li>Spring Boot Actuator</li><br>
+                    <li>Spring Data JPA</li><br>
+                    <li>H2 Database</li><br>
+                    <li>Eureka Discovery Client</li><br>
+                </ul>
+                <h3>5.2 Configure application.properties</h3>
+                <p>Set up the application properties for the Inventory Service.</p>
+                <pre><code>
+    server.port=8083
+spring.application.name=inventory-service
+eureka.client.service-url.default-zone=http://localhost:8761/eureka/
+spring.datasource.url=jdbc:h2:mem:inventorydb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.h2.console.enabled=true
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+</code></pre>
+                <h2>5.3 Enable Eureka Client</h2>
+                <p>Add the @EnableDiscoveryClient annotation to the main application class.</p>
+                <pre><code>
+    package com.example.inventoryservice;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class InventoryServiceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(InventoryServiceApplication.class, args);
+    }
+}
+</code></pre>
+                <h3>5.4 Create Inventory Model</h3>
+                <p>Create a simple Inventory model.</p>
+                <pre><code>
+package com.example.inventoryservice;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+public class Inventory {
+    @Id
+    private String productId;
+    private int quantity;
+
+    // Getters and setters
+}
+</code></pre>
+                <h3>5.5 Create Inventory Repository</h3>
+                <p>Create a repository interface to manage Inventory entities.</p>
+                <pre><code>
+    package com.example.inventoryservice;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface InventoryRepository extends JpaRepository<Inventory, String> {
+}
+</code></pre>
+                <h3>5.6 Create Inventory Service</h3>
+                <p>Create a service to handle inventory-related business logic.</p>
+                <pre><code>
+    package com.example.inventoryservice;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class InventoryService {
+
+    @Autowired
+    private InventoryRepository inventoryRepository;
+
+    public List<Inventory> getAllInventory() {
+        return inventoryRepository.findAll();
+    }
+
+    public Inventory getInventoryByProductId(String productId) {
+        return inventoryRepository.findById(productId).orElse(null);
+    }
+
+    public Inventory updateInventory(String productId, int quantity) {
+        Inventory inventory = inventoryRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+        inventory.setQuantity(quantity);
+        return inventoryRepository.save(inventory);
+    }
+}
+</code></pre>
+                <h3>5.7 Create Inventory Controller</h3>
+                <p>Create a controller to handle HTTP requests.</p>
+                <pre><code>
+    package com.example.inventoryservice;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/inventory")
+public class InventoryController {
+
+    @Autowired
+    private InventoryService inventoryService;
+
+    @GetMapping
+    public List<Inventory> getAllInventory() {
+        return inventoryService.getAllInventory();
+    }
+
+    @GetMapping("/{productId}")
+    public Inventory getInventoryByProductId(@PathVariable String productId) {
+        return inventoryService.getInventoryByProductId(productId);
+    }
+
+    @PutMapping("/{productId}")
+    public Inventory updateInventory(@PathVariable String productId, @RequestParam int quantity) {
+        return inventoryService.updateInventory(productId, quantity);
+    }
+}
+</code></pre>
+                <h2>Step 6: Run the Services</h2>
+                <p>
+                    1. Start the Eureka Server: Run the EurekaServerApplication class. <br><br>
+                    2.Start the API Gateway: Run the ApiGatewayApplication class. <br><br>
+                    3.Start the Product Service: Run the ProductServiceApplication class. <br><br>
+                    4.Start the Order Service: Run the OrderServiceApplication class. <br><br>
+                    5.Start the Inventory Service: Run the InventoryServiceApplication class. <br><br>
+                </p>
+                <h3>Step 7: Test the E-Commerce Application</h3>
+                <p>1. <b>Test the Product Service:</b></p>
+                <li>Add products using POST /products: </li>
+                <pre><code>
+                    {
+                        "id": "1",
+                        "name": "Product 1",
+                        "price": 100.0
+                      }
+                </code></pre>
+                <li>Retrieve products using GET /products.</li>
+                <p>2. <b>Test the Order Service:</b></p>
+                <li>Create orders using POST /orders: </li>
+                <pre><code>
+                    {
+                        "id": "1",
+                        "productId": "1",
+                        "quantity": 1
+                      }
+                </code></pre>
+                <li>Retrieve orders using GET /orders.</li><br>
+                <p>3. <b>Test the Inventory Service:</b></p>
+                <ul>
+                    <li>Test the Inventory Service:Update inventory using PUT /inventory/{productId}?quantity=10.</li>
+                    <br>
+                    <li>Retrieve inventory using GET /inventory.</li><br>
+                </ul>
+                <h2>Conclusion</h2>
+                <p>You have successfully set up a basic e-commerce application using Spring Boot microservices
+                    architecture. This <br><br> setup includes a Product Service, Order Service, Inventory Service, Eureka Server
+                    for service discovery, and an<br><br> API Gateway. This example can be expanded with more features such as
+                    user management, payment<br><br> processing, and more complex business logic.</p><br>
+                <h2>Related Java and Advanced Java Tutorials/Guides </h2>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

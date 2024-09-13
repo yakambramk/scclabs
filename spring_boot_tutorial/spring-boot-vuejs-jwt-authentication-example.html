@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Vue.js JWT Authentication Example</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Boot Vue.js JWT Authentication Example</h1>
+                <h4>Author :Sai K</h4>
+                <P>In this tutorial, we will create a user authentication system using JSON Web Tokens (JWT) with Spring
+                    Boot 3 for the backend and Vue.js 3.4 for the frontend. We will use Spring Security 6 to secure the
+                    application and Vue.js to handle the user interface.</P>
+                <h2>Prerequisites</h2>
+                <p>Before we start, ensure you have the following:</p>
+                <ul>
+                    <li>Java Development Kit (JDK) installed</li><br>
+                    <li> Apache Maven installed</li><br>
+                    <li> Apache Maven installed</li><br>
+                    <li> An IDE (such as IntelliJ IDEA, Eclipse, or VS Code) installed</li><br>
+                </ul>
+                <h2>Step 1: Setting Up the Spring Boot Project </h2>
+
+                <h3>1.1 Create a Spring Boot Project</h3>
+                <p>Go to <a href="https://start.spring.io/">Spring Initializr</a> in your web browser.
+                </p>
+                <p>2.Configure Project Metadata:</p>
+                <ul>
+                    <li><b>Project:</b> Maven Project</li><br>
+                    <li><b>Language:</b> Java</li><br>
+                    <li><b>Spring Boot:</b> Select the latest version of Spring Boot 3</li><br>
+                    <li><b>Group:</b> com.example</li><br>
+                    <li><b>Artifact:</b> jwt-authentication </li><br>
+                    <li><b>Name:</b> jwt-authentication </li><br>
+                    <li><b>Description:</b> JWT Authentication with Spring Boot and Vue.js
+                    </li><br>
+                    <li><b>Package Name:</b>com.example.jwtauthentication</li><br>
+                    <li><b>Packaging:</b> Jar</li><br>
+                    <li><b>Java Version:</b> 17 (or your preferred version)</li><br>
+                    <li>Click Next. </li>
+                </ul>
+                <p>3.Select Dependencies:</p>
+                <li>On the Dependencies screen, select the dependencies you need: </li>
+                <ul>
+                    <li><b>Spring Web</b></li><br>
+                    <li><b>Spring Data JPA</b></li><br>
+                    <li><b>H2 Database</b></li><br>
+                    <li><b>Spring Boot DevTools</b></li><br>
+                    <li><b> Spring Security</b></li><br>
+                    <li><b>Spring Boot Starter Mail</b></li><br>
+                    <li><b>JWT (io.jsonwebtoken:jjwt-api, io.jsonwebtoken:jjwt-impl, io.jsonwebtoken:jjwt-jackson)</b>
+                    </li><br>
+                </ul>
+                <li>Click Next.<br></li>
+                <p>4.Generate the Project:</p>
+                <ul>
+                    <li>Click Generate to download the project zip file.</li><br>
+                    <li>Extract the zip file to your desired location.</li><br>
+                </ul>
+                <p>5.Open the Project in Your IDE:</p>
+                <ul>
+                    <li>Open your IDE and import the project as a Maven project.</li><br>
+                </ul>
+                <h3>1.2 Maven Dependencies</h3>
+                <p> Here's a pom.xml file for the Spring Boot and JWT authentication tutorial:</p>
+                <pre><code>
+                    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.example&lt;/groupId&gt;
+    &lt;artifactId&gt;jwt-authentication&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;jwt-authentication&lt;/name&gt;
+    &lt;description&gt;Full Stack Application with Spring Boot and Vue.js for JWT Authentication&lt;/description&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;3.0.6&lt;/version&gt;
+        &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+
+    &lt;properties&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;jjwt.version&gt;0.11.5&lt;/jjwt.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;!-- Spring Boot dependencies --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- H2 Database --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+            &lt;artifactId&gt;h2&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- JWT dependencies --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;
+            &lt;artifactId&gt;jjwt-api&lt;/artifactId&gt;
+            &lt;version&gt;${jjwt.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;
+            &lt;artifactId&gt;jjwt-impl&lt;/artifactId&gt;
+            &lt;version&gt;${jjwt.version}&lt;/version&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;
+            &lt;artifactId&gt;jjwt-jackson&lt;/artifactId&gt; &lt;!-- or jjwt-gson if preferred --&gt;
+            &lt;version&gt;${jjwt.version}&lt;/version&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;
+                </code></pre>
+                <p>I suggest using the same JWT dependency versions as the ones used in this tutorial.</p>
+                <h3>1.3 Update application.properties</h3>
+                <p>Open the application.properties file located in the src/main/resources directory and add the
+                    following configuration:</p>
+                <pre><code>spring.datasource.url=jdbc:h2:mem:testdb
+                    spring.datasource.driverClassName=org.h2.Driver
+                    spring.datasource.username=sa
+                    spring.datasource.password=password
+                    
+                    spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+                    spring.h2.console.enabled=true
+                    spring.jpa.hibernate.ddl-auto=update
+                    
+                    # JWT Configuration
+                    jwt.secret=secret
+                    jwt.expiration=3600000
+                    </code></pre>
+                <h3>1.4 Create the User Entity </h3>
+                <p>In the com.example.jwtauthentication.model package, create a new Java class named User:</p>
+                <pre><code>
+                    package com.example.jwtauthentication.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+
+    // Getters and Setters
+}</code></pre>
+                <h3>1.5 Create the UserRepository Interface</h3>
+                <p>In the com.example.jwtauthentication.repository package, create a new Java interface named
+                    UserRepository:</p>
+                <pre><code>
+package com.example.jwtauthentication.repository;
+
+import com.example.jwtauthentication.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findByEmail(String email);
+}
+</code></pre>
+                <h3>1.6 Create the UserService Class</h3>
+                <p>In the com.example.jwtauthentication.service package, create a new Java class named UserService:</p>
+                <pre><code>
+    package com.example.jwtauthentication.service;
+
+import com.example.jwtauthentication.model.User;
+import com.example.jwtauthentication.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+}
+</code></pre>
+                <h3>1.7 Create JWT Utility Class</h3>
+                <p>In the com.example.jwtauthentication.util package, create a new Java class named JwtUtil:</p>
+                <pre><code>
+    package com.example.jwtauthentication.util;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+@Component
+public class JwtUtil {
+
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.expiration}")
+    private long expiration;
+
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+    }
+
+    public String generateToken(String username) {
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, username);
+    }
+
+    private String createToken(Map<String, Object> claims, String subject) {
+        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(SignatureAlgorithm.HS256, secret).compact();
+    }
+
+    public boolean validateToken(String token, String username) {
+        final String extractedUsername = extractUsername(token);
+        return (extractedUsername.equals(username) && !isTokenExpired(token));
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+}
+</code></pre>
+                <h3>1.8 Create JWT Authentication Filter</h3>
+                <p>In the com.example.jwtauthentication.filter package, create a new Java class named
+                    JwtAuthenticationFilter:</p>
+                <pre><code>
+    package com.example.jwtauthentication.filter;
+
+import com.example.jwtauthentication.service.UserService;
+import com.example.jwtauthentication.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private UserService userService;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        final String authorizationHeader = request.getHeader("Authorization");
+
+        String username = null;
+        String jwt = null;
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwt = authorizationHeader.substring(7);
+            username = jwtUtil.extractUsername(jwt);
+        }
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.userService.loadUserByUsername(username);
+
+            if (jwtUtil.validateToken(jwt, userDetails.getUsername())) {
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            }
+        }
+        filterChain.doFilter(request, response);
+    }
+}
+</code></pre>
+                <h3>1.9 Create Security Configuration</h3>
+                <p>Create a new Java class named SecurityConfig in the com.example.jwtauthentication.config package:</p>
+                <pre><code>
+    package com.example.jwtauthentication.config;
+
+import com.example.jwtauthentication.filter.JwtAuthenticationFilter;
+import com.example.jwtauthentication.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.b
+
+crypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Autowired
+    private UserService userService;
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+}
+</code></pre>
+                <h3>1.10 Update UserService to Implement UserDetailsService</h3>
+                <p>Update the UserService class to implement UserDetailsService:</p>
+                <pre><code>
+    package com.example.jwtauthentication.service;
+
+import com.example.jwtauthentication.model.User;
+import com.example.jwtauthentication.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+
+@Service
+public class UserService implements UserDetailsService {
+
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), Collections.emptyList());
+    }
+}
+</code></pre>
+                <h3>1.11 Create the AuthController Class</h3>
+                <p>In the com.example.jwtauthentication.controller package, create a new Java class named
+                    AuthController:</p>
+                <pre><code>
+    package com.example.jwtauthentication.controller;
+
+import com.example.jwtauthentication.model.User;
+import com.example.jwtauthentication.service.UserService;
+import com.example.jwtauthentication.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+
+    private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+
+    @Autowired
+    public AuthController(UserService userService, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+    }
+
+    @PostMapping("/register")
+    public User registerUser(@RequestBody User user) {
+        return userService.saveUser(user);
+    }
+
+    @PostMapping("/login")
+    public String loginUser(@RequestBody User user) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetails userDetails = userService.loadUserByUsername(user.getEmail());
+        return jwtUtil.generateToken(userDetails.getUsername());
+    }
+}
+package com.example.jwtauthentication.controller;
+
+import com.example.jwtauthentication.model.User;
+import com.example.jwtauthentication.service.UserService;
+import com.example.jwtauthentication.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+
+    private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+
+    @Autowired
+    public AuthController(UserService userService, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+    }
+
+    @PostMapping("/register")
+    public User registerUser(@RequestBody User user) {
+        return userService.saveUser(user);
+    }
+
+    @PostMapping("/login")
+    public String loginUser(@RequestBody User user) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetails userDetails = userService.loadUserByUsername(user.getEmail());
+        return jwtUtil.generateToken(userDetails.getUsername());
+    }
+}
+</code></pre>
+                <h2>Step 2: Creating the Frontend with Vue.js</h2>
+                <h3>2.1 Set Up Vue Project</h3>
+                <p>1.Open a terminal and navigate to your workspace directory.</p>
+                <p>2.Create a new Vue project using Vue CLI:</p>
+                <pre><code>
+npm install -g @vue/cli
+vue create vue-frontend
+</code></pre>
+                <p>3.Navigate to the project directory:</p>
+                <pre><code>cd vue-frontend</code></pre>
+                <h2>2.2 Install Axios and Bootstrap</h2>
+                <p>Install Axios to make HTTP requests and Bootstrap for styling:</p>
+                <pre><code>npm install axios bootstrap</code></pre>
+                <h3>2.3 Create Components</h3>
+                <p>Create the necessary components for user registration and login.</p>
+                <h3>2.3.1 Create AuthService.js</h3>
+                <p>Create a new file AuthService.js in the src directory to handle API requests for authentication:</p>
+                <pre><code>
+    import axios from 'axios';
+
+const API_BASE_URL = "http://localhost:8080/auth";
+
+class AuthService {
+    register(user) {
+        return axios.post(`${API_BASE_URL}/register`, user);
+    }
+
+    login(user) {
+        return axios.post(`${API_BASE_URL}/login`, user);
+    }
+}
+
+export default new AuthService();
+</code></pre>
+                <h3>2.3.2 Create RegisterComponent.vue</h3>
+                <p>Create a new file RegisterComponent.vue in the src/components directory:</p>
+                <pre><code>
+    <template>
+        <div class="container mt-5">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">Registration</div>
+                <div class="card-body">
+                  <form @submit.prevent="registerUser">
+                    <div class="form-group">
+                      <label>First Name</label>
+                      <input v-model="user.firstName" class="form-control" type="text" placeholder="Enter first name" />
+                    </div>
+                    <div class="form-group">
+                      <label>Last Name</label>
+                      <input v-model="user.lastName" class="form-control" type="text" placeholder="Enter last name" />
+                    </div>
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input v-model="user.email" class="form-control" type="email" placeholder="Enter email address" />
+                    </div>
+                    <div class="form-group">
+                      <label>Password</label>
+                      <input v-model="user.password" class="form-control" type="password" placeholder="Enter password" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                  </form>
+                  <div class="mt-3">
+                    <span>Already registered? <router-link to="/login">Login here</router-link></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+      
+      <script>
+        import AuthService from '../AuthService';
+
+        export default {
+            data() {
+                return {
+                    user: {
+                        firstName: '',
+                        lastName: '',
+                        email: '',
+                        password: ''
+                    }
+                };
+            },
+            methods: {
+                registerUser() {
+                    AuthService.register(this.user).then(response => {
+                        console.log(response.data);
+                    });
+                }
+            }
+        };
+    </script>      
+</code></pre>
+                <h3>2.3.3 Create LoginComponent.vue</h3>
+                <p>Create a new file LoginComponent.vue in the src/components directory:</p>
+                <pre><code>
+    &lt;template&gt;
+  &lt;div class="container mt-5"&gt;
+    &lt;div class="row justify-content-center"&gt;
+      &lt;div class="col-md-6"&gt;
+        &lt;div class="card"&gt;
+          &lt;div class="card-header"&gt;Login Form&lt;/div&gt;
+          &lt;div class="card-body"&gt;
+            &lt;form @submit.prevent="loginUser"&gt;
+              &lt;div class="form-group"&gt;
+                &lt;label&gt;Email&lt;/label&gt;
+                &lt;input v-model="user.email" class="form-control" type="email" placeholder="Email" /&gt;
+              &lt;/div&gt;
+              &lt;div class="form-group"&gt;
+                &lt;label&gt;Password&lt;/label&gt;
+                &lt;input v-model="user.password" class="form-control" type="password" placeholder="Password" /&gt;
+              &lt;/div&gt;
+              &lt;button type="submit" class="btn btn-primary"&gt;Login&lt;/button&gt;
+            &lt;/form&gt;
+            &lt;div class="mt-3"&gt;
+              &lt;span&gt;Not registered? &lt;router-link to="/register"&gt;Register/SignUp Here&lt;/router-link&gt;&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import AuthService from '../AuthService';
+
+export default {
+  data() {
+    return {
+      user: {
+        email: '',
+        password: ''
+      }
+    };
+  },
+  methods: {
+    loginUser() {
+      AuthService.login(this.user).then(response =&gt; {
+        console.log(response.data);
+      });
+    }
+  }
+};
+&lt;/script&gt;
+</code></pre>
+                <h3>2.3.4 Create App.vue</h3>
+                <p>Modify the App.vue file to include routing for the components:</p>
+                <pre><code>
+    &lt;template&gt;
+  &lt;div id="app"&gt;
+    &lt;nav class="navbar navbar-expand-lg navbar-light bg-light"&gt;
+      &lt;a class="navbar-brand" href="#"&gt;JWT Authentication System&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;router-view&gt;&lt;/router-view&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: 'App'
+};
+&lt;/script&gt;
+
+&lt;style&gt;
+nav {
+  margin-bottom: 20px;
+}
+&lt;/style&gt;
+</code></pre>
+                <h3>2.3.5 Update main.js</h3>
+                <p>Ensure the main.js file is set</p>
+                <p>up correctly:</p>
+                <pre><code>
+    import { createApp } from 'vue';
+import App from './App.vue';
+import { createRouter, createWebHistory } from 'vue-router';
+import RegisterComponent from './components/RegisterComponent.vue';
+import LoginComponent from './components/LoginComponent.vue';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const routes = [
+  { path: '/', component: RegisterComponent },
+  { path: '/register', component: RegisterComponent },
+  { path: '/login', component: LoginComponent }
+];
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+});
+
+const app = createApp(App);
+app.use(router);
+app.mount('#app');
+</code></pre>
+                <h2>Step 3: Running the Application</h2>
+                <h3>3.1 Run the Spring Boot Application</h3>
+                <p>1.Open the JwtAuthenticationApplication class in the src/main/java/com/example/jwtauthentication
+                    directory.</p>
+                <p>2.Click the green Run button in your IDE or use the terminal to run the application</p>
+                <pre><code>./mvnw spring-boot:run</code></pre>
+                <h2>3.2 Run the Vue.js Application</h2>
+                <p>1. Open a terminal and navigate to the vue-frontend directory.</p>
+                <p>2.Start the Vue application:</p>
+                <pre><code>npm run serve</code></pre>
+                <p>3.Open your web browser and navigate to http://localhost:8080.</p>
+                <p>You should now be able to register and log in users using the Vue.js frontend and Spring Boot
+                    backend. The <br><br> backend will issue a JWT token upon successful login, which can be used to access
+                    secured endpoints.</p><br>
+                <h2>Conclusion</h2>
+                <p>In this tutorial, we created a full-stack application using Spring Boot for the backend and Vue.js
+                    for the frontend.<br><br> We implemented JWT authentication and handled the necessary configurations to
+                    connect the two parts of the <br><br> application. This setup provides a solid foundation for
+                    developing more secure full-stack applications.</p>
+                <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

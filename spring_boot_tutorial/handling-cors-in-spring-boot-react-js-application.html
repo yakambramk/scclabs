@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handling CORS in Spring Boot React JS Application</title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Handling CORS in Spring Boot React JS Application</h1>
+                <h4>Author: Sai K</h4>
+
+
+                <p>When developing a full-stack application with React as the frontend and Spring Boot as the backend,
+                    one<br><br>
+                    common issue developers encounter is CORS (Cross-Origin Resource Sharing). CORS is a security
+                    feature<br><br>
+                    implemented by browsers to prevent malicious websites from making requests to a different domain
+                    than the<br><br>
+                    one that served the web page. This article will guide you through handling CORS issues in a React JS
+                    18 and<br><br>
+                    Spring Boot 3 application.</p><br>
+
+                <h2>What is CORS?</h2>
+                <p>CORS is a security feature implemented by browsers to prevent JavaScript from making requests across
+                    domain<br><br>
+                    boundaries. It allows a server to specify who can access its resources and how those resources can
+                    be<br><br>
+                    accessed. When the frontend (React) and backend (Spring Boot) are running on different origins
+                    (different<br><br>
+                    domains, ports, or schemes), the browser blocks the cross-origin requests unless the server
+                    explicitly<br><br>
+                    allows them.</p>
+
+                <h2>Setting Up the Project</h2>
+
+                <h3>Spring Boot Backend</h3>
+                <p>First, let’s set up a Spring Boot 3 application. We will create a simple REST API to manage products.
+                </p>
+
+                <h2>Step 1: Create a Spring Boot Project</h2>
+                <p>Open Spring Initializr:</p>
+                <ul class="circle-list">
+                    <li>Go to Spring Initializr in your web browser.</li><br>
+                    <p>2.Configure Project Metadata:</p><br>
+                    <ul class="circle-list">
+                        <li><strong>Project:</strong> Maven Project</li><br>
+                        <li><strong>Language:</strong> Java</li><br>
+                        <li><strong>Spring Boot:</strong> Select the latest version of Spring Boot 3</li><br>
+                        <li><strong>Group:</strong> com.example</li><br>
+                        <li><strong>Artifact:</strong> spring-boot-react-cors</li><br>
+                        <li><strong>Name:</strong> spring-boot-react-cors</li><br>
+                        <li><strong>Description:</strong> Handling CORS in React and Spring Boot</li><br>
+                        <li><strong>Package Name:</strong> com.example.springbootreactcors</li><br>
+                        <li><strong>Packaging:</strong> Jar</li><br>
+                        <li><strong>Java Version:</strong> 17 (or your preferred version)</li><br>
+                        <li>Click Next.</li><br>
+                    </ul>
+                    <h3>3.1Select Dependenciesz:</h3>
+                    <ul class="circle-list">
+                        <li>On the Dependencies screen, select the dependencies you need:</li><br>
+                        <ul class="circle-list">
+                            <li>Spring Web</li><br>
+                            <li>Spring Data JPA</li><br>
+                            <li>PostgreSQL Driver (or H2 for simplicity)</li><br>
+                            <li>Spring Boot DevTools</li><br>
+                        </ul>
+                        <li>Click Next.</li>
+                    </ul>
+                    <h3>4.Generate the Project:</h3>
+                    <ul class="circle-list">
+                        <li>Click Generate to download the project zip file.</li><br>
+                        <li>Extract the zip file to your desired location.</li><br>
+                    </ul>
+                    <h3>5.Open the Project in Your IDE:</h3>
+                    <ul class="circle-list">
+                        <li>Open your IDE and import the project as a Maven project.</li><br>
+
+                    </ul>
+                </ul>
+
+                <h2>Step 2: Update application.properties</h2>
+                <p>Open the application.properties file located in the <code>src/main/resources</code> directory and add
+                    the<br><br>
+                    following configuration:</p>
+                <pre><code>
+spring.datasource.url=jdbc:postgresql://localhost:5432/testdb
+spring.datasource.username=yourusername
+spring.datasource.password=yourpassword
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+</code></pre>
+                <p>Replace <code>yourusername</code> and <code>yourpassword</code> with your PostgreSQL username and
+                    password,
+                    and <code>testdb</code> with your database name.</p>
+
+                <h2>Step 3: Create the Product Entity</h2>
+                <p>In the <code>com.example.springbootreactcors.model</code> package, create a new Java class named
+                    <code>Product</code>:
+                </p>
+                <pre><code>
+package com.example.springbootreactcors.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private double price;
+
+    // Getters and Setters
+}
+</code>   </pre>
+
+                <h2>Step 4: Create the Product Repository</h2>
+                <p>In the <code>com.example.springbootreactcors.repository</code> package, create a new Java interface
+                    named
+                    <code>ProductRepository</code>:
+                </p>
+                <pre><code>
+package com.example.springbootreactcors.repository;
+
+import com.example.springbootreactcors.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProductRepository extends JpaRepository<Product, Long> {
+}
+</code>    </pre>
+
+                <h2>Step 5: Create the Product Service</h2>
+                <p>In the <code>com.example.springbootreactcors.service</code> package, create a new Java class named
+                    <code>ProductService</code>:
+                </p>
+                <pre><code>
+package com.example.springbootreactcors.service;
+
+import com.example.springbootreactcors.model.Product;
+import com.example.springbootreactcors.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ProductService {
+
+    private final ProductRepository productRepository;
+
+    @Autowired
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    public Product saveProduct(Product product) {
+        return productRepository.save(product);
+    }
+
+    public Product getProductById(Long id) {
+        return productRepository.findById(id).orElse(null);
+    }
+}
+</code>  </pre>
+
+                <h2>Step 6: Create the Product Controller</h2>
+                <p>In the <code>com.example.springbootreactcors.controller</code> package, create a new Java class named
+                    <code>ProductController</code>:
+                </p>
+                <pre><code>
+package com.example.springbootreactcors.controller;
+
+import com.example.springbootreactcors.model.Product;
+import com.example.springbootreactcors.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/products")
+@CrossOrigin(origins = "http://localhost:3000")
+public class ProductController {
+
+    private final ProductService productService;
+
+    @Autowired
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @GetMapping
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
+    }
+
+    @PostMapping
+    public Product saveProduct(@RequestBody Product product) {
+        return productService.saveProduct(product);
+    }
+
+    @GetMapping("/{id}")
+    public Product getProductById(@PathVariable Long id) {
+        return productService.getProductById(id);
+    }
+}
+</code>   </pre>
+
+                <h2>React Frontend</h2>
+                <p>Next, let’s set up the React frontend application.</p>
+
+                <h2>Step 1: Create a React Project</h2>
+                <p>Open a terminal and navigate to your workspace directory.</p>
+                <pre><code>
+npx create-react-app react-frontend
+cd react-frontend
+</code>     </pre>
+
+                <h2>Step 2: Install Axios and Bootstrap</h2>
+                <pre><code>
+npm install axios bootstrap
+</code>     </pre>
+
+                <h2>Step 3: Create Product Service</h2>
+                <p>Create a new file <code>ProductService.js</code> in the <code>src</code> directory to handle API
+                    requests for
+                    products:</p>
+                <pre><code>
+import axios from 'axios';
+
+const API_BASE_URL = "http://localhost:8080/products";
+
+class ProductService {
+    getAllProducts() {
+        return axios.get(API_BASE_URL, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+    }
+
+    getProductById(productId) {
+        return axios.get(`${API_BASE_URL}/${productId}`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+    }
+
+    createProduct(product) {
+        return axios.post(API_BASE_URL, product, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+    }
+}
+
+export default new ProductService();
+       </code> </pre>
+
+                <h2>Step 4: Create Components</h2>
+
+                <h3>ProductListComponent.js</h3>
+                <p>Create a new file <code>ProductListComponent.js</code> in the <code>src/components</code> directory:
+                </p>
+                <pre><code>
+import React, { useEffect, useState } from 'react';
+import ProductService from '../ProductService';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const ProductListComponent = () => {
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        ProductService.getAllProducts().then((response) => {
+            setProducts(response.data);
+        });
+    }, []);
+
+    return (
+        < div className="container mt-5">
+            < h2>Products< /h2>
+            < ul className="list-group">
+                {products.map(product => (
+                    < li key={product.id} className="list-group-item">
+                        {product.name} - ${product.price}
+                    < /li>
+                ))}
+            < /ul>
+        < /div>
+    );
+};
+
+export default ProductListComponent;
+</code>  </pre>
+
+                <h3>AddProductComponent.js</h3>
+                <p>Create a new file <code>AddProductComponent.js</code> in the <code>src/components</code> directory:
+                </p>
+                <!-- <pre>
+import React, { useState } from 'react';
+import ProductService from '../ProductService';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const AddProductComponent = () => {
+    const [name, setName] = useState('');
+    const [price, setPrice] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const product = { name, price };
+        ProductService.createProduct(product).then(response => {
+            console.log(response.data);
+        });
+    };
+
+    return (
+        <div className="container mt-5">
+            <h2>Add Product</h2>
+            <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label>Product Name</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Product Price</label>
+                    <input
+                        type="number"
+                        className="form-control"
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value)}
+                    />
+                </div>
+                <button type="submit" className="btn btn-primary mt-3">Add</button>
+            </form>
+        </div>
+    );
+};
+
+export default AddProductComponent;
+        </pre> -->
+
+                <h3>App.js</h3>
+                <p>Modify the <code>App.js</code> file to include routing for the components:</p>
+                <!-- <pre>
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ProductListComponent from './components/ProductListComponent';
+import AddProductComponent from './components/AddProductComponent';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const App = () => {
+    return (
+        <Router>
+            <div className="container">
+                <Routes>
+                    <Route path="/" element={<ProductListComponent />} />
+                    <Route path="/add-product" element={<AddProductComponent />} />
+                </Routes>
+            </div>
+        </Router>
+    );
+};
+
+export default App;
+        </pre> -->
+
+                <h3>index.js</h3>
+                <p>Ensure the <code>index.js</code> file is set up correctly:</p>
+                <pre><code>
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+    < React.StrictMode>
+        < App />
+    < /React.StrictMode>
+);
+</code>    </pre>
+
+                <h2>Running the Application</h2>
+
+                <h3>Run the Spring Boot Application</h3>
+                <p>Open the <code>SpringBootReactCorsApplication</code> class in the
+                    <code>src/main/java/com/example/springbootreactcors</code> directory.
+                </p>
+                <pre><code>
+./mvnw spring-boot:run
+</code>    </pre>
+
+                <h2>Run the React Application</h2>
+                <p>Open a terminal and navigate to the <code>react-frontend</code> directory.</p>
+                <pre><code>
+npm start
+</code> </pre>
+                <p>Open your web browser and navigate to <a href="http://localhost:3000">http://localhost:3000</a>.</p>
+
+                <p>You should now be able to make API requests from your React frontend to your Spring Boot backend
+                    without <br><br>
+                    encountering CORS issues.</p>
+
+                <h2>Conclusion</h2>
+                <p>Handling CORS in a React and Spring Boot application involves configuring the backend to allow
+                    requests from <br><br>
+                    the frontend. This can be done using the <code>@CrossOrigin</code> annotation on specific
+                    controllers or <br><br>
+                    configuring global CORS settings in a Spring configuration class. By following this tutorial, you
+                    can ensure <br><br>
+                    smooth communication between your React frontend and Spring Boot backend.</p>
+
+                <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

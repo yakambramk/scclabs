@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Microservices with Docker Tutorial </title>
+</head>
+<style>
+    .content {
+        flex-grow: 0.5;
+        padding: 20px;
+
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        text-align: left;
+        color: red;
+    }
+
+    h4 {
+        color: red;
+    }
+
+    .circle-list {
+        list-style-type: circle;
+        /* Use circles for list items */
+    }
+
+    pre {
+        background-color: #edf3f2;
+        color: #282c34;
+        padding: 20px;
+        border-color: #282c34;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+
+
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .directory {
+        color: red;
+    }
+
+    .java-file {
+        color: blue;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="overlap-container">
+            <div class="container">
+                <h1>Spring Boot Microservices with Docker Tutorial </h1>
+                <h4>author : Sai K</h4>
+                <p>In this tutorial, we will create a simple Spring Boot microservices architecture with two services:
+                    employee- <br><br>service and department-service. We will containerize these services using Docker and manage
+                    them with Docker <br><br>Compose.</p><br>
+                <h2>Prerequisites</h2>
+                <p>Before we start, ensure you have the following:</p>
+                <ul>
+                    <li>Java Development Kit (JDK) installed </li><br>
+                    <li>Apache Maven installed</li><br>
+                    <li>Docker installed</li><br>
+                    <li>Docker Compose installed</li><br>
+                    <li>An IDE (such as IntelliJ IDEA, Eclipse, or VS Code) installed</li><br>
+                </ul>
+                <h2>Overview of the Microservices</h2>
+                <p>We will create two Spring Boot microservices:</p>
+                <p>1.Employee Service: Manages employee information. <br><br>
+                    2. Department Service: Manages department information.</p>
+                <p>Additionally, we will create an API Gateway to route requests to these services.</p>
+                <h2>Step 1: Creating the Microservices</h2>
+                <h3>1.1 Create the Employee Service</h3>
+                <h3>Open Spring Initializr:</h3>
+                <p>Go to <a href="https://start.spring.io/">Spring Initializr</a> in your web browser.
+                </p>
+                <p>2.Configure Project Metadata:</p>
+                <ul>
+                    <li><b>Project:</b> Maven Project</li><br>
+                    <li><b>Language:</b> Java</li><br>
+                    <li><b>Spring Boot:</b> Select the latest version of Spring Boot</li><br>
+                    <li><b>Group:</b> com.example</li><br>
+                    <li><b>Artifact:</b> employee-service</li><br>
+                    <li><b>Name:</b> employee-service</li><br>
+                    <li><b>Description:</b> Employee Service
+                    </li><br>
+                    <li><b>Package Name:</b> com.example.employeeservice</li><br>
+                    <li><b>Packaging:</b> Jar</li><br>
+                    <li><b>Java Version:</b> 17 (or your preferred version)</li><br>
+                    <li>Click Next. </li>
+                </ul>
+                <p>3.Select Dependencies:</p>
+                <li>On the Dependencies screen, select the dependencies you need: </li>
+                <ul>
+                    <li><b>Spring Web</b></li><br>
+                    <li><b>Spring Data JPA</b></li><br>
+                    <li><b>H2 Database</b></li><br>
+                </ul>
+                <li>Click Next.<br></li>
+                <p>4.Generate the Project:</p>
+                <ul>
+                    <li>Click Generate to download the project zip file.</li><br>
+                    <li>Extract the zip file to your desired location.</li><br>
+                </ul>
+                <p>5.Open the Project in Your IDE:</p>
+                <ul>
+                    <li>Open your IDE and import the project as a Maven project.</li><br>
+                </ul>
+                <h3>1.1.1 Update application.properties</h3>
+                <p>Open the application.properties file located in the src/main/resources directory and add the
+                    following configuration:</p>
+                <pre><code>
+server.port=8081
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+spring.jpa.hibernate.ddl-auto=update
+                       </code></pre>
+                <h3>1.1.2 Create Employee Entity</h3>
+                <p>Create an Employee entity class in the com.example.employeeservice.model package:</p>
+                <pre><code>
+package com.example.employeeservice.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String department;
+
+    // Getters and Setters
+}</code></pre>
+                <h3>1.1.3 Create Employee Repository</h3>
+                <p>Create an EmployeeRepository interface in the com.example.employeeservice.repository package:</p>
+                <pre><code>
+    package com.example.employeeservice.repository;
+
+import com.example.employeeservice.model.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+}
+</code></pre>
+                <h3>1.1.4 Create Employee Controller</h3>
+                <p>Create an EmployeeController class in the com.example.employeeservice.controller package:</p>
+                <pre><code>
+    package com.example.employeeservice.controller;
+
+import com.example.employeeservice.model.Employee;
+import com.example.employeeservice.repository.EmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/employees")
+public class EmployeeController {
+
+    private final EmployeeRepository employeeRepository;
+
+    @Autowired
+    public EmployeeController(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
+
+    @GetMapping
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
+    }
+
+    @PostMapping
+    public Employee createEmployee(@RequestBody Employee employee) {
+        return employeeRepository.save(employee);
+    }
+}
+</code></pre>
+                <h2>Step 1: Creating the Microservices</h2>
+                <h3>1.1 Create the Employee Service</h3>
+                <h3>Open Spring Initializr:</h3>
+                <p>Go to <a href="https://start.spring.io/">Spring Initializr</a> in your web browser.
+                </p>
+                <p>2.Configure Project Metadata:</p>
+                <ul>
+                    <li><b>Project:</b> Maven Project</li><br>
+                    <li><b>Language:</b> Java</li><br>
+                    <li><b>Spring Boot:</b> Select the latest version of Spring Boot</li><br>
+                    <li><b>Group:</b> com.example</li><br>
+                    <li><b>Artifact:</b>api-gateway </li><br>
+                    <li><b>Name:</b>api-gateway</li><br>
+                    <li><b>Description:</b>API Gateway
+                    </li><br>
+                    <li><b>Package Name:</b> com.example.apigateway</li><br>
+                    <li><b>Packaging:</b> Jar</li><br>
+                    <li><b>Java Version:</b> 17 (or your preferred version)</li><br>
+                    <li>Click Next. </li>
+                </ul>
+                <p>3.Select Dependencies:</p>
+                <li>On the Dependencies screen, select the dependencies you need: </li>
+                <ul>
+                    <li><b>Spring Cloud Gateway</b></li><br>
+                    <li><b>Spring Boot DevTools</b></li><br>
+                </ul>
+                <li>Click Next.<br></li>
+                <p>4.Generate the Project:</p>
+                <ul>
+                    <li>Click Generate to download the project zip file.</li><br>
+                    <li>Extract the zip file to your desired location.</li><br>
+                </ul>
+                <p>5.Open the Project in Your IDE:</p>
+                <ul>
+                    <li>Open your IDE and import the project as a Maven project.</li><br>
+                </ul>
+                <h3>1.3.1 Update application.yml</h3>
+                <p>Create an application.yml file in the src/main/resources directory and configure it as follows:</p>
+                <pre><code>
+        server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: employee_service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/employees/**
+        - id: department_service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/departments/**
+      </code></pre>
+                <h2>Step 2: Containerizing the Microservices with Docker</h2>
+                <h3>2.1 Create Dockerfiles</h3>
+                <p>Create a Dockerfile in the root directory of each microservice (employee-service, department-service,
+                    and api- <br><br>gateway).</p><br>
+                <h3>2.1.1 Employee Service Dockerfile</h3>
+                <pre><code>
+        # Start with a base image containing Java runtime
+FROM openjdk:17-jdk-alpine
+
+# Add a volume pointing to /tmp
+VOLUME /tmp
+
+# Make port 8081 available to the world outside this container
+EXPOSE 8081
+
+# The application's jar file
+ARG JAR_FILE=target/employee-service-0.0.1-SNAPSHOT.jar
+
+# Add the application's jar to the container
+ADD ${JAR_FILE} app.jar
+
+# Run the jar file
+ENTRYPOINT ["java","-jar","/app.jar"]
+      </code></pre>
+                <h3>2.1.2 Department Service Dockerfile</h3>
+                <pre><code>
+        # Start with a base image containing Java runtime
+FROM openjdk:17-jdk-alpine
+
+# Add a volume pointing to /tmp
+VOLUME /tmp
+
+# Make port 8082 available to the world outside this container
+EXPOSE 8082
+
+# The application's jar file
+ARG JAR_FILE=target/department-service-0.0.1-SNAPSHOT.jar
+
+# Add the application's jar to the container
+ADD ${JAR_FILE} app.jar
+
+# Run the jar file
+ENTRYPOINT ["java","-jar","/app.jar"]
+      </code></pre>
+                <h3>2.1.3 API Gateway Dockerfile</h3>
+                <pre><code>
+# Start with a base image containing Java runtime
+FROM openjdk:17-jdk-alpine
+
+# Add a volume pointing to /tmp
+VOLUME /tmp
+
+# Make port 8080 available to the world outside this container
+EXPOSE 8080
+
+# The application's jar file
+ARG JAR_FILE=target/api-gateway-0.0.1-SNAPSHOT.jar
+
+# Add the application's jar to the container
+ADD ${JAR_FILE} app.jar
+
+# Run the jar file
+ENTRYPOINT ["java","-jar","/app.jar"]
+</code></pre>
+                <h3>2.2 Build Docker Images</h3>
+                <p>Open a terminal and navigate to each project's root directory, then build the Docker images using the
+                    following <br><br>commands:</p>
+                <h3>2.2.1 Employee Service</h3>
+                <pre><code>
+    mvn clean package
+    docker build -t employee-service .
+</code></pre>
+                <h3>2.2.2 Department Service</h3>
+                <pre><code>
+ mvn clean package
+docker build -t department-service .
+</code></pre>
+                <h3>2.2.3 API Gateway</h3>
+                <pre><code>
+    mvn clean package
+    docker build -t api-gateway .
+</code></pre>
+                <h2>Step 3: Managing Containers with Docker Compose</h2>
+                <h3>3.1 Create docker-compose.yml</h3>
+                <p>In the root directory of your project (outside all microservice directories), create a
+                    docker-compose.yml file:</p>
+                <pre><code>
+    version: '3.8'
+
+services:
+  employee-service:
+    image: employee-service
+    container_name: employee-service
+    ports:
+      - "8081:8081"
+
+  department-service:
+    image: department-service
+    container_name: department-service
+    ports:
+      - "8082:8082"
+
+  api-gateway:
+    image: api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - employee-service
+      - department-service
+</code></pre>
+                <h3>3.2 Run Docker Compose</h3>
+                <p>In the terminal, navigate to the directory containing the docker-compose.yml file and run the
+                    following command <br><br>to start all services:</p>
+                <pre><code>docker-compose up</code></pre>
+                <h2>Step 4: Testing the Application</h2>
+                <p>Once all services are up and running, you can test the application using a tool like Postman or your
+                    web browser.</p>
+                <h3>4.1 Access the Employee Service</h3>
+                <p>Open your browser or Postman and navigate to http://localhost:8080/employees. You should see the list
+                    of <br><br>employees.</p>
+                <h3>4.2 Access the Department Services</h3>
+                <p>Open your browser or Postman and navigate to http://localhost:8080/departments. You should see the
+                    list of <br><br>departments.</p>
+                <h2>Conclusion</h2>
+                <p>In this tutorial, we created a simple microservices architecture using Spring Boot. We containerized
+                    the <br><br> microservices with Docker and managed them using Docker Compose. This setup provides a
+                    solid
+                    foundation for <br><br> developing more complex microservices architectures and deploying them using
+                    Docker.
+                </p>
+                <h2>Related Spring and Spring Boot Tutorials/Guides:</h2>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
