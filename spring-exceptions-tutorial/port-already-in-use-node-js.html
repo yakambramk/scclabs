@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Port Already in Use - Node.js</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Port Already in Use - Node.js</h1>
+        <h2>Common Errors in Node.js</h2>
+        <p>When developing Node.js applications, you might occasionally encounter the "port already in use" error. This
+            error occurs when the port your <code style="color: red;">Node.js</code> application is trying to listen to is already being used by another
+            process. The port conflict can be caused by another instance of your application, another Node.js app, or
+            any other software using that port.</p>
+        <h2>How to Resolve the "Port Already in Use" Error in Node.js</h2>
+        <h2>1. Change Your Node.js Application Port</h2>
+        <p>Update the port in your <code style="color: red;">Node.js</code> application. For instance, if you're using Express:</p>
+        <pre><code>const express = require('express');
+const app = express();
+const PORT = 3001; // change this to another value
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});</code></pre>
+        <h2>2. Identify the Process Using the Port</h2>
+        <p>You can determine which process is using a specific port with different tools based on your operating system.
+        </p>
+        <ul>
+            <li><strong>For Linux/macOS:</strong> <code>lsof -i :3000</code></li>
+            <li><strong>For Windows:</strong> <code>netstat -ano | findstr 3000</code></li>
+        </ul>
+        <h2>3. Terminate the Process</h2>
+        <p>If you decide to kill the process occupying the port:</p>
+        <ul>
+            <li><strong>For Linux/macOS:</strong> <code>kill -9 &lt;PID&gt;</code></li>
+            <li><strong>For Windows:</strong> <code>taskkill /F /PID &lt;PID&gt;</code></li>
+        </ul>
+        <p>This will free up the port, allowing you to start your Node.js application.</p>
+        <h2>4. Make Sure You're Not Starting the Application Multiple Times</h2>
+        <p>Ensure you don't have multiple instances of your application running, especially when using tools like
+            <code style="color: red;">nodemon</code>. Close all terminal windows or command prompts that might be running the application
+            and try again.</p>
+        <h2>5. Use a Development Tool to Auto-detect Free Ports</h2>
+        <p>Tools like <code style="color: red;">portfinder</code> can help automatically find an open port for your application. This can be
+            particularly helpful during development when you don't need a fixed port.</p>
+        <h2>6. Check Your Application Code</h2>
+        <p>Ensure that you aren't mistakenly trying to start the server multiple times within your application, leading
+            to the port conflict.</p>
+        <h2>7. Reboot Your System</h2>
+        <p>As a last resort, if you're unable to find the conflicting process or if the issue persists, consider
+            rebooting your system. This might clear out any lingering processes that are holding onto the port.</p>
+        <h2>Conclusion</h2>
+        <p>While the "port already in use" error can be a little frustrating, especially during the heat of development,
+            it's usually straightforward to resolve. Remember to always check for lingering processes or terminal
+            instances and consider using tools to automatically manage ports for you.</p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Port Already in Use - Spring Boot Fix</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Port Already in Use Spring Boot - Fixed</h1>
+        <h2>Common Errors in Spring Boot</h2>
+        <p>In Spring Boot applications, if you see an error indicating that a port is already in use, it means another
+            process (possibly another instance of your application or a different application) is already running and
+            using the desired port. Here's a typical error message:</p>
+
+        <pre>***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+        </pre>
+        <p>The default port for a Spring Boot web application is <code style="color: red;">8080</code>.</p>
+        <h2>How to Resolve the "Port Already in Use" Error</h2>
+        <h3>Change the Spring Boot Application Port</h3>
+        <p>You can change the port your Spring Boot application runs on by adding or modifying the <code
+                style="color: red;">server.port</code> property in the <code
+                style="color: red;">application.properties</code> or
+            <code style="color: red;">application.yml</code> file:
+        </p>
+        <pre>server.port=8081</pre>
+        <p>Or, if you're using YAML format:</p>
+        <pre>server:
+  port: 8081</pre>
+        <h3>Specify the Port Using Command Line</h3>
+        <p>When running your Spring Boot application, you can specify the port directly using a command line argument:
+        </p>
+        <pre>java -jar your-app.jar --server.port=8081</pre>
+        <h3>Identify the Process Using the Port</h3>
+        <p>You can identify the process using a specific port with various tools based on your operating system.</p>
+        <p>For Linux/macOS:</p>
+        <pre>lsof -i :8080</pre>
+        <p>For Windows:</p>
+        <pre>netstat -ano | findstr 8080</pre>
+        <h3>Kill the Process</h3>
+        <p>If you decide to kill the process occupying the port:</p>
+        <p>For Linux/macOS:</p>
+        <pre>kill -9 &lt;PID&gt;</pre>
+        <p>Where &lt;PID> is the process ID. </p>
+        <p>For Windows:</p>
+        <pre>taskkill /F /PID &lt;PID&gt;</pre>
+        <p>This will free up the port, allowing you to start your Spring Boot application on it.</p>
+        <h3>Ensure You're Not Starting the Application Multiple Times</h3>
+        <p>If you're developing in an IDE, ensure you don't have multiple instances of your application running. This is
+            a common oversight where developers might accidentally run the application more than once.</p>
+        <h3>Use Random Port During Development</h3>
+        <p>If you're not particular about the port and just want to run the application during development, you can
+            configure Spring Boot to use a random port:</p>
+        <pre>server.port=0</pre>
+        <p>This will pick an available port from the system's available range.</p>
+        <p>Remember, the root cause of the "port already in use" error is always another process that's already bound to
+            the specified port. Whether you decide to change your application's port or stop the conflicting process
+            depends on your specific needs and environment.</p>
+    </div>
+</body>
+
+</html>

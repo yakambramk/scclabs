@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circular Dependency Error in Spring Boot</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>The dependencies of some of the beans in the application context form a cycle</h1>
+        <p>The error "The dependencies of some of the beans in the application context form a cycle" arises
+            when you have a circular dependency between beans in a Spring application. This happens when one bean
+            depends on another, and that bean directly or indirectly depends on the first bean.</p>
+
+        <h2>Example:</h2>
+        <pre><code>
+@Component
+public class BeanA {
+    @Autowired
+    private BeanB beanB;
+}
+
+@Component
+public class BeanB {
+    @Autowired
+    private BeanA beanA;
+}
+
+</code></pre>
+        <p>In the above example, we are using field-based injection. In modern versions of Spring, the container will
+            detect circular dependencies regardless of whether you're using <b>constructor or setter/field-based
+                injection.</b>
+        </p>
+        <p>In the above example, <code style="color: red;">BeanA</code> requires an instance of <code
+                style="color: red;">BeanB</code>, and vice versa, forming a cycle.</p>
+        <p>Here are a few strategies to break such circular dependencies:</p>
+        <h2>Explanation:</h2>
+        <p>In the above example, <code>BeanA</code> requires an instance of <code>BeanB</code>, and vice versa, forming
+            a cycle. Here are a few strategies to break such circular dependencies:</p>
+        <h3>1. Rethink Your Design</h3>
+        <p>This should be the first approach. Often, circular dependencies suggest a potential flaw in the design of the
+            system. Consider breaking down the functionality of the beans further or introducing a third bean that
+            handles the common functionality.</p>
+        <h3>2. Lazily Initialize One Bean</h3>
+        <p>You can mark one of the beans with the <a href="/spring-core-tutorial/spring-lazy-annotation-example.html" target="_blank">@Lazy</a> annotation, which makes it initialize only when
+            it's first accessed.</p>
+        <pre><code>
+@Component
+public class BeanA {
+    @Lazy
+    @Autowired
+    private BeanB beanB;
+}
+
+</code></pre>
+        <h3>3. Use @PostConstruct for Initialization Logic</h3>
+        <p>If the cycle occurs due to some logic running immediately after bean creation, then you can use the
+            <a href="/spring-core-tutorial/spring-postconstruct-and-predestroy-example.html" target="_blank">@PostConstruct</a></code>. This ensures the logic runs only after both beans have been fully
+            constructed.
+        </p>
+        <pre><code>
+@Component
+public class BeanA {
+    @Autowired
+    private BeanB beanB;
+
+    @PostConstruct
+    public void initialize() {
+        // logic that uses beanB
+    }
+}
+
+</code></pre>
+        <h3>4. Java Config for Bean Creation</h3>
+        <p>Explicitly control the creation of beans using Java configuration to manage their dependencies.</p>
+        <pre><code>
+@Configuration
+public class BeanConfig {
+
+    @Bean
+    @Lazy
+    public BeanA beanA() {
+        return new BeanA();
+    }
+
+    @Bean
+    public BeanB beanB(BeanA beanA) {
+        BeanB beanB = new BeanB();
+        beanB.setBeanA(beanA);
+        return beanB;
+    }
+}
+
+</code></pre>
+        <h2>Conclusion:</h2>
+        <p>The important takeaway here is that while Spring provides mechanisms to handle circular dependencies, it's a
+            design smell. Circular dependencies can make the code harder to maintain and test. Consider reevaluating the
+            design and responsibilities of your components to see if the circularity can be eliminated.</p>
+    </div>
+</body>
+
+</html>

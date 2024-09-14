@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Qualifying Bean of Type Found for Dependency</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Solution - No Qualifying Bean of Type Found for Dependency</h1>
+        <p>The error message "No qualifying bean of a type found for dependency" typically arises when using the Spring
+            framework, and it means that Spring's IoC container cannot find an appropriate bean to inject for a
+            particular dependency. In this post, we will share some common solutions to this error.</p>
+        <h2>Why Does This Error Occur?</h2>
+        <p>The error occurs when:</p>
+        <ul>
+            <li>You try to <a href="/spring-core-tutorial/spring-autowired-annotation-with-example.html"
+                    target="_blank">@Autowired</a> (or inject) a bean, but Spring doesn't have any instance of that
+                bean
+                in its context.</li>
+            <li>There are multiple beans of the same type in the Spring context, and Spring doesn't know which one to
+                inject.</li>
+            <li>The bean or the configuration class is not scanned by Spring's component scanner.</li>
+        </ul>
+        <h2>How to Fix the Error?</h2>
+        <h3>Solution 1: Check Component Scanning</h3>
+        <p>Ensure that the class you want to inject is annotated with <code style="color: red;">@Component</code> or
+            another stereotype
+            annotation like <code style="color: red;">@Service</code>, <code style="color: red;">@Repository</code>, or
+            <code style="color: red;">@Controller</code>.
+        </p>
+        <p>Ensure your <code style="color: red;">@SpringBootApplication</code> or <code
+                style="color: red;">@ComponentScan</code> annotation is in the right
+            package to scan the package containing your beans.</p>
+        <h3>Solution 2: Explicitly Define the Bean</h3>
+        <p>In case auto scanning is not picking up your component, you can define the bean explicitly in a <code
+                style="color: red;">Configuration</code>
+            class:</p>
+        <pre><code>@Configuration
+public class AppConfig {
+    @Bean
+    public MyBean myBean() {
+        return new MyBean();
+    }
+}</code></pre>
+        <h3>Solution 3: Use Qualifier for Multiple Beans</h3>
+        <p>If there are multiple beans of the same type, you can use the <a
+                href="/spring-core-tutorial/spring-qualifier-annotation-example.html" target="_blank">@Qualifier</a>
+            annotation to specify
+            which bean to autowire.</p>
+        <pre><code>@Autowired
+@Qualifier("beanName")
+private MyBean myBean;</code></pre>
+
+        <p>If you are still getting the same issue then try the below solutions as well:</p>
+
+        <h3>Check Profiles:</h3>
+        <p>If you're using Spring Profiles, ensure that the right profile is active if the bean is defined under a
+            specific profile.</p>
+
+        <h3>External Libraries:</h3>
+        <p>If the bean you're trying to inject is part of an external library, ensure that the library is correctly
+            added as a dependency, and its components are being scanned.</p>
+
+        <h3>Constructor Injection:</h3>
+        <p>Prefer constructor injection over field injection. It's more evident when a class has dependencies, and it
+            can also help avoid some issues related to circular dependencies.</p>
+        <pre><code>@Service
+public class MyService {
+    private final MyBean myBean;
+
+    @Autowired
+    public MyService(MyBean myBean) {
+        this.myBean = myBean;
+    }
+}</code></pre>
+
+        <h3>Check for Version Conflicts:</h3>
+        <p>Ensure that you don't have conflicting versions of Spring or related libraries. Dependency conflicts can
+            sometimes cause unexpected behaviors.</p>
+
+        <h3>Check the Error Message:</h3>
+        <p>The error message often provides the exact bean type it's trying to inject. Double-check that you haven't
+            made a typo or incorrect package reference.</p>
+
+        <p>By thoroughly going through these checks and understanding the root cause, you can address the "No qualifying
+            bean of a type found for dependency" error and ensure your Spring components wire up correctly.</p>
+    </div>
+</body>
+
+</html>

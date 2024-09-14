@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoSuchElementException in Java 8</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>java.util.NoSuchElementException: No Value Present</h1>
+        <p>The <code style="color: red;">java.util.NoSuchElementException</code> is a runtime exception that gets thrown
+            when one tries to access an element that isn't present. In the context of modern Java development,
+            especially with the use of the <a href="/spring-exceptions-tutorial/java-8-optional-class.html" target="_blank">Optional</a> class introduced in Java 8, you'll frequently see
+            this exception in scenarios where you attempt to retrieve a value from an <a href="/spring-exceptions-tutorial/java-8-optional-class.html" target="_blank">Optional</a> that
+            doesn't have a value.</p>
+        <h3>What Triggers This Exception?</h3>
+        <p>The most common scenario for this exception to be thrown is when you use the <code
+                style="color: red;">get()</code> method on an
+            Optional object that is empty (i.e., it doesn't contain a value).</p>
+        <pre><code>Optional&lt;String&gt; optionalString = Optional.empty();
+String value = optionalString.get(); // This will throw the exception</code></pre>
+        <h3>Understanding the Problem</h3>
+        <p>The <a href="/spring-exceptions-tutorial/java-8-optional-class.html" target="_blank">Optional</a> class was introduced to help Java developers handle cases where a value might be
+            absent without having to use null. Instead of returning null values and risking
+            <b>NullPointerExceptions</b>, you can return an <code>Optional</code> that clearly signals the
+            possibility of an absent value.
+        </p>
+        <p>However, care must be taken when trying to retrieve the value contained within an <code>Optional</code>.
+            Simply calling <code style="color: red;">get()</code> without checking if a value is present can lead to the
+            <code style="color: red;">NoSuchElementException</code>.
+        </p>
+        <h3>How to Avoid the Exception?</h3>
+        <ul>
+            <li><strong>Using isPresent() Before get():</strong>
+                <p>You can check if a value is present before trying to retrieve it.</p>
+                <pre><code>if(optionalString.isPresent()) {
+    String value = optionalString.get();
+}</code></pre>
+            </li>
+            <li><strong>Using orElse():</strong>
+                <p>Provide a default value if the Optional is empty.</p>
+                <pre><code>String value = optionalString.orElse("Default Value");</code></pre>
+            </li>
+            <li><strong>Using orElseGet():</strong>
+                <p>Provide a default value through a Supplier function.</p>
+                <pre><code>String value = optionalString.orElseGet(() -> "Generated Default Value");</code></pre>
+            </li>
+            <li><strong>Using ifPresent():</strong>
+                <p>Only act if a value is present.</p>
+                <pre><code>optionalString.ifPresent(val -> System.out.println("Value is: " + val));</code></pre>
+            </li>
+            <li><strong>Avoid Using get() Directly:</strong>
+                <p>As a best practice, try not to use the <code style="color: red;">get()</code> method directly without
+                    checking for the
+                    presence of a value or providing a default value. Some even suggest that the <b>get()</b>
+                    method is an anti-pattern and should be avoided.</p>
+            </li>
+        </ul>
+        <h3>Conclusion</h3>
+        <p>The <b>java.util.NoSuchElementException: No value present</b> exception is a clear indication of a
+            programming mistake when working with Optional. It's essential to always handle the possibility
+            of an absent value when working with Optional to prevent this runtime exception. Proper use of
+            Optional can lead to clearer, more readable, and safer code, but misuse can introduce new types
+            of errors, as seen with this exception.
+        </p>
+    </div>
+</body>
+
+</html>

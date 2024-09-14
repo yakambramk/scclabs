@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 8 Optional Class with Examples</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Java 8 Optional Class with Examples</h1>
+        <h2>Overview</h2>
+        <p>Java introduced a new class Optional in JDK 8. It is a public final class and is used to deal with
+            <code style="color: red;">NullPointerException</code> in Java applications. You must import <code
+                style="color: red;">java.util</code> package to use this class.
+            It provides methods that are used to check the presence of a value for the particular variable.
+        </p>
+        <p>The purpose
+            of the class is to provide a type-level solution for representing optional values instead of using null
+            references.</p>
+        <img src="../assets/spring-exceptions-images/java-8-optional-class.png">
+        <h2>Advantages of Java 8 Optional</h2>
+        <ul>
+            <li>Null checks are not required.</li>
+            <li>No more <code style="color: red;">NullPointerException</code> at run-time.</li>
+            <li>We can develop clean and neat APIs.</li>
+            <li>No more Boilerplate code.</li>
+        </ul>
+        <h2>Optional Class Simple Example</h2>
+        <p>The <code style="color: red;">Optional.ofNullable()</code> method returns a Non-empty Optional if a value is
+            present in the given
+            object. Otherwise, it returns an empty Optional. <code style="color: red;">Optional.empty()</code> method is
+            useful to create an
+            empty <code style="color: red;">Optional</code> object.</p>
+        <pre><code>
+import java.util.Optional;
+
+public class OptionalBasicExample {
+
+    public static void main(String[] args) {
+
+        Optional&lt;String&gt; gender = Optional.of("MALE");
+        String answer1 = "Yes";
+        String answer2 = null;
+
+        System.out.println("Non-Empty Optional:" + gender);
+        System.out.println("Non-Empty Optional: Gender value : " + gender.get());
+        System.out.println("Empty Optional: " + Optional.empty());
+
+        System.out.println("ofNullable on Non-Empty Optional: " + Optional.ofNullable(answer1));
+        System.out.println("ofNullable on Empty Optional: " + Optional.ofNullable(answer2));
+        
+        // java.lang.NullPointerException
+        System.out.println("ofNullable on Non-Empty Optional: " + Optional.of(answer2));
+    }
+}
+        </code></pre>
+        <h2>Usage of Optional class APIs/Methods</h2>
+        <h4>isPresent() Optional class API</h4>
+        <p>The <code style="color: red;">isPresent()</code> method returns an Optional with the specified present
+            non-null value.</p>
+            <p>Example :</p>
+        <pre><code>private static void isPresentOptionalAPI() {
+   Optional&lt;String&gt; opt = Optional.of("Ramesh");
+   System.out.println(opt.isPresent());
+}</code></pre>
+        <h4>empty() Optional class API</h4>
+        <p>An <code style="color: red;">empty()</code> static method returns an empty Optional instance. No value is present for this
+            Optional.</p>
+            <p>Example :</p>
+        <pre><code>private static void createEmptyOptionalObject() {
+    Optional&lt;String&gt; empty = Optional.empty();
+    System.out.println(empty.isPresent());
+
+    String name = "Ramesh";
+    Optional.of(name);
+}</code></pre>
+        <h4>ifPresent() Optional class API</h4>
+        <p>If a value is present, invoke the specified consumer with the value, otherwise do nothing.</p>
+        <p>Example :</p>
+        <pre><code>private static void ifPresentOptionalAPI() {
+   String name = "Ramesh";
+   if (name != null) {
+       System.out.println(name.length());
+   }
+
+   Optional&lt;String&gt; opt = Optional.of("Ramesh");
+   opt.ifPresent(str -> System.out.println(str.length()));
+}</code></pre>
+        <h4>orElse() Optional class API</h4>
+        <p>Return the value if present, otherwise returns another.</p>
+        <p>Example :</p>
+        <pre><code>private static void orElseOptionalAPI() {
+   String nullName = null;
+   String name = Optional.ofNullable(nullName).orElse("Ramesh");
+   System.out.println(name);
+}</code></pre>
+        <h4>orElseGet() Optional class API</h4>
+        <p>Return the value if present, otherwise invoke other and return the result of that invocation.</p>
+        <p>Example :</p>
+        <pre><code>private static void orElseGetOptionalAPI() {
+   String nullName = null;
+   String name = Optional.ofNullable(nullName).orElseGet(() -> "Ramesh");
+   System.out.println(name);
+}</code></pre>
+        <h4>orElseThrow() Optional class API</h4>
+        <p>Return the contained value, if present, otherwise throw an exception to be created by the provided supplier.
+        </p>
+        <p>Example :</p>
+        <pre><code>private static void orElseThrowOptionalAPI() {
+   String nullName = null;
+   String name = Optional.ofNullable(nullName)
+                 .orElseThrow(IllegalArgumentException::new);
+   System.out.println(name);
+}</code></pre>
+        <h4>get() Optional class API</h4>
+        <p>If a value is present in this Optional, returns the value, otherwise throws
+            <code>NoSuchElementException</code>.
+        </p>
+        <p>Example :</p>
+        <pre><code>private static void getOptionalAPI() {
+   Optional&lt;String&gt; opt = Optional.of("Ramesh");
+   String name = opt.get();
+   System.out.println(name);
+}</code></pre>
+<h2>Complete Example for Reference</h2>
+<pre><code>    import java.util.Optional;
+
+    public class OptionalClassExamples {
+    
+        public static void main(String[] args) {
+            isPresentOptionalAPI();
+            createEmptyOptionalObject();
+            createEmptyOptionalObjectWithStaticAPI();
+            ifPresentOptionalAPI();
+            orElseOptionalAPI();
+            orElseOptionalAPI();
+            orElseGetOptionalAPI();
+            orElseThrowOptionalAPI();
+            getOptionalAPI();
+        }
+    
+        // Returns an Optional with the specified present non-null value.
+        private static void isPresentOptionalAPI() {
+            Optional &lt; String > opt = Optional.of("Ramesh");
+            System.out.println(opt.isPresent());
+        }
+    
+        // Returns an Optional with the specified present non-null value.
+        private static void createEmptyOptionalObject() {
+            Optional &lt; String > empty = Optional.empty();
+            System.out.println(empty.isPresent());
+    
+            // Optional object with the static of API:
+            String name = "Ramesh";
+            Optional.of(name);
+        }
+    
+        private static void createEmptyOptionalObjectWithStaticAPI() {
+            String name = "baeldung";
+            Optional.of(name);
+        }
+    
+    // If a value is present, invoke the specified consumer with the value, otherwise do
+    // nothing.
+        private static void ifPresentOptionalAPI() {
+       // The ifPresent API enables us to run some code on the wrapped value if it is
+            // found to be non-null.
+            // Before Optional, we would do something like this:
+            String name = "Ramesh";
+            if (name != null) {
+                System.out.println(name.length());
+            }
+    
+            Optional &lt; String > opt = Optional.of("Ramesh");
+            opt.ifPresent(str -> System.out.println(str.length()));
+        }
+    
+    // If a value is present, invoke the specified consumer with the value, otherwise do
+     // nothing.
+        private static void orElseOptionalAPI() {
+      // With orElse, the wrapped value is returned if it is present and the argument
+       // given to
+      // orElse is returned if the wrapped value is absent
+            String nullName = null;
+    
+      // If a value is present, invoke the specified consumer with the value, otherwise
+         // do nothing.
+            //
+            String name = Optional.ofNullable(nullName).orElse("Ramesh");
+            System.out.println(name);
+        }
+    
+        private static void orElseGetOptionalAPI() {
+            String nullName = null;
+            String name = Optional.ofNullable(nullName).orElseGet(() -> "Ramesh");
+            System.out.println(name);
+        }
+        private static void orElseThrowOptionalAPI() {
+    
+            // This will throw exception
+            String nullName = null;
+            String name = Optional.ofNullable(nullName)
+                .orElseThrow(IllegalArgumentException::new);
+            System.out.println(name);
+        }
+    
+        private static void getOptionalAPI() {
+            Optional &lt; String > opt = Optional.of("Ramesh");
+            String name = opt.get();
+            System.out.println(name);
+        }
+    
+    }</code></pre>
+    </div>
+
+</body>
+
+</html>

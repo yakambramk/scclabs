@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Property Found for Type Error in Spring Boot</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2,
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p,
+        li {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>No Property Found for Type Error in Spring Boot</h1>
+        <p>In Spring Boot applications, when working with <a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> repositories, developers might
+            encounter an
+            error similar to "No property [someProperty] found for type [someType]!"</p>
+        <p>The "No Property Found for Type" error in Spring Boot, specifically with <a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a>,
+            typically arises
+            when there's a mismatch between the derived query methods in a repository interface and the actual
+            properties of the associated entity. In this blog post, we'll dive into the root causes of this error and
+            provide solutions. </p>
+        <h2>Introduction</h2>
+        <p><a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> makes data access easy. With its out-of-the-box, convention-based query
+            generation, we can
+            create repository interfaces and let Spring handle the implementation. Sometimes, however, naming
+            conventions or other misconfigurations can lead to unexpected issues. </p>
+        <h2>Problem</h2>
+        <p>Error Message:</p>
+        <pre><code>
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'someRepository': 
+Invocation of init method failed; nested exception is org.springframework.data.mapping.PropertyReferenceException: 
+No property [someProperty] found for type [someType]!
+
+</code></pre>
+        <h3>Causes</h3>
+        <ul>
+            <li><strong>Custom Query Method Misnaming:</strong> This is the most common cause. For instance, if you have
+                an entity <code style="color: red;">User</code> with a field <code style="color: red;">username</code>
+                and you mistakenly create a method
+                <code style="color: red;">findByUserame(String username)</code>, <a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> won't be
+                able to correlate
+                <code style="color: red;">Userame</code> (note that character "n" is missing in the field name) with any
+                property of
+                <code style="color: red;">User</code>.
+            </li>
+        </ul>
+        <p>For example:</p>
+        <p>Consider an entity:</p>
+        <pre><code>
+@Entity
+public class User {
+
+    @Id
+    private Long id;
+
+    private String username;
+
+    // getters, setters, etc.
+}
+
+</code></pre>
+        <p>And a corresponding repository:</p>
+        <pre><code>
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+    
+    List&lt;User&gt; findByUserame(String username); // Notice the typo "Userame"
+}
+
+</code></pre>
+        <p>In this case, <a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> will throw the <strong>No Property Found for Type</strong>
+            exception because
+            <code style="color: red;">Userame</code> does not correspond to any attribute in the <code
+                style="color: red;">User</code> entity.
+        </p>
+
+        <h3>Nested Property Misreference</h3>
+        <p>When working with nested properties in entities, the referenced path might not exist:</p>
+
+        <pre>
+@Entity
+public class User {
+    private Long id;
+    private Profile profile;
+    // ... getters, setters, other properties ...
+}
+
+@Entity
+public class Profile {
+    private String phoneNumber;
+    // ... getters, setters ...
+}
+
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+    List&lt;User&gt; findByProfilePhone(String phone); // It should be "findByProfilePhoneNumber"
+}
+        </pre>
+
+        <h2>Solutions</h2>
+        <h3>Correct Method Naming</h3>
+        <p>Always ensure that the method names in your repository interfaces match the property names of your entities.</p>
+        <pre><code>
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+    
+    List&lt;User&gt; findByUsername(String username); // Corrected the typo "Username"
+}
+
+</code></pre>
+        <h3>Referencing Nested Properties</h3>
+        <p>When querying nested properties, make sure the entire path to the property is correct.</p>
+        <pre><code>
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+    List&lt;User&gt; findByProfilePhoneNumber(String phone); // Corrected the nested property reference.
+}
+
+</code></pre>
+        <h3>Custom Query</h3>
+        <p>If you want more control over the query, bypass Spring Data JPA's query derivation and define your own query:</p>
+        <pre><code>
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+    @Query("SELECT u FROM User u WHERE u.profile.phoneNumber = ?1")
+    List&lt;User&gt; findByPhoneNumber(String phone);
+}
+
+</code></pre>
+        <h2>Conclusion</h2>
+        <p>While <a href="/spring-data-JPA-tutorial/spring-data-jpa-tutorial.html" target="_blank">Spring Data JPA</a> simplifies the data access layer in Spring Boot applications, it's crucial to follow
+            naming conventions and understand the underlying mechanisms. By ensuring method names align with entity
+            property names, developers can prevent the "No Property Found for Type" error and ensure smooth and
+            efficient data operations.</p>
+    </div>
+</body>
+
+</html>

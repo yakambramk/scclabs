@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solution for Failed to Configure a DataSource</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Solution for Failed to Configure a DataSource</h1>
+        <p>
+            The error message Failed to configure a DataSource: 'url' attribute is not specified and no embedded
+            datasource could be configured is a common issue encountered in Spring Boot applications when
+            trying to configure a database connection. This error essentially means that Spring Boot is unable to find a
+            database connection URL, and since no embedded database (like H2 or HSQLDB) is set up, it throws an error.
+            Here's a deeper look into the problem and its solutions:
+        </p>
+        <h2>1. Why This Error Occurs</h2>
+        <img src="../assets/spring-exceptions-images/failed-to-configure-error-occur.png" style="width: 100%;">
+        <p>
+            Spring Boot's auto-configuration mechanism looks for a DataSource bean to configure database-related
+            operations. If you have database-related dependencies in your project (like JPA or JDBC), Spring Boot
+            expects a database connection to be available. The error arises in the following situations:
+        </p>
+        <ul>
+            <li>You haven't provided a <code style="color: red;">spring.datasource.url</code> property in your
+                <code style="color: red;">application.properties</code> or <code
+                    style="color: red;">application.yml</code>.
+            </li>
+            <li>You've added a database-related starter (like spring-boot-starter-data-jpa) without setting
+                up an actual database or providing the connection details.</li>
+            <li>You haven't set up an embedded database, or there's a misconfiguration in setting it up.</li>
+        </ul>
+        <h2>2. Solutions</h2>
+        <h3>Solution 1: Provide a Database Connection URL</h3>
+        <p>
+            If you're connecting to an actual database (like MySQL), make sure to provide the connection URL:
+        </p>
+        <p><b>In application.properties:</b></p>
+        <pre><code>
+In application.properties:
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=root
+spring.datasource.password=rootpassword
+
+</code></pre>
+        <p><b>In application.yml:</b></p>
+        <pre><code>
+In application.yml:
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydb
+    username: root
+    password: rootpassword
+
+</code></pre>
+        <p>
+            The above is an example of a MySQL database. Adjust the URL and credentials accordingly for other databases.
+        </p>
+        <h3>Solution 2: Setup an Embedded Database</h3>
+        <p>
+            If you want to use an embedded database (e.g., H2), make sure you have the necessary dependencies in your
+            <code style="color: red;">pom.xml</code> or <code style="color: red;">build.gradle</code>.
+        </p>
+        <pre><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+    &lt;artifactId&gt;h2&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;
+
+</code></pre>
+        <p>
+            And if you're using H2, you can configure the database in <code
+                style="color: red;">application.properties</code>:
+        </p>
+        <pre><code>
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.h2.console.enabled=true
+
+</code></pre>
+        <h3>Solution 3: Remove Database Dependencies (if not needed)</h3>
+        <p>
+            If your project does not need database operations, consider removing any database-related dependencies like
+            <code style="color: red;">spring-boot-starter-data-jpa</code> or <code
+                style="color: red;">spring-boot-starter-jdbc</code>.
+        </p>
+        <h3>Solution 4: Explicitly Exclude DataSource Auto-Configuration</h3>
+        <p>
+            If you intentionally don't want to configure a DataSource, you can exclude it from Spring Boot's
+            auto-configuration:
+        </p>
+        <pre><code>
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+public class MyApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(MyApplication.class, args);
+    }
+}
+
+</code></pre>
+        <h2>Conclusion</h2>
+        <p>
+            The error Failed to configure a DataSource highlights a mismatch between Spring Boot's
+            expectations and the application's configuration. Depending on your application's needs, you can either
+            provide the correct database connection details, set up an embedded database, or instruct Spring Boot not to
+            expect a database at all.
+        </p>
+    </div>
+</body>
+
+</html>
