@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invalid Property Reference - Spring Boot</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Invalid Property Reference in Spring Boot</h1>
+        <h2>Common Errors in Spring Boot</h2>
+        <p>The "invalid property reference" error in Spring Boot is commonly related to the Spring Expression Language
+            (SpEL) trying to resolve a property or method on a null object, or it can be due to trying to bind
+            properties from the <code style="color: red;">application.properties</code> or <code
+                style="color: red;">application.yml</code> file to a class
+            field but with incorrect references. In this post, we will provide solutions for this error.</p>
+        <h2>Causes</h2>
+        <p><strong>Invalid SpEL Expression</strong>: If you're using SpEL within your Spring components to refer to
+            properties, and there's an issue with the expression.</p>
+        <pre><code>@Value("#{someBean.someProperty}")
+private String someValue;</code></pre>
+        <p>The above expression assumes that a bean named <code style="color: red;">someBean</code> exists, and it has a
+            property named
+            <code style="color: red;">someProperty</code>.
+        </p>
+        <p><strong>Incorrect Property Name in Configuration</strong>: When binding properties from
+            <code style="color: red;">application.properties</code> or <code style="color: red;">application.yml</code>
+            to a class, if the property doesn't
+            exist or is named incorrectly, it can result in this error.
+        </p>
+        <pre><code>@Value("${custom.property.name}")
+private String propertyName;</code></pre>
+        <p>Ensure that <code style="color: red;">custom.property.name</code> exists in your <code
+                style="color: red;">application.properties</code> or
+            <code style="color: red;">application.yml</code> file.
+        </p>
+        <p><strong>Wrong Configuration Property Prefix</strong>: When using <code
+                style="color: red;">@ConfigurationProperties</code>
+            with a prefix, ensure that the prefix matches the structure in the properties or YAML file.</p>
+        <p><strong>Nested Properties in POJO</strong>: When binding nested properties, ensure the parent object is
+            initialized, or Spring Boot might not be able to bind child properties, leading to this error.</p>
+        <p><strong>Data Type Mismatch</strong>: The property in the properties or YAML file might be of a different
+            data type than the field in your class. For instance, trying to bind a string value to an integer field.
+        </p>
+        <h2>Solutions</h2>
+        <p><strong>Check SpEL Expressions</strong>: Make sure that any SpEL expressions you're using are valid. If
+            you're referring to a bean, ensure it exists in the context and has the correct properties or methods
+            you're referencing.</p>
+        <p><strong>Verify Property Names</strong>: Ensure the property you're trying to bind from the configuration
+            file exists and is spelled correctly.</p>
+        <p>For example: when binding properties from <code style="color: red;">application.properties</code> or <code
+                style="color: red;">application.yml</code> to a class, if the
+            property doesn't exist or is named incorrectly, it can result in this error.</p>
+        <pre><code>@Value("${custom.property.name}")
+private String propertyName;</code></pre>
+        <p>Ensure that <code>custom.property.name</code> exists in your <code>application.properties</code> or
+            <code>application.yml</code> file.
+        </p>
+            <p><strong>Correct Configuration Prefix</strong>: If using <code style="color: red;">@ConfigurationProperties</code>,
+                double-check the prefix to ensure it matches your configuration structure.</p>
+            <p><strong>Initialize Nested Objects</strong>: If you have nested configuration properties, ensure the
+                parent objects are initialized either by providing a default constructor or initializing them manually.
+            </p>
+            <p><strong>Ensure Data Type Consistency</strong>: Make sure the data types in your configuration file and
+                the class field are compatible.</p>
+            <p><strong>Utilize Tools</strong>: Spring Boot provides a lot of feedback at startup time. Carefully read
+                the error stack trace; it often gives specific details about the invalid property reference. You can
+                also make use of the Spring Boot Actuator's <code style="color: red;">/actuator/configprops</code> endpoint to see a list of
+                all the configuration properties and their bindings.</p>
+        <p>In conclusion, the "invalid property reference" error in Spring Boot requires careful analysis of both your
+            configuration properties and the way they are bound in your application. By methodically checking each
+            possible cause, you can effectively pinpoint and address the root of the problem.</p>
+    </div>
+</body>
+
+</html>

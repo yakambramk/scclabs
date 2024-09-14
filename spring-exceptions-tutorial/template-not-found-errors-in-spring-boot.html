@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Not Found Errors in Spring Boot</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Template Not Found Errors in Spring Boot</h1>
+        <h2>Common Errors in Spring Boot</h2>
+        <p>
+            When developing a web application with Spring Boot, especially one that leverages templating engines like
+            Thymeleaf, FreeMarker, or Mustache, you might come across the infamous "Template Not Found" error. This
+            error can be a bit frustrating, especially if you're sure that your template exists in the project.
+        </p>
+        <h3>What is this error about?</h3>
+        <p>
+            The error typically indicates that the Spring Boot application failed to locate the template file for
+            rendering. It's common to see an error message similar to:
+        </p>
+        <pre>TemplateInputException: Error resolving template [templateName], template might not exist or might not be accessible by any of the configured Template Resolvers.</pre>
+        <h3>Causes</h3>
+        <p><b>Incorrect Path: </b>Your template might not be in the default path (src/main/resources/templates/).</p>
+        <p><b>Wrong Extension: </b>Spring Boot expects templates to have certain extensions based on the engine (e.g.,
+            .html
+            for Thymeleaf, .ftl for FreeMarker).</p>
+        <p><b>Typo in the Template Name: </b>A simple typo can lead to this error.</p>
+        <p><b>Configuration Errors: </b> in application.properties or application.yml can lead to template
+            resolution failures.</p>
+        <p><b>Missing Dependencies: </b>If you've missed adding the necessary starter dependencies, Spring Boot might
+            not
+            auto-configure the templating engine.</p>
+        <h3>Solutions</h3>
+        <p><strong>Verify Template Location:</strong> Ensure your templates are in the default location. If you're
+            storing them elsewhere, make sure to update the configuration accordingly.</p>
+        <p>By default, Spring Boot expects the template files to be located under the <code
+                style="color: red;">src/main/resources/templates</code>
+            directory. If your template file is not in this location or the directory structure has been modified, the
+            application might not find the template.</p>
+        <p><strong>Check File Extension:</strong> For Thymeleaf, the file should be named
+            <code style="color: red;">templateName.html</code>. For FreeMarker, it would be <code style="color: red;">templateName.ftl</code>. Ensure you're
+            using the right extension.
+        </p>
+        <p><strong>Ensure Correct Name Usage:</strong> Check the name you're using in your controller when
+            returning the view. It should match the template's name (without the extension).</p>
+        <p><strong>Review Configuration:</strong> Open <code style="color: red;">application.properties</code> or
+            <code style="color: red;">application.yml</code> and ensure you haven't misconfigured any paths or properties related to
+            your templating engine.
+        </p>
+        <p><strong>Add Necessary Dependencies:</strong></p>
+        <p>For Thymeleaf, ensure you've added:</p>
+        <pre><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+</code></pre>
+            <p>For FreeMarker:</p>
+        <pre><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-freemarker&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+</code></pre>
+        <p><strong>Clean and Rebuild:</strong> Sometimes, a clean and rebuild can solve the issue, especially if
+            there's some caching involved.</p>
+        <p><strong>Logging:</strong> Increase the log level for the templating engine in
+            <code>application.properties</code> to debug. This will provide more insights:
+            <pre>logging.level.org.thymeleaf=DEBUG</pre>
+        </p>
+        <h3>Conclusion</h3>
+        <p>
+            Template Not Found errors in Spring Boot are common but easily resolvable with systematic troubleshooting.
+            By understanding the root causes and applying the above solutions, you can ensure a smooth templating
+            experience in your Spring Boot application. Always remember that meticulous attention to configuration and
+            naming conventions will save a lot of debugging time in the long run.
+        </p>
+    </div>
+</body>
+
+</html>

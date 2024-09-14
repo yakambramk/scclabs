@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Could Not Find or Load Main Class Error in Java</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Could Not Find or Load Main Class Error in Java: Causes and Solutions</h1>
+        <p>Java developers, especially beginners, often face this error message: <b>Error: Could not find or load main
+                class</b>. It can be frustrating because this error, while common, doesn't provide explicit details
+            about what
+            went wrong. Let's dive into what causes this error and how to solve it. </p>
+        <h2>Understanding the Error</h2>
+        <p>The error essentially means that the Java Virtual Machine (JVM) could not load the class containing the
+            <code style="color: red;">main()</code> method, which is the entry point for any standalone Java
+            application.Here's a common representation of the error:
+        </p>
+        <pre><code>Error: Could not find or load main class com.example.MainClass</code></pre>
+        <h2>Common Causes</h2>
+        <ul>
+            <li><strong>Incorrect Class Name:</strong> If you're trying to run a Java class using the command line, you
+                might have spelled the class name incorrectly. </li>
+            <li><strong>Incorrect Package Declaration:</strong> If your class is part of a package but you're not
+                referencing it correctly, you'll encounter this error. </li>
+            <li><strong>Class Not Present in Classpath:</strong> Java uses a classpath to search for classes and
+                resources. If your class is not in the defined classpath, Java won't find it. </li>
+            <li><strong>IDE Issues:</strong> Integrated Development Environments (IDEs) sometimes cache old
+                configurations or encounter build issues, leading to this error. </li>
+            <li><strong>JAR File Issues:</strong> If you're trying to run a Java application from a JAR file, but the
+                manifest file within the JAR doesn't correctly specify the entry point class, you'll get this error.
+            </li>
+        </ul>
+        <h2>Solutions</h2>
+        <ul>
+            <li><strong>Verify Class Name:</strong>Ensure you've spelled the class name correctly when running from the
+                command line:
+                <pre><code>java MyMainClass</code></pre>
+            </li>
+            <li><strong>Package Declaration:</strong> If your class is part of a package, say <code
+                    style="color: red;">com.example</code>, and your file structure matches this, you should run the
+                class with the full name:
+                <pre><code>java com.example.MyMainClass</code></pre>
+            </li>
+            <li><strong>Set the Classpath:</strong> If your class depends on other classes or JAR files, ensure you
+                include them in the classpath:
+                <pre><code>java -cp .;path_to_dependencies/* com.example.MyMainClass</code></pre>
+                <p>Note: Use : (colon) instead of ; (semi-colon) as a delimiter on macOS and Linux. </p>
+            </li>
+            <li><strong>IDE Clean and Rebuild:</strong> In IDEs like IntelliJ IDEA or Eclipse, sometimes simply cleaning
+                and rebuilding the project can solve the issue. This ensures all configurations are reset and old caches
+                cleared. </li>
+            <li><strong>Check JAR Manifest:</strong> If running a JAR file, ensure the <code
+                    style="color: red;">MANIFEST.MF</code> file inside the JAR's
+                <code style="color: red;">META-INF</code> directory specifies the correct main class:
+                <pre><code>Main-Class: com.example.MyMainClass</code></pre>
+                <p>To run the JAR:</p>
+                <pre><code>java -jar MyApplication.jar</code></pre>
+            </li>
+        </ul>
+        <h2>Conclusion</h2>
+        <p>The "Could not find or load main class" error in Java can be a bit of a puzzle initially, but with a
+            systematic approach to checking common causes, it becomes manageable. Always ensure you're referencing your
+            classes correctly, and don't forget to maintain a clean and organized project structure.</p>
+    </div>
+</body>
+
+</html>

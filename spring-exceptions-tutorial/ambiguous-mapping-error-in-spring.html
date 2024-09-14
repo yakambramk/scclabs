@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambiguous Mapping Error in Spring</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Ambiguous Mapping Error in Spring</h1>
+        <h2>Introduction</h2>
+        <p>In Spring (specifically Spring MVC), an "ambiguous mapping" error typically arises when two or more
+            controller methods are mapped to the same URI (URL pattern) in the application. This confuses the dispatcher
+            servlet, as it doesn't know which method to invoke for a given request.</p>
+        <h2>Causes of Ambiguous Mapping Error</h2>
+        <ul>
+            <li><strong>Multiple Methods with Same Mapping:</strong> Two or more controller methods are annotated with
+                the same URL pattern using <code style="color: red;">@RequestMapping</code> or its shortcut annotations
+                like <code style="color: red;">@GetMapping</code>, <code style="color: red;">@PostMapping</code>,
+                etc.</li>
+            <li><strong>Controller & Method with Same Mapping:</strong> A class-level <code
+                    style="color: red;">@RequestMapping</code> on the controller
+                combined with a method-level @RequestMapping results in the same URL pattern for multiple methods.</li>
+            <li><strong>Inheritance Issues:</strong> If a controller inherits from another class, and both parent and
+                child have methods mapped to the same URL pattern, it can cause an ambiguous mapping.</li>
+        </ul>
+        <h2>How to Resolve Ambiguous Mapping Error</h2>
+        <ul>
+            <li><strong>Review Mappings:</strong> Start by checking all your controller methods. Ensure that no two
+                methods are mapped to the same URL pattern. Tools or IDE features that provide an overview of all routes
+                can be handy here.</li>
+            <li><strong>Consider HTTP Verbs:</strong> If two methods are mapped to the same URL but are supposed to
+                handle different HTTP verbs, ensure you've specified the verbs correctly using annotations like
+                <code style="color: red;">@GetMapping</code> vs. <code style="color: red;">@PostMapping</code> or by
+                setting the method attribute of @RequestMapping.
+            </li>
+            <li><strong>Review Inherited Mappings:</strong> If you're inheriting controllers or using interface-based
+                mappings, review the parent class or interface to ensure there are no clashing mappings.</li>
+            <li><strong>Namespace Controller Mappings:</strong> To avoid clashes, use a class-level <code
+                    style="color: red;">@RequestMapping</code> to
+                namespace or group-related endpoints. For instance, all user-related endpoints can be grouped under
+                <code style="color: red;">/users</code>.
+            </li>
+            <li><strong>Use @RestController over @Controller:</strong> If you're building a RESTful service, use
+                <code style="color: red;">@RestController</code> instead of the generic <code
+                    style="color: red;">@Controller</code> annotation. This won't solve the ambiguous mapping by
+                itself but can help clarify intent.
+            </li>
+            <li><strong>Check Third-party Libraries:</strong> If you've included third-party libraries or dependencies
+                that define their own Spring MVC controllers, they might have routes that clash with yours. Check their
+                documentation and see if you can override or exclude specific routes.</li>
+        </ul>
+        <h2>Example</h2>
+        <p>Consider the following scenario which causes an ambiguous mapping error:</p>
+        <pre><code>@RestController
+@RequestMapping("/api")
+public class MyController {
+
+    @GetMapping("/endpoint")
+    public String method1() {
+        return "Method 1";
+    }
+
+    @GetMapping("/endpoint")
+    public String method2() {
+        return "Method 2";
+    }
+}
+</code></pre>
+        <p>In the above code, both <b>method1</b> and <b>method2</b> are mapped to the same URL pattern <code
+                style="color: red;">/api/endpoint</code>, causing an
+            ambiguous mapping error. To resolve it, you should change the mapping of one of the methods or merge the two
+            methods if the duplication was unintentional.</p>
+        <h2>Conclusion</h2>
+        <p>Always ensure clear and unambiguous URL patterns for your controller methods. When adding new routes or
+            refactoring existing ones, be aware of potential clashes, and test your changes to confirm that all routes
+            work as expected.</p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bean Not Found Error in Spring Boot</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bean Not Found Error in Spring Boot</h1>
+        <p>The "bean not found" error in a Spring Boot application usually indicates that the Spring container couldn't
+            locate a specific bean you've referenced. This can be due to a variety of reasons. In this post, we will
+            discuss some common causes and their solutions.</p>
+        <h2>1. Component Scanning Issues</h2>
+        <p><strong>Cause:</strong> The bean might not be in a package that's being scanned by Spring.</p>
+        <p><strong>Solution:</strong> Ensure that your main Spring Boot application class (the class annotated with
+            <code style="color: red;">@SpringBootApplication</code>) is in a root package above all your other classes.
+            The
+            <code style="color: red;">@SpringBootApplication</code> annotation includes <code
+                style="color: red;">@ComponentScan</code> which will scan the
+            package it's in and all sub-packages.
+        </p>
+        <p>If you have beans in a different package structure, you may need to explicitly tell Spring to scan that
+            package using <code style="color: red;">@ComponentScan("package.name.to.scan")</code>.</p>
+        <h2>2. Missing Annotations</h2>
+        <p><strong>Cause:</strong> The class you're trying to use as a bean might not have been annotated as a
+            <code style="color: red;">@Component</code> or its variants (<code style="color: red;">@Service</code>,
+            <code style="color: red;">@Repository</code>,
+            <code style="color: red;">@Controller</code>, etc.).
+        </p>
+        <p><strong>Solution:</strong> Add the appropriate annotation to the class.</p>
+        <pre><code>
+For Service class:
+
+@Service
+public class MyService { 
+    // ...
+}
+
+For controller class:
+
+@Controller
+public class MyController { 
+    // ...
+}
+
+For a Spring component:
+
+@Component
+public class MyComponent { 
+    // ...
+}
+
+For Spring Data JPA Repository:
+
+@Repository
+public class MyRepository { 
+    // ...
+}
+        </code></pre>
+
+        <h2>3. Profile-specific Beans</h2>
+        <p><strong>Cause:</strong> If you're using Spring Profiles, the bean might be defined under a specific profile
+            that is not currently active.</p>
+        <p><strong>Solution:</strong> Ensure the correct profile is active when running the application. Check if the
+            bean is marked with <code style="color: red;">@Profile</code> annotation and see which profile it belongs
+            to.</p>
+        <h2>4. Java Configuration Issues</h2>
+        <p><strong>Cause:</strong> You might have Java configuration (<code style="color: red;">@Configuration</code>
+            classes) where the
+            bean is defined, but that configuration isn't being picked up.</p>
+        <p><strong>Solution:</strong> Ensure that your Java configuration class itself is being picked up by the
+            component scanner. If you've defined the bean in a Java configuration using <code
+                style="color: red;">@Bean</code>, ensure
+            you're returning the correct instance type.</p>
+        <h2>5. Constructor Injection Without Autowiring</h2>
+        <p><strong>Cause:</strong> You're using constructor-based injection but forgot to add the
+            <code style="color: red;">@Autowired</code> annotation.
+        </p>
+        <p><strong>Solution:</strong> Ensure that the constructors you want Spring to use for injection are annotated
+            with <code style="color: red;">@Autowired</code>. In newer versions of Spring, you can omit the <code
+                style="color: red;">@Autowired</code>
+            annotation on single-constructor classes, but it's a good practice to include it for clarity.</p>
+        <h2>6. Mistyped Bean Name</h2>
+        <p><strong>Cause:</strong> When you're manually specifying a bean name using <code
+                style="color: red;">@Qualifier</code> or in XML
+            configurations, there's a possibility of a typo.</p>
+        <p><strong>Solution:</strong> Double-check the bean names. Make sure it matches the name of the bean you're
+            trying to reference.</p>
+        <h2>7. External Dependencies</h2>
+        <p><strong>Cause:</strong> You might be trying to use a bean that's part of an external library or starter, but
+            you forgot to include that dependency in your <code style="color: red;">pom.xml</code> or <code
+                style="color: red;">build.gradle</code>.</p>
+        <p><strong>Solution:</strong> Ensure all necessary dependencies are included and correctly versioned in your
+            build file.</p>
+        <h2>8. Singleton vs. Prototype Scope</h2>
+        <p><strong>Cause:</strong> By default, beans are singletons in Spring. If you're trying to create a new instance
+            each time, but you haven't specified the correct scope, you might run into issues.</p>
+        <p><strong>Solution:</strong> If you want a new instance every time a bean is requested, make sure to mark the
+            bean as <code style="color: red;">@Scope("prototype")</code>.</p>
+        <h2>9. Application Context Issues</h2>
+        <p><strong>Cause:</strong> If you're manually creating an <code style="color: red;">ApplicationContext</code> or using multiple
+            contexts, beans from one might not be available in another.</p>
+        <p><strong>Solution:</strong> Ensure that you're working with the correct <code
+                style="color: red;">ApplicationContext</code> and
+            that all configurations are loaded.</p>
+        <p>In debugging "bean not found" errors, carefully reading the error message and stack trace can provide
+            valuable insights. The message usually specifies which Spring bean it couldn't find and can give you clues
+            on where to start investigating.</p>
+    </div>
+</body>
+
+</html>

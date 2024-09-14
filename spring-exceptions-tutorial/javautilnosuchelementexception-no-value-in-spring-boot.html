@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoSuchElementException in Spring Boot</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>java.util.NoSuchElementException: No value present in Spring Boot with Spring Data JPA</h1>
+        <p>In Spring Boot applications that use Spring Data JPA, the <b>java.util.NoSuchElementException: No value
+                present</b>
+            error typically arises in relation to the <a href="/spring-exceptions-tutorial/java-8-optional-class.html" target="_blank">Optional</a> return type. This is common when using the
+            <code style="color: red;">findById()</code>
+            method of a repository which returns an <code style="color: red;">Optional&lt;T></code>.
+        </p>
+        <h2>Understanding the Error</h2>
+        <p>The <a href="/spring-exceptions-tutorial/java-8-optional-class.html" target="_blank">Optional</a> class in Java is a container object that may or may not contain a non-null value.
+            If a value is present, <code style="color: red;">isPresent()</code> will return true, and get() will return
+            the
+            value. However, if no value is present, calling <code style="color: red;">get()</code> will throw a
+            <code style="color: red;">NoSuchElementException</code>.
+        </p>
+        <p>When using Spring Data JPA, the <code style="color: red;">findById()</code> method returns an <a
+                href="/spring-exceptions-tutorial/java-8-optional-class.html" target="_blank">Optional</a> to avoid
+            potential null values and indicate that the desired entity might not exist in the database. If you attempt
+            to get the value without checking for its existence, it can lead to the <code
+                style="color: red;">NoSuchElementException</code>.
+        </p>
+        <h2>Common Scenarios in Spring Boot with Spring Data JPA</h2>
+        <p><strong>Fetching a Non-Existent Entity:</strong></p>
+        <pre><code>@Autowired
+private UserRepository userRepository;
+
+public User getUserById(Long id) {
+    return userRepository.findById(id).get();
+}</code></pre>
+        <p>If the user with the given id doesn't exist in the database, the above code will throw an exception.</p>
+        <h2>Solutions</h2>
+        <h3>Check if Value is Present Before Retrieving:</h3>
+        <p>You can check if a value is present before trying to retrieve it using <code
+                style="color: red;">isPresent()</code> method:</p>
+        <pre><code>public User getUserById(Long id) {
+    Optional&lt;User&gt; userOptional = userRepository.findById(id);
+    if(userOptional.isPresent()) {
+        return userOptional.get();
+    }
+    return null; // or throw a custom exception
+}</code></pre>
+        <h3>Use orElse() or orElseGet():</h3>
+        <p>These methods provide alternative values or actions if the <a href="/spring-exceptions-tutorial/java-8-optional-class.html" target="_blank">Optional</a> is empty:</p>
+        <pre><code>public User getUserById(Long id) {
+    return userRepository.findById(id).orElse(null);
+}</code></pre>
+        <p>OR</p>
+        <pre><code>public User getUserById(Long id) {
+    return userRepository.findById(id).orElseGet(() -&gt; new User()); // returns a new User if not found
+}</code></pre>
+        <h3>Use orElseThrow() to Raise a Custom Exception:</h3>
+        <p>If you want to throw a custom exception when the entity is not found, <code
+                style="color: red;">orElseThrow()</code> is useful:</p>
+        <pre><code>public User getUserById(Long id) {
+    return userRepository.findById(id)
+                         .orElseThrow(() -&gt; 
+                          new EntityNotFoundException("User not found with ID: " + id));
+}</code></pre>
+
+        <h2>Conclusion</h2>
+        <p>The <b>java.util.NoSuchElementException: No value present</b> error in Spring Boot
+            with Spring Data JPA
+            commonly occurs due to direct access of an <a href="/spring-exceptions-tutorial/java-8-optional-class.html" target="_blank">Optional</a> value without checking its presence. With
+            the solutions provided above, you can handle potential empty values gracefully and avoid the exception.
+            Proper handling of <a href="/spring-exceptions-tutorial/java-8-optional-class.html" target="_blank">Optional</a> values ensures a robust application that can gracefully handle
+            missing data.</p>
+    </div>
+</body>
+
+</html>
