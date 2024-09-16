@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD JUnit Tests for Spring Data JPA - Testing Repository Layer
+    </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p,
+        li {
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2.5;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: 13.6px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            padding: 16px;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p,
+            li {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Core Components of Spring Security</h1>
+        <p> Spring Security is a comprehensive framework for handling authentication and authorization in Spring-based
+            applications. It offers out-of-the-box support for securing your application with industry-standard
+            practices and mechanisms. Whether you're developing a simple web application or a complex microservices
+            architecture, understanding the core components of Spring Security is crucial for implementing robust
+            security measures. This blog post will guide you through Spring Security's core components with examples.
+        </p>
+        <h2>Core Components of Spring Security</h2>
+        <p>Spring Security's architecture revolves around several key components that work together to secure your
+            applications. Here, we'll explore these components and provide examples using current best practices.</p>
+        <h2>1. Authentication</h2>
+
+        <p>Authentication is the process of verifying a user's or system's identity. It answers the question, "Who are
+            you?" Spring Security supports various authentication mechanisms, such as form-based login, OAuth2, and
+            more, without relying on deprecated classes.</p>
+
+        <p><b>Modern Example:</b></p>
+        <pre>@Configuration
+    @EnableWebSecurity
+    public class SecurityConfig {
+    
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+            http
+                .authorizeHttpRequests((authorize) -> authorize
+                    .anyRequest().authenticated()
+                )
+                .httpBasic(Customizer.withDefaults())
+                .formLogin(Customizer.withDefaults());
+    
+            return http.build();
+        }
+    
+        @Bean
+        public UserDetailsService userDetailsService() {
+            UserDetails userDetails = User.withDefaultPasswordEncoder()
+                .username("user")
+                .password("password")
+                .roles("USER")
+                .build();
+    
+            return new InMemoryUserDetailsManager(userDetails);
+        }
+    
+    }</pre>
+        <h2>2. Authorization </h2>
+        <p>After authentication, authorization determines whether the authenticated user has permission to perform a
+            given action or access a resource. It answers, "Are you allowed to do this?" </p>
+        <p><b>Modern Example:</b></p>
+        <pre>@Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests(authorize -> authorize
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/public/**").permitAll()
+                .anyRequest().authenticated())
+            .formLogin().and()
+            .httpBasic();
+        return http.build();
+    }</pre>
+
+        <h2>3. Principal </h2>
+
+        <p>A principal refers to the currently authenticated user's details, accessible throughout the application for
+            user-specific operations. </p>
+        <p><b>Usage Example:</b></p>
+
+        <h2>4. Granted Authority </h2>
+
+        <p>Granted authorities define permissions for authenticated users, specifying what actions they can perform or
+            resources they can access. </p>
+        <p><b>Example:</b></p>
+        <pre>@Bean
+                public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+                    http
+                        .authorizeRequests(authorize -> authorize
+                            .antMatchers("/api/private/**").hasAuthority("ROLE_USER")
+                            .anyRequest().permitAll())
+                        .httpBasic();
+                    return http.build();
+                }</pre>
+        <h2>5. Security Context and SecurityContextHolder </h2>
+        <p>At the heart of Spring Security is the SecurityContext, which holds the details of the currently
+            authenticated user, also known as the principal. This context is accessible throughout the application via
+            the <b>SecurityContextHolder</b>, allowing you to perform operations based on the user's authentication
+            status and
+            authorities.</p>
+        <p><b>Example:</b></p>
+        <pre>Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                if (authentication != null && authentication.isAuthenticated()) {
+                    // Perform operations based on the authenticated user
+                }</pre>
+        <h2>6. UserDetails</h2>
+        <p>The <b>UserDetails</b> interface is a central piece in Spring Security, representing the user information
+            that
+            Spring Security uses for authentication and authorization processes. It provides core user information to
+            the framework, such as:</p>
+        <ul>
+            <li><b>Username:</b> The unique identifier for the user.</li>
+            <li><b> Password:</b> The user's password, usually stored in a hashed format.</li>
+            <li><b> Enabled:</b> Indicates whether the user is enabled or disabled. A disabled user cannot be
+                authenticated.</li>
+            <li><b> AccountNonExpired, credentialsNonExpired, accountNonLocked: </b> boolean flags provide additional
+                details to support complex security requirements, such as account expiration policies and locking
+                mechanisms.</li>
+            <li><b> Authorities:</b> A collection of GrantedAuthority objects representing the roles or permissions
+                assigned to the user, which are crucial for authorization decisions.</li>
+        </ul>
+        <p>Implementing <b>UserDetails</b> allows you to integrate your application's user entity with Spring Security
+            seamlessly.</p>
+        <h2>7. UserDetailsService</h2>
+        <p><b>UserDetailsService</b> is an interface used by Spring Security to retrieve user-related data. It has a
+            single
+            method, <b>loadUserByUsername(String username)</b>, which locates the user based on the username. The
+            returned
+            UserDetails object then becomes available to Spring Security for further authentication and authorization
+            processes.</p>
+
+        <p> Implementing your own <b>UserDetailsService</b> involves creating a service that interacts with your user
+            database
+            (or another user storage mechanism) to fetch user details and convert them into a <b>UserDetails</b> object.
+            This
+            custom service becomes a bridge between your user data and Spring Security's requirements.</p>
+        <h2>8. AuthenticationManager</h2>
+        <p>At the core of the Spring Security authentication process is the <b>AuthenticationManager</b> interface. It
+            defines
+            a single method, <b>authenticate(Authentication authentication)</b>, which attempts to authenticate the
+            passed
+            Authentication object. The <b>AuthenticationManager</b> is responsible for orchestrating the authentication
+            process
+            by delegating the request to one or more <b>AuthenticationProvider</b> instances.</p>
+
+        <p> Each <b>AuthenticationProvider</b> can handle a specific type of authentication (e.g., username and
+            password,
+            token-based authentication, etc.). The <b>AuthenticationManager</b> routes the authentication request to the
+            provider capable of handling it, based on the type of <b>Authentication</b> object it receives.</p>
+
+        <p> The successful authentication process results in a fully populated Authentication object, including the
+            principal and granted authorities, which is then stored in the SecurityContext for subsequent authorization
+            checks.</p>
+        <h2>Configuring AuthenticationManager</h2>
+        <p>In the new configuration approach without <b>WebSecurityConfigurerAdapter</b>, you can expose an
+            <b>AuthenticationManager</b> bean directly within your configuration class. Here's an example of how it can be
+            done:</p>
+            <pre>@EnableWebSecurity
+                public class SecurityConfig {
+                
+                    @Bean
+                    @Override
+                    protected AuthenticationManager authenticationManager() throws Exception {
+                        return super.authenticationManager();
+                    }
+                
+                    // SecurityFilterChain and other beans configuration
+                }</pre>
+
+    </div>
+</body>
+
+</html>
