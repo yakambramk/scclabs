@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Security Tutorial - Registration, Login, and Logout</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: red;
+            margin: 50px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+            color: #3D85C6;
+            line-height: 2;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: red;
+            font-weight: bold;
+        }
+
+        li {
+            letter-spacing: 0.5px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        pre {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            padding: 2%;
+            line-height: 1.8 !important;
+            border: solid 1px #3d85c6;
+            border-radius: 6px;
+            background-color: #f6f8fa !important;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 600px) {
+            pre {
+                font-size: 14px;
+                padding: 2%;
+                white-space: pre;
+                overflow-x: auto;
+            }
+        }
+
+        code {
+            background: #f6f8fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spring Security Tutorial - Registration, Login, and Logout</h1>
+        <p>In this tutorial, we will learn how to develop registration, login, and logout features using Spring Boot,
+            Spring Security, Spring Data JPA, Thymeleaf, and the MySQL database.</p>
+        <p>Learn and master in Spring Boot at <a href="/spring_boot_tutorial.html" target="_blank">Spring Boot
+                Tutorial</a>.</p>
+        <p>Learn and master in Spring Security at <a href="/spring_security.html" target="_blank">Spring Security
+                Tutorial</a>.</p>
+        <h2>What you’ll learn?</h2>
+        <ol>
+            <li>Learn how to build a Spring MVC web application using Spring Boot</li>
+            <li>Learn how to configure Spring Security in the Spring Boot project</li>
+            <li>How to develop end-to-end Registration implementation</li>
+            <li>How to develop custom login feature implementation</li>
+            <li>Spring Security authentication with a database-backed UserDetailsService</li>
+            <li>Spring Security logout feature</li>
+            <li>Learn how to create JPA entities - User and Role (Many-to-Many Relationship)</li>
+            <li>Configure MySQL database in Spring Boot project</li>
+            <li>How to develop Registration and Login forms using Thymeleaf</li>
+            <li>How to integrate Spring Security in Thymeleaf</li>
+            <li>How to use Thymeleaf attributes to display security details like principal (user email), roles, etc.
+            </li>
+        </ol>
+        <h2>Application Flow</h2>
+        <p>We are going to develop a Spring MVC web application and here is the application flow:</p>
+        <img src="../assets/spring-security-images/spring-security-registration.png" style="width: 100%;">
+        <h2>Database Design (ER Diagram)</h2>
+        <p>We create <code style="color: red;">User</code> and <code style="color: red;">Role</code> tables with a
+            many-to-many relationship between
+            them. One user can have multiple roles, and one role can be assigned to multiple users.</p>
+        <img src="../assets/spring-security-images/ER-diagram.png">
+        <h2>Tools and Technologies Used</h2>
+        <ul>
+            <li>Spring Boot 2.3+</li>
+            <li>Spring Framework 5.2.6</li>
+            <li>Spring Data JPA (Hibernate)</li>
+            <li>Thymeleaf</li>
+            <li>Eclipse STS</li>
+            <li>Maven</li>
+            <li>Java 8</li>
+        </ul>
+        <h2>1. Create Spring Boot Project</h2>
+        <p>There are many ways to create a Spring Boot application. You can refer to the following articles:</p>
+        <ul>
+            <li><a href="/spring-data-JPA-tutorial/create-spring-boot-project-with-spring-initializer.html"
+                    target="_blank">Create Spring Boot
+                    Project With Spring Initializer</a></li>
+            <li><a href="/spring-data-JPA-tutorial/create-spring-boot-project-in-spring-tool-suite.html"
+                    target="_blank">Create Spring Boot Project in Spring Tool Suite (STS)</a></li>
+        </ul>
+        <h2>2. Project Structure</h2>
+        <img
+            src="../assets/spring-security-images/Spring Security Tutorial with Spring Boot, Spring Data JPA, Thymeleaf and MySQL Database.png">
+        <h2>3. Maven Dependencies</h2>
+        <p>Add the following dependencies to your <code>pom.xml</code> file:</p>
+        <pre>
+            <code>
+&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    &lt;modelVersion>4.0.0</modelVersion>
+    &lt;parent>
+        &lt;groupId>org.springframework.boot</groupId>
+        &lt;artifactId>spring-boot-starter-parent</artifactId>
+        &lt;version>2.3.0.RELEASE</version>
+    &lt;/parent>
+    &lt;groupId>net.javaguides</groupId>
+    &lt;artifactId>registration-login-spring-boot-security-thymeleaf</artifactId>
+    &lt;version>0.0.1-SNAPSHOT</version>
+    &lt;dependencies>
+        &lt;!-- Spring Data JPA, Spring Security, Thymeleaf, etc. --&gt;
+    &lt;/dependencies>
+&lt;/project>
+            </code>
+        </pre>
+        <h2>4. MySQL Database Configuration</h2>
+        <p>Create a database with the name "<b>demo</b>" in the MySQL database server.</p>
+        <p>We’ll need to configure MySQL database <b>URL</b>, <b>username</b>, and <b>password</b> so that Spring can
+            establish a connection
+            with the database on startup.</p>
+        <p>Open <code style="color: red;">application.properties</code> and add following MySQL database configuration:
+        </p>
+        <pre>
+            <code>
+# Spring DATASOURCE
+spring.datasource.url = jdbc:mysql://localhost:3306/demo?useSSL=false
+spring.datasource.username = root
+spring.datasource.password = root
+
+# Hibernate Properties
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.hibernate.ddl-auto = update
+logging.level.org.hibernate.SQL=DEBUG
+logging.level.org.hibernate.type=TRACE
+            </code>
+        </pre>
+        <p>Make sure that you change the <code style="color: red;">spring.datasource.username</code> and <code
+                style="color: red;">spring.datasource.password properties</code> as per
+            your MySQL installation.</p>
+        <p>The <code style="color: red;">spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the
+            database tables and the domain
+            models in your application are in sync. Whenever you change the domain model, hibernate will automatically
+            update the mapped table in the database when you restart the application.</p>
+        <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by
+            hibernate.</p>
+        <h2>5. Model Layer - Create JPA Entities</h2>
+        <h3>User</h3>
+        <p>Create a new package called "<b>net.javaguides.springboot.model</b>", within this package create a <code
+                style="color: red;">User</code> class and
+            add the following content:</p>
+        <pre><code>
+package net.javaguides.springboot.model;
+
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.persistence.JoinColumn;
+
+@Entity
+@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    private String email;
+
+    private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "users_roles",
+        joinColumns = @JoinColumn(
+            name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(
+            name = "role_id", referencedColumnName = "id"))
+
+    private Collection &lt; Role > roles;
+
+    public User() {
+
+    }
+
+    public User(String firstName, String lastName, String email, String password, Collection < Role > roles) {
+        super();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public String getFirstName() {
+        return firstName;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public Collection &lt; Role > getRoles() {
+        return roles;
+    }
+    public void setRoles(Collection &lt; Role > roles) {
+        this.roles = roles;
+    }
+}
+
+</code></pre>
+        <h3>Role</h3>
+        <p>Within "net.javaguides.springboot.model" package create a <code style="color: red;">Role</code> class and add
+            the following content:</p>
+        <pre><code>
+package net.javaguides.springboot.model;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "role")
+public class Role {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    public Role() {
+
+    }
+
+    public Role(String name) {
+        super();
+        this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+</code></pre>
+        <h2>6. Spring Data JPA Repository</h2>
+        <p>Create a new package called "<b>net.javaguides.springboot.repositor</b>y", within this package create
+            <code style="color: red;">UserRepository</code> interface and add the following content:
+        </p>
+        <pre>
+            <code>
+package net.javaguides.springboot.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import net.javaguides.springboot.model.User;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findByEmail(String email);
+}</code>
+        </pre>
+        <h2>7. DTO - UserRegistrationDto</h2>
+        <p>Let's create a new package called "<b>net.javaguides.springboot.web.dto</b>", within this package create a
+            <code style="color: red;">UserRegistrationDto</code> class to transfer data from server to client:
+        </p>
+        <pre><code>
+package net.javaguides.springboot.web.dto;
+
+public class UserRegistrationDto {
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+
+    public UserRegistrationDto() {
+
+    }
+
+    public UserRegistrationDto(String firstName, String lastName, String email, String password) {
+        super();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+}
+            </code></pre>
+        <h2>8. Service Layer</h2>
+        <h3>UserService</h3>
+        <p>Create a new package called "<b>net.javaguides.springboot.service</b>", within this package create <code
+                style="color: red;">UserService</code>
+            interface and add the following content:</p>
+        <pre><code>
+package net.javaguides.springboot.service;
+
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+import net.javaguides.springboot.model.User;
+import net.javaguides.springboot.web.dto.UserRegistrationDto;
+
+public interface UserService extends UserDetailsService{
+ User save(UserRegistrationDto registrationDto);
+}
+        </code></pre>
+        <h3>UserServiceImpl</h3>
+        <p>Within "<b>net.javaguides.springboot.service</b>" package create a <code
+                style="color: red;">UserServiceImpl</code> class and add the following
+            content:</p>
+        <pre><code>
+package net.javaguides.springboot.service;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import net.javaguides.springboot.model.Role;
+import net.javaguides.springboot.model.User;
+import net.javaguides.springboot.repository.UserRepository;
+import net.javaguides.springboot.web.dto.UserRegistrationDto;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepository userRepository) {
+        super();
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public User save(UserRegistrationDto registrationDto) {
+        User user = new User(registrationDto.getFirstName(),
+            registrationDto.getLastName(), registrationDto.getEmail(),
+            passwordEncoder.encode(registrationDto.getPassword()), Arrays.asList(new Role("ROLE_USER")));
+
+        return userRepository.save(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        User user = userRepository.findByEmail(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("Invalid username or password.");
+        }
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+    }
+
+    private Collection &lt;&lt; ? extends GrantedAuthority > mapRolesToAuthorities(Collection &lt; Role > roles) {
+        return roles.stream().map(role - > new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+    }
+}
+            </code></pre>
+        <h2>9. Spring Security Configuration</h2>
+        <p>Let's create a new package called "<b>net.javaguides.springboot.config</b>", within this package create a
+            <code style="color: red;">SecurityConfiguration</code> class and add following content:
+        </p>
+        <pre><code>
+package net.javaguides.springboot.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import net.javaguides.springboot.service.UserService;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private UserService userService;
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests().antMatchers(
+                "/registration**",
+                "/js/**",
+                "/css/**",
+                "/img/**").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .formLogin()
+            .loginPage("/login")
+            .permitAll()
+            .and()
+            .logout()
+            .invalidateHttpSession(true)
+            .clearAuthentication(true)
+            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+            .logoutSuccessUrl("/login?logout")
+            .permitAll();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setUserDetailsService(userService);
+        auth.setPasswordEncoder(passwordEncoder());
+        return auth;
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
+    }
+}
+            </code></pre>
+        <h3>UserRegistrationController</h3>
+        <p>Let's create a <code style="color: red;">UserRegistrationController</code> class within
+            "<b>net.javaguides.springboot.web</b>" package and add
+            following content:</p>
+        <pre><code>
+package net.javaguides.springboot.web;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import net.javaguides.springboot.service.UserService;
+import net.javaguides.springboot.web.dto.UserRegistrationDto;
+
+@Controller
+@RequestMapping("/registration")
+public class UserRegistrationController {
+
+    private UserService userService;
+
+    public UserRegistrationController(UserService userService) {
+        super();
+        this.userService = userService;
+    }
+
+    @ModelAttribute("user")
+    public UserRegistrationDto userRegistrationDto() {
+        return new UserRegistrationDto();
+    }
+
+    @GetMapping
+    public String showRegistrationForm() {
+        return "registration";
+    }
+
+    @PostMapping
+    public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) {
+        userService.save(registrationDto);
+        return "redirect:/registration?success";
+    }
+}
+            </code></pre>
+        <h3>MainController</h3>
+        <p>Let's create a <code style="color: red;">MainController</code> class within
+            "<b>net.javaguides.springboot.web</b>" package and add following
+            content:</p>
+        <pre><code>
+package net.javaguides.springboot.web;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class MainController {
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/")
+    public String home() {
+        return "index";
+    }
+}
+            </code></pre>
+        <h2>10. Thymeleaf Templates</h2>
+        <p>By default, Spring Boot looks for our templates in <code
+                style="color: red;">src/main/resources/templates</code>. We can put our templates
+            there and organize them in sub-directories and have no issues.</p>
+        <p>Let's create Thymeleaf templates under "<b>src/main/resources/templates</b>" folder.</p>
+        <h3>Registration Page - registration.html</h3>
+        <pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="ISO-8859-1"&gt;
+&lt;title&gt;Registration&lt;/title&gt;
+&lt;link rel="stylesheet"
+ href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+ integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+ crossorigin="anonymous"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+ &lt;!-- create navigation bar ( header) --&gt;
+ &lt;nav class="navbar navbar-inverse navbar-fixed-top"&gt;
+  &lt;div class="container"&gt;
+   &lt;div class="navbar-header"&gt;
+    &lt;button type="button" class="navbar-toggle collapsed"
+     data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+     aria-controls="navbar"&gt;
+     &lt;span class="sr-only"&gt;Toggle navigation&lt;/span&gt; &lt;span
+      class="icon-bar"&gt;&lt;/span&gt; &lt;span class="icon-bar"&gt;&lt;/span&gt; &lt;span
+      class="icon-bar"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;a class="navbar-brand" href="#" th:href="@{/}"&gt;Registration and
+     Login Module&lt;/a&gt;
+   &lt;/div&gt;
+  &lt;/div&gt;
+ &lt;/nav&gt;
+
+&lt;br&gt;
+&lt;br&gt;
+ &lt;!-- Create HTML registration form --&gt;
+ &lt;div class="container"&gt;
+  &lt;div class="row"&gt;
+   &lt;div class="col-md-6 col-md-offset-3"&gt;
+
+    &lt;!-- success message --&gt;
+    &lt;div th:if="${param.success}"&gt;
+     &lt;div class="alert alert-info"&gt;You've successfully registered
+      to our awesome app!&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;h1&gt;Registration&lt;/h1&gt;
+
+    &lt;form th:action="@{/registration}" method="post" th:object="${user}"&gt;
+     &lt;div class="form-group"&gt;
+      &lt;label class="control-label" for="firstName"&gt; First Name &lt;/label&gt;
+      &lt;input id="firstName" class="form-control" th:field="*{firstName}"
+       required autofocus="autofocus" /&gt;
+     &lt;/div&gt;
+
+     &lt;div class="form-group"&gt;
+      &lt;label class="control-label" for="lastName"&gt; Last Name &lt;/label&gt; &lt;input
+       id="lastName" class="form-control" th:field="*{lastName}"
+       required autofocus="autofocus" /&gt;
+     &lt;/div&gt;
+
+     &lt;div class="form-group"&gt;
+      &lt;label class="control-label" for="email"&gt; Email &lt;/label&gt; &lt;input
+       id="email" class="form-control" th:field="*{email}" required
+       autofocus="autofocus" /&gt;
+     &lt;/div&gt;
+
+     &lt;div class="form-group"&gt;
+      &lt;label class="control-label" for="password"&gt; Password &lt;/label&gt; &lt;input
+       id="password" class="form-control" type="password"
+       th:field="*{password}" required autofocus="autofocus" /&gt;
+     &lt;/div&gt;
+
+     &lt;div class="form-group"&gt;
+      &lt;button type="submit" class="btn btn-success"&gt;Register&lt;/button&gt;
+      &lt;span&gt;Already registered? &lt;a href="/" th:href="@{/login}"&gt;Login
+        here&lt;/a&gt;&lt;/span&gt;
+     &lt;/div&gt;
+    &lt;/form&gt;
+   &lt;/div&gt;
+  &lt;/div&gt;
+ &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+                </code></pre>
+        <h3>Login Page - login.html</h3>
+        <pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="ISO-8859-1"&gt;
+&lt;title&gt;Registration&lt;/title&gt;
+&lt;link rel="stylesheet"
+ href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+ integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+ crossorigin="anonymous"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+ &lt;!-- create navigation bar ( header) --&gt;
+ &lt;nav class="navbar navbar-inverse navbar-fixed-top"&gt;
+  &lt;div class="container"&gt;
+   &lt;div class="navbar-header"&gt;
+    &lt;button type="button" class="navbar-toggle collapsed"
+     data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+     aria-controls="navbar"&gt;
+     &lt;span class="sr-only"&gt;Toggle navigation&lt;/span&gt; &lt;span
+      class="icon-bar"&gt;&lt;/span&gt; &lt;span class="icon-bar"&gt;&lt;/span&gt; &lt;span
+      class="icon-bar"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;a class="navbar-brand" href="#" th:href="@{/}"&gt;Registration and
+     Login Module&lt;/a&gt;
+   &lt;/div&gt;
+  &lt;/div&gt;
+ &lt;/nav&gt;
+
+&lt;br&gt;
+&lt;br&gt;
+ &lt;!-- Create HTML registration form --&gt;
+ &lt;div class="container"&gt;
+  &lt;div class="row"&gt;
+   &lt;div class="col-md-6 col-md-offset-3"&gt;
+
+    &lt;!-- success message --&gt;
+    &lt;div th:if="${param.success}"&gt;
+     &lt;div class="alert alert-info"&gt;You've successfully registered
+      to our awesome app!&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;h1&gt;Registration&lt;/h1&gt;
+
+    &lt;form th:action="@{/registration}" method="post" th:object="${user}"&gt;
+     &lt;div class="form-group"&gt;
+      &lt;label class="control-label" for="firstName"&gt; First Name &lt;/label&gt;
+      &lt;input id="firstName" class="form-control" th:field="*{firstName}"
+       required autofocus="autofocus" /&gt;
+     &lt;/div&gt;
+
+     &lt;div class="form-group"&gt;
+      &lt;label class="control-label" for="lastName"&gt; Last Name &lt;/label&gt; &lt;input
+       id="lastName" class="form-control" th:field="*{lastName}"
+       required autofocus="autofocus" /&gt;
+     &lt;/div&gt;
+
+     &lt;div class="form-group"&gt;
+      &lt;label class="control-label" for="email"&gt; Email &lt;/label&gt; &lt;input
+       id="email" class="form-control" th:field="*{email}" required
+       autofocus="autofocus" /&gt;
+     &lt;/div&gt;
+
+     &lt;div class="form-group"&gt;
+      &lt;label class="control-label" for="password"&gt; Password &lt;/label&gt; &lt;input
+       id="password" class="form-control" type="password"
+       th:field="*{password}" required autofocus="autofocus" /&gt;
+     &lt;/div&gt;
+
+     &lt;div class="form-group"&gt;
+      &lt;button type="submit" class="btn btn-success"&gt;Register&lt;/button&gt;
+      &lt;span&gt;Already registered? &lt;a href="/" th:href="@{/login}"&gt;Login
+        here&lt;/a&gt;&lt;/span&gt;
+     &lt;/div&gt;
+    &lt;/form&gt;
+   &lt;/div&gt;
+  &lt;/div&gt;
+ &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+                </code></pre>
+        <h3>Home Page - index.html</h3>
+        <pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"
+ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"&gt;
+&lt;head&gt;
+&lt;meta charset="ISO-8859-1"&gt;
+&lt;title&gt;Registration and Login App&lt;/title&gt;
+
+&lt;link rel="stylesheet"
+ href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+ integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+ crossorigin="anonymous"&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+ &lt;!-- create navigation bar ( header) --&gt;
+ &lt;nav class="navbar navbar-inverse navbar-fixed-top"&gt;
+  &lt;div class="container"&gt;
+   &lt;div class="navbar-header"&gt;
+    &lt;button type="button" class="navbar-toggle collapsed"
+     data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+     aria-controls="navbar"&gt;
+     &lt;span class="sr-only"&gt;Toggle navigation&lt;/span&gt; &lt;span
+      class="icon-bar"&gt;&lt;/span&gt; &lt;span class="icon-bar"&gt;&lt;/span&gt; &lt;span
+      class="icon-bar"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;a class="navbar-brand" href="#" th:href="@{/}"&gt;Registration and
+     Login Module&lt;/a&gt;
+   &lt;/div&gt;
+   &lt;div id="navbar" class="collapse navbar-collapse"&gt;
+    &lt;ul class="nav navbar-nav"&gt;
+     &lt;li sec:authorize="isAuthenticated()"&gt;&lt;a th:href="@{/logout}"&gt;Logout&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+   &lt;/div&gt;
+  &lt;/div&gt;
+ &lt;/nav&gt;
+
+ &lt;br&gt;
+ &lt;br&gt;
+
+ &lt;div class="container"&gt;
+  &lt;h1&gt;Registration and Login with Spring Boot, Spring Security,
+   Thymeleaf, Hibernate and MySQL&lt;/h1&gt;
+  Welcome &lt;span sec:authentication="principal.username"&gt; User&lt;/span&gt;
+ &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+                </code></pre>
+        <h2>11. Run Spring application</h2>
+        <p>Run spring boot application with the following command:</p>
+        <pre><code>$ mvn spring-boot:run</code></pre>
+        <h2>12. Demo</h2>
+        <p>Use the "<a href="http://localhost:8080/login">http://localhost:8080/login</a>" link to access the
+            application from the browser.
+            Below screenshots shows how the application looks like:</p>
+        <h3>Login Page</h3>
+        <img src="../assets/spring-security-images/login-page.png">
+        <h3>Registration Page</h3>
+        <img src="../assets/spring-security-images/registration-page.png">
+    </div>
+</body>
+
+</html>
