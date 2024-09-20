@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Java Access Modifiers</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 90%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .topImage img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/java access modifiers.png" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+
+            <h1>Java Access Modifiers</h1>
+            <p>Author: <b>SAI K </b></p>
+        </div><br>
+
+        <p><strong>Core Java</strong></p>
+        <h2>Introduction</h2>
+        <p>In Java, access modifiers are keywords that set the accessibility of classes, methods, and other members.
+            They control where the members can be accessed from and ensure encapsulation. Java provides four main access
+            modifiers: <strong>public</strong>, <strong>private</strong>, <strong>protected</strong>, and
+            <strong>default</strong> (no modifier).</p>
+
+        <h3>Table of Contents</h3>
+        <ul>
+            <li>What are Access Modifiers?</li>
+            <li>Types of Access Modifiers in Java</li>
+            <ul>
+                <li>Public</li>
+                <li>Private</li>
+                <li>Protected</li>
+                <li>Default</li>
+            </ul>
+            <li>Examples of Each Access Modifier</li>
+            <li>Conclusion</li>
+        </ul>
+
+        <h3>What are Access Modifiers?</h3>
+        <p>Access modifiers in Java define the scope of accessibility of a class, method, constructor, or variable. They
+            help in implementing the principle of encapsulation by restricting access to certain members from outside
+            the class or package.</p>
+
+        <h3>Types of Access Modifiers in Java</h3>
+        <p>Java provides four main types of access modifiers:</p>
+        <ul>
+            <li><strong>Public</strong></li>
+            <li><strong>Private</strong></li>
+            <li><strong>Protected</strong></li>
+            <li><strong>Default</strong> (no modifier)</li>
+        </ul>
+
+        <h3>1. Public</h3>
+        <p>The public access modifier makes a class, method, or variable accessible from any other class. There are no
+            restrictions on its visibility.</p>
+
+        <h4>Example:</h4>
+        <pre><code>
+public class PublicExample {
+    public int data = 10;
+
+    public void display() {
+        System.out.println("Public method");
+    }
+
+    public static void main(String[] args) {
+        PublicExample obj = new PublicExample();
+        System.out.println(obj.data); // Accessible
+        obj.display(); // Accessible
+    }
+}</code></pre><br>
+
+        <h3>2. Private</h3>
+        <p>The private access modifier restricts the access of a class, method, or variable to within the same class
+            only. It is not accessible from any other class.</p>
+
+        <h4>Example:</h4>
+        <pre><code>
+public class PrivateExample {
+    private int data = 10;
+
+    private void display() {
+        System.out.println("Private method");
+    }
+
+    public static void main(String[] args) {
+        PrivateExample obj = new PrivateExample();
+        System.out.println(obj.data); // Accessible
+        obj.display(); // Accessible
+    }
+}</code></pre><br>
+
+        <h3>3. Protected</h3>
+        <p>The protected access modifier allows access to the members of a class within the same package and by
+            subclasses in different packages.</p>
+
+        <h4>Example:</h4>
+        <pre><code>
+public class ProtectedExample {
+    protected int data = 10;
+
+    protected void display() {
+        System.out.println("Protected method");
+    }
+}
+
+class Subclass extends ProtectedExample {
+    public static void main(String[] args) {
+        Subclass obj = new Subclass();
+        System.out.println(obj.data); // Accessible
+        obj.display(); // Accessible
+    }
+}</code></pre><br>
+
+        <h3>4. Default (No Modifier)</h3>
+        <p>When no access modifier is specified, it is known as the default access modifier. It allows access to the
+            members of a class within the same package only.</p>
+
+        <h4>Example:</h4>
+        <pre><code>
+class DefaultExample {
+    int data = 10; // default access modifier
+
+    void display() {
+        System.out.println("Default method");
+    }
+
+    public static void main(String[] args) {
+        DefaultExample obj = new DefaultExample();
+        System.out.println(obj.data); // Accessible
+        obj.display(); // Accessible
+    }
+}</code></pre><br>
+
+        <h2>Examples of Each Access Modifier</h2>
+
+        <h3>Public</h3>
+        <pre><code>
+public class PublicClass {
+    public int data = 100;
+
+    public void showData() {
+        System.out.println("Public Data: " + data);
+    }
+}
+
+class TestPublic {
+    public static void main(String[] args) {
+        PublicClass obj = new PublicClass();
+        obj.showData(); // Accessible
+    }
+}</code></pre><br>
+
+        <h3>Private</h3>
+        <pre><code>
+class PrivateClass {
+    private int data = 200;
+
+    private void showData() {
+        System.out.println("Private Data: " + data);
+    }
+
+    public static void main(String[] args) {
+        PrivateClass obj = new PrivateClass();
+        obj.showData(); // Accessible within the same class
+    }
+}</code></pre><br>
+
+        <h3>Protected</h3>
+        <pre><code>
+class ProtectedClass {
+    protected int data = 300;
+
+    protected void showData() {
+        System.out.println("Protected Data: " + data);
+    }
+}
+
+class SubClassProtected extends ProtectedClass {
+    public static void main(String[] args) {
+        SubClassProtected obj = new SubClassProtected();
+        obj.showData(); // Accessible in subclass
+    }
+}</code></pre><br>
+
+        <h3>Default</h3>
+        <pre><code>
+class DefaultClass {
+    int data = 400;
+
+    void showData() {
+        System.out.println("Default Data: " + data);
+    }
+}
+
+class TestDefault {
+    public static void main(String[] args) {
+        DefaultClass obj = new DefaultClass();
+        obj.showData(); // Accessible within the same package
+    }
+} </code></pre><br>
+
+        <h2>Conclusion</h2>
+        <p>Access modifiers in Java are crucial for encapsulation and defining the visibility of classes, methods, and
+            variables. Understanding how to use public, private, protected, and default access modifiers allows
+            developers to effectively control access to the components of their code, enhancing security and
+            maintainability.</p>
+
+
+
+            <div class="scrollup justify-content-end">
+                <a href="#">
+                    <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+                </a>
+            </div>
+    
+        </div>
+        <div id="footer"></div>
+        <script>
+            fetch('../../../footer.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('footer').innerHTML = html;
+                });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+    
+    </html>

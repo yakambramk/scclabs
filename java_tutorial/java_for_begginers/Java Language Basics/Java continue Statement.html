@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Java continue Statement</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 90%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .topImage img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/continue-statement-in-java.jpg" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h1>Java continue Statement</h1>
+            <p><strong>Author: </strong><b>SAI K</b></p>
+        </div><br>
+        <p><strong>Core Java</strong> | Java Tutorial</p>
+
+        <h2>Introduction</h2>
+        <p>The <code>continue</code> statement in Java is a control flow statement that is used to skip the current
+            iteration of a loop and proceed to the next iteration. It is commonly used within <code>for</code>,
+            <code>while</code>, and <code>do-while</code> loops to control the flow of the loop based on certain
+            conditions.</p>
+
+        <h3>Table of Contents</h3>
+        <ul>
+            <li><a href="#continue">What is a continue Statement?</a></li>
+            <li><a href="#syntax">Syntax of continue Statement</a></li>
+            <li><a href="#how">How continue Statement Works</a></li>
+            <li><a href="#simple">Simple continue Statement Example</a></li>
+            <li><a href="#for">continue Statement in a for Loop</a></li>
+            <li><a href="#while">continue Statement in a while Loop</a></li>
+            <li><a href="#doWhile">continue Statement in a do-while Loop</a></li>
+            <li><a href="#nested">continue Statement in Nested Loops</a></li>
+            <li><a href="#labels">Using continue with Labels</a></li>
+            <li><a href="#conclusion">Conclusion</a></li>
+        </ul>
+
+        <h2 id="continue">What is a continue Statement?</h2>
+        <p>The <code>continue</code> statement is used to skip the remainder of the code in the current iteration of a
+            loop and immediately proceed to the next iteration. This is particularly useful when you want to skip
+            certain iterations based on specific conditions.</p>
+
+        <h2 id="syntax">Syntax of continue Statement</h2>
+        <pre><code>continue;</code></pre>
+
+        <h2 id="how">How continue Statement Works</h2>
+        <ul>
+            <li>When the <code>continue</code> statement is encountered, the remaining code in the loop's current
+                iteration is skipped.</li>
+            <li>The loop proceeds to the next iteration.</li>
+            <li>In a <code>for</code> loop, the update expression is executed before the next iteration.</li>
+            <li>In <code>while</code> and <code>do-while</code> loops, the condition is re-evaluated before the next
+                iteration.</li>
+        </ul>
+
+        <h2 id="simple">Simple continue Statement Example</h2>
+        <pre class="code"><code>
+public class SimpleContinueExample {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 5; i++) {
+            if (i == 3) {
+                continue;
+            }
+            System.out.println("i: " + i);
+        }
+    }
+}</code></pre><br>
+        <p>Explanation: This loop prints the numbers 1, 2, 4, and 5. When <code>i</code> equals 3, the
+            <code>continue</code> statement skips the remainder of the loop body, so 3 is not printed.</p>
+
+        <h2 id="for">continue Statement in a for Loop</h2>
+        <pre class="code"><code>
+public class ContinueInForLoop {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 10; i++) {
+            if (i % 2 == 0) {
+                continue;
+            }
+            System.out.println("Odd number: " + i);
+        }
+    }
+} </code></pre><br>
+        <p>Explanation: This loop prints only the odd numbers between 1 and 10 by skipping the even numbers.</p>
+
+        <h2 id="while">continue Statement in a while Loop</h2>
+        <pre class="code"><code>
+public class ContinueInWhileLoop {
+    public static void main(String[] args) {
+        int i = 1;
+        while (i <= 10) {
+            if (i % 2 == 0) {
+                i++;
+                continue;
+            }
+            System.out.println("Odd number: " + i);
+            i++;
+        }
+    }
+}</code></pre><br>
+        <p>Explanation: This loop prints only the odd numbers between 1 and 10 by skipping the even numbers.</p>
+
+        <h2 id="doWhile">continue Statement in a do-while Loop</h2>
+        <pre class="code"><code>
+public class ContinueInDoWhileLoop {
+    public static void main(String[] args) {
+        int i = 1;
+        do {
+            if (i % 2 == 0) {
+                i++;
+                continue;
+            }
+            System.out.println("Odd number: " + i);
+            i++;
+        } while (i <= 10);
+    }
+}</code></pre><br>
+        <p>Explanation: This loop prints only the odd numbers between 1 and 10 by skipping the even numbers.</p>
+
+        <h2 id="nested">continue Statement in Nested Loops</h2>
+        <pre class="code"><code>
+public class ContinueInNestedLoops {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 3; i++) {
+            for (int j = 1; j <= 3; j++) {
+                if (j == 2) {
+                    continue;
+                }
+                System.out.println("i: " + i + ", j: " + j);
+            }
+        }
+    }
+}</code></pre><br>
+        <p>Explanation: This loop skips the inner loop's iteration when <code>j</code> equals 2, so it does not print
+            pairs where <code>j</code> is 2.</p>
+
+        <h2 id="labels">Using continue with Labels</h2>
+        <pre class="code"><code>
+public class ContinueWithLabel {
+    public static void main(String[] args) {
+        outerLoop: for (int i = 1; i <= 3; i++) {
+            for (int j = 1; j <= 3; j++) {
+                if (j == 2) {
+                    continue outerLoop;
+                }
+                System.out.println("i: " + i + ", j: " + j);
+            }
+        }
+    }
+}</code></pre><br>
+        <p>Explanation: This loop uses a label <code>outerLoop</code> and continues the outer loop when <code>j</code>
+            equals 2, skipping to the next iteration of the outer loop.</p>
+
+        <h2 id="conclusion">Conclusion</h2>
+        <p>The <code>continue</code> statement in Java is a useful control flow tool that allows you to skip the current
+            iteration of a loop and proceed to the next iteration. Understanding how to use <code>continue</code>
+            effectively, including within nested loops and with labels, can help you write more efficient and readable
+            code.</p>
+
+
+        <div class="scrollup justify-content-end">
+            <a href="#">
+                <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+            </a>
+        </div>
+
+    </div>
+    <div id="footer"></div>
+    <script>
+        fetch('../../../footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer').innerHTML = html;
+            });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

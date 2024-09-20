@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Java Buzzwords</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .topImage img {
+            max-width: 60%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/Java First Hello World Program.png" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+    <h1>Java First Hello World Program</h1>
+    <p>Author: <b>SAI K</b></p>
+        </div><br>
+    <p><strong>Core Java | Java Tutorial</strong></p>
+
+    <h3>Introduction</h3>
+    <p>Writing your first Java program is a simple and essential step in learning the language. The classic "Hello, World!" program is a basic program that outputs the text "Hello, World!" to the console. This guide will take you through the steps to create, compile, and run your first Java program.</p>
+
+    <h4>Key Points:</h4>
+    <ul>
+        <li>Creating the Program: Writing the source code.</li>
+        <li>Compiling the Program: Converting source code to bytecode.</li>
+        <li>Running the Program: Executing the bytecode on the Java Virtual Machine (JVM).</li>
+    </ul>
+
+    <h3>Steps to Create, Compile, and Run a Java Program</h3>
+
+    <h4>Step 1: Create a Java Program</h4>
+    <h5>Open a Text Editor or IDE</h5>
+    <p>You can use any text editor such as Notepad, Sublime Text, or an Integrated Development Environment (IDE) like IntelliJ IDEA, Eclipse, or VS Code.</p>
+
+    <h5>Write the Source Code</h5>
+    <pre><code>
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}</code></pre><br>
+
+    <h4>Save the File</h4>
+    <p>Save the file with a <code>.java</code> extension. The filename must match the class name. For this example, save the file as <code>HelloWorld.java</code>.</p>
+
+    <h4>Step 2: Compile the Java Program</h4>
+    <h5>Open Command Prompt or Terminal</h5>
+    <p>On Windows, you can open Command Prompt by searching for "cmd" in the Start menu. On macOS/Linux, open Terminal from the Applications folder or by searching for it.</p>
+
+    <h5>Navigate to the Directory</h5>
+    <p>Use the <code>cd</code> command to change the directory to where you saved your <code>HelloWorld.java</code> file.</p>
+    <p>Example command (Windows):</p>
+    <pre><code>cd path\to\directory</code></pre>
+    <p>Example command (macOS/Linux):</p>
+    <pre><code>cd /path/to/directory</code></pre>
+
+    <h4>Compile the Program</h4>
+    <p>Use the <code>javac</code> command to compile the Java source file:</p>
+    <pre><code>javac HelloWorld.java</code></pre>
+    <p>This command will create a file named <code>HelloWorld.class</code> in the same directory if there are no errors.</p>
+
+    <h4>Step 3: Run the Java Program</h4>
+    <h5>Execute the Bytecode</h5>
+    <p>Use the <span>java</span> command to run the compiled bytecode:</p>
+    <pre><code>java HelloWorld</code></pre>
+
+    <h4>View the Output</h4>
+    <p>You should see the following output in your console:</p>
+    <pre><code>Hello, World!</code></pre><br>
+
+    <h3>Summarize Steps</h3>
+<code><pre>
+ +-------------------------------------------------+
+  | Step 1: Create a Java Program                   |
+  +-------------------------------------------------+
+  |                                                 |
+  | 1. Open a Text Editor or IDE                    |
+  |                                                 |
+  | 2. Write the Source Code                        |
+  |                                                 |
+  |    public class HelloWorld {                    |
+  |        public static void main(String[] args) { |
+  |            System.out.println("Hello, World!"); |
+  |        }                                        |
+  |    }                                            |
+  |                                                 |
+  | 3. Save the File                                |
+  |    Filename: HelloWorld.java                    |
+  |                                                 |
+  +-------------------------------------------------+
+                      |
+                      v
+  +-------------------------------------------------+
+  | Step 2: Compile the Java Program                |
+  +-------------------------------------------------+
+  |                                                 |
+  | 1. Open Command Prompt or Terminal              |
+  |                                                 |
+  | 2. Navigate to the Directory                    |
+  |    cd /path/to/directory                        |
+  |                                                 |
+  | 3. Compile the Program                          |
+  |    javac HelloWorld.java                        |
+  |                                                 |
+  | 4. Output: HelloWorld.class                     |
+  |                                                 |
+  +-------------------------------------------------+
+                      |
+                      v
+  +-------------------------------------------------+
+  | Step 3: Run the Java Program                    |
+  +-------------------------------------------------+
+  |                                                 |
+  | 1. Execute the Bytecode                         |
+  |    java HelloWorld                              |
+  |                                                 |
+  | 2. View the Output                              |
+  |    Hello, World!                                |
+  |                                                 |
+  +-------------------------------------------------+
+</pre></code><br>
+
+    <h2>Conclusion</h2>
+    <p>Writing your first Java program is straightforward. It involves creating the source code, compiling it into bytecode, and then running it using the JVM. The "Hello, World!" program is a great way to get started with Java and understand the basics of writing, compiling, and running Java code.</p>
+
+    <h3>Summary of Steps:</h3>
+    <ul>
+        <li>Create the Program: Write the Java source code and save it with a <code>.java</code> extension.</li>
+        <li>Compile the Program: Use the <code>javac</code> command to compile the source code into bytecode.</li>
+        <li>Run the Program: Use the <code>java</code> command to execute the compiled bytecode.</li>
+    </ul>
+
+    <p>This text-based diagram should now be aligned properly, providing a clear visual representation of the steps to create, compile, and run a Java program.</p>
+
+    <p>By mastering these steps, you can confidently begin your journey into Java programming and build more complex applications over time.</p>
+
+
+
+    <div class="scrollup justify-content-end">
+        <a href="#">
+            <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+        </a>
+    </div>
+
+</div>
+<div id="footer"></div>
+<script>
+    fetch('../../../footer.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('footer').innerHTML = html;
+        });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

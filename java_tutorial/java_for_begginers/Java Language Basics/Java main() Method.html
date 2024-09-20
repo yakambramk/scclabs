@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Variables in Java</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 90%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .topImage img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/java-interview-questions-and-answers.jpg" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h1>Java main() Method Interview Questions with Answers</h1>
+            <p><strong>Author:</strong> <b>SAI K</b></p>
+        </div><br>
+        <p><strong>Core Java Interview</strong></p>
+
+        <h2>Introduction</h2>
+        <p>In this article, we will discuss frequently asked Java <code>main()</code> method interview questions with
+            answers for both freshers and experienced.</p>
+        <p>As we know that Java <code>main()</code> method is the entry point of any Java program. Its syntax is always
+            <span class="highlight">public static void main(String[] args)</span>.</p>
+
+        <h2>Java main() method Interview Questions with Answers</h2>
+        <p>We will discuss below 8 Java <code>main()</code> interview questions and answers:</p>
+        <ul>
+            <li>Why the <code>main()</code> method is public static?</li>
+            <li>Can we overload the <code>main()</code> method in Java?</li>
+            <li>Can we declare the <code>main()</code> method as private or protected or with no access modifier?</li>
+            <li>Can we declare the <code>main()</code> method as a non-static?</li>
+            <li>Can we change the return type of the <code>main()</code> method?</li>
+            <li>Can the <code>main()</code> method take an argument other than String array?</li>
+            <li>Can we run Java Class without the <code>main()</code> method?</li>
+            <li>Can we make the <code>main()</code> final in Java?</li>
+        </ul>
+
+        <h3>1. Why the main() method is public static?</h3>
+        <p>First, let's see why the main() method is static in Java? <br><br>
+            The main() method is static in Java, so the JVM can directly invoke it without instantiating the class’s
+            object. <br><br>
+
+            If the main() method is non-static, then JVM needs to create an instance of the class, and there would be
+            ambiguity if the constructor of that class takes an argument – which constructor should be called by JVM and
+            what parameters should be passed? We know that JVM can’t instantiate a Java class without calling a
+            constructor method. <br><br>
+
+            The below example demonstrates why the main() method is static in Java? </p>
+        <pre><code>
+package net.javaguides.corejava;
+
+public class MainMethodDemo {
+
+    public MainMethodDemo(int arg0) {
+        //One argument constructor
+    }
+
+    public MainMethodDemo(int arg0, int arg1) {
+        //Two arguments constructor
+    }
+
+    public MainMethodDemo(String arg[]) {
+
+    }
+
+    public void main(String...args) {
+        //Non Static main method
+    }
+}</code></pre><br>
+
+        <p>Now, let's see why the main() method is public? <br><br>
+
+            We know that anyone can access/invoke a method having public access specifier. The main() method is public
+            in Java because it has to be invoked by the JVM. So, if main() is not public in Java, the JVM won’t call it.
+        </p>
+
+        <h3>2. Can we overload the main() method in Java?</h3>
+        <p>Yes, We can overload the <span>main()</span> method. A Java class can have any number of main() methods. But
+            to run the java class, the class should have a <span>main()</span> method with signature as <span>public
+                static void main(String[] args).</span><br><br>
+            The below diagram demonstrates that the <span>main()</span> method can be overloaded:
+        </p>
+
+        <div class="topImage mt-2 mb-4">
+            <img src="../../../assets/java_tutorial/main-method-1.PNG" alt="logo" />
+        </div><br>
+
+
+        <pre><code>
+package net.javaguides.corejava;
+
+import java.util.Arrays;
+
+public class MainMethodDemo {
+
+    /** Actual main method with String[] args**/
+    public static void main(String[] args) {
+        System.out.println("String[] args main method called");
+        main(new Double[] {
+            1.0,
+            2.0,
+            3.0
+        });
+    }
+
+    /** Overloaded main method with Double[] args**/
+    public static void main(Double[] args) {
+        System.out.println("Double[] args main method called");
+        System.out.println(Arrays.toString(args));
+    }
+}</code></pre><br>
+
+        <h5>Output:</h5>
+        <code><pre>
+String[] args main method called
+Double[] args main method called
+[1.0, 2.0, 3.0]</pre></code>
+
+        <h4>3. Can we declare the main() method as private or protected or with no access modifier?</h4>
+        <p>No, the main() method must be public. You can’t define the main() method as private or protected or with no
+            access modifier. This is because to make the main() method accessible to JVM. <br><br>
+            The below diagram shows runtime error, if you define the main() method other than public.</p><br>
+        <div class="topImage mt-2 mb-4">
+            <img src="../../../assets/java_tutorial/main-method-2.PNG" alt="logo" />
+        </div><br>
+
+        <h4>4. Can we declare the main() method as a non-static?</h4>
+        <p>No, the main() method must be declared as static so that JVM can call the main() method without instantiating
+            its class. If you remove ‘static’ from the main() method signature, the compilation will be successful but
+            the program fails at runtime. <br><br>
+            The below diagram demonstrates that the main() method should be static otherwise JVM will throw runtime
+            error:</p><br>
+
+        <div class="topImage mt-2 mb-4">
+            <img src="../../../assets/java_tutorial/main-method-3.PNG" alt="logo" />
+        </div><br>
+
+
+        <h4>5. Can we change the return type of the main() method?</h4>
+        <p>No, the return type of the main() method must be void only. Any other type is not acceptable. <br><br>
+            The below diagram demonstrates that the main() method should have a void return type:</p><br>
+
+        <div class="topImage mt-2 mb-4">
+            <img src="../../../assets/java_tutorial/main-method-4.PNG" alt="logo" />
+        </div><br>
+
+        <h3>6. Can the main() method take an argument other than String array?</h3>
+        <p>No, an argument of the main() method must be a String array. But, from the introduction of var args, you can
+            pass var args of string type as an argument to the main() method. Again, var args are nothing but the
+            arrays. <br><br>
+            The below diagram demonstrates that the main() method should have an argument as String array or var args:
+        </p><br>
+        <div class="topImage mt-2 mb-4">
+            <img src="../../../assets/java_tutorial/main-method-5.PNG" alt="logo" />
+        </div><br>
+
+
+        <h3>7. Can we run define Java Class without the main() method?</h3>
+        <p>No, We cannot define a class without the main() method starting from Java 7. In the previous release of Java,
+            we can have Static Initializers as an alternative:</p><br>
+
+
+        <pre><code>public class MainMethodDemo {
+    static {
+        System.out.println("Static Initializer");
+        System.exit(0);
+    }
+}</code></pre><br>
+
+        <b>Output: (From JDK 7)</b>
+
+        <code><pre>
+Error: Main method not found in class Test, please define the main method as:
+   public static void main(String[] args)
+or a JavaFX application class must extend javafx.application.Application</pre></code><br>
+
+        <b>Output: (JDK 6)</b>
+        <code><pre>
+Static Initalizer</pre></code><br>
+
+        <h3>8. Can we make the main final in Java?</h3>
+        <p>Yes, you can make the main() method final. <br><br>
+
+            The below diagram demonstrates that we can have the main() method as final in Java.
+        </p>
+
+
+        <div class="topImage mt-2 mb-4">
+            <img src="../../../assets/java_tutorial/main-method-6.PNG" alt="logo" />
+        </div><br>
+
+        <div class="scrollup justify-content-end">
+            <a href="#">
+                <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+            </a>
+        </div>
+
+    </div>
+    <div id="footer"></div>
+    <script>
+        fetch('../../../footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer').innerHTML = html;
+            });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
