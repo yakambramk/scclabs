@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Arithmetic Operators in Java</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 90%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .topImage img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/relational operator in java.png" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h1>Equality, Relational, and Conditional Operators in Java</h1>
+            <p>Author: <b>SAI K</b></p>
+        </div><br>
+
+    <p>In this chapter, we will learn about Equality, Relational, and Conditional Operators in Java programming language with examples.</p>
+
+    <h2>1. The Equality and Relational Operators</h2>
+    <p>The equality and relational operators determine if one operand is greater than, less than, equal to, or not equal to another operand. The majority of these operators will probably look familiar to you. Keep in mind that you must use <code>==</code>, not <code>=</code>, when testing if two primitive values are equal.</p>
+
+    <div class="topImage mt-2 mb-4">
+        <img src="../../../assets/java_tutorial/relational-operators.PNG" alt="logo" />
+    </div><br>
+
+    <p>The following program, <code>ComparisonDemo</code>, tests the comparison operators:</p>
+    <pre>
+<code>class ComparisonDemo {
+    public static void main(String[] args) {
+        int value1 = 1;
+        int value2 = 2;
+        if (value1 == value2)
+            System.out.println("value1 == value2");
+        if (value1 != value2)
+            System.out.println("value1 != value2");
+        if (value1 &gt; value2)
+            System.out.println("value1 &gt; value2");
+        if (value1 &lt; value2)
+            System.out.println("value1 &lt; value2");
+        if (value1 &lt;= value2)
+            System.out.println("value1 &lt;= value2");
+    }
+}</code>
+    </pre>
+    <p><strong>Output:</strong></p>
+    <pre>
+value1 != value2
+value1 &lt; value2
+value1 &lt;= value2
+    </pre>
+
+    <h2>2. The Conditional Operators</h2>
+    <p>The <code>&&</code> and <code>||</code> operators perform Conditional-AND and Conditional-OR operations on two boolean expressions. These operators exhibit "short-circuiting" behavior, which means that the second operand is evaluated only if needed.</p>
+    <ul>
+        <li><code>&&</code> Conditional-AND</li>
+        <li><code>||</code> Conditional-OR</li>
+    </ul>
+    <p>Example:</p>
+    <pre>
+<code>class ConditionalDemo1 {
+    public static void main(String[] args) {
+        int value1 = 1;
+        int value2 = 2;
+        if ((value1 == 1) && (value2 == 2))
+            System.out.println("value1 is 1 AND value2 is 2");
+        if ((value1 == 1) || (value2 == 1))
+            System.out.println("value1 is 1 OR value2 is 1");
+    }
+}</code>
+    </pre>
+
+    <h2>3. Ternary Operator</h2>
+    <p>Java includes a special ternary (three-way) operator that can replace certain types of if-then-else statements.</p>
+    <p><strong>Syntax:</strong></p>
+    <pre>
+expression1 ? expression2 : expression3
+    </pre>
+    <p>Here, <code>expression1</code> can be any expression that evaluates to a boolean value. If <code>expression1</code> is true, then <code>expression2</code> is evaluated; otherwise, <code>expression3</code> is evaluated.</p>
+
+    <p>Here is a program that demonstrates the ternary operator. It uses it to obtain the absolute value of a variable.</p>
+    <pre>
+<code>package net.javaguides.corejava.operators.ternary;
+
+public class Ternary {
+    public static void main(String args[]) {
+        int i, k;
+        i = 10;
+        k = i &lt; 0 ? -i : i; // get absolute value of i
+        System.out.print("Absolute value of ");
+        System.out.println(i + " is " + k);
+        i = -10;
+        k = i &lt; 0 ? -i : i; // get absolute value of i
+        System.out.print("Absolute value of ");
+        System.out.println(i + " is " + k);
+    }
+}</code>
+    </pre>
+    <p><strong>Output:</strong></p>
+    <pre>
+Absolute value of 10 is 10
+Absolute value of -10 is 10
+    </pre>
+
+    <h2>4. The Type Comparison Operator <code>instanceof</code></h2>
+    <p>The <code>instanceof</code> operator compares an object to a specified type. You can use it to test if an object is an instance of a class, a subclass, or a class that implements a particular interface.</p>
+
+    <p>The following program, <code>InstanceofDemo</code>, defines a parent class (named <code>Parent</code>), a simple interface (named <code>MyInterface</code>), and a child class (named <code>Child</code>) that inherits from the parent and implements the interface.</p>
+    <pre>
+<code>class InstanceofDemo {
+    public static void main(String[] args) {
+        Parent obj1 = new Parent();
+        Parent obj2 = new Child();
+        
+        System.out.println("obj1 instanceof Parent: " +
+            (obj1 instanceof Parent));
+        System.out.println("obj1 instanceof Child: " +
+            (obj1 instanceof Child));
+        System.out.println("obj1 instanceof MyInterface: " +
+            (obj1 instanceof MyInterface));
+        System.out.println("obj2 instanceof Parent: " +
+            (obj2 instanceof Parent));
+        System.out.println("obj2 instanceof Child: " +
+            (obj2 instanceof Child));
+        System.out.println("obj2 instanceof MyInterface: " +
+            (obj2 instanceof MyInterface));
+    }
+}
+
+class Parent {}
+class Child extends Parent implements MyInterface {}
+interface MyInterface {}</code>
+    </pre>
+    <p><strong>Output:</strong></p>
+    <pre>
+obj1 instanceof Parent: true
+obj1 instanceof Child: false
+obj1 instanceof MyInterface: false
+obj2 instanceof Parent: true
+obj2 instanceof Child: true
+obj2 instanceof MyInterface: true
+    </pre>
+    <p>When using the <code>instanceof</code> operator, keep in mind that <code>null</code> is not an instance of anything.</p>
+
+
+    <div class="scrollup justify-content-end">
+        <a href="#">
+            <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+        </a>
+    </div>
+
+</div>
+<div id="footer"></div>
+<script>
+    fetch('../../../footer.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('footer').innerHTML = html;
+        });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

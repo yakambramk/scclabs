@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Loop with Examples</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 90%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .topImage img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/java-loop-program-examples.png" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h1>Java for Loop with Examples</h1>
+            <p><strong>Author:</strong> SAI K</p>
+        </div><br>
+
+        <h2>Introduction</h2>
+        <p>In Java, the for loop is one of the most commonly used control flow statements for iteration. It allows you
+            to execute a block of code repeatedly with a controlled number of iterations. Understanding the for loop is
+            fundamental to effective Java programming, as it is essential for tasks like traversing arrays and
+            collections, performing repetitive tasks, and implementing algorithms.</p>
+
+        <h3>Table of Contents</h3>
+        <ul>
+            <li><a href="#syntax">Java for Loop Syntax</a></li>
+            <li><a href="#how-it-works">How for Loop Works</a></li>
+            <li><a href="#simple-example">Simple for Loop Example</a></li>
+            <li><a href="#using-comma">Using the Comma</a></li>
+            <li><a href="#foreach-version">The For-Each Version of the for Loop</a></li>
+            <li><a href="#foreach-break">for-each Loop with Break</a></li>
+            <li><a href="#foreach-readonly">for-each Loop is Essentially Read-Only</a></li>
+            <li><a href="#foreach-multidimensional">for-each - Iterating Over Multidimensional Arrays</a></li>
+            <li><a href="#search-array">Search an Array Using for-each Style Example</a></li>
+            <li><a href="#nested-loops">Nested for Loops</a></li>
+        </ul>
+
+        <h3 id="syntax">Java for Loop Syntax</h3>
+        <p>The for loop in Java is a control flow statement that repeatedly executes a block of code as long as a
+            specified condition is true. It is primarily used for iteration over arrays and collections.</p>
+
+        <pre>
+<code>
+for (initialization; condition; update) {
+    // body of loop
+}
+</code>
+    </pre>
+        <p><strong>Initialization:</strong> This step initializes the loop variable and is executed once.</p>
+        <p><strong>Condition:</strong> This condition is evaluated before each iteration. If true, the loop body is
+            executed.</p>
+        <p><strong>Update:</strong> This step updates the loop variable after each iteration.</p>
+
+        <h3 id="how-it-works">How for Loop Works</h3>
+        <p>The for loop works by first executing the initialization statement, then checking the condition. If the
+            condition is true, it executes the body of the loop, then performs the update statement, and repeats the
+            process until the condition becomes false.</p>
+
+        <h3 id="simple-example">Simple for Loop Example</h3>
+        <pre>
+<code>
+public class SimpleForLoop {
+    public static void main(String[] args) {
+        for (int i = 1; i &lt;= 5; i++) {
+            System.out.println(i);
+        }
+    }
+}
+</code>
+    </pre>
+        <p><strong>Explanation:</strong> This loop initializes <code>i</code> to 1, checks if <code>i</code> is less
+            than or equal to 5, prints the value of <code>i</code>, and then increments <code>i</code> by 1.</p>
+
+        <h3 id="using-comma">Using the Comma</h3>
+        <p>You can use the comma operator to include multiple initialization and update statements in a for loop.</p>
+
+        <pre>
+<code>
+public class ForLoopWithComma {
+    public static void main(String[] args) {
+        for (int i = 0, j = 10; i &lt; j; i++, j--) {
+            System.out.println("i: " + i + ", j: " + j);
+        }
+    }
+}
+</code>
+    </pre>
+        <p><strong>Explanation:</strong> This loop initializes two variables, <code>i</code> and <code>j</code>, and
+            updates both of them in each iteration until the condition <code>i &lt; j</code> becomes false.</p>
+
+        <h3 id="foreach-version">The For-Each Version of the for Loop</h3>
+        <p>The for-each loop, introduced in Java 5, provides a simpler way to iterate over arrays and collections.</p>
+
+        <pre>
+<code>
+for (type variable : array) {
+    // body of loop
+}
+</code>
+    </pre>
+        <p><strong>Example:</strong></p>
+
+        <pre>
+<code>
+public class ForEachLoopExample {
+    public static void main(String[] args) {
+        int[] numbers = {1, 2, 3, 4, 5};
+        for (int num : numbers) {
+            System.out.println(num);
+        }
+    }
+}
+</code>
+    </pre>
+        <p><strong>Explanation:</strong> This loop iterates over each element in the <code>numbers</code> array and
+            prints it.</p>
+
+        <h3 id="foreach-break">for-each Loop with Break</h3>
+        <pre>
+<code>
+public class ForEachWithBreak {
+    public static void main(String[] args) {
+        int[] numbers = {1, 2, 3, 4, 5};
+        for (int num : numbers) {
+            if (num == 3) {
+                break;
+            }
+            System.out.println(num);
+        }
+    }
+}
+</code>
+    </pre>
+        <p><strong>Explanation:</strong> This loop prints numbers until it encounters <code>3</code>, at which point it
+            exits the loop.</p>
+
+        <h3 id="foreach-readonly">for-each Loop is Essentially Read-Only</h3>
+        <pre>
+<code>
+public class ForEachReadOnly {
+    public static void main(String[] args) {
+        int[] numbers = {1, 2, 3, 4, 5};
+        for (int num : numbers) {
+            num = num * 2; // This change is not reflected in the original array
+        }
+        for (int num : numbers) {
+            System.out.println(num); // Prints original values
+        }
+    }
+}
+</code>
+    </pre>
+        <p><strong>Explanation:</strong> The change to <code>num</code> is not reflected in the <code>numbers</code>
+            array.</p>
+
+        <h3 id="foreach-multidimensional">for-each - Iterating Over Multidimensional Arrays</h3>
+        <pre>
+<code>
+public class ForEachMultidimensional {
+    public static void main(String[] args) {
+        int[][] matrix = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+        };
+        for (int[] row : matrix) {
+            for (int num : row) {
+                System.out.print(num + " ");
+            }
+            System.out.println();
+        }
+    }
+}
+</code>
+    </pre>
+        <p><strong>Explanation:</strong> This loop iterates over each row of the matrix and then over each element of
+            the row.</p>
+
+        <h3 id="search-array">Search an Array Using for-each Style Example</h3>
+        <pre>
+<code>
+public class SearchArrayForEach {
+    public static void main(String[] args) {
+        int[] numbers = {1, 2, 3, 4, 5};
+        int searchKey = 3;
+        boolean found = false;
+        for (int num : numbers) {
+            if (num == searchKey) {
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            System.out.println("Element found in the array.");
+        } else {
+            System.out.println("Element not found in the array.");
+        }
+    }
+}
+</code>
+    </pre>
+        <p><strong>Explanation:</strong> This loop searches for the element <code>3</code> in the array and prints a
+            message if it is found.</p>
+
+        <h3 id="nested-loops">Nested for Loops</h3>
+        <pre>
+<code>
+public class NestedForLoop {
+    public static void main(String[] args) {
+        for (int i = 1; i &lt;= 3; i++) {
+            for (int j = 1; j &lt;= 3; j++) {
+                System.out.println("i: " + i + ", j: " + j);
+            }
+        }
+    }
+}
+</code>
+    </pre>
+        <p><strong>Explanation:</strong> This loop iterates over pairs of <code>i</code> and <code>j</code> values,
+            printing each pair.</p>
+
+        <h3>Conclusion</h3>
+        <p>The for loop is a powerful and flexible control flow statement in Java, essential for performing repetitive
+            tasks and iterating over collections and arrays. Understanding its syntax and variations, including the
+            for-each loop, is crucial for efficient Java programming.</p>
+
+        <div class="scrollup justify-content-end">
+            <a href="#">
+                <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+            </a>
+        </div>
+
+    </div>
+    <div id="footer"></div>
+    <script>
+        fetch('../../../footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer').innerHTML = html;
+            });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

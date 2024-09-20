@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Switch Case Statement</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 90%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .topImage img {
+            max-width: 60%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/Switch Case Program in Java.jpg" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h1>Java Switch Case Statement</h1>
+            <p>Author: <b>SAI K</b></p>
+        </div>
+    <p><strong>Core Java Tutorial</strong></p>
+
+    <h3>Introduction</h3>
+    <p>The switch statement in Java provides a way to execute one block of code out of many based on the value of an expression. It is an alternative to using multiple if-else-if statements and is especially useful when you have a single variable or expression to evaluate against several possible values.</p>
+
+    <h3>Table of Contents</h3>
+    <ul>
+        <li><a href="#switch-case-statement">What is a Switch Case Statement?</a></li>
+        <li><a href="#syntax">Syntax of Switch Case</a></li>
+        <li><a href="#how-it-works">How Switch Case Works</a></li>
+        <li><a href="#simple-switch">Simple Switch Case Example</a></li>
+        <li><a href="#multiple-cases">Switch Case with Multiple Cases</a></li>
+        <li><a href="#default">Switch Case with Default</a></li>
+        <li><a href="#nested-switch">Nested Switch Case</a></li>
+        <li><a href="#string-switch">Using Strings in Switch Case</a></li>
+        <li><a href="#enum-switch">Switch Case with Enum</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+    </ul>
+
+    <h3 id="switch-case-statement">What is a Switch Case Statement?</h3>
+    <p>A switch statement evaluates a single expression and executes a block of code that matches the value of the expression. It simplifies code by eliminating the need for multiple if-else conditions and enhances readability.</p>
+
+    <h3 id="syntax">Syntax of Switch Case</h3>
+    <p><strong>Syntax:</strong></p>
+    <pre>
+<code>switch (expression) {
+    case value1:
+        // code to be executed if expression equals value1
+        break;
+    case value2:
+        // code to be executed if expression equals value2
+        break;
+    // you can have any number of case statements
+    default:
+        // code to be executed if expression doesn't match any case
+}</code>
+    </pre>
+    <p><strong>Explanation:</strong> The expression can be an integer, character, string, or enumeration. The case statements check for specific values, and the <code>break</code> statement exits the switch block.</p>
+
+    <h3 id="how-it-works">How Switch Case Works</h3>
+    <ol>
+        <li>The switch statement evaluates the expression.</li>
+        <li>The value of the expression is compared with the values of each case.</li>
+        <li>If there is a match, the associated block of code is executed.</li>
+        <li>The <code>break</code> statement exits the switch block.</li>
+        <li>If no case matches, the default block is executed (if provided).</li>
+    </ol>
+
+    <h3 id="simple-switch">Simple Switch Case Example</h3>
+    <pre>
+<code>public class SimpleSwitchCase {
+    public static void main(String[] args) {
+        int day = 3;
+        switch (day) {
+            case 1:
+                System.out.println("Monday");
+                break;
+            case 2:
+                System.out.println("Tuesday");
+                break;
+            case 3:
+                System.out.println("Wednesday");
+                break;
+            case 4:
+                System.out.println("Thursday");
+                break;
+            case 5:
+                System.out.println("Friday");
+                break;
+            case 6:
+                System.out.println("Saturday");
+                break;
+            case 7:
+                System.out.println("Sunday");
+                break;
+            default:
+                System.out.println("Invalid day");
+                break;
+        }
+    }
+}</code>
+    </pre>
+    <p><strong>Explanation:</strong> This program prints the name of the day based on the value of <code>day</code>. If <code>day</code> is 3, it prints "Wednesday".</p>
+
+    <h3 id="multiple-cases">Switch Case with Multiple Cases</h3>
+    <p>You can group multiple cases together if they execute the same code.</p>
+    <pre>
+<code>public class SwitchMultipleCases {
+    public static void main(String[] args) {
+        int day = 5;
+        switch (day) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                System.out.println("Weekday");
+                break;
+            case 6:
+            case 7:
+                System.out.println("Weekend");
+                break;
+            default:
+                System.out.println("Invalid day");
+                break;
+        }
+    }
+}</code>
+    </pre>
+    <p><strong>Explanation:</strong> This program groups weekdays and weekends together. If <code>day</code> is 5, it prints "Weekday".</p>
+
+    <h3 id="default">Switch Case with Default</h3>
+    <p>The default case is executed if no other case matches.</p>
+    <pre>
+<code>public class SwitchWithDefault {
+    public static void main(String[] args) {
+        int month = 13;
+        switch (month) {
+            case 1:
+                System.out.println("January");
+                break;
+            case 2:
+                System.out.println("February");
+                break;
+            // other cases
+            default:
+                System.out.println("Invalid month");
+                break;
+        }
+    }
+}</code>
+    </pre>
+    <p><strong>Explanation:</strong> If <code>month</code> is 13, it prints "Invalid month" because there is no matching case.</p>
+
+    <h3 id="nested-switch">Nested Switch Case</h3>
+    <p>You can use a switch statement inside another switch statement.</p>
+    <pre>
+<code>public class NestedSwitch {
+    public static void main(String[] args) {
+        int year = 1;
+        int month = 2;
+        switch (year) {
+            case 1:
+                switch (month) {
+                    case 1:
+                        System.out.println("January, Year 1");
+                        break;
+                    case 2:
+                        System.out.println("February, Year 1");
+                        break;
+                    // other cases
+                }
+                break;
+            // other cases for year
+            default:
+                System.out.println("Invalid year");
+                break;
+        }
+    }
+}</code>
+    </pre>
+    <p><strong>Explanation:</strong> This program prints the month and year based on the values of <code>year</code> and <code>month</code>.</p>
+
+    <h3 id="string-switch">Using Strings in Switch Case</h3>
+    <p>Java 7 introduced the ability to use strings in switch statements.</p>
+    <pre>
+<code>public class StringSwitch {
+    public static void main(String[] args) {
+        String day = "Tuesday";
+        switch (day) {
+            case "Monday":
+                System.out.println("Start of the week");
+                break;
+            case "Tuesday":
+                System.out.println("Second day of the week");
+                break;
+            // other cases
+            default:
+                System.out.println("Invalid day");
+                break;
+        }
+    }
+}</code>
+    </pre>
+    <p><strong>Explanation:</strong> This program prints a message based on the value of the <code>day</code> string.</p>
+
+    <h3 id="enum-switch">Switch Case with Enum</h3>
+    <p>You can use enum types in switch statements to handle predefined constants.</p>
+    <pre>
+<code>public class EnumSwitch {
+    enum Day {
+        MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
+    }
+
+    public static void main(String[] args) {
+        Day day = Day.WEDNESDAY;
+        switch (day) {
+            case MONDAY:
+                System.out.println("Monday");
+                break;
+            case TUESDAY:
+                System.out.println("Tuesday");
+                break;
+            case WEDNESDAY:
+                System.out.println("Wednesday");
+                break;
+            // other cases
+            default:
+                System.out.println("Invalid day");
+                break;
+        }
+    }
+}</code>
+    </pre>
+    <p><strong>Explanation:</strong> This program prints the day based on the value of the <code>day</code> enum.</p>
+
+    <h2 id="conclusion">Conclusion</h2>
+    <p>The switch statement in Java is a powerful control flow statement that simplifies the code by handling multiple conditions more efficiently than using multiple if-else statements. Understanding how to use the switch statement with various data types, including integers, characters, strings, and enums, is crucial for writing clear and maintainable code.</p>
+
+
+
+    <div class="scrollup justify-content-end">
+        <a href="#">
+            <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+        </a>
+    </div>
+
+</div>
+<div id="footer"></div>
+<script>
+    fetch('../../../footer.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('footer').innerHTML = html;
+        });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

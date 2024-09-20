@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Arithmetic Operators in Java</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 90%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .topImage img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/Arithmetic-Operations-in-Java.jpg" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+    <h1>Arithmetic Operators in Java</h1>
+    <p>Author: <b>SAI K</b></p>
+        </div><br>
+
+    <p><strong>Core Java</strong></p>
+
+    <h2>Introduction</h2>
+    <p>Arithmetic operators in Java are used to perform basic mathematical operations such as addition, subtraction, multiplication, division, and modulus. These operators are fundamental for manipulating numerical data and are frequently used in Java programming.</p>
+
+    <h2>What are Arithmetic Operators?</h2>
+    <p>Arithmetic operators are symbols used within expressions to perform basic mathematical operations. They operate on numerical values (constants and variables) and return a single numerical value.</p>
+
+    <h2>Types of Arithmetic Operators in Java</h2>
+    <p>Java provides the following arithmetic operators:</p>
+    <ul>
+        <li>Addition (+)</li>
+        <li>Subtraction (-)</li>
+        <li>Multiplication (*)</li>
+        <li>Division (/)</li>
+        <li>Modulus (%)</li>
+        <li>Increment (++)</li>
+        <li>Decrement (--)</li>
+    </ul>
+
+    <h3>1. Addition (+)</h3>
+    <p>The addition operator adds two operands.</p>
+
+    <h4>Example:</h4>
+    <pre><code>
+public class AdditionExample {
+    public static void main(String[] args) {
+        int a = 10;
+        int b = 20;
+        int sum = a + b;
+        System.out.println("Sum: " + sum); // Output: Sum: 30
+    }
+}</code></pre><br>
+
+    <h3>2. Subtraction (-)</h3>
+    <p>The subtraction operator subtracts the second operand from the first.</p>
+
+    <h4>Example:</h4>
+    <pre><code>
+public class SubtractionExample {
+    public static void main(String[] args) {
+        int a = 20;
+        int b = 10;
+        int difference = a - b;
+        System.out.println("Difference: " + difference); // Output: Difference: 10
+    }
+} </code></pre><br>
+
+    <h3>3. Multiplication (*)</h3>
+    <p>The multiplication operator multiplies two operands.</p>
+
+    <h4>Example:</h4>
+    <pre><code>
+public class MultiplicationExample {
+    public static void main(String[] args) {
+        int a = 10;
+        int b = 20;
+        int product = a * b;
+        System.out.println("Product: " + product); // Output: Product: 200
+    }
+}</code></pre><br>
+
+    <h3>4. Division (/)</h3>
+    <p>The division operator divides the first operand by the second. Note that division by zero will throw an ArithmeticException.</p>
+
+    <h4>Example:</h4>
+    <pre><code>
+public class DivisionExample {
+    public static void main(String[] args) {
+        int a = 20;
+        int b = 10;
+        int quotient = a / b;
+        System.out.println("Quotient: " + quotient); // Output: Quotient: 2
+    }
+}</code></pre><br>
+
+    <h3>5. Modulus (%)</h3>
+    <p>The modulus operator returns the remainder when the first operand is divided by the second.</p>
+
+    <h4>Example:</h4>
+    <pre><code>
+public class ModulusExample {
+    public static void main(String[] args) {
+        int a = 20;
+        int b = 3;
+        int remainder = a % b;
+        System.out.println("Remainder: " + remainder); // Output: Remainder: 2
+    }
+}</code></pre><br>
+
+    <h3>6. Increment (++)</h3>
+    <p>The increment operator increases the value of an operand by 1. It can be used as a prefix (++a) or a suffix (a++).</p>
+
+    <h4>Example:</h4>
+    <pre><code>
+public class IncrementExample {
+    public static void main(String[] args) {
+        int a = 10;
+        ++a; // Prefix increment
+        System.out.println("Prefix Increment: " + a); // Output: Prefix Increment: 11
+
+        a = 10;
+        a++; // Suffix increment
+        System.out.println("Suffix Increment: " + a); // Output: Suffix Increment: 11
+    }
+}</code></pre><br>
+
+    <h3>7. Decrement (--)</h3>
+    <p>The decrement operator decreases the value of an operand by 1. It can be used as a prefix (--a) or a suffix (a--).</p>
+
+    <h4>Example:</h4>
+    <pre><code>
+public class DecrementExample {
+    public static void main(String[] args) {
+        int a = 10;
+        --a; // Prefix decrement
+        System.out.println("Prefix Decrement: " + a); // Output: Prefix Decrement: 9
+
+        a = 10;
+        a--; // Suffix decrement
+        System.out.println("Suffix Decrement: " + a); // Output: Suffix Decrement: 9
+    }
+}</code></pre><br>
+
+    <h2>Conclusion</h2>
+    <p>Arithmetic operators in Java are used to perform basic mathematical operations. They allow for efficient manipulation of numerical data and are integral to many programming tasks. By understanding and using these operators correctly, you can perform calculations and manage data effectively in your Java programs.</p>
+
+
+    <div class="scrollup justify-content-end">
+        <a href="#">
+            <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+        </a>
+    </div>
+
+</div>
+<div id="footer"></div>
+<script>
+    fetch('../../../footer.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('footer').innerHTML = html;
+        });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

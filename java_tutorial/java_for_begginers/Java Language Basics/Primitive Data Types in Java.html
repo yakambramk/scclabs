@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Variables in Java</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 90%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .topImage img {
+            max-width: 60%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/primetive data types in java.jpeg" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h1>Primitive Data Types in Java</h1>
+            <p>Author: <b>SAI K</b></p>
+        </div><br>
+    <p><strong>Core Java</strong></p>
+
+    <h3>Introduction</h3>
+    <p>In Java, primitive data types are the most basic data types that represent simple values. These data types are predefined by the language and serve as the building blocks for data manipulation. Java has eight primitive data types, each serving a specific purpose and having its own range of values.</p>
+
+    <h3>What are Primitive Data Types?</h3>
+    <p>Primitive data types are the simplest and most fundamental data types available in Java. They are not objects and hold their values directly in memory. Primitive data types are efficient and provide a way to create variables to store data of different types.</p>
+
+    <h3>Types of Primitive Data Types in Java</h3>
+    <p>Java defines eight primitive data types:</p>
+    <ol>
+        <li>byte</li>
+        <li>short</li>
+        <li>int</li>
+        <li>long</li>
+        <li>float</li>
+        <li>double</li>
+        <li>char</li>
+        <li>boolean</li>
+    </0l>
+
+    <h3>1. byte</h3>
+    <p>The byte data type is an 8-bit signed two's complement integer. It has a minimum value of -128 and a maximum value of 127 (inclusive).</p>
+    <p><strong>Example:</strong></p>
+    <pre>
+<code>public class ByteExample {
+    public static void main(String[] args) {
+        byte b = 100;
+        System.out.println("Byte value: " + b);
+    }
+}</code>
+    </pre>
+
+    <h3>2. short</h3>
+    <p>The short data type is a 16-bit signed two's complement integer. It has a minimum value of -32,768 and a maximum value of 32,767 (inclusive).</p>
+    <p><strong>Example:</strong></p>
+    <pre>
+<code>public class ShortExample {
+    public static void main(String[] args) {
+        short s = 10000;
+        System.out.println("Short value: " + s);
+    }
+}</code>
+    </pre>
+
+    <h3>3. int</h3>
+    <p>The int data type is a 32-bit signed two's complement integer. It has a minimum value of -2^31 and a maximum value of 2^31 - 1 (inclusive).</p>
+    <p><strong>Example:</strong></p>
+    <pre>
+<code>public class IntExample {
+    public static void main(String[] args) {
+        int i = 100000;
+        System.out.println("Int value: " + i);
+    }
+}</code>
+    </pre>
+
+    <h3>4. long</h3>
+    <p>The long data type is a 64-bit signed two's complement integer. It has a minimum value of -2^63 and a maximum value of 2^63 - 1 (inclusive).</p>
+    <p><strong>Example:</strong></p>
+    <pre>
+<code>public class LongExample {
+    public static void main(String[] args) {
+        long l = 100000L;
+        System.out.println("Long value: " + l);
+    }
+}</code>
+    </pre>
+
+    <h3>5. float</h3>
+    <p>The float data type is a single-precision 32-bit IEEE 754 floating point. It is mainly used to save memory in large arrays of floating point numbers.</p>
+    <p><strong>Example:</strong></p>
+    <pre>
+<code>public class FloatExample {
+    public static void main(String[] args) {
+        float f = 10.5f;
+        System.out.println("Float value: " + f);
+    }
+}</code>
+    </pre>
+
+    <h3>6. double</h3>
+    <p>The double data type is a double-precision 64-bit IEEE 754 floating point. For decimal values, this data type is generally the default choice.</p>
+    <p><strong>Example:</strong></p>
+    <pre>
+<code>public class DoubleExample {
+    public static void main(String[] args) {
+        double d = 10.5;
+        System.out.println("Double value: " + d);
+    }
+}</code>
+    </pre>
+
+    <h3>7. char</h3>
+    <p>The char data type is a single 16-bit Unicode character. It has a minimum value of '\u0000' (or 0) and a maximum value of '\uffff' (or 65,535 inclusive).</p>
+    <p><strong>Example:</strong></p>
+    <pre>
+<code>public class CharExample {
+    public static void main(String[] args) {
+        char c = 'A';
+        System.out.println("Char value: " + c);
+    }
+}</code>
+    </pre>
+
+    <h3>8. boolean</h3>
+    <p>The boolean data type has only two possible values: <code>true</code> and <code>false</code>. This data type is used for simple flags that track true/false conditions.</p>
+    <p><strong>Example:</strong></p>
+    <pre>
+<code>public class BooleanExample {
+    public static void main(String[] args) {
+        boolean bool = true;
+        System.out.println("Boolean value: " + bool);
+    }
+}</code>
+    </pre>
+
+    <h2>Conclusion</h2>
+    <p>Primitive data types in Java are essential for efficient data manipulation and storage. They provide the foundation for handling basic data types and serve as the building blocks for more complex data structures. Understanding and using these primitive data types correctly is crucial for effective Java programming.</p>
+
+    
+
+    <div class="scrollup justify-content-end">
+        <a href="#">
+            <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+        </a>
+    </div>
+
+</div>
+<div id="footer"></div>
+<script>
+    fetch('../../../footer.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('footer').innerHTML = html;
+        });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>while Loop in Java</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 90%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .topImage img {
+            max-width: 60%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/while loop in java.png" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h1>Java while Loop</h1>
+            <p>Author: <b>SAI K</b></p>
+        </div><br>
+    
+    <p><strong>Core Java Tutorial</strong></p>
+    <h2 id="introduction">Introduction</h2>
+    <p>The while loop in Java is a control flow statement that allows code to be executed repeatedly based on a given boolean condition. The while loop is fundamental for performing repeated tasks and is particularly useful when the number of iterations is not known beforehand.</p>
+
+    <div class="table-of-contents">
+        <h2>Table of Contents</h2>
+        <ul>
+            <li><a href="#what-is-while-loop">What is a while Loop?</a></li>
+            <li><a href="#syntax-of-while-loop">Syntax of while Loop</a></li>
+            <li><a href="#how-while-loop-works">How while Loop Works</a></li>
+            <li><a href="#simple-while-loop-example">Simple while Loop Example</a></li>
+            <li><a href="#infinite-while-loop">Infinite while Loop</a></li>
+            <li><a href="#while-loop-with-break-statement">while Loop with a Break Statement</a></li>
+            <li><a href="#while-loop-with-continue-statement">while Loop with a Continue Statement</a></li>
+            <li><a href="#nested-while-loop">Nested while Loop</a></li>
+            <li><a href="#using-while-loop-for-input-validation">Using a while Loop for Input Validation</a></li>
+            <li><a href="#conclusion">Conclusion</a></li>
+        </ul>
+    </div>
+
+    <h2 id="what-is-while-loop">What is a while Loop?</h2>
+    <p>A while loop repeatedly executes a block of code as long as the specified condition is evaluated as true. It is useful for scenarios where the number of iterations is not predetermined.</p>
+
+    <h2 id="syntax-of-while-loop">Syntax of while Loop</h2>
+    <p><strong>Syntax:</strong></p>
+    <pre><code>while (condition) {
+    // body of loop
+}</code></pre>
+    <p><strong>condition:</strong> A boolean expression that is evaluated before each iteration of the loop.</p>
+    <p><strong>body of loop:</strong> The block of code that is executed as long as the condition is true.</p>
+
+    <h2 id="how-while-loop-works">How while Loop Works</h2>
+    <ol>
+        <li>The condition is evaluated.</li>
+        <li>If the condition is true, the body of the loop is executed.</li>
+        <li>After the body is executed, the condition is evaluated again.</li>
+        <li>Steps 2 and 3 are repeated until the condition becomes false.</li>
+        <li>When the condition is false, the loop terminates, and control moves to the next statement after the loop.</li>
+    </ol>
+
+    <h2 id="simple-while-loop-example">Simple while Loop Example</h2>
+    <p><strong>Example:</strong></p>
+    <div class="code-example">
+        <pre><code>public class SimpleWhileLoop {
+    public static void main(String[] args) {
+        int count = 1;
+        while (count &lt;= 5) {
+            System.out.println("Count: " + count);
+            count++;
+        }
+    }
+}</code></pre>
+    </div>
+    <p><strong>Explanation:</strong> This loop prints the numbers from 1 to 5. The condition count &lt;= 5 is checked before each iteration, and the count variable is incremented in each iteration.</p>
+
+    <h2 id="infinite-while-loop">Infinite while Loop</h2>
+    <p>An infinite loop occurs when the condition always evaluates to true.</p>
+    <p><strong>Example:</strong></p>
+    <div class="code-example">
+        <pre><code>public class InfiniteWhileLoop {
+    public static void main(String[] args) {
+        while (true) {
+            System.out.println("This is an infinite loop");
+        }
+    }
+}</code></pre>
+    </div>
+    <p><strong>Explanation:</strong> This loop will print "This is an infinite loop" indefinitely because the condition true never changes.</p>
+
+    <h2 id="while-loop-with-break-statement">while Loop with a Break Statement</h2>
+    <p>The break statement can be used to exit the loop prematurely.</p>
+    <p><strong>Example:</strong></p>
+    <div class="code-example">
+        <pre><code>public class WhileLoopWithBreak {
+    public static void main(String[] args) {
+        int count = 1;
+        while (count &lt;= 10) {
+            if (count == 5) {
+                break;
+            }
+            System.out.println("Count: " + count);
+            count++;
+        }
+    }
+}</code></pre>
+    </div>
+    <p><strong>Explanation:</strong> This loop prints numbers from 1 to 4. When count equals 5, the break statement exits the loop.</p>
+
+    <h2 id="while-loop-with-continue-statement">while Loop with a Continue Statement</h2>
+    <p>The continue statement skips the current iteration and moves to the next iteration of the loop.</p>
+    <p><strong>Example:</strong></p>
+    <div class="code-example">
+        <pre><code>public class WhileLoopWithContinue {
+    public static void main(String[] args) {
+        int count = 0;
+        while (count &lt; 10) {
+            count++;
+            if (count % 2 == 0) {
+                continue;
+            }
+            System.out.println("Odd number: " + count);
+        }
+    }
+}</code></pre>
+    </div>
+    <p><strong>Explanation:</strong> This loop prints odd numbers from 1 to 9. The continue statement skips the even numbers.</p>
+
+    <h2 id="nested-while-loop">Nested while Loop</h2>
+    <p>A nested while loop is a while loop inside another while loop, useful for iterating over multidimensional structures.</p>
+    <p><strong>Example:</strong></p>
+    <div class="code-example">
+        <pre><code>public class NestedWhileLoop {
+    public static void main(String[] args) {
+        int i = 1;
+        while (i &lt;= 3) {
+            int j = 1;
+            while (j &lt;= 3) {
+                System.out.println("i: " + i + ", j: " + j);
+                j++;
+            }
+            i++;
+        }
+    }
+}</code></pre>
+    </div>
+    <p><strong>Explanation:</strong> This loop prints pairs of i and j values, iterating over all combinations of i and j from 1 to 3.</p>
+
+    <h2 id="using-while-loop-for-input-validation">Using a while Loop for Input Validation</h2>
+    <p>The while loop is often used for validating user input.</p>
+    <p><strong>Example:</strong></p>
+    <div class="code-example">
+        <pre><code>import java.util.Scanner;
+
+public class InputValidation {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int number;
+
+        while (true) {
+            System.out.print("Enter a positive number: ");
+            number = scanner.nextInt();
+            if (number &gt; 0) {
+                break;
+            }
+            System.out.println("Invalid input. Please try again.");
+        }
+
+        System.out.println("You entered: " + number);
+        scanner.close();
+    }
+}</code></pre>
+    </div>
+    <p><strong>Explanation:</strong> This loop repeatedly prompts the user to enter a positive number until a valid input is provided.</p>
+
+    <h2 id="conclusion">Conclusion</h2>
+    <p>The while loop in Java is a powerful control flow statement for performing repeated tasks based on a condition. Understanding how to use the while loop effectively, including its variations with break and continue statements, as well as nested loops, is essential for writing robust and efficient Java programs.</p>
+
+
+
+            <div class="scrollup justify-content-end">
+                <a href="#">
+                    <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+                </a>
+            </div>
+
+        </div>
+        <div id="footer"></div>
+        <script>
+            fetch('../../../footer.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('footer').innerHTML = html;
+                });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        </body>
+
+        </html>

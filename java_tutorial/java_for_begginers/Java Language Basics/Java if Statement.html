@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Control  Statements</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 90%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .topImage img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/Control-Statements-in-Java.jpg" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h1>Java If, If-Else, Nested If, and If-Else-If Statements</h1>
+            <p>Author: <b>SAI K</b></p>
+        </div><br>
+    <p><strong>Core Java Tutorial</strong></p>
+
+    <h3>Introduction</h3>
+    <p>In Java, control flow statements are used to manage the flow of execution based on certain conditions. Among these, the if, if-else, nested if, and if-else-if statements are fundamental for making decisions in code. These statements allow the program to choose different paths of execution based on the evaluation of boolean expressions.</p>
+
+    <h3>Table of Contents</h3>
+    <ul>
+        <li><a href="#control-flow">What are Control Flow Statements?</a></li>
+        <li><a href="#types">Types of Control Flow Statements in Java</a></li>
+        <li><a href="#if">If Statement</a></li>
+        <li><a href="#if-else">If-Else Statement</a></li>
+        <li><a href="#nested-if">Nested If Statement</a></li>
+        <li><a href="#if-else-if">If-Else-If Statement</a></li>
+        <li><a href="#examples">Examples of Each Control Flow Statement</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+    </ul>
+
+    <h3> id="control-flow">What are Control Flow Statements?</h3>
+    <p>Control flow statements in Java determine the order in which statements are executed. These statements enable the program to make decisions, repeat tasks, and branch into different execution paths. The if, if-else, nested if, and if-else-if statements are used to evaluate conditions and execute specific blocks of code based on whether the conditions are true or false.</p>
+
+    <h3 id="types">Types of Control Flow Statements in Java</h3>
+    <p>Java provides several types of control flow statements:</p>
+    <ul>
+        <li>If Statement</li>
+        <li>If-Else Statement</li>
+        <li>Nested If Statement</li>
+        <li>If-Else-If Statement</li>
+    </ul>
+
+    <h3 id="if">1. If Statement</h3>
+    <p>The if statement is used to test a condition. If the condition evaluates to true, the block of code inside the if statement is executed.</p>
+    <p><strong>Syntax:</strong></p>
+    <pre>
+<code>if (condition) {
+    // code to be executed if condition is true
+}</code>
+    </pre>
+    <p><strong>Example:</strong></p>
+    <pre>
+<code>public class IfExample {
+    public static void main(String[] args) {
+        int num = 10;
+        if (num > 0) {
+            System.out.println("The number is positive.");
+        }
+    }
+}</code>
+    </pre>
+
+    <h3 id="if-else">2. If-Else Statement</h3>
+    <p>The if-else statement is used to execute one block of code if the condition is true and another block of code if the condition is false.</p>
+    <p><strong>Syntax:</strong></p>
+    <pre>
+<code>if (condition) {
+    // code to be executed if condition is true
+} else {
+    // code to be executed if condition is false
+}</code>
+    </pre>
+    <p><strong>Example:</strong></p>
+    <pre>
+<code>public class IfElseExample {
+    public static void main(String[] args) {
+        int num = -10;
+        if (num > 0) {
+            System.out.println("The number is positive.");
+        } else {
+            System.out.println("The number is negative.");
+        }
+    }
+}</code>
+    </pre>
+
+    <h3 id="nested-if">3. Nested If Statement</h3>
+    <p>A nested if statement is an if statement inside another if statement. This allows for more complex conditions to be tested.</p>
+    <p><strong>Syntax:</strong></p>
+    <pre>
+<code>if (condition1) {
+    // code to be executed if condition1 is true
+    if (condition2) {
+        // code to be executed if condition2 is true
+    }
+}</code>
+    </pre>
+    <p><strong>Example:</strong></p>
+    <pre>
+<code>public class NestedIfExample {
+    public static void main(String[] args) {
+        int num = 5;
+        if (num > 0) {
+            if (num < 10) {
+                System.out.println("The number is a single digit positive number.");
+            }
+        }
+    }
+}</code>
+    </pre>
+
+    <h3 id="if-else-if">4. If-Else-If Statement</h3>
+    <p>The if-else-if statement is used to test multiple conditions. It executes a block of code corresponding to the first true condition. If none of the conditions is true, the else block is executed.</p>
+    <p><strong>Syntax:</strong></p>
+    <pre>
+<code>if (condition1) {
+    // code to be executed if condition1 is true
+} else if (condition2) {
+    // code to be executed if condition2 is true
+} else {
+    // code to be executed if all conditions are false
+}</code>
+    </pre>
+    <p><strong>Example:</strong></p>
+    <pre>
+<code>public class IfElseIfExample {
+    public static void main(String[] args) {
+        int num = 0;
+        if (num > 0) {
+            System.out.println("The number is positive.");
+        } else if (num < 0) {
+            System.out.println("The number is negative.");
+        } else {
+            System.out.println("The number is zero.");
+        }
+    }
+}</code>
+    </pre>
+
+    <h2 id="examples">Examples of Each Control Flow Statement</h2>
+
+    <h3>If Statement</h3>
+    <pre>
+<code>public class SimpleIfExample {
+    public static void main(String[] args) {
+        int age = 18;
+        if (age >= 18) {
+            System.out.println("You are eligible to vote.");
+        }
+    }
+}</code>
+    </pre>
+    <p><strong>Explanation:</strong> If the variable age is 18 or greater, the message "You are eligible to vote." is printed.</p>
+
+    <h3>If-Else Statement</h3>
+    <pre>
+<code>public class IfElseExample {
+    public static void main(String[] args) {
+        int number = -5;
+        if (number > 0) {
+            System.out.println("The number is positive.");
+        } else {
+            System.out.println("The number is negative.");
+        }
+    }
+}</code>
+    </pre>
+    <p><strong>Explanation:</strong> If the variable number is greater than 0, it prints "The number is positive."; otherwise, it prints "The number is negative."</p>
+
+    <h3>Nested If Statement</h3>
+    <pre>
+<code>public class NestedIfExample {
+    public static void main(String[] args) {
+        int number = 25;
+        if (number > 0) {
+            if (number % 2 == 0) {
+                System.out.println("The number is positive and even.");
+            } else {
+                System.out.println("The number is positive and odd.");
+            }
+        }
+    }
+}</code>
+    </pre>
+    <p><strong>Explanation:</strong> If number is greater than 0, it checks if number is even or odd and prints the appropriate message.</p>
+
+    <h3>If-Else-If Statement</h3>
+    <pre>
+<code>public class IfElseIfExample {
+    public static void main(String[] args) {
+        int marks = 85;
+        if (marks >= 90) {
+            System.out.println("Grade A");
+        } else if (marks >= 80) {
+            System.out.println("Grade B");
+        } else if (marks >= 70) {
+            System.out.println("Grade C");
+        } else if (marks >= 60) {
+            System.out.println("Grade D");
+        } else {
+            System.out.println("Grade F");
+        }
+    }
+}</code>
+    </pre>
+    <p><strong>Explanation:</strong> Depending on the value of marks, it prints the corresponding grade. If marks is 85, it prints "Grade B" as it meets the condition marks >= 80.</p>
+
+    <h2 id="conclusion">Conclusion</h2>
+    <p>Control flow statements like if, if-else, nested if, and if-else-if are essential for making decisions in Java programs. They allow the program to execute different blocks of code based on various conditions, making the code more dynamic and responsive to different inputs. Understanding and using these statements effectively is crucial for writing robust and efficient Java applications.</p>
+
+
+    <div class="scrollup justify-content-end">
+        <a href="#">
+            <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+        </a>
+    </div>
+
+</div>
+<div id="footer"></div>
+<script>
+    fetch('../../../footer.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('footer').innerHTML = html;
+        });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
+

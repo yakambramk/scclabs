@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 70%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+         position: fixed;
+         bottom: 20px; /* Adjust this value to position it higher or lower */
+         right: 20px;  /* Adjust this value to position it further left or right */
+         z-index: 1000; /* Ensures it stays on top of other elements */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/What-is-Java.jpg" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h1>What is Java?</h1>
+            <p>Author: SAI K</p>
+        </div><br>
+
+    <h2>Introduction</h2>
+    <p>Java is one of the most widely used programming languages in the world. It was developed by Sun Microsystems in 1995 and is now owned by Oracle Corporation. Java is popular because it is versatile, reliable, and can run on many different types of computers and devices.</p>
+
+    <h3>Key Points:</h3>
+    <ul>
+        <li><strong>Object-Oriented:</strong> Emphasizes the use of objects and classes.</li>
+        <li><strong>Platform-Independent:</strong> Write once, run anywhere (WORA) capability.</li>
+        <li><strong>Secure and Robust:</strong> Designed with security features and strong memory management.</li>
+        <li><strong>Multithreaded:</strong> Supports concurrent execution of multiple threads.</li>
+        <li><strong>High Performance:</strong> Utilizes Just-In-Time (JIT) compiler for faster execution.</li>
+    </ul>
+
+    <h2>What is Java?</h2>
+    <p>Java is a high-level, object-oriented programming language that is designed to be platform-independent, meaning you can write code once and run it anywhere with the Java Virtual Machine (JVM). It’s easy to learn for beginners and widely used for building web, mobile, and enterprise applications. Java is known for its robustness, security features, and versatility. It supports modular and reusable code through its object-oriented principles, and it comes with a rich set of libraries and frameworks to streamline development.</p>
+
+    <h3>Let’s understand some important phrases from the above definition:</h3>
+    <ul>
+        <li><strong>High-Level Language:</strong> Java is a high-level programming language, meaning it is close to human language and abstracted from the machine’s hardware, making it easier to read and write.</li>
+        <li><strong>Object-Oriented:</strong> Java is based on the concept of "objects", which can contain data and methods. This allows for modular and reusable code. Key concepts include classes, objects, inheritance, polymorphism, encapsulation, and abstraction.</li>
+        <li><strong>Platform-Independent:</strong> Java is designed to be "write once, run anywhere" (WORA). This means that Java programs can run on any device or operating system that has the Java Virtual Machine (JVM) installed. The JVM interprets the compiled Java code (bytecode) and executes it on the host machine.</li>
+    </ul>
+
+    <h3>Java Virtual Machine (JVM)</h3>
+    <p>The Java Virtual Machine (JVM) is a platform-independent runtime environment that executes Java bytecode. It allows Java programs to run on any device or operating system by interpreting the compiled Java code and converting it into machine-specific instructions. This enables the "write once, run anywhere" capability of Java.</p>
+
+    <h2>History of Java</h2>
+    <p>Java started in 1991 when James Gosling, Mike Sheridan, and Patrick Naughton from Sun Microsystems began the Green Project. Their goal was to create a language for digital devices like set-top boxes and televisions. They wanted a language that could run on any device, regardless of hardware or software.</p>
+    <p>Initially, the language was called Oak, named after an oak tree outside James Gosling’s office. However, due to trademark issues, it was renamed Java, inspired by Java coffee. In 1995, Java was officially launched with the slogan “Write Once, Run Anywhere” (WORA).</p>
+
+    <h2>Main Features of Java</h2>
+
+    <h3>Object-Oriented</h3>
+    <p>Java is an object-oriented language where everything is done with objects (data) in mind.</p>
+    <ul>
+        <li><strong>Modularity:</strong> Code is organized into classes and objects.</li>
+        <li><strong>Reusability:</strong> Promotes code reuse through inheritance and polymorphism.</li>
+        <li><strong>Encapsulation:</strong> Data and methods are encapsulated in classes.</li>
+    </ul>
+
+    <h3>Simple</h3>
+    <p>Java is designed to be easy to learn and use. Its syntax is clean and straightforward, making it accessible to beginners with basic programming knowledge.</p>
+    <ul>
+        <li><strong>Readable Syntax:</strong> Simple and understandable syntax.</li>
+        <li><strong>Eliminates Complex Features:</strong> No explicit pointers and operator overloading.</li>
+    </ul>
+
+    <h3>Platform-Independent</h3>
+    <p>Java is a write-once, run-anywhere language. Java programs written on one platform can run on any other platform without modification.</p>
+    <ul>
+        <li><strong>Java Virtual Machine (JVM):</strong> This abstraction of the underlying platform allows Java code to be executed on any device with a JVM.</li>
+        <li><strong>Bytecode:</strong> Java source code is compiled into bytecode, which is platform-independent.</li>
+    </ul>
+
+    <h3>Secure</h3>
+    <p>Java is a highly secure language through which you can develop virus-free and highly secure applications.</p>
+    <ul>
+        <li><strong>Bytecode Verification:</strong> Ensures code adheres to Java security constraints.</li>
+        <li><strong>No Explicit Pointers:</strong> Eliminates the risk of pointer-related vulnerabilities.</li>
+        <li><strong>Security Manager:</strong> Manages access to system resources and user data.</li>
+    </ul>
+
+    <h3>Robust</h3>
+    <p>Java is robust because of its strong memory management, lack of pointers, and exception-handling mechanisms.</p>
+    <ul>
+        <li><strong>Automatic Garbage Collection:</strong> Automatically manages memory allocation and deallocation.</li>
+        <li><strong>Exception Handling:</strong> Provides a robust mechanism for handling runtime errors.</li>
+    </ul>
+
+    <h3>Portable</h3>
+    <p>Java is portable because you can run Java bytecode on any hardware with a compliant JVM.</p>
+
+    <h3>Multithreaded</h3>
+    <p>Java supports multithreaded programming, allowing multiple threads to execute tasks simultaneously.</p>
+    <ul>
+        <li><strong>Concurrency:</strong> Built-in support for multithreading and synchronization.</li>
+        <li><strong>Thread Lifecycle Management:</strong> Provides mechanisms to control the lifecycle of threads.</li>
+    </ul>
+
+    <h3>Distributed</h3>
+    <p>Java is designed for the distributed environment of the internet.</p>
+    <ul>
+        <li><strong>Remote Method Invocation (RMI):</strong> Allows invocation of methods that reside on different machines.</li>
+        <li><strong>Enterprise JavaBeans (EJB):</strong> Enables building distributed, scalable, and secure enterprise-level applications.</li>
+    </ul>
+
+    <h3>High Performance</h3>
+    <p>Java's performance is enhanced through the use of Just-In-Time (JIT) compilers.</p>
+    <ul>
+        <li><strong>JIT Compilation:</strong> Converts bytecode into native machine code at runtime, improving execution speed.</li>
+    </ul>
+
+    <h2>Types of Applications You Can Build with Java</h2>
+    <ul>
+        <li><strong>Web Applications:</strong> Java provides robust frameworks like Spring and JavaServer Faces (JSF) for building scalable web applications.</li>
+        <li><strong>Mobile Applications:</strong> Java is the primary language for Android development, allowing the creation of powerful mobile applications.</li>
+        <li><strong>Enterprise Applications:</strong> Java is widely used in enterprise environments due to its stability, scalability, and performance.</li>
+        <li><strong>Desktop Applications:</strong> Java's rich set of libraries, such as JavaFX and Swing, support the development of feature-rich desktop applications.</li>
+        <li><strong>Embedded Systems:</strong> Java can be used to develop applications for embedded systems and Internet of Things (IoT) devices.</li>
+    </ul>
+
+    <h3>Example: Simple Java Program</h3>
+    <pre><code>public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}</code></pre>
+
+    <h4>Explanation:</h4>
+    <ul>
+        <li><strong>Class Declaration:</strong> public class HelloWorld declares a class named HelloWorld.</li>
+        <li><strong>Main Method:</strong> public static void main(String[] args) is the entry point of the program.</li>
+        <li><strong>Print Statement:</strong> System.out.println("Hello, World!"); prints "Hello, World!" to the console.</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>Java is a powerful, versatile, and widely used programming language that has stood the test of time. Its platform independence, security features, and robustness make it a popular choice for developing a wide range of applications. By leveraging Java's extensive libraries and frameworks, developers can build efficient, scalable, and secure software solutions.</p>
+
+    <h3>Summary of Key Points:</h3>
+    <ul>
+        <li><strong>Object-Oriented:</strong> Emphasizes the use of objects and classes.</li>
+        <li><strong>Platform-Independent:</strong> Write once, run anywhere (WORA) capability.</li>
+        <li><strong>Secure and Robust:</strong> Designed with security features and strong memory management.</li>
+        <li><strong>Multithreaded:</strong> Supports concurrent execution of multiple threads.</li>
+        <li><strong>High Performance:</strong> Utilizes Just-In-Time (JIT) compiler for faster execution.</li>
+    </ul>
+
+    <p>By understanding and utilizing the features of Java, developers can create high-quality applications that meet modern software development needs.</p>
+
+
+    <div class="scrollup justify-content-end">
+        <a href="#">
+            <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+        </a>
+    </div>
+
+</div>
+<div id="footer"></div>
+<script>
+    fetch('../../../footer.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('footer').innerHTML = html;
+        });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

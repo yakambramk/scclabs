@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Arithmetic Operators in Java</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="author" content="Fullstack Institute" />
+    <meta name="author" content="Yakambram Kommu" />
+
+    <style>
+        .carousel-item img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+        }
+
+        .container-fluid {
+            width: 90%;
+            background-color: rgb(106, 51, 194);
+            /* Updated color */
+            padding: 0;
+            margin: 0;
+        }
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            /* Centers the image horizontally */
+            align-items: center;
+            /* Centers the image vertically */
+        }
+
+        .topImage img {
+            max-width: 80%;
+            /* Ensures the image is responsive */
+            height: auto;
+            /* Maintains the aspect ratio */
+            border-radius: 8px;
+            /* Optional: adds rounded corners to the image */
+        }
+
+        .heading {
+            color: rgb(204, 145, 9);
+        }
+
+        span {
+            background-color: rgb(224, 237, 235);
+            color: #d73a49;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #edf3f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .btn {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            /* Zoom in */
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            /* Zoom out on click */
+        }
+
+
+        .scrollup {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust this value to position it higher or lower */
+            right: 20px;
+            /* Adjust this value to position it further left or right */
+            z-index: 1000;
+            /* Ensures it stays on top of other elements */
+        }
+
+
+        .topImage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .topImage img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="carousel-inner mb-4">
+        <div class="carousel-item active">
+            <img src="../../../assets/java_tutorial/Betwise Operatar img.jpg" alt="..." />
+        </div>
+    </div> <br>
+
+    <div class="container">
+        <div class="heading">
+            <h1>Bitwise Operators in Java</h1>
+            <p>Author: <b>SAI K</b></p>
+        </div><br>
+
+
+        <p><strong>Core Java</strong></p>
+
+        <h2>Introduction</h2>
+        <p>In this chapter, we'll learn Bitwise operators in Java programming language, their syntax, and how to use
+            them with examples.</p>
+        <p>Java defines several bitwise operators that can be applied to the integer types: <code>long</code>,
+            <code>int</code>, <code>short</code>, <code>char</code>, and <code>byte</code>. These operators act upon the
+            individual bits of their operands.</p><br>
+            <p>Let's summarize all the bitwise operators as:</p>
+            <div class="topImage mt-2 mb-4">
+                <img src="../../../assets/java_tutorial/bitwise-operator.PNG" alt="logo" />
+            </div><br>
+
+
+
+        <h2>1. The Bitwise Logical Operators</h2>
+        <p>The bitwise logical operators are <code>&</code>, <code>|</code>, <code>^</code>, and <code>~</code>. Let's
+            briefly discuss these bitwise logic operators. The following table shows the outcome of each operation.</p>
+            <div class="topImage mt-2 mb-4">
+                <img src="../../../assets/java_tutorial/bitwise-logic-operator.PNG" alt="logo" />
+            </div><br>
+
+
+
+        <h4>The Bitwise NOT</h4>
+        <p>Also called the bitwise complement, the unary NOT operator, <code>~</code>, inverts all of the bits of its
+            operand.</p>
+
+        <h4>The Bitwise AND</h4>
+        <p>The AND operator, <code>&</code>, produces a 1 bit if both operands are also 1. A zero is produced in all
+            other cases.</p>
+
+        <h4>The Bitwise OR</h4>
+        <p>The OR operator, <code>|</code>, combines bits such that if either of the bits in the operands is a 1, then
+            the resultant bit is a 1.</p>
+
+        <h4>The Bitwise XOR</h4>
+        <p>The XOR operator, <code>^</code>, combines bits such that if exactly one operand is 1, then the result is 1.
+            Otherwise, the result is zero.</p>
+
+        <h3>2. Using the Bitwise Logical Operators</h3>
+        <p>The following program demonstrates the bitwise logical operators:</p>
+
+        <pre><code>
+package net.javaguides.corejava.operators.bitwise;
+
+public class BitLogic {
+    public static void main(String args[]) {
+        String binary[] = {
+            "0000",
+            "0001",
+            "0010",
+            "0011",
+            "0100",
+            "0101",
+            "0110",
+            "0111",
+            "1000",
+            "1001",
+            "1010",
+            "1011",
+            "1100",
+            "1101",
+            "1110",
+            "1111"
+        };
+        int a = 3; // 0011 in binary
+        int b = 6; // 0110 in binary
+        int c = a | b;
+        int d = a & b;
+        int e = a ^ b;
+        int f = (~a & b) | (a & ~b);
+        int g = ~a & 0x0f;
+        System.out.println(" a = " + binary[a]);
+        System.out.println(" b = " + binary[b]);
+        System.out.println(" a|b = " + binary[c]);
+        System.out.println(" a&b = " + binary[d]);
+        System.out.println(" a^b = " + binary[e]);
+        System.out.println("~a&b|a&~b = " + binary[f]);
+        System.out.println(" ~a = " + binary[g]);
+    }
+}</code></pre><br>
+
+        <h4>Output:</h4>
+        <pre><code>
+ a = 0011
+ b = 0110
+ a|b = 0111
+ a&b = 0010
+ a^b = 0101
+~a&b|a&~b = 0101
+ ~a = 1100</code></pre><br>
+
+        <h3>3. The Left Shift</h3>
+        <p>The left shift operator, <code>&lt;&lt;</code>, shifts all of the bits in a value to the left a specified
+            number of times.</p>
+
+        <h4>Example:</h4>
+        <pre><code>
+package net.javaguides.corejava.operators.bitwise;
+
+public class ByteShift {
+    public static void main(String args[]) {
+        byte a = 64, b;
+        int i;
+        i = a << 2;
+        b = (byte)(a << 2);
+        System.out.println("Original value of a: " + a);
+        System.out.println("i and b: " + i + " " + b);
+    }
+}</code></pre><br>
+
+        <h4>Output:</h4>
+        <pre><code>
+Original value of a: 64
+i and b: 256 0
+    </code></pre><br>
+
+        <h3>4. Java Right Shift Operator</h3>
+        <p>The Java right shift operator <code>&gt;&gt;</code> is used to move the left operand's value to the right by
+            the number of bits specified by the right operand.</p>
+
+        <h4>Example:</h4>
+        <pre><code>
+class OperatorExample {
+    public static void main(String args[]) {
+        System.out.println(10 >> 2); // 10/2^2 = 10/4 = 2
+        System.out.println(20 >> 2); // 20/2^2 = 20/4 = 5
+        System.out.println(20 >> 3); // 20/2^3 = 20/8 = 2
+    }
+}</code></pre><br>
+
+        <h4>Output:</h4>
+        <pre><code>
+2
+5
+2</code></pre><br>
+
+        <h3>5. Bitwise Operator Compound Assignments</h3>
+        <p>All of the binary bitwise operators have a compound form similar to that of the algebraic operators, which
+            combines the assignment with the bitwise operation.</p>
+
+        <h4>Example:</h4>
+        <pre><code>
+package net.javaguides.corejava.operators.bitwise;
+
+public class OpBitEquals {
+    public static void main(String args[])
+    {
+        int a = 1;
+        int b = 2;
+        int c = 3;
+        a |= 4;
+        b >>= 1;
+        c <<= 1;
+        a ^= c;
+        System.out.println("a = " + a);
+        System.out.println("b = " + b);
+        System.out.println("c = " + c);
+        }
+    }</code></pre><br>
+
+        <h4>Output:</h4>
+        <pre><code>
+    a = 3
+    b = 1
+    c = 6
+        </code></pre><br>
+
+        <div class="scrollup justify-content-end">
+            <a href="#">
+                <img class="scrollup-icon" src="../../../assets/img/arrow.png" alt="Scroll to top">
+            </a>
+        </div>
+
+    </div>
+    <div id="footer"></div>
+    <script>
+        fetch('../../../footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer').innerHTML = html;
+            });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
